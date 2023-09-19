@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="com.tuantran_IMPROOK_CARE_jar_0.0.1-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.tuantran.IMPROOK_CARE.models.Product</class>
+    <class>com.tuantran.IMPROOK_CARE.models.Tag</class>
+    <class>com.tuantran.IMPROOK_CARE.models.SaleOrder</class>
+    <class>com.tuantran.IMPROOK_CARE.models.Comment</class>
+    <class>com.tuantran.IMPROOK_CARE.models.OrderDetail</class>
+    <class>com.tuantran.IMPROOK_CARE.models.Category</class>
+    <class>com.tuantran.IMPROOK_CARE.models.ProdTag</class>
+    <class>com.tuantran.IMPROOK_CARE.models.User</class>
+    <class>com.tuantran.IMPROOK_CARE.models.MedicalRecords</class>
+    <class>com.tuantran.IMPROOK_CARE.models.MedicineCategory</class>
+    <class>com.tuantran.IMPROOK_CARE.models.Province</class>
+    <class>com.tuantran.IMPROOK_CARE.models.TimeDistance</class>
+    <class>com.tuantran.IMPROOK_CARE.models.Clinic</class>
+    <class>com.tuantran.IMPROOK_CARE.models.ProfileDoctor</class>
+    <class>com.tuantran.IMPROOK_CARE.models.Specialty</class>
+    <class>com.tuantran.IMPROOK_CARE.models.Role</class>
+    <class>com.tuantran.IMPROOK_CARE.models.TimeSlot</class>
+    <class>com.tuantran.IMPROOK_CARE.models.BookingStatus</class>
+    <class>com.tuantran.IMPROOK_CARE.models.Schedule</class>
+    <class>com.tuantran.IMPROOK_CARE.models.District</class>
+    <class>com.tuantran.IMPROOK_CARE.models.PrescriptionDetail</class>
+    <class>com.tuantran.IMPROOK_CARE.models.Ward</class>
+    <class>com.tuantran.IMPROOK_CARE.models.Prescriptions</class>
+    <class>com.tuantran.IMPROOK_CARE.models.Medicine</class>
+    <class>com.tuantran.IMPROOK_CARE.models.Booking</class>
+    <class>com.tuantran.IMPROOK_CARE.models.ProfilePatient</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/saledb?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="Admin@123"/>
+    </properties>
+  </persistence-unit>
+</persistence>

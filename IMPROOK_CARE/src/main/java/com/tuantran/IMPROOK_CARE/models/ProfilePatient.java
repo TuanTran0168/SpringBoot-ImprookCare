@@ -1,0 +1,167 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.tuantran.IMPROOK_CARE.models;
+
+import java.io.Serializable;
+import java.util.Set;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+/**
+ *
+ * @author Administrator
+ */
+@Entity
+@Table(name = "profile_patient")
+@NamedQueries({
+    @NamedQuery(name = "ProfilePatient.findAll", query = "SELECT p FROM ProfilePatient p"),
+    @NamedQuery(name = "ProfilePatient.findByProfilePatientId", query = "SELECT p FROM ProfilePatient p WHERE p.profilePatientId = :profilePatientId"),
+    @NamedQuery(name = "ProfilePatient.findByName", query = "SELECT p FROM ProfilePatient p WHERE p.name = :name"),
+    @NamedQuery(name = "ProfilePatient.findByPhonenumber", query = "SELECT p FROM ProfilePatient p WHERE p.phonenumber = :phonenumber"),
+    @NamedQuery(name = "ProfilePatient.findByAddress", query = "SELECT p FROM ProfilePatient p WHERE p.address = :address"),
+    @NamedQuery(name = "ProfilePatient.findByEmail", query = "SELECT p FROM ProfilePatient p WHERE p.email = :email"),
+    @NamedQuery(name = "ProfilePatient.findByRelationship", query = "SELECT p FROM ProfilePatient p WHERE p.relationship = :relationship"),
+    @NamedQuery(name = "ProfilePatient.findByActive", query = "SELECT p FROM ProfilePatient p WHERE p.active = :active")})
+public class ProfilePatient implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "profile_patient_id")
+    private Integer profilePatientId;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "phonenumber")
+    private String phonenumber;
+    @Column(name = "address")
+    private String address;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "relationship")
+    private String relationship;
+    @Column(name = "active")
+    private Boolean active;
+    @OneToMany(mappedBy = "profilePatientId")
+    private Set<Booking> bookingSet;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @ManyToOne
+    private User userId;
+
+    public ProfilePatient() {
+    }
+
+    public ProfilePatient(Integer profilePatientId) {
+        this.profilePatientId = profilePatientId;
+    }
+
+    public Integer getProfilePatientId() {
+        return profilePatientId;
+    }
+
+    public void setProfilePatientId(Integer profilePatientId) {
+        this.profilePatientId = profilePatientId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(String relationship) {
+        this.relationship = relationship;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Set<Booking> getBookingSet() {
+        return bookingSet;
+    }
+
+    public void setBookingSet(Set<Booking> bookingSet) {
+        this.bookingSet = bookingSet;
+    }
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (profilePatientId != null ? profilePatientId.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof ProfilePatient)) {
+            return false;
+        }
+        ProfilePatient other = (ProfilePatient) object;
+        if ((this.profilePatientId == null && other.profilePatientId != null) || (this.profilePatientId != null && !this.profilePatientId.equals(other.profilePatientId))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.tuantran.IMPROOK_CARE.models.ProfilePatient[ profilePatientId=" + profilePatientId + " ]";
+    }
+    
+}
