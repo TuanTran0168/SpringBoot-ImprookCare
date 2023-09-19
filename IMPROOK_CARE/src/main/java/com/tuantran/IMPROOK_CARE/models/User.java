@@ -74,6 +74,7 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private Set<ProfilePatient> profilePatientSet;
+    @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private Set<ProfileDoctor> profileDoctorSet;
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")

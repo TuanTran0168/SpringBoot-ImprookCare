@@ -45,8 +45,8 @@ public class ApiUserController {
     
     @GetMapping("/test-xiu/")
     @CrossOrigin
-    public ResponseEntity<List<User>> test() {
-        return ResponseEntity.ok().body(this.userService.findAllUser());
+    public ResponseEntity<User> test() {
+        return ResponseEntity.ok().body(this.userService.findUserByUsername("thai"));
     }
 
     @GetMapping("/users/")
@@ -57,7 +57,7 @@ public class ApiUserController {
 
     @PostMapping("/login/")
     @CrossOrigin
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDTO loginDTO) throws Exception {
+    public ResponseEntity<String> authenticateUser(@Valid @RequestBody LoginDTO loginDTO) throws Exception {
 
         this.authenticationService.authenticateUser(loginDTO.getUsername(), loginDTO.getPassword());
         final UserDetails userDetails = userService.loadUserByUsername(loginDTO.getUsername());
