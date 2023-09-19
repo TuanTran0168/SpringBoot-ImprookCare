@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.models;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -18,6 +19,8 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
@@ -35,8 +38,8 @@ import jakarta.persistence.Table;
     @NamedQuery(name = "User.findByGender", query = "SELECT u FROM User u WHERE u.gender = :gender"),
     @NamedQuery(name = "User.findByPhonenumber", query = "SELECT u FROM User u WHERE u.phonenumber = :phonenumber"),
     @NamedQuery(name = "User.findByAvatar", query = "SELECT u FROM User u WHERE u.avatar = :avatar"),
-    @NamedQuery(name = "User.findByAddress", query = "SELECT u FROM User u WHERE u.address = :address"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
+    @NamedQuery(name = "User.findByCreatedDate", query = "SELECT u FROM User u WHERE u.createdDate = :createdDate"),
     @NamedQuery(name = "User.findByActive", query = "SELECT u FROM User u WHERE u.active = :active")})
 public class User implements Serializable {
 
@@ -60,10 +63,11 @@ public class User implements Serializable {
     private String phonenumber;
     @Column(name = "avatar")
     private String avatar;
-    @Column(name = "address")
-    private String address;
     @Column(name = "email")
     private String email;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
     @Column(name = "active")
     private Boolean active;
     @OneToMany(mappedBy = "userId")
@@ -145,20 +149,20 @@ public class User implements Serializable {
         this.avatar = avatar;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Boolean getActive() {

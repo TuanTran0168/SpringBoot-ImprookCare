@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.models;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -18,6 +19,8 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
@@ -31,6 +34,9 @@ import jakarta.persistence.Table;
     @NamedQuery(name = "ProfileDoctor.findByName", query = "SELECT p FROM ProfileDoctor p WHERE p.name = :name"),
     @NamedQuery(name = "ProfileDoctor.findByPhonenumber", query = "SELECT p FROM ProfileDoctor p WHERE p.phonenumber = :phonenumber"),
     @NamedQuery(name = "ProfileDoctor.findByEmail", query = "SELECT p FROM ProfileDoctor p WHERE p.email = :email"),
+    @NamedQuery(name = "ProfileDoctor.findByWorkPlace", query = "SELECT p FROM ProfileDoctor p WHERE p.workPlace = :workPlace"),
+    @NamedQuery(name = "ProfileDoctor.findByPosition", query = "SELECT p FROM ProfileDoctor p WHERE p.position = :position"),
+    @NamedQuery(name = "ProfileDoctor.findByCreatedDate", query = "SELECT p FROM ProfileDoctor p WHERE p.createdDate = :createdDate"),
     @NamedQuery(name = "ProfileDoctor.findByActive", query = "SELECT p FROM ProfileDoctor p WHERE p.active = :active")})
 public class ProfileDoctor implements Serializable {
 
@@ -46,11 +52,15 @@ public class ProfileDoctor implements Serializable {
     private String phonenumber;
     @Column(name = "email")
     private String email;
+    @Column(name = "work_place")
+    private String workPlace;
+    @Column(name = "position")
+    private String position;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
     @Column(name = "active")
     private Boolean active;
-    @JoinColumn(name = "clinic_id", referencedColumnName = "clinic_id")
-    @ManyToOne
-    private Clinic clinicId;
     @JoinColumn(name = "specialty_id", referencedColumnName = "specialty_id")
     @ManyToOne
     private Specialty specialtyId;
@@ -101,20 +111,36 @@ public class ProfileDoctor implements Serializable {
         this.email = email;
     }
 
+    public String getWorkPlace() {
+        return workPlace;
+    }
+
+    public void setWorkPlace(String workPlace) {
+        this.workPlace = workPlace;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
     public Boolean getActive() {
         return active;
     }
 
     public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    public Clinic getClinicId() {
-        return clinicId;
-    }
-
-    public void setClinicId(Clinic clinicId) {
-        this.clinicId = clinicId;
     }
 
     public Specialty getSpecialtyId() {

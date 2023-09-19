@@ -28,6 +28,12 @@
     <class>com.tuantran.IMPROOK_CARE.models.Medicine</class>
     <class>com.tuantran.IMPROOK_CARE.models.Booking</class>
     <class>com.tuantran.IMPROOK_CARE.models.ProfilePatient</class>
+    <class>com.tuantran.IMPROOK_CARE.models.Provinces</class>
+    <class>com.tuantran.IMPROOK_CARE.models.Districts</class>
+    <class>com.tuantran.IMPROOK_CARE.models.Wards</class>
+    <class>com.tuantran.IMPROOK_CARE.models.VietnamUnits</class>
+    <class>com.tuantran.IMPROOK_CARE.models.VietnamRegions</class>
+    <class>com.tuantran.IMPROOK_CARE.models.CollabDoctor</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/saledb?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

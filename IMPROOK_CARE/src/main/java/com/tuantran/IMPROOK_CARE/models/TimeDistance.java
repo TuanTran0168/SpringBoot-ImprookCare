@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.models;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -16,6 +17,8 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
@@ -26,7 +29,9 @@ import jakarta.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "TimeDistance.findAll", query = "SELECT t FROM TimeDistance t"),
     @NamedQuery(name = "TimeDistance.findByTimeDistanceId", query = "SELECT t FROM TimeDistance t WHERE t.timeDistanceId = :timeDistanceId"),
-    @NamedQuery(name = "TimeDistance.findByTimeDistanceValue", query = "SELECT t FROM TimeDistance t WHERE t.timeDistanceValue = :timeDistanceValue")})
+    @NamedQuery(name = "TimeDistance.findByTimeDistanceValue", query = "SELECT t FROM TimeDistance t WHERE t.timeDistanceValue = :timeDistanceValue"),
+    @NamedQuery(name = "TimeDistance.findByCreatedDate", query = "SELECT t FROM TimeDistance t WHERE t.createdDate = :createdDate"),
+    @NamedQuery(name = "TimeDistance.findByActive", query = "SELECT t FROM TimeDistance t WHERE t.active = :active")})
 public class TimeDistance implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,6 +42,11 @@ public class TimeDistance implements Serializable {
     private Integer timeDistanceId;
     @Column(name = "time_distance_value")
     private String timeDistanceValue;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+    @Column(name = "active")
+    private Boolean active;
     @OneToMany(mappedBy = "timeDistanceId")
     private Set<TimeSlot> timeSlotSet;
 
@@ -61,6 +71,22 @@ public class TimeDistance implements Serializable {
 
     public void setTimeDistanceValue(String timeDistanceValue) {
         this.timeDistanceValue = timeDistanceValue;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public Set<TimeSlot> getTimeSlotSet() {

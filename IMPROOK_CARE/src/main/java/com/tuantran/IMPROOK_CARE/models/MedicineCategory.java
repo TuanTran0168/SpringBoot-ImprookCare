@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.models;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -16,6 +17,8 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
@@ -27,6 +30,7 @@ import jakarta.persistence.Table;
     @NamedQuery(name = "MedicineCategory.findAll", query = "SELECT m FROM MedicineCategory m"),
     @NamedQuery(name = "MedicineCategory.findByCategoryId", query = "SELECT m FROM MedicineCategory m WHERE m.categoryId = :categoryId"),
     @NamedQuery(name = "MedicineCategory.findByCategoryName", query = "SELECT m FROM MedicineCategory m WHERE m.categoryName = :categoryName"),
+    @NamedQuery(name = "MedicineCategory.findByCreatedDate", query = "SELECT m FROM MedicineCategory m WHERE m.createdDate = :createdDate"),
     @NamedQuery(name = "MedicineCategory.findByActive", query = "SELECT m FROM MedicineCategory m WHERE m.active = :active")})
 public class MedicineCategory implements Serializable {
 
@@ -38,6 +42,9 @@ public class MedicineCategory implements Serializable {
     private Integer categoryId;
     @Column(name = "category_name")
     private String categoryName;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
     @Column(name = "active")
     private Boolean active;
     @OneToMany(mappedBy = "categoryId")
@@ -64,6 +71,14 @@ public class MedicineCategory implements Serializable {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Boolean getActive() {

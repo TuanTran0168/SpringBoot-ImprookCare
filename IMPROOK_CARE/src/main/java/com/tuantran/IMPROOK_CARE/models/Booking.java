@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.models;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -18,6 +19,8 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
@@ -28,6 +31,7 @@ import jakarta.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b"),
     @NamedQuery(name = "Booking.findByBookingId", query = "SELECT b FROM Booking b WHERE b.bookingId = :bookingId"),
+    @NamedQuery(name = "Booking.findByCreatedDate", query = "SELECT b FROM Booking b WHERE b.createdDate = :createdDate"),
     @NamedQuery(name = "Booking.findByActive", query = "SELECT b FROM Booking b WHERE b.active = :active")})
 public class Booking implements Serializable {
 
@@ -37,6 +41,9 @@ public class Booking implements Serializable {
     @Basic(optional = false)
     @Column(name = "booking_id")
     private Integer bookingId;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
     @Column(name = "active")
     private Boolean active;
     @JoinColumn(name = "status_id", referencedColumnName = "status_id")
@@ -66,6 +73,14 @@ public class Booking implements Serializable {
 
     public void setBookingId(Integer bookingId) {
         this.bookingId = bookingId;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Boolean getActive() {

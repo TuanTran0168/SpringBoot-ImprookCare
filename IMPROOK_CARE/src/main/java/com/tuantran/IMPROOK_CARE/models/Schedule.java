@@ -32,6 +32,7 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "Schedule.findAll", query = "SELECT s FROM Schedule s"),
     @NamedQuery(name = "Schedule.findByScheduleId", query = "SELECT s FROM Schedule s WHERE s.scheduleId = :scheduleId"),
     @NamedQuery(name = "Schedule.findByDate", query = "SELECT s FROM Schedule s WHERE s.date = :date"),
+    @NamedQuery(name = "Schedule.findByCreatedDate", query = "SELECT s FROM Schedule s WHERE s.createdDate = :createdDate"),
     @NamedQuery(name = "Schedule.findByActive", query = "SELECT s FROM Schedule s WHERE s.active = :active")})
 public class Schedule implements Serializable {
 
@@ -44,6 +45,9 @@ public class Schedule implements Serializable {
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
     @Column(name = "active")
     private Boolean active;
     @OneToMany(mappedBy = "scheduleId")
@@ -76,6 +80,14 @@ public class Schedule implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Boolean getActive() {

@@ -54,9 +54,6 @@ public class Comment implements Serializable {
     private Integer rating;
     @Column(name = "active")
     private Boolean active;
-    @JoinColumn(name = "clinic_id", referencedColumnName = "clinic_id")
-    @ManyToOne
-    private Clinic clinicId;
     @JoinColumn(name = "profile_doctor_id", referencedColumnName = "profile_doctor_id")
     @ManyToOne
     private ProfileDoctor profileDoctorId;
@@ -114,14 +111,6 @@ public class Comment implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    public Clinic getClinicId() {
-        return clinicId;
-    }
-
-    public void setClinicId(Clinic clinicId) {
-        this.clinicId = clinicId;
     }
 
     public ProfileDoctor getProfileDoctorId() {

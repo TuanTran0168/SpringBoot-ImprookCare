@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.models;
 
 import java.io.Serializable;
+import java.util.Date;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +18,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
@@ -27,6 +30,7 @@ import jakarta.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "MedicalRecords.findAll", query = "SELECT m FROM MedicalRecords m"),
     @NamedQuery(name = "MedicalRecords.findByRecordId", query = "SELECT m FROM MedicalRecords m WHERE m.recordId = :recordId"),
+    @NamedQuery(name = "MedicalRecords.findByCreatedDate", query = "SELECT m FROM MedicalRecords m WHERE m.createdDate = :createdDate"),
     @NamedQuery(name = "MedicalRecords.findByActive", query = "SELECT m FROM MedicalRecords m WHERE m.active = :active")})
 public class MedicalRecords implements Serializable {
 
@@ -42,6 +46,9 @@ public class MedicalRecords implements Serializable {
     @Lob
     @Column(name = "treatment")
     private String treatment;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
     @Column(name = "active")
     private Boolean active;
     @JoinColumn(name = "booking_id", referencedColumnName = "booking_id")
@@ -77,6 +84,14 @@ public class MedicalRecords implements Serializable {
 
     public void setTreatment(String treatment) {
         this.treatment = treatment;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Boolean getActive() {

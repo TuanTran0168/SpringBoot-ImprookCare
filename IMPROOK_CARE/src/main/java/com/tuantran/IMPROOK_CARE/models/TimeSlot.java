@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.models;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -18,6 +19,8 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
@@ -28,7 +31,8 @@ import jakarta.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "TimeSlot.findAll", query = "SELECT t FROM TimeSlot t"),
     @NamedQuery(name = "TimeSlot.findByTimeSlotId", query = "SELECT t FROM TimeSlot t WHERE t.timeSlotId = :timeSlotId"),
-    @NamedQuery(name = "TimeSlot.findByTimeSlotValue", query = "SELECT t FROM TimeSlot t WHERE t.timeSlotValue = :timeSlotValue")})
+    @NamedQuery(name = "TimeSlot.findByTimeSlotValue", query = "SELECT t FROM TimeSlot t WHERE t.timeSlotValue = :timeSlotValue"),
+    @NamedQuery(name = "TimeSlot.findByCreatedDate", query = "SELECT t FROM TimeSlot t WHERE t.createdDate = :createdDate")})
 public class TimeSlot implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,6 +43,9 @@ public class TimeSlot implements Serializable {
     private Integer timeSlotId;
     @Column(name = "time_slot_value")
     private String timeSlotValue;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
     @OneToMany(mappedBy = "timeSlotId")
     private Set<Schedule> scheduleSet;
     @JoinColumn(name = "time_distance_id", referencedColumnName = "time_distance_id")
@@ -66,6 +73,14 @@ public class TimeSlot implements Serializable {
 
     public void setTimeSlotValue(String timeSlotValue) {
         this.timeSlotValue = timeSlotValue;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Set<Schedule> getScheduleSet() {

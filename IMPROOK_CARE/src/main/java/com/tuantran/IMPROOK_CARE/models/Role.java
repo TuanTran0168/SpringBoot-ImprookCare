@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.models;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -16,6 +17,8 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
@@ -27,6 +30,7 @@ import jakarta.persistence.Table;
     @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r"),
     @NamedQuery(name = "Role.findByRoleId", query = "SELECT r FROM Role r WHERE r.roleId = :roleId"),
     @NamedQuery(name = "Role.findByRoleName", query = "SELECT r FROM Role r WHERE r.roleName = :roleName"),
+    @NamedQuery(name = "Role.findByCreatedDate", query = "SELECT r FROM Role r WHERE r.createdDate = :createdDate"),
     @NamedQuery(name = "Role.findByActive", query = "SELECT r FROM Role r WHERE r.active = :active")})
 public class Role implements Serializable {
 
@@ -38,6 +42,9 @@ public class Role implements Serializable {
     private Integer roleId;
     @Column(name = "role_name")
     private String roleName;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
     @Column(name = "active")
     private Boolean active;
     @OneToMany(mappedBy = "roleId")
@@ -64,6 +71,14 @@ public class Role implements Serializable {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Boolean getActive() {

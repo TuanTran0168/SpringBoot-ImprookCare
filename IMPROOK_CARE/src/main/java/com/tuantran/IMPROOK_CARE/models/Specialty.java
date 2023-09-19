@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.models;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -17,6 +18,8 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
@@ -28,7 +31,8 @@ import jakarta.persistence.Table;
     @NamedQuery(name = "Specialty.findAll", query = "SELECT s FROM Specialty s"),
     @NamedQuery(name = "Specialty.findBySpecialtyId", query = "SELECT s FROM Specialty s WHERE s.specialtyId = :specialtyId"),
     @NamedQuery(name = "Specialty.findBySpecialtyName", query = "SELECT s FROM Specialty s WHERE s.specialtyName = :specialtyName"),
-    @NamedQuery(name = "Specialty.findByImage", query = "SELECT s FROM Specialty s WHERE s.image = :image"),
+    @NamedQuery(name = "Specialty.findByAvatar", query = "SELECT s FROM Specialty s WHERE s.avatar = :avatar"),
+    @NamedQuery(name = "Specialty.findByCreatedDate", query = "SELECT s FROM Specialty s WHERE s.createdDate = :createdDate"),
     @NamedQuery(name = "Specialty.findByActive", query = "SELECT s FROM Specialty s WHERE s.active = :active")})
 public class Specialty implements Serializable {
 
@@ -43,8 +47,11 @@ public class Specialty implements Serializable {
     @Lob
     @Column(name = "description")
     private String description;
-    @Column(name = "image")
-    private String image;
+    @Column(name = "avatar")
+    private String avatar;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
     @Column(name = "active")
     private Boolean active;
     @OneToMany(mappedBy = "specialtyId")
@@ -81,12 +88,20 @@ public class Specialty implements Serializable {
         this.description = description;
     }
 
-    public String getImage() {
-        return image;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Boolean getActive() {

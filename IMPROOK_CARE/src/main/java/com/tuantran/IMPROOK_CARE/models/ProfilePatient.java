@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.models;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -18,6 +19,8 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
@@ -30,9 +33,14 @@ import jakarta.persistence.Table;
     @NamedQuery(name = "ProfilePatient.findByProfilePatientId", query = "SELECT p FROM ProfilePatient p WHERE p.profilePatientId = :profilePatientId"),
     @NamedQuery(name = "ProfilePatient.findByName", query = "SELECT p FROM ProfilePatient p WHERE p.name = :name"),
     @NamedQuery(name = "ProfilePatient.findByPhonenumber", query = "SELECT p FROM ProfilePatient p WHERE p.phonenumber = :phonenumber"),
+    @NamedQuery(name = "ProfilePatient.findByProvinceName", query = "SELECT p FROM ProfilePatient p WHERE p.provinceName = :provinceName"),
+    @NamedQuery(name = "ProfilePatient.findByDistrictName", query = "SELECT p FROM ProfilePatient p WHERE p.districtName = :districtName"),
+    @NamedQuery(name = "ProfilePatient.findByWardName", query = "SELECT p FROM ProfilePatient p WHERE p.wardName = :wardName"),
+    @NamedQuery(name = "ProfilePatient.findByPersonalAddress", query = "SELECT p FROM ProfilePatient p WHERE p.personalAddress = :personalAddress"),
     @NamedQuery(name = "ProfilePatient.findByAddress", query = "SELECT p FROM ProfilePatient p WHERE p.address = :address"),
     @NamedQuery(name = "ProfilePatient.findByEmail", query = "SELECT p FROM ProfilePatient p WHERE p.email = :email"),
     @NamedQuery(name = "ProfilePatient.findByRelationship", query = "SELECT p FROM ProfilePatient p WHERE p.relationship = :relationship"),
+    @NamedQuery(name = "ProfilePatient.findByCreatedDate", query = "SELECT p FROM ProfilePatient p WHERE p.createdDate = :createdDate"),
     @NamedQuery(name = "ProfilePatient.findByActive", query = "SELECT p FROM ProfilePatient p WHERE p.active = :active")})
 public class ProfilePatient implements Serializable {
 
@@ -46,12 +54,23 @@ public class ProfilePatient implements Serializable {
     private String name;
     @Column(name = "phonenumber")
     private String phonenumber;
+    @Column(name = "province_name")
+    private String provinceName;
+    @Column(name = "district_name")
+    private String districtName;
+    @Column(name = "ward_name")
+    private String wardName;
+    @Column(name = "personal_address")
+    private String personalAddress;
     @Column(name = "address")
     private String address;
     @Column(name = "email")
     private String email;
     @Column(name = "relationship")
     private String relationship;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
     @Column(name = "active")
     private Boolean active;
     @OneToMany(mappedBy = "profilePatientId")
@@ -91,6 +110,38 @@ public class ProfilePatient implements Serializable {
         this.phonenumber = phonenumber;
     }
 
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
+
+    public String getWardName() {
+        return wardName;
+    }
+
+    public void setWardName(String wardName) {
+        this.wardName = wardName;
+    }
+
+    public String getPersonalAddress() {
+        return personalAddress;
+    }
+
+    public void setPersonalAddress(String personalAddress) {
+        this.personalAddress = personalAddress;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -113,6 +164,14 @@ public class ProfilePatient implements Serializable {
 
     public void setRelationship(String relationship) {
         this.relationship = relationship;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Boolean getActive() {
