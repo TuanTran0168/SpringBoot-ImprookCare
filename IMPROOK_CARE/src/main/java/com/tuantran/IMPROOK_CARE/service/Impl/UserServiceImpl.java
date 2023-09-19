@@ -4,13 +4,14 @@
  */
 package com.tuantran.IMPROOK_CARE.service.Impl;
 
-import com.tuantran.IMPROOK_CARE.components.PasswordService;
+import com.tuantran.IMPROOK_CARE.components.password.PasswordService;
 import com.tuantran.IMPROOK_CARE.models.Role;
 import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.repository.RoleRepository;
 import com.tuantran.IMPROOK_CARE.repository.UserRepository;
 import com.tuantran.IMPROOK_CARE.service.UserService;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -91,4 +92,8 @@ public class UserServiceImpl implements UserService {
                 user.getUsername(), user.getPassword(), authorities);
     }
 
+    @Override
+    public List<User> findAllUser() {
+        return userRepository.findUserByActiveTrue();
+    }
 }

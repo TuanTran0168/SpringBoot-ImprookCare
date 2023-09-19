@@ -4,6 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -54,6 +55,7 @@ public class Specialty implements Serializable {
     private Date createdDate;
     @Column(name = "active")
     private Boolean active;
+    @JsonIgnore
     @OneToMany(mappedBy = "specialtyId")
     private Set<ProfileDoctor> profileDoctorSet;
 

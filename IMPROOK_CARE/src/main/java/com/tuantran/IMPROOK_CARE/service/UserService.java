@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.models.User;
+import java.util.List;
 import java.util.Map;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,4 +18,5 @@ public interface UserService extends UserDetailsService {
     User findUserByUsername(String username);
     User addUser(Map<String, String> params, MultipartFile avatar);
     int updateUser(Map<String, String> params, MultipartFile avatar);
+    List<User> findAllUser();
 }

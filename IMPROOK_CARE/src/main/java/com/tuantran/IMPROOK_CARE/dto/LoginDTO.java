@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotBlank;
  *
  * @author Administrator
  */
-public class Login {
+public class LoginDTO {
     @NotBlank
     private String username;
 

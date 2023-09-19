@@ -4,6 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -46,6 +47,7 @@ public class TimeSlot implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @JsonIgnore
     @OneToMany(mappedBy = "timeSlotId")
     private Set<Schedule> scheduleSet;
     @JoinColumn(name = "time_distance_id", referencedColumnName = "time_distance_id")

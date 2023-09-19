@@ -4,6 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -50,6 +51,7 @@ public class Schedule implements Serializable {
     private Date createdDate;
     @Column(name = "active")
     private Boolean active;
+    @JsonIgnore
     @OneToMany(mappedBy = "scheduleId")
     private Set<Booking> bookingSet;
     @JoinColumn(name = "profile_doctor_id", referencedColumnName = "profile_doctor_id")

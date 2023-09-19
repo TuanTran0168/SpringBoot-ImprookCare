@@ -4,6 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
 import jakarta.persistence.Basic;
@@ -56,6 +57,7 @@ public class Provinces implements Serializable {
     @JoinColumn(name = "vietnam_unit_id", referencedColumnName = "id")
     @ManyToOne
     private VietnamUnits vietnamUnitId;
+    @JsonIgnore
     @OneToMany(mappedBy = "provinceCode")
     private Set<Districts> districtsSet;
 

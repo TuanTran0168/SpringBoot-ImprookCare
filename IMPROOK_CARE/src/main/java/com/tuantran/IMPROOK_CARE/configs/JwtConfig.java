@@ -4,9 +4,9 @@
  */
 package com.tuantran.IMPROOK_CARE.configs;
 
-import com.tuantran.IMPROOK_CARE.components.PasswordService;
-import com.tuantran.IMPROOK_CARE.security.AuthEntryPointJwt;
-import com.tuantran.IMPROOK_CARE.security.AuthTokenFilter;
+import com.tuantran.IMPROOK_CARE.components.password.PasswordService;
+import com.tuantran.IMPROOK_CARE.components.jwt.AuthEntryPointJwt;
+import com.tuantran.IMPROOK_CARE.components.jwt.AuthTokenFilter;
 import com.tuantran.IMPROOK_CARE.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
