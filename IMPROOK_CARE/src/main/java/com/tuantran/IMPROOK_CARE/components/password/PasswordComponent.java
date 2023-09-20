@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  * @author Administrator
  */
 @Component
-public class PasswordService {
+public class PasswordComponent {
 
     private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
     public static final int LENGTH_PASSWORD = 8;

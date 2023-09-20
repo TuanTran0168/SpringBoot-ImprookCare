@@ -4,7 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.controllers;
 
-import com.tuantran.IMPROOK_CARE.components.authentication.AuthenticationService;
+import com.tuantran.IMPROOK_CARE.components.authentication.AuthenticationComponent;
 import com.tuantran.IMPROOK_CARE.components.twilio.SmsService;
 import com.tuantran.IMPROOK_CARE.configs.jwt.JwtUtils;
 import com.tuantran.IMPROOK_CARE.configs.twilio.TwilioConfiguration;
@@ -14,6 +14,7 @@ import com.tuantran.IMPROOK_CARE.service.UserService;
 import jakarta.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +44,7 @@ public class ApiUserController {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private AuthenticationComponent authenticationComponent;
 
     @GetMapping("/test-xiu/")
     @CrossOrigin
@@ -59,15 +60,29 @@ public class ApiUserController {
 
     @PostMapping("/login/")
     @CrossOrigin
-    public ResponseEntity<String> authenticateUser(@Valid @RequestBody LoginDTO loginDTO) throws Exception {
+    public ResponseEntity<String> login(@Valid @RequestBody LoginDTO loginDTO) throws Exception {
 
-        this.authenticationService.authenticateUser(loginDTO.getUsername(), loginDTO.getPassword());
+        this.authenticationComponent.authenticateUser(loginDTO.getUsername(), loginDTO.getPassword());
         final UserDetails userDetails = userService.loadUserByUsername(loginDTO.getUsername());
 //        User user = userService.findUserByUsername(userDetails.getUsername());
 
         String jwtResponse = jwtUtils.generateJwtToken(userDetails);
 
         return ResponseEntity.ok().body(jwtResponse);
+    }
+
+    @PostMapping("/register/")
+    @CrossOrigin
+    public ResponseEntity<String> register(@Valid @RequestBody Map<String, String> params, MultipartFile avatar) throws Exception {
+        String message = "Có lỗi xảy ra!";
+        User user = this.userService.addUser(params, avatar);
+
+        if (user != null) {
+            message = "Đăng ký thành công!";
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/current-user/")

@@ -6,9 +6,12 @@ package com.tuantran.IMPROOK_CARE.controllers;
 
 import com.tuantran.IMPROOK_CARE.components.twilio.SmsService;
 import com.tuantran.IMPROOK_CARE.configs.twilio.TwilioConfiguration;
-import com.tuantran.IMPROOK_CARE.configs.twilio.TwilioVerification;
+import com.tuantran.IMPROOK_CARE.components.twilio.TwilioVerificationComponent;
+import com.tuantran.IMPROOK_CARE.configs.twilio.TwilioSmsSender;
 import com.tuantran.IMPROOK_CARE.dto.AuthMessageTwilioDTO;
-import com.tuantran.IMPROOK_CARE.dto.SmsRequest;
+import com.tuantran.IMPROOK_CARE.dto.SmsRequestDTO;
+import com.tuantran.IMPROOK_CARE.models.User;
+import com.tuantran.IMPROOK_CARE.service.UserService;
 import com.twilio.Twilio;
 import com.twilio.exception.ApiException;
 import com.twilio.rest.verify.v2.service.Verification;
@@ -37,48 +40,61 @@ public class ApiTwilioController {
 
     @Autowired
     TwilioConfiguration twilioConfiguration;
-    
-    @Autowired
-    TwilioVerification twilioVerification;
 
+    @Autowired
+    TwilioVerificationComponent twilioVerification;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private TwilioSmsSender twilioSmsSender;
+
+    //Cái này gửi tốn tiền kinh khủng :))) 
+    //Mà chỉ gửi được có 1 số trial :) 
+    // TỐN 1 ĐỐNG THỜI GIAN NGỒI MÒ CẤU HÌNH
+    //KHỎI LUÔN
     @PostMapping("/sendSMS/")
-    public void sendSms(@Valid @RequestBody SmsRequest smsRequest) {
-        smsService.sendSms(smsRequest);
+    public void sendSms(@Valid @RequestBody SmsRequestDTO smsRequest) {
+//        smsService.sendSms(smsRequest);
+        twilioSmsSender.sendSms(smsRequest);
     }
 
     @GetMapping("/verification/")
     public ResponseEntity<String> verification(@RequestBody Map<String, String> params) {
         String message = "Có lỗi xảy ra!";
-        String phonenumber = params.get("phonenumber");
+        String phonenumber = params.get("phonenumber"); // username nó cũng là phonenumber (Quy ước mới)
+
         int check = this.twilioVerification.verification(phonenumber);
-        
+
         if (check == 1) {
             message = "Gửi tin nhắn thành công đến số điện thoại: " + phonenumber;
             return new ResponseEntity<>(message, HttpStatus.OK);
-        }
-        else if (check == 2) {
+        } else if (check == 2) {
             message = "Số điện thoại không hợp lệ!";
+        } else if (check == 3) {
+            message = "Số điện thoại " + phonenumber + " đã được đăng ký";
         }
-        
-        return new ResponseEntity<>(message,  HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/verification-check/")
     public ResponseEntity<String> verification_check(@Valid @RequestBody AuthMessageTwilioDTO authMessageTwilioDTO) {
         String message = "Có lỗi xảy ra!";
         int check = this.twilioVerification.verification_check(authMessageTwilioDTO.getCode(), authMessageTwilioDTO.getPhoneNumber());
-        
+
         if (check == 1) {
             message = "Xác thực thành công!";
             return new ResponseEntity<>(message, HttpStatus.OK);
-        }
-        else if (check == 2) {
+        } else if (check == 2) {
             message = "Mã xác thực không chính xác!";
-        }
-        else if (check == 3) {
+        } else if (check == 3) {
             message = "Mã xác thực đã hết hạn! Vui lòng gửi lại mã xác thực khác!";
+        } else if (check == 4) {
+            message = "Số điện thoại không hợp lệ!";
         }
-        
+
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 }

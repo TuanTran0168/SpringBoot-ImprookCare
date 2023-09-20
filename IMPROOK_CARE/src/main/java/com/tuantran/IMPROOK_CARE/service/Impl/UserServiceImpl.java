@@ -4,7 +4,9 @@
  */
 package com.tuantran.IMPROOK_CARE.service.Impl;
 
-import com.tuantran.IMPROOK_CARE.components.password.PasswordService;
+import com.tuantran.IMPROOK_CARE.components.cloudinary.CloudinaryComponent;
+import com.tuantran.IMPROOK_CARE.components.password.PasswordComponent;
+import com.tuantran.IMPROOK_CARE.configs.cloudinary.CloudinaryConfig;
 import com.tuantran.IMPROOK_CARE.models.Role;
 import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.repository.RoleRepository;
@@ -35,10 +37,13 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private PasswordService passworldService;
+    private PasswordComponent passworldService;
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private CloudinaryComponent cloudinaryComponent;
 
     @Override
     public User findUserByUsername(String username) {
@@ -47,6 +52,44 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addUser(Map<String, String> params, MultipartFile avatar) {
+        // Đăng ký 
+        //B1: Tại trang xác thực sẽ dùng số điện thoại xác thực twilio trước, sau đó chuyển qua trang đăng ký
+        //B2: Tại trang đăng ký sẽ có username là số điện thoại được xác thực ở trang xác thực lấy qua
+        //B3: Ấn đăng ký
+        //Tại trang xác thực cần:
+        //phonenumber, confirm otp
+        //Tại trang đăng ký cần
+        // username(lấy phonenumber gán vào username - disable), password, comfirmPassword, phonenumber(lưu ngầm)
+        //Admin cấp nik role bác sĩ sẽ tính sau
+
+        User user = new User();
+        String phonenumber = params.get("phonenumber");
+        String username = phonenumber; //username sẽ là số điện thoại lấy qua
+        String password = params.get("password");
+
+        String firstname = params.get("firstname");
+        String lastname = params.get("lastname");
+        String gender = params.get("gender");
+
+        // Đăng ký chỉ dùng 3 cái này thôi
+        user.setUsername(username);
+        user.setPassword(this.passworldService.PasswordEncoder().encode(password));
+        user.setPhonenumber(phonenumber);
+        
+        user.setFirstname(firstname);
+        user.setLastname(lastname);
+        user.setGender(Boolean.parseBoolean(gender));
+
+        if (avatar != null) {
+            String linkCloudinaryAvatar = cloudinaryComponent.Cloudinary(avatar).get("secure_url").toString();
+            user.setAvatar(linkCloudinaryAvatar);
+        }
+
+        return this.userRepository.save(user);
+    }
+
+    @Override
+    public int updateUser(Map<String, String> params, MultipartFile avatar) {
         User user = new User();
 
         // Đăng ký chỉ dùng 2 cái này thôi
@@ -61,18 +104,19 @@ public class UserServiceImpl implements UserService {
         // Đăng ký chỉ dùng 2 cái này thôi
         user.setUsername(username);
         user.setPassword(this.passworldService.PasswordEncoder().encode(password));
-        
+
         user.setFirstname(firstname);
         user.setLastname(lastname);
         user.setGender(Boolean.parseBoolean(gender));
         user.setPhonenumber(phonenumber);
-        
-        return this.userRepository.save(user);
-    }
 
-    @Override
-    public int updateUser(Map<String, String> params, MultipartFile avatar) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (avatar != null) {
+            String linkCloudinaryAvatar = cloudinaryComponent.Cloudinary(avatar).get("secure_url").toString();
+            user.setAvatar(linkCloudinaryAvatar);
+        }
+
+        this.userRepository.save(user);
+        return 1;
     }
 
     @Override

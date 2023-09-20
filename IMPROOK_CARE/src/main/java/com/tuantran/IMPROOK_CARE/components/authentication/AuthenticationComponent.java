@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  * @author Administrator
  */
 @Component
-public class AuthenticationService {
+public class AuthenticationComponent {
 
     @Autowired
     private AuthenticationManager authenticationManager;

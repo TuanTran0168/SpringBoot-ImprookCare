@@ -4,7 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.configs.jwt;
 
-import com.tuantran.IMPROOK_CARE.components.password.PasswordService;
+import com.tuantran.IMPROOK_CARE.components.password.PasswordComponent;
 import com.tuantran.IMPROOK_CARE.configs.jwt.AuthEntryPointJwt;
 import com.tuantran.IMPROOK_CARE.configs.jwt.AuthTokenFilter;
 import com.tuantran.IMPROOK_CARE.service.UserService;
@@ -44,7 +44,7 @@ public class JwtConfig {
     private UserDetailsService userDetailsService;
     
     @Autowired
-    private PasswordService passwordService;
+    private PasswordComponent passwordService;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {

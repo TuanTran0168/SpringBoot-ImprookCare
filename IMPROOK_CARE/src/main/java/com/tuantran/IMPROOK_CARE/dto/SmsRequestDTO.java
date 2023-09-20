@@ -19,7 +19,7 @@ import jakarta.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SmsRequest {
+public class SmsRequestDTO {
 
     @JsonProperty("phoneNumber")
     @NotBlank

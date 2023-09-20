@@ -1,6 +1,6 @@
 package com.tuantran.IMPROOK_CARE.components.twilio;
 
-import com.tuantran.IMPROOK_CARE.dto.SmsRequest;
+import com.tuantran.IMPROOK_CARE.dto.SmsRequestDTO;
 
 /**
  * Created by IntelliJ IDEA.
@@ -13,7 +13,7 @@ import com.tuantran.IMPROOK_CARE.dto.SmsRequest;
  */
 public interface SmsSender {
 
-    void sendSms(SmsRequest smsRequest);
+    void sendSms(SmsRequestDTO smsRequest);
 
     // or maybe void sendSms(String phoneNumber, String message);
 }

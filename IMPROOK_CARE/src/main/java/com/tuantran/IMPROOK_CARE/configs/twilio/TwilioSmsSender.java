@@ -1,7 +1,7 @@
 package com.tuantran.IMPROOK_CARE.configs.twilio;
 
 import com.tuantran.IMPROOK_CARE.components.twilio.SmsSender;
-import com.tuantran.IMPROOK_CARE.dto.SmsRequest;
+import com.tuantran.IMPROOK_CARE.dto.SmsRequestDTO;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.rest.api.v2010.account.MessageCreator;
 import com.twilio.rest.verify.v2.service.Verification;
@@ -29,7 +29,7 @@ public class TwilioSmsSender implements SmsSender {
     }
 
     @Override
-    public void sendSms(SmsRequest smsRequest) {
+    public void sendSms(SmsRequestDTO smsRequest) {
         if (isPhoneNumberValid(smsRequest.getPhoneNumber())) {
             PhoneNumber to = new PhoneNumber(smsRequest.getPhoneNumber());
             PhoneNumber from = new PhoneNumber(twilioConfiguration.getTrialNumber());
