@@ -5,13 +5,23 @@
 package com.tuantran.IMPROOK_CARE.controllers;
 
 import com.tuantran.IMPROOK_CARE.components.authentication.AuthenticationService;
-import com.tuantran.IMPROOK_CARE.components.jwt.JwtUtils;
+import com.tuantran.IMPROOK_CARE.components.twilio.SmsService;
+import com.tuantran.IMPROOK_CARE.configs.jwt.JwtUtils;
+import com.tuantran.IMPROOK_CARE.configs.twilio.TwilioConfiguration;
+import com.tuantran.IMPROOK_CARE.dto.AuthMessageTwilioDTO;
 import com.tuantran.IMPROOK_CARE.dto.LoginDTO;
+import com.tuantran.IMPROOK_CARE.dto.SmsRequest;
 import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.service.UserService;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.rest.verify.v2.service.Verification;
+import com.twilio.rest.verify.v2.service.VerificationCheck;
+import com.twilio.type.PhoneNumber;
 import jakarta.validation.Valid;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +52,13 @@ public class ApiUserController {
 
     @Autowired
     private AuthenticationService authenticationService;
-    
+
+    @Autowired
+    private SmsService smsService;
+
+    @Autowired
+    TwilioConfiguration twilioConfiguration;
+
     @GetMapping("/test-xiu/")
     @CrossOrigin
     public ResponseEntity<User> test() {
@@ -66,7 +82,6 @@ public class ApiUserController {
         String jwtResponse = jwtUtils.generateJwtToken(userDetails);
 
         return ResponseEntity.ok().body(jwtResponse);
-
     }
 
     @GetMapping("/current-user/")
@@ -78,5 +93,32 @@ public class ApiUserController {
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @PostMapping("/sendSMS/")
+    public void sendSms(@Valid @RequestBody SmsRequest smsRequest) {
+        smsService.sendSms(smsRequest);
+    }
+
+    @GetMapping("/verification/")
+    public ResponseEntity<Verification> verification(@RequestBody Map<String, String> params) {
+        Twilio.init(twilioConfiguration.getAccountSid(), twilioConfiguration.getAuthToken());
+        Verification verification = Verification.creator(
+                twilioConfiguration.getServiceSid(),
+                params.get("phonenumber"),
+                "sms")
+                .create();
+
+        return new ResponseEntity<>(verification, HttpStatus.OK);
+    }
+
+    @GetMapping("/verification-check/")
+    public ResponseEntity<VerificationCheck> verification_check(@Valid @RequestBody AuthMessageTwilioDTO authMessageTwilioDTO) {
+        Twilio.init(twilioConfiguration.getAccountSid(), twilioConfiguration.getAuthToken());
+        VerificationCheck verificationCheck = VerificationCheck.creator(twilioConfiguration.getServiceSid(), authMessageTwilioDTO.getCode())
+                .setTo(authMessageTwilioDTO.getPhoneNumber())
+                .create();
+
+        return new ResponseEntity<>(verificationCheck, HttpStatus.OK);
     }
 }

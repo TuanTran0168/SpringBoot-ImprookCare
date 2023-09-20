@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.tuantran.IMPROOK_CARE.configs;
+package com.tuantran.IMPROOK_CARE.configs.jwt;
 
 import com.tuantran.IMPROOK_CARE.components.password.PasswordService;
-import com.tuantran.IMPROOK_CARE.components.jwt.AuthEntryPointJwt;
-import com.tuantran.IMPROOK_CARE.components.jwt.AuthTokenFilter;
+import com.tuantran.IMPROOK_CARE.configs.jwt.AuthEntryPointJwt;
+import com.tuantran.IMPROOK_CARE.configs.jwt.AuthTokenFilter;
 import com.tuantran.IMPROOK_CARE.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
