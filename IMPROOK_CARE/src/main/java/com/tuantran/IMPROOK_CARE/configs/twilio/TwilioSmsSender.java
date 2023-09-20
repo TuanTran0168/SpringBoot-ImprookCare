@@ -37,10 +37,6 @@ public class TwilioSmsSender implements SmsSender {
             MessageCreator creator = Message.creator(to, from, message);
             creator.create();
             LOGGER.info("Send sms {}", smsRequest);
-            
-//            String toPhone = smsRequest.getPhoneNumber();
-//            Verification verification = Verification.creator("VA69e1670b94963689c80164cc4310291d", toPhone, "sms").create();
-//            LOGGER.info("Send sms {}", verification);
 
         } else {
             throw new IllegalArgumentException(
