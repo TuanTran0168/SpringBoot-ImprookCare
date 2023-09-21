@@ -86,9 +86,9 @@ DROP TABLE IF EXISTS `collab_doctor`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `collab_doctor` (
   `collab_id` int NOT NULL,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phonenumber` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phonenumber` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`collab_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -112,6 +112,7 @@ DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment` (
   `comment_id` int NOT NULL AUTO_INCREMENT,
   `profile_doctor_id` int DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
@@ -120,7 +121,9 @@ CREATE TABLE `comment` (
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`comment_id`),
   KEY `profile_doctor_id` (`profile_doctor_id`),
-  CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`profile_doctor_id`) REFERENCES `profile_doctor` (`profile_doctor_id`)
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`profile_doctor_id`) REFERENCES `profile_doctor` (`profile_doctor_id`),
+  CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -447,7 +450,7 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (1,'Admin','2023-09-10 11:30:31','2023-09-10 11:30:31',1),(2,'Bác sĩ','2023-09-10 11:30:31','2023-09-10 11:30:31',1),(3,'Người dùng','2023-09-10 11:30:31','2023-09-10 11:30:31',1);
+INSERT INTO `role` VALUES (1,'ROLE_Admin','2023-09-10 11:30:31','2023-09-10 11:30:31',1),(2,'ROLE_Doctor','2023-09-10 11:30:31','2023-09-10 11:30:31',1),(3,'ROLE_User','2023-09-10 11:30:31','2023-09-10 11:30:31',1);
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -602,7 +605,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Tuấn','Trần Đăng','tuan','123',0,NULL,NULL,'2023-09-10 11:30:31','2023-09-10 11:30:31',1,1),(2,'Thành','Dương Hữu','thanh','123',0,NULL,NULL,'2023-09-10 11:30:31','2023-09-10 11:30:31',1,2),(3,'Thái','Trương Nguyễn Minh','thai','123',0,NULL,NULL,'2023-09-10 11:30:31','2023-09-10 11:30:31',1,3);
+INSERT INTO `user` VALUES (1,'Tuấn','Trần Đăng','tuan','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq',0,NULL,NULL,'2023-09-10 11:30:31','2023-09-10 11:30:31',1,1),(2,'Thành','Dương Hữu','thanh','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq',0,NULL,NULL,'2023-09-10 11:30:31','2023-09-10 11:30:31',1,2),(3,'Thái','Trương Nguyễn Minh','thai','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq',0,NULL,NULL,'2023-09-10 11:30:31','2023-09-10 11:30:31',1,3);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -705,4 +708,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-19 15:31:03
+-- Dump completed on 2023-09-21 10:45:52

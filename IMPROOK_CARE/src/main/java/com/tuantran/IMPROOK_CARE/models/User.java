@@ -78,6 +78,9 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private Set<ProfileDoctor> profileDoctorSet;
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId")
+    private Set<Comment> commentSet;
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     @ManyToOne
     private Role roleId;
@@ -191,6 +194,14 @@ public class User implements Serializable {
 
     public void setProfileDoctorSet(Set<ProfileDoctor> profileDoctorSet) {
         this.profileDoctorSet = profileDoctorSet;
+    }
+
+    public Set<Comment> getCommentSet() {
+        return commentSet;
+    }
+
+    public void setCommentSet(Set<Comment> commentSet) {
+        this.commentSet = commentSet;
     }
 
     public Role getRoleId() {

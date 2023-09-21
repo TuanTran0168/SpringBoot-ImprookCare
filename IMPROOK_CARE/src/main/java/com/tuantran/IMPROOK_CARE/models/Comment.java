@@ -61,6 +61,9 @@ public class Comment implements Serializable {
     @JoinColumn(name = "profile_doctor_id", referencedColumnName = "profile_doctor_id")
     @ManyToOne
     private ProfileDoctor profileDoctorId;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @ManyToOne
+    private User userId;
 
     public Comment() {
     }
@@ -131,6 +134,14 @@ public class Comment implements Serializable {
 
     public void setProfileDoctorId(ProfileDoctor profileDoctorId) {
         this.profileDoctorId = profileDoctorId;
+    }
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
     }
 
     @Override
