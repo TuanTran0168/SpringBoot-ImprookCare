@@ -9,6 +9,7 @@ import com.tuantran.IMPROOK_CARE.components.twilio.SmsService;
 import com.tuantran.IMPROOK_CARE.configs.jwt.JwtUtils;
 import com.tuantran.IMPROOK_CARE.configs.twilio.TwilioConfiguration;
 import com.tuantran.IMPROOK_CARE.dto.LoginDTO;
+import com.tuantran.IMPROOK_CARE.dto.RegisterDTO;
 import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.service.UserService;
 import jakarta.validation.Valid;
@@ -71,11 +72,25 @@ public class ApiUserController {
         return ResponseEntity.ok().body(jwtResponse);
     }
 
+//    @PostMapping("/register/")
+//    @CrossOrigin
+//    public ResponseEntity<String> register(@Valid @RequestBody Map<String, String> params) throws Exception {
+//        String message = "Có lỗi xảy ra!";
+//        User user = this.userService.registerUser(params);
+//
+//        if (user != null) {
+//            message = "Đăng ký thành công!";
+//            return new ResponseEntity<>(message, HttpStatus.OK);
+//        }
+//
+//        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+//    }
+    
     @PostMapping("/register/")
     @CrossOrigin
-    public ResponseEntity<String> register(@Valid @RequestBody Map<String, String> params, MultipartFile avatar) throws Exception {
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterDTO registerDTO) throws Exception {
         String message = "Có lỗi xảy ra!";
-        User user = this.userService.addUser(params, avatar);
+        User user = this.userService.registerUser(registerDTO);
 
         if (user != null) {
             message = "Đăng ký thành công!";

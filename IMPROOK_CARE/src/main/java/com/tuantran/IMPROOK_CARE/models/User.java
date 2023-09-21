@@ -37,10 +37,10 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
     @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
     @NamedQuery(name = "User.findByGender", query = "SELECT u FROM User u WHERE u.gender = :gender"),
-    @NamedQuery(name = "User.findByPhonenumber", query = "SELECT u FROM User u WHERE u.phonenumber = :phonenumber"),
     @NamedQuery(name = "User.findByAvatar", query = "SELECT u FROM User u WHERE u.avatar = :avatar"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
     @NamedQuery(name = "User.findByCreatedDate", query = "SELECT u FROM User u WHERE u.createdDate = :createdDate"),
+    @NamedQuery(name = "User.findByDeletedDate", query = "SELECT u FROM User u WHERE u.deletedDate = :deletedDate"),
     @NamedQuery(name = "User.findByActive", query = "SELECT u FROM User u WHERE u.active = :active")})
 public class User implements Serializable {
 
@@ -60,8 +60,6 @@ public class User implements Serializable {
     private String password;
     @Column(name = "gender")
     private Boolean gender;
-    @Column(name = "phonenumber")
-    private String phonenumber;
     @Column(name = "avatar")
     private String avatar;
     @Column(name = "email")
@@ -69,6 +67,9 @@ public class User implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @Column(name = "deleted_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedDate;
     @Column(name = "active")
     private Boolean active;
     @JsonIgnore
@@ -136,14 +137,6 @@ public class User implements Serializable {
         this.gender = gender;
     }
 
-    public String getPhonenumber() {
-        return phonenumber;
-    }
-
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
-    }
-
     public String getAvatar() {
         return avatar;
     }
@@ -166,6 +159,14 @@ public class User implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Date getDeletedDate() {
+        return deletedDate;
+    }
+
+    public void setDeletedDate(Date deletedDate) {
+        this.deletedDate = deletedDate;
     }
 
     public Boolean getActive() {

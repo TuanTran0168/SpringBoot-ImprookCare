@@ -33,6 +33,7 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b"),
     @NamedQuery(name = "Booking.findByBookingId", query = "SELECT b FROM Booking b WHERE b.bookingId = :bookingId"),
     @NamedQuery(name = "Booking.findByCreatedDate", query = "SELECT b FROM Booking b WHERE b.createdDate = :createdDate"),
+    @NamedQuery(name = "Booking.findByDeletedDate", query = "SELECT b FROM Booking b WHERE b.deletedDate = :deletedDate"),
     @NamedQuery(name = "Booking.findByActive", query = "SELECT b FROM Booking b WHERE b.active = :active")})
 public class Booking implements Serializable {
 
@@ -45,6 +46,9 @@ public class Booking implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @Column(name = "deleted_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedDate;
     @Column(name = "active")
     private Boolean active;
     @JoinColumn(name = "status_id", referencedColumnName = "status_id")
@@ -84,6 +88,14 @@ public class Booking implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Date getDeletedDate() {
+        return deletedDate;
+    }
+
+    public void setDeletedDate(Date deletedDate) {
+        this.deletedDate = deletedDate;
     }
 
     public Boolean getActive() {
@@ -158,5 +170,5 @@ public class Booking implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.Booking[ bookingId=" + bookingId + " ]";
     }
-
+    
 }

@@ -32,6 +32,7 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "Role.findByRoleId", query = "SELECT r FROM Role r WHERE r.roleId = :roleId"),
     @NamedQuery(name = "Role.findByRoleName", query = "SELECT r FROM Role r WHERE r.roleName = :roleName"),
     @NamedQuery(name = "Role.findByCreatedDate", query = "SELECT r FROM Role r WHERE r.createdDate = :createdDate"),
+    @NamedQuery(name = "Role.findByDeletedDate", query = "SELECT r FROM Role r WHERE r.deletedDate = :deletedDate"),
     @NamedQuery(name = "Role.findByActive", query = "SELECT r FROM Role r WHERE r.active = :active")})
 public class Role implements Serializable {
 
@@ -46,6 +47,9 @@ public class Role implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @Column(name = "deleted_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedDate;
     @Column(name = "active")
     private Boolean active;
     @JsonIgnore
@@ -81,6 +85,14 @@ public class Role implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Date getDeletedDate() {
+        return deletedDate;
+    }
+
+    public void setDeletedDate(Date deletedDate) {
+        this.deletedDate = deletedDate;
     }
 
     public Boolean getActive() {

@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.repository;
 
 import com.tuantran.IMPROOK_CARE.models.Role;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Integer>{
     Role findRoleByRoleNameAndActiveTrue(String roleName);
+    Optional<Role> findRoleByRoleIdAndActiveTrue(int roleId);
 }

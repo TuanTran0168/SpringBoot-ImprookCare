@@ -33,7 +33,9 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "TimeSlot.findAll", query = "SELECT t FROM TimeSlot t"),
     @NamedQuery(name = "TimeSlot.findByTimeSlotId", query = "SELECT t FROM TimeSlot t WHERE t.timeSlotId = :timeSlotId"),
     @NamedQuery(name = "TimeSlot.findByTimeSlotValue", query = "SELECT t FROM TimeSlot t WHERE t.timeSlotValue = :timeSlotValue"),
-    @NamedQuery(name = "TimeSlot.findByCreatedDate", query = "SELECT t FROM TimeSlot t WHERE t.createdDate = :createdDate")})
+    @NamedQuery(name = "TimeSlot.findByCreatedDate", query = "SELECT t FROM TimeSlot t WHERE t.createdDate = :createdDate"),
+    @NamedQuery(name = "TimeSlot.findByDeletedDate", query = "SELECT t FROM TimeSlot t WHERE t.deletedDate = :deletedDate"),
+    @NamedQuery(name = "TimeSlot.findByActive", query = "SELECT t FROM TimeSlot t WHERE t.active = :active")})
 public class TimeSlot implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,6 +49,11 @@ public class TimeSlot implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @Column(name = "deleted_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedDate;
+    @Column(name = "active")
+    private Boolean active;
     @JsonIgnore
     @OneToMany(mappedBy = "timeSlotId")
     private Set<Schedule> scheduleSet;
@@ -83,6 +90,22 @@ public class TimeSlot implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Date getDeletedDate() {
+        return deletedDate;
+    }
+
+    public void setDeletedDate(Date deletedDate) {
+        this.deletedDate = deletedDate;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public Set<Schedule> getScheduleSet() {

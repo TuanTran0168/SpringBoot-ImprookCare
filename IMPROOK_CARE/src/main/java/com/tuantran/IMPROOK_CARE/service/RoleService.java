@@ -14,5 +14,5 @@ import java.util.Optional;
 
 public interface RoleService {
     Role findRoleByRoleNameAndActiveTrue(String roleName);
-    Optional<Role> getRoleByRoleId(int roleId);
+    Optional<Role> findRoleByRoleIdAndActiveTrue(int roleId);
 }

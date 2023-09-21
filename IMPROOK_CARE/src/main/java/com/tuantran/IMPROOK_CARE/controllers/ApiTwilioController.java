@@ -91,6 +91,7 @@ public class ApiTwilioController {
             message = "Mã xác thực không chính xác!";
         } else if (check == 3) {
             message = "Mã xác thực đã hết hạn! Vui lòng gửi lại mã xác thực khác!";
+            return new ResponseEntity<>(message, HttpStatus.REQUEST_TIMEOUT);
         } else if (check == 4) {
             message = "Số điện thoại không hợp lệ!";
         }

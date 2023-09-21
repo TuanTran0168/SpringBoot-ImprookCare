@@ -32,6 +32,7 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "MedicineCategory.findByCategoryId", query = "SELECT m FROM MedicineCategory m WHERE m.categoryId = :categoryId"),
     @NamedQuery(name = "MedicineCategory.findByCategoryName", query = "SELECT m FROM MedicineCategory m WHERE m.categoryName = :categoryName"),
     @NamedQuery(name = "MedicineCategory.findByCreatedDate", query = "SELECT m FROM MedicineCategory m WHERE m.createdDate = :createdDate"),
+    @NamedQuery(name = "MedicineCategory.findByDeletedDate", query = "SELECT m FROM MedicineCategory m WHERE m.deletedDate = :deletedDate"),
     @NamedQuery(name = "MedicineCategory.findByActive", query = "SELECT m FROM MedicineCategory m WHERE m.active = :active")})
 public class MedicineCategory implements Serializable {
 
@@ -46,6 +47,9 @@ public class MedicineCategory implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @Column(name = "deleted_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedDate;
     @Column(name = "active")
     private Boolean active;
     @JsonIgnore
@@ -81,6 +85,14 @@ public class MedicineCategory implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Date getDeletedDate() {
+        return deletedDate;
+    }
+
+    public void setDeletedDate(Date deletedDate) {
+        this.deletedDate = deletedDate;
     }
 
     public Boolean getActive() {
