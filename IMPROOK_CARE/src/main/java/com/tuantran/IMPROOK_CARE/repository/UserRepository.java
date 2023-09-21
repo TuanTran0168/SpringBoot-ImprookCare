@@ -21,7 +21,6 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Integer>{
     User findUserByUsernameAndActiveTrue(String username);
     User findUserByUsername(String username);
-    
-//    @Query("SELECT user FROM User user WHERE user.active = true")
+    User findUserByUserIdAndActiveTrue(int userId);
     List<User> findUserByActiveTrue();
 }

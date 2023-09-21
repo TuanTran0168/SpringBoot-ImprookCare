@@ -10,6 +10,7 @@ import com.tuantran.IMPROOK_CARE.configs.jwt.JwtUtils;
 import com.tuantran.IMPROOK_CARE.configs.twilio.TwilioConfiguration;
 import com.tuantran.IMPROOK_CARE.dto.LoginDTO;
 import com.tuantran.IMPROOK_CARE.dto.RegisterDTO;
+import com.tuantran.IMPROOK_CARE.dto.UpdateUserForUserDTO;
 import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.service.UserService;
 import jakarta.validation.Valid;
@@ -85,7 +86,6 @@ public class ApiUserController {
 //
 //        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 //    }
-    
     @PostMapping("/register/")
     @CrossOrigin
     public ResponseEntity<String> register(@Valid @RequestBody RegisterDTO registerDTO) throws Exception {
@@ -109,5 +109,22 @@ public class ApiUserController {
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @GetMapping("/update-user/")
+    @CrossOrigin
+    public ResponseEntity<String> updateUserForUser(@Valid @RequestBody UpdateUserForUserDTO updateUserForUserDTO, MultipartFile avatar) {
+        String message = "Có lỗi xảy ra!";
+        int check = this.userService.updateUser(updateUserForUserDTO, avatar);
+        
+        if (check == 1) {
+            message = "Cập nhật thông tin thành công!";
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+        else if (check == 2) {
+            message = "Người dùng không tồn tại!";
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 }

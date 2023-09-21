@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.dto.RegisterDTO;
+import com.tuantran.IMPROOK_CARE.dto.UpdateUserForUserDTO;
 import com.tuantran.IMPROOK_CARE.models.User;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +17,15 @@ import org.springframework.web.multipart.MultipartFile;
  * @author Administrator
  */
 public interface UserService extends UserDetailsService {
+    List<User> findAllUser();
     User findUserByUsernameAndActiveTrue(String username);
     User findUserByUsername(String username);
+    User findUserByUserIdAndActiveTrue(int userId);
+    
     User addUser(Map<String, String> params, MultipartFile avatar);
     User registerUser(Map<String, String> params);
     User registerUser(RegisterDTO registerDTO);
     int updateUser(Map<String, String> params, MultipartFile avatar);
-    List<User> findAllUser();
+    int updateUser(UpdateUserForUserDTO updateUserForUserDTO, MultipartFile avatar);
+    
 }

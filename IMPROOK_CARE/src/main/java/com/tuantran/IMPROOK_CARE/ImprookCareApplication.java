@@ -13,8 +13,7 @@ public class ImprookCareApplication {
         SpringApplication.run(ImprookCareApplication.class, args);
 
         System.out.println("OpenJDK Version: " + System.getProperty("java.version"));
-        String version_Twilio = Twilio.VERSION;
-        System.out.println("Twilio SDK Version: " + version_Twilio);
+        System.out.println("Twilio SDK Version: " + Twilio.VERSION);
         System.out.println("OK EM");
     }
 }
