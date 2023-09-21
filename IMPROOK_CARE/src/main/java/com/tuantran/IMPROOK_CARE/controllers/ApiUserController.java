@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -111,17 +112,37 @@ public class ApiUserController {
         }
     }
 
-    @GetMapping("/update-user/")
+//    @PostMapping("/update-user/")
+//    @CrossOrigin
+//    public ResponseEntity<String> updateUserForUser(@Valid @RequestBody UpdateUserForUserDTO updateUserForUserDTO, MultipartFile avatar) {
+//        String message = "Có lỗi xảy ra!";
+//        int check = this.userService.updateUser(updateUserForUserDTO, avatar);
+//        
+//        if (check == 1) {
+//            message = "Cập nhật thông tin thành công!";
+//            return new ResponseEntity<>(message, HttpStatus.OK);
+//        }
+//        else if (check == 2) {
+//            message = "Người dùng không tồn tại!";
+//        }
+//
+//        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+//    }
+    @PostMapping(path = "/update-user/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public ResponseEntity<String> updateUserForUser(@Valid @RequestBody UpdateUserForUserDTO updateUserForUserDTO, MultipartFile avatar) {
+    public ResponseEntity<String> updateUserForUser(@Valid UpdateUserForUserDTO updateUserForUserDTO, @RequestPart("avatar") MultipartFile avatar) {
+    
+        // Dùng RequestPart để gửi ảnh thì dẹp luôn @RequestBody của thằng user trong DTO chứ không nó lỗi 
+        // org.springframework.web.HttpMediaTypeNotSupportedException: Content-Type 'multipart/form-data;boundary=--------------------------993163030984227239709456;charset=UTF-8' is not supported
+        // Chắc là 2 loại Request khác nhau nó không chịu
+        // fetch bên postman thì dùng Body form-data gửi đủ hết thông tin trong DTO + 1 avatar (file)
         String message = "Có lỗi xảy ra!";
         int check = this.userService.updateUser(updateUserForUserDTO, avatar);
-        
+
         if (check == 1) {
             message = "Cập nhật thông tin thành công!";
             return new ResponseEntity<>(message, HttpStatus.OK);
-        }
-        else if (check == 2) {
+        } else if (check == 2) {
             message = "Người dùng không tồn tại!";
         }
 

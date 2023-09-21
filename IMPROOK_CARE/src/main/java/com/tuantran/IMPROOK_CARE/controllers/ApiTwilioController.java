@@ -54,7 +54,7 @@ public class ApiTwilioController {
     //Mà chỉ gửi được có 1 số trial :) 
     // TỐN 1 ĐỐNG THỜI GIAN NGỒI MÒ CẤU HÌNH
     //KHỎI LUÔN
-    @PostMapping("/sendSMS/")
+    @GetMapping("/sendSMS/")
     public void sendSms(@Valid @RequestBody SmsRequestDTO smsRequest) {
 //        smsService.sendSms(smsRequest);
         twilioSmsSender.sendSms(smsRequest);

@@ -220,7 +220,7 @@ public class UserServiceImpl implements UserService {
                 return 1;
             }
             else {
-                return 2;
+                return 2; // Có tìm được ai đâu mà update
             }
 
         } catch (DataAccessException ex) {
