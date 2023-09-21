@@ -66,7 +66,10 @@ public class JwtConfig {
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth
-                        -> auth.requestMatchers("/**").permitAll()
+                        -> auth.requestMatchers("/api/public/**").permitAll()
+                                .requestMatchers("/api/auth/**").authenticated()
+                                .requestMatchers("/api/auth/admin/**").hasRole("Admin")
+                                .requestMatchers("/api/auth/doctor/**").hasRole("Doctor")
                         .anyRequest().authenticated()
                 );
 

@@ -49,29 +49,32 @@ public class ApiUserController {
     @Autowired
     private AuthenticationComponent authenticationComponent;
 
-    @GetMapping("/test-xiu/")
+    @GetMapping("/public/test-xiu/")
     @CrossOrigin
     public ResponseEntity<User> test() {
         return ResponseEntity.ok().body(this.userService.findUserByUsername("thai"));
     }
 
-    @GetMapping("/users/")
+    @GetMapping("/public/users/")
     @CrossOrigin
     public ResponseEntity<List<User>> findUserByActiveTrue() {
         return ResponseEntity.ok().body(this.userService.findAllUser());
     }
 
-    @PostMapping("/login/")
+    @PostMapping("/public/login/")
     @CrossOrigin
     public ResponseEntity<String> login(@Valid @RequestBody LoginDTO loginDTO) throws Exception {
 
         this.authenticationComponent.authenticateUser(loginDTO.getUsername(), loginDTO.getPassword());
         final UserDetails userDetails = userService.loadUserByUsername(loginDTO.getUsername());
-//        User user = userService.findUserByUsername(userDetails.getUsername());
 
-        String jwtResponse = jwtUtils.generateJwtToken(userDetails);
+        if (userDetails != null) {
+            String jwtResponse = jwtUtils.generateJwtToken(userDetails);
+            return ResponseEntity.ok().body(jwtResponse);
+        }
 
-        return ResponseEntity.ok().body(jwtResponse);
+        // Vẫn bị trả 403 Forbidden  Bad credentials (sai tài khoản hoặc mật khẩu)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Có lỗi xảy ra! Có thể là sai mật khẩu nhưng mà để từ từ fix được chưa!");
     }
 
 //    @PostMapping("/register/")
@@ -87,7 +90,7 @@ public class ApiUserController {
 //
 //        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 //    }
-    @PostMapping("/register/")
+    @PostMapping("/public/register/")
     @CrossOrigin
     public ResponseEntity<String> register(@Valid @RequestBody RegisterDTO registerDTO) throws Exception {
         String message = "Có lỗi xảy ra!";
@@ -101,7 +104,7 @@ public class ApiUserController {
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/current-user/")
+    @GetMapping("/auth/current-user/")
     @CrossOrigin
     public ResponseEntity<User> details(Principal user) {
         if (user != null) {
@@ -128,10 +131,10 @@ public class ApiUserController {
 //
 //        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 //    }
-    @PostMapping(path = "/update-user/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/auth/update-user/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public ResponseEntity<String> updateUserForUser(@Valid UpdateUserForUserDTO updateUserForUserDTO, @RequestPart("avatar") MultipartFile avatar) {
-    
+
         // Dùng RequestPart để gửi ảnh thì dẹp luôn @RequestBody của thằng user trong DTO chứ không nó lỗi 
         // org.springframework.web.HttpMediaTypeNotSupportedException: Content-Type 'multipart/form-data;boundary=--------------------------993163030984227239709456;charset=UTF-8' is not supported
         // Chắc là 2 loại Request khác nhau nó không chịu

@@ -54,13 +54,13 @@ public class ApiTwilioController {
     //Mà chỉ gửi được có 1 số trial :) 
     // TỐN 1 ĐỐNG THỜI GIAN NGỒI MÒ CẤU HÌNH
     //KHỎI LUÔN
-    @GetMapping("/sendSMS/")
+    @GetMapping("/public/sendSMS/")
     public void sendSms(@Valid @RequestBody SmsRequestDTO smsRequest) {
 //        smsService.sendSms(smsRequest);
         twilioSmsSender.sendSms(smsRequest);
     }
 
-    @GetMapping("/verification/")
+    @GetMapping("/public/verification/")
     public ResponseEntity<String> verification(@RequestBody Map<String, String> params) {
         String message = "Có lỗi xảy ra!";
         String phonenumber = params.get("phonenumber"); // username nó cũng là phonenumber (Quy ước mới)
@@ -79,7 +79,7 @@ public class ApiTwilioController {
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/verification-check/")
+    @GetMapping("/public/verification-check/")
     public ResponseEntity<String> verification_check(@Valid @RequestBody AuthMessageTwilioDTO authMessageTwilioDTO) {
         String message = "Có lỗi xảy ra!";
         int check = this.twilioVerification.verification_check(authMessageTwilioDTO.getCode(), authMessageTwilioDTO.getPhoneNumber());
