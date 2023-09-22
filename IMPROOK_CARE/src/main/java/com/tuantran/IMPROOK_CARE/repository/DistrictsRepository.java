@@ -4,8 +4,9 @@
  */
 package com.tuantran.IMPROOK_CARE.repository;
 
-import com.tuantran.IMPROOK_CARE.models.Role;
-import java.util.Optional;
+import com.tuantran.IMPROOK_CARE.models.Districts;
+import com.tuantran.IMPROOK_CARE.models.Provinces;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,9 +14,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author Administrator
  */
-
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Integer>{
-    Optional<Role> findRoleByRoleNameAndActiveTrue(String roleName);
-    Optional<Role> findRoleByRoleIdAndActiveTrue(int roleId);
+public interface DistrictsRepository extends JpaRepository<Districts, String>{
+    List<Districts> findDistrictsByProvinceCode(Provinces provinceCode);
 }

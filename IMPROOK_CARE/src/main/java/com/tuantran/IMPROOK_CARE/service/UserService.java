@@ -23,9 +23,7 @@ public interface UserService extends UserDetailsService {
     User findUserByUserIdAndActiveTrue(int userId);
     
     User addUser(Map<String, String> params, MultipartFile avatar);
-    User registerUser(Map<String, String> params);
     User registerUser(RegisterDTO registerDTO);
-    int updateUser(Map<String, String> params, MultipartFile avatar);
     int updateUser(UpdateUserForUserDTO updateUserForUserDTO, MultipartFile avatar);
     
 }

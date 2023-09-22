@@ -21,12 +21,12 @@ public class RoleServiceImpl implements RoleService{
     
     @Override
     public Role findRoleByRoleNameAndActiveTrue(String roleName) {
-        return this.roleRepository.findRoleByRoleNameAndActiveTrue(roleName);
+        return this.roleRepository.findRoleByRoleNameAndActiveTrue(roleName).get();
     }
 
     @Override
-    public Optional<Role> findRoleByRoleIdAndActiveTrue(int roleId) {
-        return this.roleRepository.findRoleByRoleIdAndActiveTrue(roleId);
+    public Role findRoleByRoleIdAndActiveTrue(int roleId) {
+        return this.roleRepository.findRoleByRoleIdAndActiveTrue(roleId).get();
     }
     
 }

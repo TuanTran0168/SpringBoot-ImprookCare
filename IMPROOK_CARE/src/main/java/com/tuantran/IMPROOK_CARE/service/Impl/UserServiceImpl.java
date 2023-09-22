@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUsernameAndActiveTrue(String username) {
-        return this.userRepository.findUserByUsernameAndActiveTrue(username);
+        return this.userRepository.findUserByUsernameAndActiveTrue(username).get();
     }
 
     @Override
@@ -85,99 +85,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerUser(Map<String, String> params) {
-        // Đăng ký 
-        //B1: Tại trang xác thực sẽ dùng số điện thoại xác thực twilio trước, sau đó chuyển qua trang đăng ký
-        //B2: Tại trang đăng ký sẽ có username là số điện thoại được xác thực ở trang xác thực lấy qua
-        //B3: Ấn đăng ký
-        //Tại trang xác thực cần:
-        //phonenumber, confirm otp
-        //Tại trang đăng ký cần
-        // - username(lấy phonenumber gán vào username - disable)
-        // - password, comfirmPassword
-        // - phonenumber(lưu ngầm)
-        // - firstname, lastname, gender
-        //Admin cấp nik role bác sĩ sẽ tính sau
-
-        User user = new User();
-        String phonenumber = params.get("phonenumber");
-        String username = phonenumber; //username sẽ là số điện thoại lấy qua
-        String password = params.get("password");
-        String firstname = params.get("firstname");
-        String lastname = params.get("lastname");
-        String gender = params.get("gender");  // String 0, 1
-
-        user.setUsername(username);
-        user.setPassword(this.passworldComponent.PasswordEncoder().encode(password));
-        user.setFirstname(firstname);
-        user.setLastname(lastname);
-        user.setGender(Boolean.parseBoolean(gender));
-        user.setRoleId(this.roleRepository.findRoleByRoleNameAndActiveTrue("User"));
-        user.setCreatedDate(new Date());
-
-        return this.userRepository.save(user);
-    }
-
-    @Override
     public User registerUser(RegisterDTO registerDTO) {
-        User user = new User();
-
-        User u = this.userRepository.findUserByUsername(registerDTO.getUsername());
         // Thực ra ở tầng verification đã xác thực phonenumber qua twilio rồi nên kiểm tra thêm cho yên tâm
-        if (u == null) {
-            user.setUsername(registerDTO.getUsername()); //Username là phonenumber (Quy ước mới)
-            user.setPassword(this.passworldComponent.PasswordEncoder().encode(registerDTO.getPassword()));
-            user.setFirstname(registerDTO.getFirstname());
-            user.setLastname(registerDTO.getLastname());
-            user.setGender(registerDTO.getGender());
-            user.setRoleId(this.roleRepository.findRoleByRoleNameAndActiveTrue("User"));
-            user.setCreatedDate(new Date());
-            user.setActive(Boolean.TRUE);
-            return this.userRepository.save(user);
+        Optional<User> userOptional = this.userRepository.findUserByUsername(registerDTO.getUsername());
+
+        if (!userOptional.isPresent()) {
+            User userRegister = new User();
+            userRegister.setUsername(registerDTO.getUsername()); //Username là phonenumber (Quy ước mới)
+            userRegister.setPassword(this.passworldComponent.PasswordEncoder().encode(registerDTO.getPassword()));
+            userRegister.setFirstname(registerDTO.getFirstname());
+            userRegister.setLastname(registerDTO.getLastname());
+            userRegister.setGender(registerDTO.getGender());
+            userRegister.setRoleId(this.roleRepository.findRoleByRoleNameAndActiveTrue("User").get());
+            userRegister.setCreatedDate(new Date());
+            userRegister.setActive(Boolean.TRUE);
+            return this.userRepository.save(userRegister);
+
         }
 
         return null; // Tồn tại phonenumber
     }
 
     @Override
-    public int updateUser(Map<String, String> params, MultipartFile avatar) {
-        User user = new User();
-
-        // Đăng ký chỉ dùng 2 cái này thôi
-        String username = params.get("username");
-        String password = params.get("password");
-        String firstname = params.get("firstname");
-        String lastname = params.get("lastname");
-        String gender = params.get("gender");
-        String phonenumber = params.get("phonenumber");
-        String roleId = params.get("roleId");
-
-        user.setUsername(username);
-        user.setPassword(this.passworldComponent.PasswordEncoder().encode(password));
-        user.setFirstname(firstname);
-        user.setLastname(lastname);
-        user.setGender(Boolean.parseBoolean(gender));
-//        user.setPhonenumber(phonenumber);
-        user.setRoleId(this.roleRepository.findRoleByRoleNameAndActiveTrue("User"));
-        user.setCreatedDate(new Date());
-
-        if (avatar != null) {
-            String linkCloudinaryAvatar = cloudinaryComponent.Cloudinary(avatar).get("secure_url").toString();
-            user.setAvatar(linkCloudinaryAvatar);
-        }
-
-        this.userRepository.save(user);
-        return 1;
-    }
-
-    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findUserByUsernameAndActiveTrue(username);
+        Optional<User> userOptional = userRepository.findUserByUsernameAndActiveTrue(username);
 
-        if (user == null) {
+        if (!userOptional.isPresent()) {
             throw new UsernameNotFoundException("Username không tồn tại!");
         }
 
+        User user = userOptional.get();
         Set<GrantedAuthority> authorities = new HashSet<>();
         Optional<Role> role = this.roleRepository.findById(user.getRoleId().getRoleId());
         String roleName = role.get().getRoleName();
@@ -194,15 +131,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUsername(String username) {
-        return this.userRepository.findUserByUsername(username);
+        return this.userRepository.findUserByUsername(username).get();
     }
 
     @Override
     public int updateUser(UpdateUserForUserDTO updateUserForUserDTO, MultipartFile avatar) {
         try {
-            User user = this.userRepository.findUserByUserIdAndActiveTrue(Integer.parseInt(updateUserForUserDTO.getUserId()));
-
-            if (user != null) {
+            Optional<User> userOptional = this.userRepository.findUserByUserIdAndActiveTrue(Integer.parseInt(updateUserForUserDTO.getUserId()));
+            if (userOptional.isPresent()) {
+                
+                User user = userOptional.get();
                 user.setUserId(Integer.parseInt(updateUserForUserDTO.getUserId()));
                 user.setFirstname(updateUserForUserDTO.getFirstname());
                 user.setLastname(updateUserForUserDTO.getLastname());
@@ -218,8 +156,7 @@ public class UserServiceImpl implements UserService {
                 }
                 this.userRepository.save(user);
                 return 1;
-            }
-            else {
+            } else {
                 return 2; // Có tìm được ai đâu mà update
             }
 
@@ -231,6 +168,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUserIdAndActiveTrue(int userId) {
-        return this.userRepository.findUserByUserIdAndActiveTrue(userId);
+        return this.userRepository.findUserByUserIdAndActiveTrue(userId).get();
     }
 }

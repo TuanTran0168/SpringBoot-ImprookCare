@@ -77,19 +77,6 @@ public class ApiUserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Có lỗi xảy ra! Có thể là sai mật khẩu nhưng mà để từ từ fix được chưa!");
     }
 
-//    @PostMapping("/register/")
-//    @CrossOrigin
-//    public ResponseEntity<String> register(@Valid @RequestBody Map<String, String> params) throws Exception {
-//        String message = "Có lỗi xảy ra!";
-//        User user = this.userService.registerUser(params);
-//
-//        if (user != null) {
-//            message = "Đăng ký thành công!";
-//            return new ResponseEntity<>(message, HttpStatus.OK);
-//        }
-//
-//        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-//    }
     @PostMapping("/public/register/")
     @CrossOrigin
     public ResponseEntity<String> register(@Valid @RequestBody RegisterDTO registerDTO) throws Exception {

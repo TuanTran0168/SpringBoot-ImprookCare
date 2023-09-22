@@ -4,15 +4,13 @@
  */
 package com.tuantran.IMPROOK_CARE.service;
 
-import com.tuantran.IMPROOK_CARE.models.Role;
-import java.util.Optional;
+import com.tuantran.IMPROOK_CARE.models.Provinces;
+import java.util.List;
 
 /**
  *
  * @author Administrator
  */
-
-public interface RoleService {
-    Role findRoleByRoleNameAndActiveTrue(String roleName);
-    Role findRoleByRoleIdAndActiveTrue(int roleId);
+public interface ProvincesService {
+    List<Provinces> findAllProvinces();
 }

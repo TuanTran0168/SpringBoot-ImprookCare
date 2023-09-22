@@ -1,8 +1,7 @@
 package com.tuantran.IMPROOK_CARE;
 
-import com.tuantran.IMPROOK_CARE.models.User;
 import com.twilio.Twilio;
-//import org.apache.http.impl.client.HttpClientBuilder;
+import java.util.Date;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -14,6 +13,7 @@ public class ImprookCareApplication {
 
         System.out.println("OpenJDK Version: " + System.getProperty("java.version"));
         System.out.println("Twilio SDK Version: " + Twilio.VERSION);
+        System.out.println("RUN COMPLETED AT: " + new Date());
         System.out.println("OK EM");
     }
 }
