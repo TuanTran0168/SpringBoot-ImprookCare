@@ -51,7 +51,8 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
             profilePatient.setEmail(addProfilePatientDTO.getEmail());
             profilePatient.setRelationship(addProfilePatientDTO.getRelationship());
 
-            Optional<User> userOptional = this.userRepository.findById(Integer.parseInt(addProfilePatientDTO.getUserId()));
+//            Optional<User> userOptional = this.userRepository.findById(Integer.parseInt(addProfilePatientDTO.getUserId()));
+            Optional<User> userOptional = this.userRepository.findUserByUserIdAndActiveTrue(Integer.parseInt(addProfilePatientDTO.getUserId()));
             if (userOptional.isPresent()) {
                 profilePatient.setUserId(userOptional.get());
             }
@@ -71,7 +72,7 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
     @Override
     public int updateProfilePatient(UpdateProfilePatientDTO updateProfilePatientDTO) {
         try {
-            Optional<ProfilePatient> profilePatientOptional = this.profilePatientRepository.findById(Integer.parseInt(updateProfilePatientDTO.getProfilePatientId()));
+            Optional<ProfilePatient> profilePatientOptional = this.profilePatientRepository.findProfilePatientByProfilePatientId(Integer.parseInt(updateProfilePatientDTO.getProfilePatientId()));
 
             if (profilePatientOptional.isPresent()) {
 
