@@ -5,9 +5,6 @@
 package com.tuantran.IMPROOK_CARE.configs.jwt;
 
 import com.tuantran.IMPROOK_CARE.components.password.PasswordComponent;
-import com.tuantran.IMPROOK_CARE.configs.jwt.AuthEntryPointJwt;
-import com.tuantran.IMPROOK_CARE.configs.jwt.AuthTokenFilter;
-import com.tuantran.IMPROOK_CARE.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -64,10 +61,11 @@ public class JwtConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth
                         -> auth.requestMatchers("/api/public/**").permitAll()
-                                .requestMatchers("/api/auth/**").authenticated()
+                                .requestMatchers("/api/auth/**").permitAll() // Xài Cách lấy Principal xác thực cho rồi :)
                                 .requestMatchers("/api/auth/admin/**").hasRole("Admin")
                                 .requestMatchers("/api/auth/doctor/**").hasRole("Doctor")
                         .anyRequest().authenticated()

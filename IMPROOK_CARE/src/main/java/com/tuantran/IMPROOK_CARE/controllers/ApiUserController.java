@@ -49,10 +49,10 @@ public class ApiUserController {
     @Autowired
     private AuthenticationComponent authenticationComponent;
 
-    @GetMapping("/public/test-xiu/")
+    @GetMapping("/auth/test-xiu/")
     @CrossOrigin
     public ResponseEntity<User> test() {
-        return ResponseEntity.ok().body(this.userService.findUserByUsername("thai"));
+       return new ResponseEntity<>(this.userService.findUserByUsername("thai"), HttpStatus.OK);
     }
 
     @GetMapping("/public/users/")
