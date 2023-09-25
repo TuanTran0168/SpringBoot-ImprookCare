@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `improokcare` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `improokcare`;
--- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
 -- Host: localhost    Database: improokcare
 -- ------------------------------------------------------
--- Server version	8.0.30
+-- Server version	8.0.33
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -359,7 +359,7 @@ CREATE TABLE `profile_doctor` (
   KEY `specialty_id` (`specialty_id`),
   CONSTRAINT `profile_doctor_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
   CONSTRAINT `profile_doctor_ibfk_2` FOREIGN KEY (`specialty_id`) REFERENCES `specialty` (`specialty_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -368,6 +368,7 @@ CREATE TABLE `profile_doctor` (
 
 LOCK TABLES `profile_doctor` WRITE;
 /*!40000 ALTER TABLE `profile_doctor` DISABLE KEYS */;
+INSERT INTO `profile_doctor` VALUES (1,'Trịnh Bảo Duy',NULL,'0123456789',NULL,'duy@gmail.com','Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','Trĩ nội, trĩ ngoại','2023-09-25 12:20:09',NULL,NULL,1,2,1),(2,'Trịnh Bảo Duy',NULL,'0123456789','10','duy@gmail.com','Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','Trĩ nội, trĩ ngoại','2023-09-25 12:27:19',NULL,NULL,1,2,1),(3,'Trịnh Bảo Duy',NULL,'0123456789','10','duy@gmail.com','Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','Trĩ nội, trĩ ngoại','2023-09-25 12:27:20',NULL,NULL,1,2,1),(4,'Trịnh Bảo Duy',NULL,'0123456789','10','duy@gmail.com','Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','Trĩ nội, trĩ ngoại','2023-09-25 12:27:21',NULL,NULL,1,2,1),(5,'Trịnh Bảo Duy 111',NULL,'0123456789','1','duy@gmail.com','Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','Trĩ nội, trĩ ngoại','2023-09-25 12:28:40','2023-09-25 12:40:54',NULL,1,2,3),(6,'Trịnh Bảo Duy',NULL,'0123456789','10','duy@gmail.com','Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','Trĩ nội, trĩ ngoại','2023-09-25 12:34:15',NULL,NULL,1,2,1),(7,'Trịnh Bảo Duy',NULL,'0123456789','10','duy@gmail.com','Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','Trĩ nội, trĩ ngoại','2023-09-25 12:35:12',NULL,NULL,1,2,1);
 /*!40000 ALTER TABLE `profile_doctor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -398,7 +399,7 @@ CREATE TABLE `profile_patient` (
   PRIMARY KEY (`profile_patient_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `profile_patient_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -407,6 +408,7 @@ CREATE TABLE `profile_patient` (
 
 LOCK TABLES `profile_patient` WRITE;
 /*!40000 ALTER TABLE `profile_patient` DISABLE KEYS */;
+INSERT INTO `profile_patient` VALUES (1,'Lê Thị Huỳnh Như','0123456789',NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-25 12:41:01',NULL,NULL,1,1);
 /*!40000 ALTER TABLE `profile_patient` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -572,16 +574,17 @@ DROP TABLE IF EXISTS `time_slot`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `time_slot` (
   `time_slot_id` int NOT NULL AUTO_INCREMENT,
-  `time_slot_value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `time_begin` datetime DEFAULT NULL,
+  `time_end` datetime DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
-  `active` tinyint(1) DEFAULT NULL,
   `time_distance_id` int DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`time_slot_id`),
   KEY `time_distance_id` (`time_distance_id`),
   CONSTRAINT `time_slot_ibfk_1` FOREIGN KEY (`time_distance_id`) REFERENCES `time_distance` (`time_distance_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -590,6 +593,7 @@ CREATE TABLE `time_slot` (
 
 LOCK TABLES `time_slot` WRITE;
 /*!40000 ALTER TABLE `time_slot` DISABLE KEYS */;
+INSERT INTO `time_slot` VALUES (1,'2023-09-10 11:30:31','2023-09-10 11:30:31','2023-09-10 11:30:31',NULL,NULL,1,1),(2,'2023-09-10 11:30:31','2023-09-10 11:30:31','2023-09-10 11:30:31',NULL,NULL,2,1),(3,'2023-09-10 11:30:31','2023-09-10 11:30:31','2023-09-10 11:30:31',NULL,NULL,3,1),(4,'2023-09-10 11:30:31','2023-09-10 11:30:31','2023-09-10 11:30:31',NULL,NULL,1,1),(5,'2023-09-10 11:30:31','2023-09-10 11:30:31','2023-09-10 11:30:31',NULL,NULL,2,1),(6,'2023-09-10 11:30:31','2023-09-10 11:30:31','2023-09-10 11:30:31',NULL,NULL,3,1);
 /*!40000 ALTER TABLE `time_slot` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -620,7 +624,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `email_UNIQUE` (`email`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -629,7 +633,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Tuấn','Trần Đăng','tuan','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 11:30:31',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,1),(2,'Thành','Dương Hữu','thanh','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 11:30:31',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,2),(3,'Thái','Trương Nguyễn Minh','thai','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 11:30:31',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,3);
+INSERT INTO `user` VALUES (1,'Tuấn','Trần Đăng','tuan','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 11:30:31',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,1),(2,'Thành','Dương Hữu','thanh','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 11:30:31',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,2),(3,'Thái','Trương Nguyễn Minh','thai','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 11:30:31',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,3),(4,'api','api','65756','$2a$10$DjphsiFtAgTynk9FqXRSkOt7KNG5cEbEwgDwVGGZLuH8qMq8sVtM6','2002-09-25 00:00:00',0,NULL,NULL,'2023-09-25 10:50:38','2023-09-25 11:39:03',NULL,1,2);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -732,4 +736,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-25  9:23:54
+-- Dump completed on 2023-09-25 13:18:27

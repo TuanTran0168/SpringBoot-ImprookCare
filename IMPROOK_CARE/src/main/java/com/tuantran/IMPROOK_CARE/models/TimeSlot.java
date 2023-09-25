@@ -4,10 +4,8 @@
  */
 package com.tuantran.IMPROOK_CARE.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +16,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -32,7 +29,8 @@ import jakarta.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "TimeSlot.findAll", query = "SELECT t FROM TimeSlot t"),
     @NamedQuery(name = "TimeSlot.findByTimeSlotId", query = "SELECT t FROM TimeSlot t WHERE t.timeSlotId = :timeSlotId"),
-    @NamedQuery(name = "TimeSlot.findByTimeSlotValue", query = "SELECT t FROM TimeSlot t WHERE t.timeSlotValue = :timeSlotValue"),
+    @NamedQuery(name = "TimeSlot.findByTimeBegin", query = "SELECT t FROM TimeSlot t WHERE t.timeBegin = :timeBegin"),
+    @NamedQuery(name = "TimeSlot.findByTimeEnd", query = "SELECT t FROM TimeSlot t WHERE t.timeEnd = :timeEnd"),
     @NamedQuery(name = "TimeSlot.findByCreatedDate", query = "SELECT t FROM TimeSlot t WHERE t.createdDate = :createdDate"),
     @NamedQuery(name = "TimeSlot.findByUpdatedDate", query = "SELECT t FROM TimeSlot t WHERE t.updatedDate = :updatedDate"),
     @NamedQuery(name = "TimeSlot.findByDeletedDate", query = "SELECT t FROM TimeSlot t WHERE t.deletedDate = :deletedDate"),
@@ -45,8 +43,12 @@ public class TimeSlot implements Serializable {
     @Basic(optional = false)
     @Column(name = "time_slot_id")
     private Integer timeSlotId;
-    @Column(name = "time_slot_value")
-    private String timeSlotValue;
+    @Column(name = "time_begin")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timeBegin;
+    @Column(name = "time_end")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timeEnd;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -58,9 +60,6 @@ public class TimeSlot implements Serializable {
     private Date deletedDate;
     @Column(name = "active")
     private Boolean active;
-    @JsonIgnore
-    @OneToMany(mappedBy = "timeSlotId")
-    private Set<Schedule> scheduleSet;
     @JoinColumn(name = "time_distance_id", referencedColumnName = "time_distance_id")
     @ManyToOne
     private TimeDistance timeDistanceId;
@@ -80,12 +79,20 @@ public class TimeSlot implements Serializable {
         this.timeSlotId = timeSlotId;
     }
 
-    public String getTimeSlotValue() {
-        return timeSlotValue;
+    public Date getTimeBegin() {
+        return timeBegin;
     }
 
-    public void setTimeSlotValue(String timeSlotValue) {
-        this.timeSlotValue = timeSlotValue;
+    public void setTimeBegin(Date timeBegin) {
+        this.timeBegin = timeBegin;
+    }
+
+    public Date getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(Date timeEnd) {
+        this.timeEnd = timeEnd;
     }
 
     public Date getCreatedDate() {
@@ -118,14 +125,6 @@ public class TimeSlot implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    public Set<Schedule> getScheduleSet() {
-        return scheduleSet;
-    }
-
-    public void setScheduleSet(Set<Schedule> scheduleSet) {
-        this.scheduleSet = scheduleSet;
     }
 
     public TimeDistance getTimeDistanceId() {
