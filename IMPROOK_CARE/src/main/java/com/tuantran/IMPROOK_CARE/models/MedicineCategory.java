@@ -4,7 +4,6 @@
  */
 package com.tuantran.IMPROOK_CARE.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -32,6 +31,7 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "MedicineCategory.findByCategoryId", query = "SELECT m FROM MedicineCategory m WHERE m.categoryId = :categoryId"),
     @NamedQuery(name = "MedicineCategory.findByCategoryName", query = "SELECT m FROM MedicineCategory m WHERE m.categoryName = :categoryName"),
     @NamedQuery(name = "MedicineCategory.findByCreatedDate", query = "SELECT m FROM MedicineCategory m WHERE m.createdDate = :createdDate"),
+    @NamedQuery(name = "MedicineCategory.findByUpdatedDate", query = "SELECT m FROM MedicineCategory m WHERE m.updatedDate = :updatedDate"),
     @NamedQuery(name = "MedicineCategory.findByDeletedDate", query = "SELECT m FROM MedicineCategory m WHERE m.deletedDate = :deletedDate"),
     @NamedQuery(name = "MedicineCategory.findByActive", query = "SELECT m FROM MedicineCategory m WHERE m.active = :active")})
 public class MedicineCategory implements Serializable {
@@ -47,12 +47,14 @@ public class MedicineCategory implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @Column(name = "updated_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedDate;
     @Column(name = "deleted_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
     @Column(name = "active")
     private Boolean active;
-    @JsonIgnore
     @OneToMany(mappedBy = "categoryId")
     private Set<Medicine> medicineSet;
 
@@ -85,6 +87,14 @@ public class MedicineCategory implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
     public Date getDeletedDate() {

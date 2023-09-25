@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.service.Impl;
 
 import com.tuantran.IMPROOK_CARE.components.cloudinary.CloudinaryComponent;
+import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
 import com.tuantran.IMPROOK_CARE.components.password.PasswordComponent;
 import com.tuantran.IMPROOK_CARE.configs.cloudinary.CloudinaryConfig;
 import com.tuantran.IMPROOK_CARE.dto.RegisterDTO;
@@ -15,6 +16,8 @@ import com.tuantran.IMPROOK_CARE.repository.RoleRepository;
 import com.tuantran.IMPROOK_CARE.repository.UserRepository;
 import com.tuantran.IMPROOK_CARE.service.UserService;
 import java.io.IOException;
+import java.text.ParseException;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -50,6 +53,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private CloudinaryComponent cloudinaryComponent;
+
+    @Autowired
+    private DateFormatComponent dateFormatComponent;
 
     @Override
     public User findUserByUsernameAndActiveTrue(String username) {
@@ -139,14 +145,16 @@ public class UserServiceImpl implements UserService {
         try {
             Optional<User> userOptional = this.userRepository.findUserByUserIdAndActiveTrue(Integer.parseInt(updateUserForUserDTO.getUserId()));
             if (userOptional.isPresent()) {
-                
+
                 User user = userOptional.get();
                 user.setUserId(Integer.parseInt(updateUserForUserDTO.getUserId()));
                 user.setFirstname(updateUserForUserDTO.getFirstname());
                 user.setLastname(updateUserForUserDTO.getLastname());
                 user.setGender(updateUserForUserDTO.getGender());
+                user.setBirthday(this.dateFormatComponent.myDateFormat().parse(updateUserForUserDTO.getBirthDate()));
+                user.setUpdatedDate(new Date());
 
-                if (avatar != null) {
+                if (avatar != null && !avatar.isEmpty()) {
                     try {
                         String linkCloudinaryAvatar = cloudinaryComponent.Cloudinary(avatar).get("secure_url").toString();
                         user.setAvatar(linkCloudinaryAvatar);
@@ -162,8 +170,10 @@ public class UserServiceImpl implements UserService {
 
         } catch (DataAccessException ex) {
             ex.printStackTrace();
-            return 0;
+        } catch (ParseException ex) {
+            Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return 0;
     }
 
     @Override

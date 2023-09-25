@@ -32,6 +32,7 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "Comment.findByCommentId", query = "SELECT c FROM Comment c WHERE c.commentId = :commentId"),
     @NamedQuery(name = "Comment.findByAvatar", query = "SELECT c FROM Comment c WHERE c.avatar = :avatar"),
     @NamedQuery(name = "Comment.findByCreatedDate", query = "SELECT c FROM Comment c WHERE c.createdDate = :createdDate"),
+    @NamedQuery(name = "Comment.findByUpdatedDate", query = "SELECT c FROM Comment c WHERE c.updatedDate = :updatedDate"),
     @NamedQuery(name = "Comment.findByDeletedDate", query = "SELECT c FROM Comment c WHERE c.deletedDate = :deletedDate"),
     @NamedQuery(name = "Comment.findByRating", query = "SELECT c FROM Comment c WHERE c.rating = :rating"),
     @NamedQuery(name = "Comment.findByActive", query = "SELECT c FROM Comment c WHERE c.active = :active")})
@@ -51,6 +52,9 @@ public class Comment implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @Column(name = "updated_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedDate;
     @Column(name = "deleted_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
@@ -102,6 +106,14 @@ public class Comment implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
     public Date getDeletedDate() {

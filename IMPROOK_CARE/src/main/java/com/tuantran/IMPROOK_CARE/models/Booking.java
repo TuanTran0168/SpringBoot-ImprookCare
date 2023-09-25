@@ -33,6 +33,7 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b"),
     @NamedQuery(name = "Booking.findByBookingId", query = "SELECT b FROM Booking b WHERE b.bookingId = :bookingId"),
     @NamedQuery(name = "Booking.findByCreatedDate", query = "SELECT b FROM Booking b WHERE b.createdDate = :createdDate"),
+    @NamedQuery(name = "Booking.findByUpdatedDate", query = "SELECT b FROM Booking b WHERE b.updatedDate = :updatedDate"),
     @NamedQuery(name = "Booking.findByDeletedDate", query = "SELECT b FROM Booking b WHERE b.deletedDate = :deletedDate"),
     @NamedQuery(name = "Booking.findByActive", query = "SELECT b FROM Booking b WHERE b.active = :active")})
 public class Booking implements Serializable {
@@ -46,6 +47,9 @@ public class Booking implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @Column(name = "updated_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedDate;
     @Column(name = "deleted_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
@@ -88,6 +92,14 @@ public class Booking implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
     public Date getDeletedDate() {

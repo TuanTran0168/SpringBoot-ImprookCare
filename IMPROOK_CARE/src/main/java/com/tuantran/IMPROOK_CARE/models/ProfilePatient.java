@@ -34,6 +34,7 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "ProfilePatient.findByProfilePatientId", query = "SELECT p FROM ProfilePatient p WHERE p.profilePatientId = :profilePatientId"),
     @NamedQuery(name = "ProfilePatient.findByName", query = "SELECT p FROM ProfilePatient p WHERE p.name = :name"),
     @NamedQuery(name = "ProfilePatient.findByPhonenumber", query = "SELECT p FROM ProfilePatient p WHERE p.phonenumber = :phonenumber"),
+    @NamedQuery(name = "ProfilePatient.findByBirthday", query = "SELECT p FROM ProfilePatient p WHERE p.birthday = :birthday"),
     @NamedQuery(name = "ProfilePatient.findByProvinceName", query = "SELECT p FROM ProfilePatient p WHERE p.provinceName = :provinceName"),
     @NamedQuery(name = "ProfilePatient.findByDistrictName", query = "SELECT p FROM ProfilePatient p WHERE p.districtName = :districtName"),
     @NamedQuery(name = "ProfilePatient.findByWardName", query = "SELECT p FROM ProfilePatient p WHERE p.wardName = :wardName"),
@@ -42,6 +43,7 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "ProfilePatient.findByEmail", query = "SELECT p FROM ProfilePatient p WHERE p.email = :email"),
     @NamedQuery(name = "ProfilePatient.findByRelationship", query = "SELECT p FROM ProfilePatient p WHERE p.relationship = :relationship"),
     @NamedQuery(name = "ProfilePatient.findByCreatedDate", query = "SELECT p FROM ProfilePatient p WHERE p.createdDate = :createdDate"),
+    @NamedQuery(name = "ProfilePatient.findByUpdatedDate", query = "SELECT p FROM ProfilePatient p WHERE p.updatedDate = :updatedDate"),
     @NamedQuery(name = "ProfilePatient.findByDeletedDate", query = "SELECT p FROM ProfilePatient p WHERE p.deletedDate = :deletedDate"),
     @NamedQuery(name = "ProfilePatient.findByActive", query = "SELECT p FROM ProfilePatient p WHERE p.active = :active")})
 public class ProfilePatient implements Serializable {
@@ -56,6 +58,9 @@ public class ProfilePatient implements Serializable {
     private String name;
     @Column(name = "phonenumber")
     private String phonenumber;
+    @Column(name = "birthday")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date birthday;
     @Column(name = "province_name")
     private String provinceName;
     @Column(name = "district_name")
@@ -73,6 +78,9 @@ public class ProfilePatient implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @Column(name = "updated_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedDate;
     @Column(name = "deleted_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
@@ -114,6 +122,14 @@ public class ProfilePatient implements Serializable {
 
     public void setPhonenumber(String phonenumber) {
         this.phonenumber = phonenumber;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     public String getProvinceName() {
@@ -178,6 +194,14 @@ public class ProfilePatient implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
     public Date getDeletedDate() {

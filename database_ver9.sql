@@ -29,6 +29,7 @@ CREATE TABLE `booking` (
   `schedule_id` int DEFAULT NULL,
   `profile_patient_id` int DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `status_id` int DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
@@ -62,6 +63,7 @@ CREATE TABLE `booking_status` (
   `status_id` int NOT NULL AUTO_INCREMENT,
   `status_value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`status_id`)
@@ -116,6 +118,7 @@ CREATE TABLE `comment` (
   `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `rating` int DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
@@ -182,6 +185,7 @@ CREATE TABLE `medical_records` (
   `diagnosis` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `treatment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   `booking_id` int DEFAULT NULL,
@@ -212,6 +216,7 @@ CREATE TABLE `medicine` (
   `medicine_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   `category_id` int DEFAULT NULL,
@@ -241,6 +246,7 @@ CREATE TABLE `medicine_category` (
   `category_id` int NOT NULL AUTO_INCREMENT,
   `category_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`category_id`)
@@ -272,6 +278,7 @@ CREATE TABLE `prescription_detail` (
   `usage_instruction` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `warning` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`prescription_detail_id`),
@@ -302,6 +309,7 @@ CREATE TABLE `prescriptions` (
   `prescription_id` int NOT NULL AUTO_INCREMENT,
   `prescription_date` date DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   `booking_id` int DEFAULT NULL,
@@ -330,11 +338,18 @@ DROP TABLE IF EXISTS `profile_doctor`;
 CREATE TABLE `profile_doctor` (
   `profile_doctor_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `birthday` datetime DEFAULT NULL,
   `phonenumber` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `booking_price` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `province_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `district_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ward_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `work_place` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `work_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `position` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   `user_id` int DEFAULT NULL,
@@ -367,6 +382,7 @@ CREATE TABLE `profile_patient` (
   `profile_patient_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `phonenumber` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `birthday` datetime DEFAULT NULL,
   `province_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `district_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ward_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -375,6 +391,7 @@ CREATE TABLE `profile_patient` (
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `relationship` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   `user_id` int DEFAULT NULL,
@@ -438,6 +455,7 @@ CREATE TABLE `role` (
   `role_id` int NOT NULL AUTO_INCREMENT,
   `role_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`role_id`)
@@ -450,7 +468,7 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (1,'ROLE_Admin','2023-09-10 11:30:31','2023-09-10 11:30:31',1),(2,'ROLE_Doctor','2023-09-10 11:30:31','2023-09-10 11:30:31',1),(3,'ROLE_User','2023-09-10 11:30:31','2023-09-10 11:30:31',1);
+INSERT INTO `role` VALUES (1,'ADMIN','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(2,'DOCTOR','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(3,'USER','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1);
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -466,6 +484,7 @@ CREATE TABLE `schedule` (
   `profile_doctor_id` int DEFAULT NULL,
   `date` date DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   `time_slot_id` int DEFAULT NULL,
@@ -499,6 +518,7 @@ CREATE TABLE `specialty` (
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`specialty_id`)
@@ -511,7 +531,7 @@ CREATE TABLE `specialty` (
 
 LOCK TABLES `specialty` WRITE;
 /*!40000 ALTER TABLE `specialty` DISABLE KEYS */;
-INSERT INTO `specialty` VALUES (1,'Khoa Tiêu Hóa','Khó Tiêu',NULL,'2023-09-10 11:30:31','2023-09-10 11:30:31',1),(2,'Khoa Nội','Nội Khoa',NULL,'2023-09-10 11:30:31','2023-09-10 11:30:31',1),(3,'Khoa Ngoại','Ngoại Khoa',NULL,'2023-09-10 11:30:31','2023-09-10 11:30:31',1),(4,'Nha Khoa','Niềng Răng',NULL,'2023-09-10 11:30:31','2023-09-10 11:30:31',1),(5,'Khoa Thần Kinh','Ủa Gì Vậy',NULL,'2023-09-10 11:30:31','2023-09-10 11:30:31',1),(6,'Khoa Cơ Xương Khớp','Nhức Đầu',NULL,'2023-09-10 11:30:31','2023-09-10 11:30:31',1),(7,'Khoa Nhi','Sửu Nhi',NULL,'2023-09-10 11:30:31','2023-09-10 11:30:31',1),(8,'Khoa Da Liễu','Đồi Mồi',NULL,'2023-09-10 11:30:31','2023-09-10 11:30:31',1);
+INSERT INTO `specialty` VALUES (1,'Khoa Tiêu Hóa','Khó Tiêu',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(2,'Khoa Nội','Nội Khoa',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(3,'Khoa Ngoại','Ngoại Khoa',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(4,'Nha Khoa','Niềng Răng',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(5,'Khoa Thần Kinh','Ủa Gì Vậy',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(6,'Khoa Cơ Xương Khớp','Nhức Đầu',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(7,'Khoa Nhi','Sửu Nhi',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(8,'Khoa Da Liễu','Đồi Mồi',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1);
 /*!40000 ALTER TABLE `specialty` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -526,6 +546,7 @@ CREATE TABLE `time_distance` (
   `time_distance_id` int NOT NULL AUTO_INCREMENT,
   `time_distance_value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`time_distance_id`)
@@ -538,7 +559,7 @@ CREATE TABLE `time_distance` (
 
 LOCK TABLES `time_distance` WRITE;
 /*!40000 ALTER TABLE `time_distance` DISABLE KEYS */;
-INSERT INTO `time_distance` VALUES (1,'15 phút','2023-09-10 11:30:31','2023-09-10 11:30:31',1),(2,'30 phút','2023-09-10 11:30:31','2023-09-10 11:30:31',1),(3,'60 phút','2023-09-10 11:30:31','2023-09-10 11:30:31',1);
+INSERT INTO `time_distance` VALUES (1,'15 phút','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(2,'30 phút','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(3,'60 phút','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1);
 /*!40000 ALTER TABLE `time_distance` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -553,6 +574,7 @@ CREATE TABLE `time_slot` (
   `time_slot_id` int NOT NULL AUTO_INCREMENT,
   `time_slot_value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   `time_distance_id` int DEFAULT NULL,
@@ -584,10 +606,12 @@ CREATE TABLE `user` (
   `lastname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `birthday` datetime DEFAULT NULL,
   `gender` tinyint(1) DEFAULT NULL,
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   `role_id` int DEFAULT NULL,
@@ -605,7 +629,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Tuấn','Trần Đăng','tuan','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq',0,NULL,NULL,'2023-09-10 11:30:31','2023-09-10 11:30:31',1,1),(2,'Thành','Dương Hữu','thanh','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq',0,NULL,NULL,'2023-09-10 11:30:31','2023-09-10 11:30:31',1,2),(3,'Thái','Trương Nguyễn Minh','thai','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq',0,NULL,NULL,'2023-09-10 11:30:31','2023-09-10 11:30:31',1,3);
+INSERT INTO `user` VALUES (1,'Tuấn','Trần Đăng','tuan','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 11:30:31',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,1),(2,'Thành','Dương Hữu','thanh','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 11:30:31',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,2),(3,'Thái','Trương Nguyễn Minh','thai','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 11:30:31',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,3);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -708,4 +732,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-21 10:45:52
+-- Dump completed on 2023-09-25  9:23:54

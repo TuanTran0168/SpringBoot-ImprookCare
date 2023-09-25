@@ -34,6 +34,7 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "TimeSlot.findByTimeSlotId", query = "SELECT t FROM TimeSlot t WHERE t.timeSlotId = :timeSlotId"),
     @NamedQuery(name = "TimeSlot.findByTimeSlotValue", query = "SELECT t FROM TimeSlot t WHERE t.timeSlotValue = :timeSlotValue"),
     @NamedQuery(name = "TimeSlot.findByCreatedDate", query = "SELECT t FROM TimeSlot t WHERE t.createdDate = :createdDate"),
+    @NamedQuery(name = "TimeSlot.findByUpdatedDate", query = "SELECT t FROM TimeSlot t WHERE t.updatedDate = :updatedDate"),
     @NamedQuery(name = "TimeSlot.findByDeletedDate", query = "SELECT t FROM TimeSlot t WHERE t.deletedDate = :deletedDate"),
     @NamedQuery(name = "TimeSlot.findByActive", query = "SELECT t FROM TimeSlot t WHERE t.active = :active")})
 public class TimeSlot implements Serializable {
@@ -49,6 +50,9 @@ public class TimeSlot implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @Column(name = "updated_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedDate;
     @Column(name = "deleted_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
@@ -90,6 +94,14 @@ public class TimeSlot implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
     public Date getDeletedDate() {

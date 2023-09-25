@@ -23,6 +23,14 @@ public class UpdateProfileDoctorDTO {
     @NotBlank
     private String phonenumber;
     @NotBlank
+    private String bookingPrice;
+    @NotBlank
+    String provinceName;
+    @NotBlank
+    String districtName;
+    @NotBlank
+    String wardName;
+    @NotBlank
     private String email;
     @NotBlank
     private String workPlace;

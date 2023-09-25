@@ -32,6 +32,7 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "TimeDistance.findByTimeDistanceId", query = "SELECT t FROM TimeDistance t WHERE t.timeDistanceId = :timeDistanceId"),
     @NamedQuery(name = "TimeDistance.findByTimeDistanceValue", query = "SELECT t FROM TimeDistance t WHERE t.timeDistanceValue = :timeDistanceValue"),
     @NamedQuery(name = "TimeDistance.findByCreatedDate", query = "SELECT t FROM TimeDistance t WHERE t.createdDate = :createdDate"),
+    @NamedQuery(name = "TimeDistance.findByUpdatedDate", query = "SELECT t FROM TimeDistance t WHERE t.updatedDate = :updatedDate"),
     @NamedQuery(name = "TimeDistance.findByDeletedDate", query = "SELECT t FROM TimeDistance t WHERE t.deletedDate = :deletedDate"),
     @NamedQuery(name = "TimeDistance.findByActive", query = "SELECT t FROM TimeDistance t WHERE t.active = :active")})
 public class TimeDistance implements Serializable {
@@ -47,6 +48,9 @@ public class TimeDistance implements Serializable {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @Column(name = "updated_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedDate;
     @Column(name = "deleted_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
@@ -85,6 +89,14 @@ public class TimeDistance implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
     public Date getDeletedDate() {

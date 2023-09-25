@@ -22,4 +22,6 @@ public class UpdateUserForUserDTO {
     @NotBlank
     String lastname;
     Boolean gender;
+    @NotBlank
+    String birthDate;
 }

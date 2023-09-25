@@ -33,11 +33,18 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "ProfileDoctor.findAll", query = "SELECT p FROM ProfileDoctor p"),
     @NamedQuery(name = "ProfileDoctor.findByProfileDoctorId", query = "SELECT p FROM ProfileDoctor p WHERE p.profileDoctorId = :profileDoctorId"),
     @NamedQuery(name = "ProfileDoctor.findByName", query = "SELECT p FROM ProfileDoctor p WHERE p.name = :name"),
+    @NamedQuery(name = "ProfileDoctor.findByBirthday", query = "SELECT p FROM ProfileDoctor p WHERE p.birthday = :birthday"),
     @NamedQuery(name = "ProfileDoctor.findByPhonenumber", query = "SELECT p FROM ProfileDoctor p WHERE p.phonenumber = :phonenumber"),
+    @NamedQuery(name = "ProfileDoctor.findByBookingPrice", query = "SELECT p FROM ProfileDoctor p WHERE p.bookingPrice = :bookingPrice"),
     @NamedQuery(name = "ProfileDoctor.findByEmail", query = "SELECT p FROM ProfileDoctor p WHERE p.email = :email"),
+    @NamedQuery(name = "ProfileDoctor.findByProvinceName", query = "SELECT p FROM ProfileDoctor p WHERE p.provinceName = :provinceName"),
+    @NamedQuery(name = "ProfileDoctor.findByDistrictName", query = "SELECT p FROM ProfileDoctor p WHERE p.districtName = :districtName"),
+    @NamedQuery(name = "ProfileDoctor.findByWardName", query = "SELECT p FROM ProfileDoctor p WHERE p.wardName = :wardName"),
     @NamedQuery(name = "ProfileDoctor.findByWorkPlace", query = "SELECT p FROM ProfileDoctor p WHERE p.workPlace = :workPlace"),
+    @NamedQuery(name = "ProfileDoctor.findByWorkAddress", query = "SELECT p FROM ProfileDoctor p WHERE p.workAddress = :workAddress"),
     @NamedQuery(name = "ProfileDoctor.findByPosition", query = "SELECT p FROM ProfileDoctor p WHERE p.position = :position"),
     @NamedQuery(name = "ProfileDoctor.findByCreatedDate", query = "SELECT p FROM ProfileDoctor p WHERE p.createdDate = :createdDate"),
+    @NamedQuery(name = "ProfileDoctor.findByUpdatedDate", query = "SELECT p FROM ProfileDoctor p WHERE p.updatedDate = :updatedDate"),
     @NamedQuery(name = "ProfileDoctor.findByDeletedDate", query = "SELECT p FROM ProfileDoctor p WHERE p.deletedDate = :deletedDate"),
     @NamedQuery(name = "ProfileDoctor.findByActive", query = "SELECT p FROM ProfileDoctor p WHERE p.active = :active")})
 public class ProfileDoctor implements Serializable {
@@ -50,17 +57,33 @@ public class ProfileDoctor implements Serializable {
     private Integer profileDoctorId;
     @Column(name = "name")
     private String name;
+    @Column(name = "birthday")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date birthday;
     @Column(name = "phonenumber")
     private String phonenumber;
+    @Column(name = "booking_price")
+    private String bookingPrice;
     @Column(name = "email")
     private String email;
+    @Column(name = "province_name")
+    private String provinceName;
+    @Column(name = "district_name")
+    private String districtName;
+    @Column(name = "ward_name")
+    private String wardName;
     @Column(name = "work_place")
     private String workPlace;
+    @Column(name = "work_address")
+    private String workAddress;
     @Column(name = "position")
     private String position;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @Column(name = "updated_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedDate;
     @Column(name = "deleted_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
@@ -102,12 +125,28 @@ public class ProfileDoctor implements Serializable {
         this.name = name;
     }
 
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
     public String getPhonenumber() {
         return phonenumber;
     }
 
     public void setPhonenumber(String phonenumber) {
         this.phonenumber = phonenumber;
+    }
+
+    public String getBookingPrice() {
+        return bookingPrice;
+    }
+
+    public void setBookingPrice(String bookingPrice) {
+        this.bookingPrice = bookingPrice;
     }
 
     public String getEmail() {
@@ -118,12 +157,44 @@ public class ProfileDoctor implements Serializable {
         this.email = email;
     }
 
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
+
+    public String getWardName() {
+        return wardName;
+    }
+
+    public void setWardName(String wardName) {
+        this.wardName = wardName;
+    }
+
     public String getWorkPlace() {
         return workPlace;
     }
 
     public void setWorkPlace(String workPlace) {
         this.workPlace = workPlace;
+    }
+
+    public String getWorkAddress() {
+        return workAddress;
+    }
+
+    public void setWorkAddress(String workAddress) {
+        this.workAddress = workAddress;
     }
 
     public String getPosition() {
@@ -140,6 +211,14 @@ public class ProfileDoctor implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
     public Date getDeletedDate() {

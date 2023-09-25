@@ -94,7 +94,7 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
                 profilePatient.setRelationship(updateProfilePatientDTO.getRelationship());
 
                 profilePatient.setActive(Boolean.TRUE);
-//                profilePatient.setCreatedDate(new Date());
+                profilePatient.setUpdatedDate(new Date());
 
                 this.profilePatientRepository.save(profilePatient);
                 return 1;
