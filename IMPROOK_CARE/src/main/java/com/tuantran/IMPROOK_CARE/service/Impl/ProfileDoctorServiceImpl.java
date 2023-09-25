@@ -82,7 +82,7 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
     @Override
     public int updateProfileDoctor(UpdateProfileDoctorDTO updateProfileDoctorDTO) {
         try {
-            Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorId(Integer.parseInt(updateProfileDoctorDTO.getProfileDoctorId()));
+            Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(Integer.parseInt(updateProfileDoctorDTO.getProfileDoctorId()));
 
             if (profileDoctorOptional.isPresent()) {
 
