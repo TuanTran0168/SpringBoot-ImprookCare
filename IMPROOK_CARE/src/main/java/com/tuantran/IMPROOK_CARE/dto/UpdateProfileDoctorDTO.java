@@ -28,4 +28,6 @@ public class UpdateProfileDoctorDTO {
     private String workPlace;
     @NotBlank
     private String position;
+    @NotBlank
+    private String specialtyId;
 }

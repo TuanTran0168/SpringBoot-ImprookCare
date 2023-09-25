@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
             userRegister.setFirstname(registerDTO.getFirstname());
             userRegister.setLastname(registerDTO.getLastname());
             userRegister.setGender(registerDTO.getGender());
-            userRegister.setRoleId(this.roleRepository.findRoleByRoleNameAndActiveTrue("User").get());
+            userRegister.setRoleId(this.roleRepository.findRoleByRoleNameAndActiveTrue("USER").get());
             userRegister.setCreatedDate(new Date());
             userRegister.setActive(Boolean.TRUE);
             return this.userRepository.save(userRegister);

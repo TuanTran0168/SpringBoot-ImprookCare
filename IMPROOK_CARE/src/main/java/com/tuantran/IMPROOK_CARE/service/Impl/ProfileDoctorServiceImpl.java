@@ -7,8 +7,10 @@ package com.tuantran.IMPROOK_CARE.service.Impl;
 import com.tuantran.IMPROOK_CARE.dto.AddProfileDoctorDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateProfileDoctorDTO;
 import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
+import com.tuantran.IMPROOK_CARE.models.Specialty;
 import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.repository.ProfileDoctorRepository;
+import com.tuantran.IMPROOK_CARE.repository.SpecialtyRepository;
 import com.tuantran.IMPROOK_CARE.repository.UserRepository;
 import com.tuantran.IMPROOK_CARE.service.ProfileDoctorService;
 import java.util.Date;
@@ -26,7 +28,10 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
 
     @Autowired
     private UserRepository userRepository;
-    
+
+    @Autowired
+    private SpecialtyRepository specialtyRepository;
+
     @Autowired
     private ProfileDoctorRepository profileDoctorRepository;
 
@@ -43,13 +48,18 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
             if (userOptional.isPresent()) {
                 profileDoctor.setUserId(userOptional.get());
             }
-            
+
 //            @NotBlank
 //            private String specialtyId;
 //            Optional<User> userOptional = this.userRepository.findUserByUserIdAndActiveTrue(Integer.parseInt(addProfileDoctorDTO.getUserId()));
 //            if (userOptional.isPresent()) {
 //                profileDoctor.setUserId(userOptional.get());
 //            }
+            Optional<Specialty> specialtyIdOptional = this.specialtyRepository.findSpecialtyBySpecialtyIdAndActiveTrue(Integer.parseInt(addProfileDoctorDTO.getSpecialtyId()));
+
+            if (specialtyIdOptional.isPresent()) {
+                profileDoctor.setSpecialtyId(specialtyIdOptional.get());
+            }
 
             profileDoctor.setActive(Boolean.TRUE);
             profileDoctor.setCreatedDate(new Date());
@@ -73,6 +83,11 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
                 profileDoctor.setName(updateProfileDoctorDTO.getName());
                 profileDoctor.setPhonenumber(updateProfileDoctorDTO.getPhonenumber());
                 profileDoctor.setEmail(updateProfileDoctorDTO.getEmail());
+                Optional<Specialty> specialtyIdOptional = this.specialtyRepository.findSpecialtyBySpecialtyIdAndActiveTrue(Integer.parseInt(updateProfileDoctorDTO.getSpecialtyId()));
+
+                if (specialtyIdOptional.isPresent()) {
+                    profileDoctor.setSpecialtyId(specialtyIdOptional.get());
+                }
 
                 profileDoctor.setActive(Boolean.TRUE);
 //                profilePatient.setCreatedDate(new Date());

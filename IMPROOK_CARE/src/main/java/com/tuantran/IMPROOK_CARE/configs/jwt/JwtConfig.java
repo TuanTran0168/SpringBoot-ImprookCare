@@ -66,8 +66,8 @@ public class JwtConfig {
                 .authorizeHttpRequests(auth
                         -> auth.requestMatchers("/api/public/**").permitAll()
                                 .requestMatchers("/api/auth/**").permitAll() // Xài Cách lấy Principal xác thực cho rồi :)
-                                .requestMatchers("/api/auth/admin/**").hasRole("Admin")
-                                .requestMatchers("/api/auth/doctor/**").hasRole("Doctor")
+                                .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/api/auth/doctor/**").hasRole("DOCTOR")
                         .anyRequest().authenticated()
                 );
 

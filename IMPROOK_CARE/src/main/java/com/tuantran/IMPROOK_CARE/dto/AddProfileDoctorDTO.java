@@ -26,8 +26,8 @@ public class AddProfileDoctorDTO {
     private String workPlace;
     @NotBlank
     private String position;
-//    @NotBlank
-//    private String specialtyId;
+    @NotBlank
+    private String specialtyId;
     @NotBlank
     private String userId;
 }
