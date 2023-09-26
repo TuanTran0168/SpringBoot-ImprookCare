@@ -4,6 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -55,6 +56,7 @@ public class MedicineCategory implements Serializable {
     private Date deletedDate;
     @Column(name = "active")
     private Boolean active;
+    @JsonIgnore
     @OneToMany(mappedBy = "categoryId")
     private Set<Medicine> medicineSet;
 

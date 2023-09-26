@@ -13,6 +13,7 @@ import com.tuantran.IMPROOK_CARE.repository.TimeSlotRepository;
 import com.tuantran.IMPROOK_CARE.service.ScheduleService;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,8 @@ public class ScheduleServiceImpl implements ScheduleService {
             schedule.setDate(this.dateFormatComponent.myDateFormat().parse(addScheduleDTO.getDate()));
             schedule.setTimeSlotId(this.timeSlotRepository.findTimeSlotByTimeSlotIdAndActiveTrue(Integer.parseInt(addScheduleDTO.getTimeSlotId())).get());
             schedule.setCreatedDate(new Date());
+            schedule.setActive(Boolean.TRUE);
+            schedule.setBooked(Boolean.FALSE);
             
             this.scheduleRepository.save(schedule);
             return 1;
@@ -53,6 +56,18 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
         
         return 0;
+    }
+
+    @Override
+    public int addCustomSchedule(List<AddScheduleDTO> addScheduleDTOList) {
+        
+        int lenghtOfScheduleList = addScheduleDTOList.size();
+        
+        for(AddScheduleDTO addScheduleDTO : addScheduleDTOList) {
+            this.addSchedule(addScheduleDTO);
+        }
+        
+        return 1;
     }
 
 }

@@ -36,7 +36,8 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "Schedule.findByCreatedDate", query = "SELECT s FROM Schedule s WHERE s.createdDate = :createdDate"),
     @NamedQuery(name = "Schedule.findByUpdatedDate", query = "SELECT s FROM Schedule s WHERE s.updatedDate = :updatedDate"),
     @NamedQuery(name = "Schedule.findByDeletedDate", query = "SELECT s FROM Schedule s WHERE s.deletedDate = :deletedDate"),
-    @NamedQuery(name = "Schedule.findByActive", query = "SELECT s FROM Schedule s WHERE s.active = :active")})
+    @NamedQuery(name = "Schedule.findByActive", query = "SELECT s FROM Schedule s WHERE s.active = :active"),
+    @NamedQuery(name = "Schedule.findByBooked", query = "SELECT s FROM Schedule s WHERE s.booked = :booked")})
 public class Schedule implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,6 +60,8 @@ public class Schedule implements Serializable {
     private Date deletedDate;
     @Column(name = "active")
     private Boolean active;
+    @Column(name = "booked")
+    private Boolean booked;
     @JsonIgnore
     @OneToMany(mappedBy = "scheduleId")
     private Set<Booking> bookingSet;
@@ -122,6 +125,14 @@ public class Schedule implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Boolean getBooked() {
+        return booked;
+    }
+
+    public void setBooked(Boolean booked) {
+        this.booked = booked;
     }
 
     public Set<Booking> getBookingSet() {

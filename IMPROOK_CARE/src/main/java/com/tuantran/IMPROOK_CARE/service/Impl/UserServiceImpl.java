@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
                 user.setFirstname(updateUserForUserDTO.getFirstname());
                 user.setLastname(updateUserForUserDTO.getLastname());
                 user.setGender(updateUserForUserDTO.getGender());
-                user.setBirthday(this.dateFormatComponent.myDateFormat().parse(updateUserForUserDTO.getBirthDate()));
+                user.setBirthday(this.dateFormatComponent.myDateFormat().parse(updateUserForUserDTO.getBirthday()));
                 user.setUpdatedDate(new Date());
 
                 if (avatar != null && !avatar.isEmpty()) {

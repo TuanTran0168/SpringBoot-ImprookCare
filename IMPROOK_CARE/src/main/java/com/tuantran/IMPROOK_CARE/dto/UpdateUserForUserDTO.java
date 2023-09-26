@@ -23,5 +23,5 @@ public class UpdateUserForUserDTO {
     String lastname;
     Boolean gender;
     @NotBlank
-    String birthDate;
+    String birthday;
 }

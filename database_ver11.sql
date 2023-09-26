@@ -490,12 +490,13 @@ CREATE TABLE `schedule` (
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   `time_slot_id` int DEFAULT NULL,
+  `booked` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`schedule_id`),
   KEY `profile_doctor_id` (`profile_doctor_id`),
   KEY `time_slot_id` (`time_slot_id`),
   CONSTRAINT `schedule_ibfk_1` FOREIGN KEY (`profile_doctor_id`) REFERENCES `profile_doctor` (`profile_doctor_id`),
   CONSTRAINT `schedule_ibfk_2` FOREIGN KEY (`time_slot_id`) REFERENCES `time_slot` (`time_slot_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -504,6 +505,7 @@ CREATE TABLE `schedule` (
 
 LOCK TABLES `schedule` WRITE;
 /*!40000 ALTER TABLE `schedule` DISABLE KEYS */;
+INSERT INTO `schedule` VALUES (1,2,'2002-08-28','2023-09-25 15:51:09',NULL,NULL,1,1,0),(2,2,'0034-01-23','2023-09-26 09:10:16',NULL,NULL,1,1,0),(3,2,'2002-08-28','2023-09-26 09:10:16',NULL,NULL,1,1,0);
 /*!40000 ALTER TABLE `schedule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -633,7 +635,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Tuấn','Trần Đăng','tuan','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 11:30:31',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,1),(2,'Thành','Dương Hữu','thanh','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 11:30:31',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,2),(3,'Thái','Trương Nguyễn Minh','thai','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 11:30:31',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,3),(4,'api','api','65756','$2a$10$DjphsiFtAgTynk9FqXRSkOt7KNG5cEbEwgDwVGGZLuH8qMq8sVtM6','2002-09-25 00:00:00',0,NULL,NULL,'2023-09-25 10:50:38','2023-09-25 11:39:03',NULL,1,2);
+INSERT INTO `user` VALUES (1,'Tuấn','Trần Đăng','tuan','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 00:00:00',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,1),(2,'Thành','Dương Hữu','thanh','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 00:00:00',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,2),(3,'Thái','Trương Nguyễn Minh','thai','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 00:00:00',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,3),(4,'api','api','65756','$2a$10$DjphsiFtAgTynk9FqXRSkOt7KNG5cEbEwgDwVGGZLuH8qMq8sVtM6','2023-09-10 00:00:00',0,NULL,NULL,'2023-09-25 10:50:38','2023-09-25 19:43:50',NULL,1,2);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -736,4 +738,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-25 13:18:27
+-- Dump completed on 2023-09-26  9:54:23

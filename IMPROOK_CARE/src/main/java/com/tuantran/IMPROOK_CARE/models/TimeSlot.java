@@ -4,8 +4,10 @@
  */
 package com.tuantran.IMPROOK_CARE.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,6 +18,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -60,6 +63,9 @@ public class TimeSlot implements Serializable {
     private Date deletedDate;
     @Column(name = "active")
     private Boolean active;
+    @JsonIgnore
+    @OneToMany(mappedBy = "timeSlotId")
+    private Set<Schedule> scheduleSet;
     @JoinColumn(name = "time_distance_id", referencedColumnName = "time_distance_id")
     @ManyToOne
     private TimeDistance timeDistanceId;
@@ -125,6 +131,14 @@ public class TimeSlot implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Set<Schedule> getScheduleSet() {
+        return scheduleSet;
+    }
+
+    public void setScheduleSet(Set<Schedule> scheduleSet) {
+        this.scheduleSet = scheduleSet;
     }
 
     public TimeDistance getTimeDistanceId() {

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DateFormatComponent {
 
-    public static final String MY_DATE_FORMAT = "dd/MM/yyyy";
+    public static final String MY_DATE_FORMAT = "yyyy-MM-dd";
 
     public SimpleDateFormat myDateFormat() {
         return new SimpleDateFormat(MY_DATE_FORMAT);

@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.dto.AddScheduleDTO;
+import java.util.List;
 
 /**
  *
@@ -12,4 +13,5 @@ import com.tuantran.IMPROOK_CARE.dto.AddScheduleDTO;
  */
 public interface ScheduleService {
     int addSchedule(AddScheduleDTO addScheduleDTO);
+    int addCustomSchedule(List<AddScheduleDTO> addScheduleDTOList);
 }
