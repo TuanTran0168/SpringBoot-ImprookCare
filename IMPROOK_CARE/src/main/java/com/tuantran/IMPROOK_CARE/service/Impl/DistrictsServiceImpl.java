@@ -10,6 +10,8 @@ import com.tuantran.IMPROOK_CARE.repository.DistrictsRepository;
 import com.tuantran.IMPROOK_CARE.repository.ProvincesRepository;
 import com.tuantran.IMPROOK_CARE.service.DistrictsService;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,17 +21,28 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DistrictsServiceImpl implements DistrictsService {
+
     @Autowired
     private DistrictsRepository districtsRepository;
-    
+
     @Autowired
     private ProvincesRepository provincesRepository;
 
     @Override
     public List<Districts> findDistrictsByProvinceCode(String provinceCode) {
-        Provinces province = this.provincesRepository.findById(provinceCode).get();
-        return this.districtsRepository.findDistrictsByProvinceCode(province);
+
+        try {
+            Optional<Provinces> provincesOptional = this.provincesRepository.findById(provinceCode);
+            if (provincesOptional.isPresent()) {
+                Provinces province = provincesOptional.get();
+                return this.districtsRepository.findDistrictsByProvinceCode(province);
+            } else {
+                return null;
+            }
+        } catch (NoSuchElementException ex) {
+            return null;
+        }
+
     }
-    
-    
+
 }

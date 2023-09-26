@@ -14,6 +14,7 @@ import com.tuantran.IMPROOK_CARE.repository.SpecialtyRepository;
 import com.tuantran.IMPROOK_CARE.repository.UserRepository;
 import com.tuantran.IMPROOK_CARE.service.ProfileDoctorService;
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -75,6 +76,8 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
         } catch (DataAccessException ex) {
             ex.printStackTrace();
             return 0;
+        } catch (NoSuchElementException ex) {
+            return 0;
         }
 
     }
@@ -118,6 +121,8 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
 
         } catch (DataAccessException ex) {
             ex.printStackTrace();
+            return 0;
+        } catch (NoSuchElementException ex) {
             return 0;
         }
     }

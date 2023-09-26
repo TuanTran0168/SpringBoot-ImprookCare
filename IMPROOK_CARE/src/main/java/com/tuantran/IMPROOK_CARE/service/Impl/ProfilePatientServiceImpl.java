@@ -12,6 +12,7 @@ import com.tuantran.IMPROOK_CARE.repository.ProfilePatientRepository;
 import com.tuantran.IMPROOK_CARE.repository.UserRepository;
 import com.tuantran.IMPROOK_CARE.service.ProfilePatientService;
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -65,6 +66,8 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
         } catch (DataAccessException ex) {
             ex.printStackTrace();
             return 0;
+        } catch (NoSuchElementException ex) {
+            return 0;
         }
 
     }
@@ -105,11 +108,22 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
         } catch (DataAccessException ex) {
             ex.printStackTrace();
             return 0;
+        } catch (NoSuchElementException ex) {
+            return 0;
         }
     }
 
     @Override
     public ProfilePatient findProfilePatientByProfilePatientIdAndActiveTrue(int profilePatientId) {
-        return this.findProfilePatientByProfilePatientIdAndActiveTrue(profilePatientId);
+        try {
+            Optional<ProfilePatient> profilePatientOptional = this.profilePatientRepository.findProfilePatientByProfilePatientIdAndActiveTrue(profilePatientId);
+            if (profilePatientOptional.isPresent()) {
+                return profilePatientOptional.get();
+            } else {
+                return null;
+            }
+        } catch (NoSuchElementException ex) {
+            return null;
+        }
     }
 }

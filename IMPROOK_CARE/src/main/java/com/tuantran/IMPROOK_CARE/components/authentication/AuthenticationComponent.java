@@ -25,4 +25,9 @@ public class AuthenticationComponent {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
+//    public Authentication authenticateUser(String username, String password) throws Exception {
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        return authentication;
+//    }
 }

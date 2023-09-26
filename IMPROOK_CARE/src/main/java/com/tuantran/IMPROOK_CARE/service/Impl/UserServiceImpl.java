@@ -40,7 +40,8 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author Administrator
  */
-@Service
+//@Service
+@Service("userDetailsService")
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -60,7 +61,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUsernameAndActiveTrue(String username) {
-        return this.userRepository.findUserByUsernameAndActiveTrue(username).get();
+        try {
+            return this.userRepository.findUserByUsernameAndActiveTrue(username).get();
+        } catch (NoSuchElementException ex) {
+            return null;
+        }
     }
 
     @Override
@@ -91,28 +96,27 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.save(user);
     }
 
-    @Override
-    public User registerUser(RegisterDTO registerDTO) {
-        // Thực ra ở tầng verification đã xác thực phonenumber qua twilio rồi nên kiểm tra thêm cho yên tâm
-        Optional<User> userOptional = this.userRepository.findUserByUsername(registerDTO.getUsername());
-
-        if (!userOptional.isPresent()) {
-            User userRegister = new User();
-            userRegister.setUsername(registerDTO.getUsername()); //Username là phonenumber (Quy ước mới)
-            userRegister.setPassword(this.passworldComponent.PasswordEncoder().encode(registerDTO.getPassword()));
-            userRegister.setFirstname(registerDTO.getFirstname());
-            userRegister.setLastname(registerDTO.getLastname());
-            userRegister.setGender(registerDTO.getGender());
-            userRegister.setRoleId(this.roleRepository.findRoleByRoleNameAndActiveTrue("USER").get());
-            userRegister.setCreatedDate(new Date());
-            userRegister.setActive(Boolean.TRUE);
-            return this.userRepository.save(userRegister);
-
-        }
-
-        return null; // Tồn tại phonenumber
-    }
-
+//    @Override
+//    public User registerUser(RegisterDTO registerDTO) {
+//        // Thực ra ở tầng verification đã xác thực phonenumber qua twilio rồi nên kiểm tra thêm cho yên tâm
+//        Optional<User> userOptional = this.userRepository.findUserByUsername(registerDTO.getUsername());
+//
+//        if (!userOptional.isPresent()) {
+//            User userRegister = new User();
+//            userRegister.setUsername(registerDTO.getUsername()); //Username là phonenumber (Quy ước mới)
+//            userRegister.setPassword(this.passworldComponent.PasswordEncoder().encode(registerDTO.getPassword()));
+//            userRegister.setFirstname(registerDTO.getFirstname());
+//            userRegister.setLastname(registerDTO.getLastname());
+//            userRegister.setGender(registerDTO.getGender());
+//            userRegister.setRoleId(this.roleRepository.findRoleByRoleNameAndActiveTrue("USER").get());
+//            userRegister.setCreatedDate(new Date());
+//            userRegister.setActive(Boolean.TRUE);
+//            return this.userRepository.save(userRegister);
+//
+//        }
+//
+//        return null; // Tồn tại phonenumber
+//    }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userOptional = userRepository.findUserByUsernameAndActiveTrue(username);
@@ -209,5 +213,33 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         return null;
+    }
+
+    @Override
+    public int registerUser(RegisterDTO registerDTO) {
+        try {
+// Thực ra ở tầng verification đã xác thực phonenumber qua twilio rồi nên kiểm tra thêm cho yên tâm
+            Optional<User> userOptional = this.userRepository.findUserByUsername(registerDTO.getUsername());
+
+            if (!userOptional.isPresent()) {
+                User userRegister = new User();
+                userRegister.setUsername(registerDTO.getUsername()); //Username là phonenumber (Quy ước mới)
+                userRegister.setPassword(this.passworldComponent.PasswordEncoder().encode(registerDTO.getPassword()));
+                userRegister.setFirstname(registerDTO.getFirstname());
+                userRegister.setLastname(registerDTO.getLastname());
+                userRegister.setGender(registerDTO.getGender());
+                userRegister.setRoleId(this.roleRepository.findRoleByRoleNameAndActiveTrue("USER").get());
+                userRegister.setCreatedDate(new Date());
+                userRegister.setActive(Boolean.TRUE);
+                this.userRepository.save(userRegister);
+                return 1;
+            } else {
+                return 0; // Tồn tại phonenumber
+            }
+
+        } catch (NoSuchElementException ex) {
+            return 0;
+        }
+
     }
 }

@@ -9,6 +9,7 @@ import com.tuantran.IMPROOK_CARE.repository.TimeDistanceRepository;
 import com.tuantran.IMPROOK_CARE.repository.TimeSlotRepository;
 import com.tuantran.IMPROOK_CARE.service.TimeSlotService;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,17 +18,21 @@ import org.springframework.stereotype.Service;
  * @author Administrator
  */
 @Service
-public class TimeSlotServiceImpl implements TimeSlotService{
+public class TimeSlotServiceImpl implements TimeSlotService {
 
     @Autowired
     private TimeSlotRepository timeSlotRepository;
-    
+
     @Autowired
     private TimeDistanceRepository timeDistanceRepository;
-    
+
     @Override
     public List<TimeSlot> findTimeSlotByTimeDistanceIdAndActiveTrue(int timeDistanceId) {
-        return this.timeSlotRepository.findTimeSlotByTimeDistanceIdAndActiveTrue(this.timeDistanceRepository.findTimeDistanceByTimeDistanceIdAndActiveTrue(timeDistanceId).get());
+        try {
+            return this.timeSlotRepository.findTimeSlotByTimeDistanceIdAndActiveTrue(this.timeDistanceRepository.findTimeDistanceByTimeDistanceIdAndActiveTrue(timeDistanceId).get());
+        } catch (NoSuchElementException ex) {
+            return null;
+        }
     }
-    
+
 }

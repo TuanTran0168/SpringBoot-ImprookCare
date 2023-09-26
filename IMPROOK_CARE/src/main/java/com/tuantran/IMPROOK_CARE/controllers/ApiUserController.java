@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,7 +53,7 @@ public class ApiUserController {
     @GetMapping("/auth/test-xiu/")
     @CrossOrigin
     public ResponseEntity<User> test() {
-       return new ResponseEntity<>(this.userService.findUserByUsername("thai"), HttpStatus.OK);
+        return new ResponseEntity<>(this.userService.findUserByUsername("thai"), HttpStatus.OK);
     }
 
     @GetMapping("/public/users/")
@@ -67,11 +68,16 @@ public class ApiUserController {
 
         this.authenticationComponent.authenticateUser(loginDTO.getUsername(), loginDTO.getPassword());
         final UserDetails userDetails = userService.loadUserByUsername(loginDTO.getUsername());
-
         if (userDetails != null) {
             String jwtResponse = jwtUtils.generateJwtToken(userDetails);
             return ResponseEntity.ok().body(jwtResponse);
         }
+//        Authentication authentication = this.authenticationComponent.authenticateUser(loginDTO.getUsername(), loginDTO.getPassword());
+//
+//        if (authentication != null) {
+//            String jwtResponse = jwtUtils.generateJwtToken(authentication);
+//            return ResponseEntity.ok().body(jwtResponse);
+//        }
 
         // Vẫn bị trả 403 Forbidden  Bad credentials (sai tài khoản hoặc mật khẩu)
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Có lỗi xảy ra! Có thể là sai mật khẩu nhưng mà để từ từ fix được chưa!");
@@ -81,14 +87,25 @@ public class ApiUserController {
     @CrossOrigin
     public ResponseEntity<String> register(@Valid @RequestBody RegisterDTO registerDTO) throws Exception {
         String message = "Có lỗi xảy ra!";
-        User user = this.userService.registerUser(registerDTO);
+        int check = this.userService.registerUser(registerDTO);
 
-        if (user != null) {
+        if (check == 1) {
             message = "Đăng ký thành công!";
             return new ResponseEntity<>(message, HttpStatus.OK);
+        } else if (check == 0) {
+            message = "Đăng ký thất bại!";
         }
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+
+//        User user = this.userService.registerUser(registerDTO);
+//
+//        if (user != null) {
+//            message = "Đăng ký thành công!";
+//            return new ResponseEntity<>(message, HttpStatus.OK);
+//        }
+//
+//        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/auth/current-user/")

@@ -8,17 +8,18 @@ import com.tuantran.IMPROOK_CARE.models.Specialty;
 import com.tuantran.IMPROOK_CARE.repository.SpecialtyRepository;
 import com.tuantran.IMPROOK_CARE.service.SpecialtyService;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
  * @author Administrator
  */
-public class SpecialtyServiceImpl implements SpecialtyService{
+public class SpecialtyServiceImpl implements SpecialtyService {
 
     @Autowired
     private SpecialtyRepository specialtyRepository;
-    
+
     @Override
     public List<Specialty> findSpecialtyByActiveTrue() {
         return this.specialtyRepository.findSpecialtyByActiveTrue();
@@ -26,7 +27,12 @@ public class SpecialtyServiceImpl implements SpecialtyService{
 
     @Override
     public Specialty findSpecialtyBySpecialtyIdAndActiveTrue(int specialtyId) {
-        return this.specialtyRepository.findSpecialtyBySpecialtyIdAndActiveTrue(specialtyId).get();
+        try {
+            return this.specialtyRepository.findSpecialtyBySpecialtyIdAndActiveTrue(specialtyId).get();
+        } catch (NoSuchElementException ex) {
+            return null;
+        }
+
     }
-    
+
 }

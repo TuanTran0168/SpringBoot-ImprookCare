@@ -7,6 +7,7 @@ package com.tuantran.IMPROOK_CARE.service.Impl;
 import com.tuantran.IMPROOK_CARE.models.Role;
 import com.tuantran.IMPROOK_CARE.repository.RoleRepository;
 import com.tuantran.IMPROOK_CARE.service.RoleService;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,19 +15,37 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author Administrator
  */
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleRepository roleRepository;
-    
+
     @Override
     public Role findRoleByRoleNameAndActiveTrue(String roleName) {
-        return this.roleRepository.findRoleByRoleNameAndActiveTrue(roleName).get();
+        try {
+            Optional<Role> roleOptional = this.roleRepository.findRoleByRoleNameAndActiveTrue(roleName);
+            if (roleOptional.isPresent()) {
+                return roleOptional.get();
+            } else {
+                return null;
+            }
+        } catch (NoSuchElementException ex) {
+            return null;
+        }
     }
 
     @Override
     public Role findRoleByRoleIdAndActiveTrue(int roleId) {
-        return this.roleRepository.findRoleByRoleIdAndActiveTrue(roleId).get();
+        try {
+            Optional<Role> roleOptional = this.roleRepository.findRoleByRoleIdAndActiveTrue(roleId);
+            if (roleOptional.isPresent()) {
+                return roleOptional.get();
+            } else {
+                return null;
+            }
+        } catch (NoSuchElementException ex) {
+            return null;
+        }
     }
-    
+
 }
