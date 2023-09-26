@@ -32,6 +32,7 @@ CREATE TABLE `booking` (
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `status_id` int DEFAULT NULL,
+  `booking_cancel` tinyint(1) DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`booking_id`),
   KEY `schedule_id` (`schedule_id`),
@@ -67,7 +68,7 @@ CREATE TABLE `booking_status` (
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,6 +77,7 @@ CREATE TABLE `booking_status` (
 
 LOCK TABLES `booking_status` WRITE;
 /*!40000 ALTER TABLE `booking_status` DISABLE KEYS */;
+INSERT INTO `booking_status` VALUES (1,'Chờ xác nhận',NULL,NULL,NULL,1),(2,'Đã xác nhạn',NULL,NULL,NULL,1),(3,'Từ chối',NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `booking_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -496,7 +498,7 @@ CREATE TABLE `schedule` (
   KEY `time_slot_id` (`time_slot_id`),
   CONSTRAINT `schedule_ibfk_1` FOREIGN KEY (`profile_doctor_id`) REFERENCES `profile_doctor` (`profile_doctor_id`),
   CONSTRAINT `schedule_ibfk_2` FOREIGN KEY (`time_slot_id`) REFERENCES `time_slot` (`time_slot_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -505,7 +507,7 @@ CREATE TABLE `schedule` (
 
 LOCK TABLES `schedule` WRITE;
 /*!40000 ALTER TABLE `schedule` DISABLE KEYS */;
-INSERT INTO `schedule` VALUES (1,2,'2002-08-28','2023-09-25 15:51:09',NULL,NULL,1,1,0),(2,2,'0034-01-23','2023-09-26 09:10:16',NULL,NULL,1,1,0),(3,2,'2002-08-28','2023-09-26 09:10:16',NULL,NULL,1,1,0);
+INSERT INTO `schedule` VALUES (1,2,'2002-08-28','2023-09-25 15:51:09',NULL,NULL,1,1,0),(2,2,'2002-08-28','2023-09-26 09:10:16',NULL,NULL,1,1,0),(3,2,'2002-08-28','2023-09-26 09:10:16',NULL,NULL,1,1,0),(4,2,'2002-08-28','2023-09-26 10:01:25',NULL,NULL,1,1,0),(5,2,'2002-08-28','2023-09-26 10:07:17',NULL,NULL,1,2,0),(6,2,'2002-08-28','2023-09-26 11:38:03',NULL,NULL,1,2,0),(7,2,'2002-08-28','2023-09-26 11:39:57',NULL,NULL,1,2,0);
 /*!40000 ALTER TABLE `schedule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -738,4 +740,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-26  9:54:23
+-- Dump completed on 2023-09-26 12:02:05
