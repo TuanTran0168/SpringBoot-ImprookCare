@@ -15,5 +15,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ProfilePatientRepository extends JpaRepository<ProfilePatient, Integer>{
-    Optional<ProfilePatient> findProfilePatientByProfilePatientId(int profilePatientId);
+    Optional<ProfilePatient> findProfilePatientByProfilePatientIdAndActiveTrue(int profilePatientId);
 }

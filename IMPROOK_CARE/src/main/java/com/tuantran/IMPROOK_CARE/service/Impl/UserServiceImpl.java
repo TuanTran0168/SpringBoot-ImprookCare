@@ -170,10 +170,11 @@ public class UserServiceImpl implements UserService {
 
         } catch (DataAccessException ex) {
             ex.printStackTrace();
+            return 0;
         } catch (ParseException ex) {
             Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
         }
-        return 0;
     }
 
     @Override

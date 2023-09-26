@@ -72,7 +72,7 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
     @Override
     public int updateProfilePatient(UpdateProfilePatientDTO updateProfilePatientDTO) {
         try {
-            Optional<ProfilePatient> profilePatientOptional = this.profilePatientRepository.findProfilePatientByProfilePatientId(Integer.parseInt(updateProfilePatientDTO.getProfilePatientId()));
+            Optional<ProfilePatient> profilePatientOptional = this.profilePatientRepository.findProfilePatientByProfilePatientIdAndActiveTrue(Integer.parseInt(updateProfilePatientDTO.getProfilePatientId()));
 
             if (profilePatientOptional.isPresent()) {
 
@@ -106,5 +106,10 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
             ex.printStackTrace();
             return 0;
         }
+    }
+
+    @Override
+    public ProfilePatient findProfilePatientByProfilePatientIdAndActiveTrue(int profilePatientId) {
+        return this.findProfilePatientByProfilePatientIdAndActiveTrue(profilePatientId);
     }
 }

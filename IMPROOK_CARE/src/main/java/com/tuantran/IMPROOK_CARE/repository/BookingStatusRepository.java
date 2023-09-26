@@ -4,16 +4,15 @@
  */
 package com.tuantran.IMPROOK_CARE.repository;
 
-import com.tuantran.IMPROOK_CARE.models.Schedule;
+import com.tuantran.IMPROOK_CARE.models.BookingStatus;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Administrator
  */
-@Repository
-public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
-    Optional<Schedule> findScheduleByScheduleIdAndActiveTrue(int scheduleId);
+public interface BookingStatusRepository extends JpaRepository<BookingStatus, Integer> {
+    Optional<BookingStatus> findBookingStatusByStatusId(int bookingStatusId);
+
 }

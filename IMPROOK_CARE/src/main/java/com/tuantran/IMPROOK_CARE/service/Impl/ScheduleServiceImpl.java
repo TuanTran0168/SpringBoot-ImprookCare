@@ -53,21 +53,23 @@ public class ScheduleServiceImpl implements ScheduleService {
             return 1;
         } catch (ParseException ex) {
             Logger.getLogger(ScheduleServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
         }
-        
-        return 0;
     }
 
     @Override
     public int addCustomSchedule(List<AddScheduleDTO> addScheduleDTOList) {
-        
-        int lenghtOfScheduleList = addScheduleDTOList.size();
         
         for(AddScheduleDTO addScheduleDTO : addScheduleDTOList) {
             this.addSchedule(addScheduleDTO);
         }
         
         return 1;
+    }
+
+    @Override
+    public Schedule findScheduleByIdAndActiveTrue(int scheduleId) {
+        return this.scheduleRepository.findScheduleByScheduleIdAndActiveTrue(scheduleId).get();
     }
 
 }

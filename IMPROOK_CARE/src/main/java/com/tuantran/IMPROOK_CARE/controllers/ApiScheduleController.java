@@ -52,13 +52,13 @@ public class ApiScheduleController {
         return ResponseEntity.ok().body(this.timeSlotService.findTimeSlotByTimeDistanceIdAndActiveTrue(Integer.parseInt(timeDistanceId)));
     }
 
-    @PostMapping("/auth/doctor/add-schedule/")
+    @PostMapping("/auth/add-schedule/")
     @CrossOrigin
     public ResponseEntity<String> addSchedule(@Valid @RequestBody AddScheduleDTO addScheduleDTO) {
         String message = "Có lỗi xảy ra!";
         int check = this.scheduleService.addSchedule(addScheduleDTO);
         if (check == 1) {
-            message = "Đăng ký thành công lịch khám!";
+            message = "Đăng ký thành công lịch chữa bệnh!";
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
         
