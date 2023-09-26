@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
@@ -137,7 +138,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUsername(String username) {
-        return this.userRepository.findUserByUsername(username).get();
+//        try {
+//            
+//        }
+//        catch(NoSuchElementException ex) {
+//            return null;
+//        }
+
+        try {
+            Optional<User> userOptional = this.userRepository.findUserByUsername(username);
+            if (userOptional.isPresent()) {
+                return userOptional.get();
+            }
+        } catch (NoSuchElementException ex) {
+            return null;
+        }
+        return null;
     }
 
     @Override
@@ -169,16 +185,29 @@ public class UserServiceImpl implements UserService {
             }
 
         } catch (DataAccessException ex) {
-            ex.printStackTrace();
+            Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
         } catch (ParseException ex) {
             Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
+        } catch (NoSuchElementException ex) {
+            Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
         }
+
     }
 
     @Override
     public User findUserByUserIdAndActiveTrue(int userId) {
-        return this.userRepository.findUserByUserIdAndActiveTrue(userId).get();
+        try {
+            Optional<User> userOptional = this.userRepository.findUserByUserIdAndActiveTrue(userId);
+            if (userOptional.isPresent()) {
+                return userOptional.get();
+            }
+
+        } catch (NoSuchElementException ex) {
+            return null;
+        }
+        return null;
     }
 }

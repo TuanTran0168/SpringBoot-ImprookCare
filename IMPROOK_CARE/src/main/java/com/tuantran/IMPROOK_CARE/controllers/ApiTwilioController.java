@@ -21,6 +21,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,7 +61,8 @@ public class ApiTwilioController {
         twilioSmsSender.sendSms(smsRequest);
     }
 
-    @GetMapping("/public/verification/")
+    @PostMapping("/public/verification/")
+    @CrossOrigin
     public ResponseEntity<String> verification(@RequestBody Map<String, String> params) {
         String message = "Có lỗi xảy ra!";
         String phonenumber = params.get("phonenumber"); // username nó cũng là phonenumber (Quy ước mới)
@@ -79,7 +81,8 @@ public class ApiTwilioController {
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/public/verification-check/")
+    @PostMapping("/public/verification-check/")
+    @CrossOrigin
     public ResponseEntity<String> verification_check(@Valid @RequestBody AuthMessageTwilioDTO authMessageTwilioDTO) {
         String message = "Có lỗi xảy ra!";
         int check = this.twilioVerification.verification_check(authMessageTwilioDTO.getCode(), authMessageTwilioDTO.getPhoneNumber());
