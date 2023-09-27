@@ -17,13 +17,13 @@ import lombok.Setter;
 @Setter
 public class RegisterDTO {
     @NotBlank
-    String username;
+    private String username;
     @NotBlank
-    String password;
+    private String password;
     @NotBlank
-    String firstname;
+    private String firstname;
     @NotBlank
-    String lastname;
+    private String lastname;
     
     Boolean gender;
 }

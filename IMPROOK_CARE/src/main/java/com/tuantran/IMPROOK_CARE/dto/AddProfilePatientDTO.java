@@ -17,23 +17,23 @@ import lombok.Setter;
 @Setter
 public class AddProfilePatientDTO {
     @NotBlank
-    String name;
+    private String name;
     @NotBlank
-    String phonenumber;
+    private String phonenumber;
     @NotBlank
-    String provinceName;
+    private String provinceName;
     @NotBlank
-    String districtName;
+    private String districtName;
     @NotBlank
-    String wardName;
+    private String wardName;
     @NotBlank
-    String persionalAddress;
+    private String persionalAddress;
 //    @NotBlank
 //    String address;
     @NotBlank
-    String email;
+    private String email;
     @NotBlank
-    String relationship;
+    private String relationship;
     @NotBlank
-    String userId;
+    private String userId;
 }

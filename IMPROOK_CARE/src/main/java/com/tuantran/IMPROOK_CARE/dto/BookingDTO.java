@@ -11,10 +11,10 @@ import lombok.Setter;
  *
  * @author Administrator
  */
-
 @Getter
 @Setter
 public class BookingDTO {
-    String scheduleId;
-    String profilePatientId;
+
+    private String scheduleId;
+    private String profilePatientId;
 }

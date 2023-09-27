@@ -10,6 +10,7 @@ import com.tuantran.IMPROOK_CARE.components.password.PasswordComponent;
 import com.tuantran.IMPROOK_CARE.configs.cloudinary.CloudinaryConfig;
 import com.tuantran.IMPROOK_CARE.dto.AddUserForAdminDTO;
 import com.tuantran.IMPROOK_CARE.dto.RegisterDTO;
+import com.tuantran.IMPROOK_CARE.dto.UpdateUserForAdminDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateUserForUserDTO;
 import com.tuantran.IMPROOK_CARE.models.Role;
 import com.tuantran.IMPROOK_CARE.models.User;
@@ -147,7 +148,6 @@ public class UserServiceImpl implements UserService {
             if (userOptional.isPresent()) {
 
                 User user = userOptional.get();
-                user.setUserId(Integer.parseInt(updateUserForUserDTO.getUserId()));
                 user.setFirstname(updateUserForUserDTO.getFirstname());
                 user.setLastname(updateUserForUserDTO.getLastname());
                 user.setGender(updateUserForUserDTO.getGender());
@@ -229,10 +229,17 @@ public class UserServiceImpl implements UserService {
             User user = new User();
             Optional<User> userOptional = this.userRepository.findUserByUsernameAndActiveTrue(addUserForAdminDTO.getUsername());
 
+            if (userOptional.isPresent()) {
+                return 2; // Tồn tại số điện thoại
+            } else {
+                user.setUsername(addUserForAdminDTO.getUsername());
+            }
+
             if (!userOptional.isPresent()) {
                 user.setUsername(addUserForAdminDTO.getUsername());
             } else {
                 return 2; // Tồn tại số điện thoại
+
             }
 
             user.setPassword(this.passworldComponent.PasswordEncoder().encode(addUserForAdminDTO.getPassword()));
@@ -240,10 +247,57 @@ public class UserServiceImpl implements UserService {
             user.setLastname(addUserForAdminDTO.getLastname());
             user.setBirthday(this.dateFormatComponent.myDateFormat().parse(addUserForAdminDTO.getBirthday()));
             user.setGender(addUserForAdminDTO.getGender());
+            user.setRoleId(this.roleRepository.findRoleByRoleNameAndActiveTrue("DOCTOR").get());
+            user.setCreatedDate(new Date());
+            user.setActive(Boolean.TRUE);
 
             this.userRepository.save(user);
             return 1;
         } catch (ParseException ex) {
+            Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+    }
+
+    @Override
+    public int updateUser(UpdateUserForAdminDTO updateUserForAdminDTO, MultipartFile avatar) {
+        try {
+            Optional<User> userOptional = this.userRepository.findUserByUserIdAndActiveTrue(Integer.parseInt(updateUserForAdminDTO.getUserId()));
+            if (userOptional.isPresent()) {
+
+                User user = userOptional.get();
+                user.setFirstname(updateUserForAdminDTO.getFirstname());
+                user.setLastname(updateUserForAdminDTO.getLastname());
+                user.setGender(updateUserForAdminDTO.getGender());
+                user.setBirthday(this.dateFormatComponent.myDateFormat().parse(updateUserForAdminDTO.getBirthday()));
+
+                Optional<Role> roleOptional = this.roleRepository.findRoleByRoleIdAndActiveTrue(Integer.parseInt(updateUserForAdminDTO.getRoleId()));
+                if (roleOptional.isPresent()) {
+                    user.setRoleId(roleOptional.get());
+                }
+                user.setUpdatedDate(new Date());
+
+                if (avatar != null && !avatar.isEmpty()) {
+                    try {
+                        String linkCloudinaryAvatar = cloudinaryComponent.Cloudinary(avatar).get("secure_url").toString();
+                        user.setAvatar(linkCloudinaryAvatar);
+                    } catch (Exception ex) {
+                        Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                this.userRepository.save(user);
+                return 1;
+            } else {
+                return 2; // Có tìm được ai đâu mà update
+            }
+
+        } catch (DataAccessException ex) {
+            Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        } catch (ParseException ex) {
+            Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        } catch (NoSuchElementException ex) {
             Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
         }

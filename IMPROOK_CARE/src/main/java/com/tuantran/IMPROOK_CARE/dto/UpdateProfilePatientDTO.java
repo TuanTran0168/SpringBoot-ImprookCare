@@ -12,29 +12,28 @@ import lombok.Setter;
  *
  * @author Administrator
  */
-
 @Getter
 @Setter
 public class UpdateProfilePatientDTO {
 
     @NotBlank
-    String profilePatientId;
+    private String profilePatientId;
     @NotBlank
-    String name;
+    private String name;
     @NotBlank
-    String phonenumber;
+    private String phonenumber;
     @NotBlank
-    String provinceName;
+    private String provinceName;
     @NotBlank
-    String districtName;
+    private String districtName;
     @NotBlank
-    String wardName;
+    private String wardName;
     @NotBlank
-    String persionalAddress;
+    private String persionalAddress;
 //    @NotBlank
 //    String address;
     @NotBlank
-    String email;
+    private String email;
     @NotBlank
-    String relationship;
+    private String relationship;
 }

@@ -14,17 +14,21 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class AddUserForAdminDTO {
+public class UpdateUserForAdminDTO {
 
     @NotBlank
-    private String username;
+    private String userId;
     @NotBlank
-    private String password;
+    private String username;
     @NotBlank
     private String firstname;
     @NotBlank
     private String lastname;
     @NotBlank
     private String birthday;
+    
     private Boolean gender;
+    
+    @NotBlank
+    private String roleId;
 }

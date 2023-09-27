@@ -23,13 +23,13 @@ public class AddProfileDoctorDTO {
     @NotBlank
     private String bookingPrice;
     @NotBlank
-    String provinceName;
+    private String provinceName;
     @NotBlank
-    String districtName;
+    private String districtName;
     @NotBlank
-    String wardName;
+    private String wardName;
     @NotBlank
-    String workPlace;
+    private String workPlace;
     @NotBlank
     private String email;
     @NotBlank

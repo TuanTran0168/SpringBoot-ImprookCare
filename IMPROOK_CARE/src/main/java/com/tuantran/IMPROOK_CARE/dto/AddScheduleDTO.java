@@ -17,9 +17,9 @@ import lombok.Setter;
 public class AddScheduleDTO {
 
     @NotBlank
-    String profileDoctorId;
+    private String profileDoctorId;
     @NotBlank
-    String date;
+    private String date;
     @NotBlank
-    String timeSlotId;
+    private String timeSlotId;
 }

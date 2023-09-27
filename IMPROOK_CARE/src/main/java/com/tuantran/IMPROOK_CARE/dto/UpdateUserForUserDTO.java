@@ -15,13 +15,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UpdateUserForUserDTO {
+
     @NotBlank
-    String userId;
+    private String userId;
     @NotBlank
-    String firstname;
+    private String firstname;
     @NotBlank
-    String lastname;
-    Boolean gender;
+    private String lastname;
+    private Boolean gender;
     @NotBlank
-    String birthday;
+    private String birthday;
 }

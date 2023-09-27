@@ -6,6 +6,7 @@ package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.dto.AddUserForAdminDTO;
 import com.tuantran.IMPROOK_CARE.dto.RegisterDTO;
+import com.tuantran.IMPROOK_CARE.dto.UpdateUserForAdminDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateUserForUserDTO;
 import com.tuantran.IMPROOK_CARE.models.User;
 import java.util.List;
@@ -34,5 +35,7 @@ public interface UserService extends UserDetailsService {
     int registerUser(RegisterDTO registerDTO);
 
     int updateUser(UpdateUserForUserDTO updateUserForUserDTO, MultipartFile avatar);
+    
+    int updateUser(UpdateUserForAdminDTO updateUserForAdminDTO, MultipartFile avatar);
 
 }
