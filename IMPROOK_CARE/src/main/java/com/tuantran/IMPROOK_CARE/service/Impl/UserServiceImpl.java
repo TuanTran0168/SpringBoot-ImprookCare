@@ -8,6 +8,7 @@ import com.tuantran.IMPROOK_CARE.components.cloudinary.CloudinaryComponent;
 import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
 import com.tuantran.IMPROOK_CARE.components.password.PasswordComponent;
 import com.tuantran.IMPROOK_CARE.configs.cloudinary.CloudinaryConfig;
+import com.tuantran.IMPROOK_CARE.dto.AddUserForAdminDTO;
 import com.tuantran.IMPROOK_CARE.dto.RegisterDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateUserForUserDTO;
 import com.tuantran.IMPROOK_CARE.models.Role;
@@ -96,27 +97,6 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.save(user);
     }
 
-//    @Override
-//    public User registerUser(RegisterDTO registerDTO) {
-//        // Thực ra ở tầng verification đã xác thực phonenumber qua twilio rồi nên kiểm tra thêm cho yên tâm
-//        Optional<User> userOptional = this.userRepository.findUserByUsername(registerDTO.getUsername());
-//
-//        if (!userOptional.isPresent()) {
-//            User userRegister = new User();
-//            userRegister.setUsername(registerDTO.getUsername()); //Username là phonenumber (Quy ước mới)
-//            userRegister.setPassword(this.passworldComponent.PasswordEncoder().encode(registerDTO.getPassword()));
-//            userRegister.setFirstname(registerDTO.getFirstname());
-//            userRegister.setLastname(registerDTO.getLastname());
-//            userRegister.setGender(registerDTO.getGender());
-//            userRegister.setRoleId(this.roleRepository.findRoleByRoleNameAndActiveTrue("USER").get());
-//            userRegister.setCreatedDate(new Date());
-//            userRegister.setActive(Boolean.TRUE);
-//            return this.userRepository.save(userRegister);
-//
-//        }
-//
-//        return null; // Tồn tại phonenumber
-//    }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userOptional = userRepository.findUserByUsernameAndActiveTrue(username);
@@ -241,5 +221,31 @@ public class UserServiceImpl implements UserService {
             return 0;
         }
 
+    }
+
+    @Override
+    public int addUser(AddUserForAdminDTO addUserForAdminDTO, MultipartFile avatar) {
+        try {
+            User user = new User();
+            Optional<User> userOptional = this.userRepository.findUserByUsernameAndActiveTrue(addUserForAdminDTO.getUsername());
+
+            if (!userOptional.isPresent()) {
+                user.setUsername(addUserForAdminDTO.getUsername());
+            } else {
+                return 2; // Tồn tại số điện thoại
+            }
+
+            user.setPassword(this.passworldComponent.PasswordEncoder().encode(addUserForAdminDTO.getPassword()));
+            user.setFirstname(addUserForAdminDTO.getFirstname());
+            user.setLastname(addUserForAdminDTO.getLastname());
+            user.setBirthday(this.dateFormatComponent.myDateFormat().parse(addUserForAdminDTO.getBirthday()));
+            user.setGender(addUserForAdminDTO.getGender());
+
+            this.userRepository.save(user);
+            return 1;
+        } catch (ParseException ex) {
+            Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
     }
 }

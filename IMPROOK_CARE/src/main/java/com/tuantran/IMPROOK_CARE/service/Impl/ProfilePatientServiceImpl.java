@@ -12,6 +12,7 @@ import com.tuantran.IMPROOK_CARE.repository.ProfilePatientRepository;
 import com.tuantran.IMPROOK_CARE.repository.UserRepository;
 import com.tuantran.IMPROOK_CARE.service.ProfilePatientService;
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,5 +126,15 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
         } catch (NoSuchElementException ex) {
             return null;
         }
+    }
+
+    @Override
+    public List<ProfilePatient> findProfilePatientByUserIdAndActiveTrue(int userId) {
+        try {
+            return this.profilePatientRepository.findProfilePatientByUserIdAndActiveTrue(this.userRepository.findUserByUserIdAndActiveTrue(userId).get());
+        } catch (NoSuchElementException ex) {
+            return null;
+        }
+
     }
 }

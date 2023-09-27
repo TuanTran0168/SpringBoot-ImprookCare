@@ -5,6 +5,8 @@
 package com.tuantran.IMPROOK_CARE.repository;
 
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
+import com.tuantran.IMPROOK_CARE.models.User;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,6 +16,9 @@ import org.springframework.stereotype.Repository;
  * @author Administrator
  */
 @Repository
-public interface ProfilePatientRepository extends JpaRepository<ProfilePatient, Integer>{
+public interface ProfilePatientRepository extends JpaRepository<ProfilePatient, Integer> {
+
     Optional<ProfilePatient> findProfilePatientByProfilePatientIdAndActiveTrue(int profilePatientId);
+
+    List<ProfilePatient> findProfilePatientByUserIdAndActiveTrue(User userId);
 }

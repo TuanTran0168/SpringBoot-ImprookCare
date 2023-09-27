@@ -68,19 +68,9 @@ public class ApiUserController {
 
         this.authenticationComponent.authenticateUser(loginDTO.getUsername(), loginDTO.getPassword());
         final UserDetails userDetails = userService.loadUserByUsername(loginDTO.getUsername());
-        if (userDetails != null) {
-            String jwtResponse = jwtUtils.generateJwtToken(userDetails);
-            return ResponseEntity.ok().body(jwtResponse);
-        }
-//        Authentication authentication = this.authenticationComponent.authenticateUser(loginDTO.getUsername(), loginDTO.getPassword());
-//
-//        if (authentication != null) {
-//            String jwtResponse = jwtUtils.generateJwtToken(authentication);
-//            return ResponseEntity.ok().body(jwtResponse);
-//        }
 
-        // Vẫn bị trả 403 Forbidden  Bad credentials (sai tài khoản hoặc mật khẩu)
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Có lỗi xảy ra! Có thể là sai mật khẩu nhưng mà để từ từ fix được chưa!");
+        String jwtResponse = jwtUtils.generateJwtToken(userDetails);
+        return ResponseEntity.ok().body(jwtResponse);
     }
 
     @PostMapping("/public/register/")
@@ -97,15 +87,6 @@ public class ApiUserController {
         }
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-
-//        User user = this.userService.registerUser(registerDTO);
-//
-//        if (user != null) {
-//            message = "Đăng ký thành công!";
-//            return new ResponseEntity<>(message, HttpStatus.OK);
-//        }
-//
-//        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/auth/current-user/")
@@ -119,22 +100,6 @@ public class ApiUserController {
         }
     }
 
-//    @PostMapping("/update-user/")
-//    @CrossOrigin
-//    public ResponseEntity<String> updateUserForUser(@Valid @RequestBody UpdateUserForUserDTO updateUserForUserDTO, MultipartFile avatar) {
-//        String message = "Có lỗi xảy ra!";
-//        int check = this.userService.updateUser(updateUserForUserDTO, avatar);
-//        
-//        if (check == 1) {
-//            message = "Cập nhật thông tin thành công!";
-//            return new ResponseEntity<>(message, HttpStatus.OK);
-//        }
-//        else if (check == 2) {
-//            message = "Người dùng không tồn tại!";
-//        }
-//
-//        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-//    }
     @PostMapping(path = "/auth/update-user/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
     public ResponseEntity<String> updateUserForUser(@Valid UpdateUserForUserDTO updateUserForUserDTO, @RequestPart("avatar") MultipartFile avatar) {

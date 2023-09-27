@@ -65,7 +65,7 @@ public class JwtConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth
                         -> auth.requestMatchers("/api/public/**").permitAll()
-                                .requestMatchers("/api/auth/**").permitAll() // Xài Cách lấy Principal xác thực cho rồi :)
+                                .requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/api/auth/doctor/**").hasRole("DOCTOR")
                         .anyRequest().authenticated()
