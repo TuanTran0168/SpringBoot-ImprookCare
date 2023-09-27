@@ -36,10 +36,9 @@ public class JwtConfig {
 
 //    @Autowired
 //    private UserService userService;
-
     @Autowired
     private UserDetailsService userDetailsService;
-    
+
     @Autowired
     private PasswordComponent passwordService;
 
@@ -65,9 +64,9 @@ public class JwtConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth
                         -> auth.requestMatchers("/api/public/**").permitAll()
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/api/auth/doctor/**").hasRole("DOCTOR")
+                        .requestMatchers("/api/auth/**").permitAll()// Cái này permitAll thì 2 cái dưới phế :) nhưng bên Client reactJs không hiểu sao không fetch được?
+                        .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/auth/doctor/**").hasRole("DOCTOR")
                         .anyRequest().authenticated()
                 );
 

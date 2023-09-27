@@ -10,7 +10,11 @@ import com.tuantran.IMPROOK_CARE.dto.BookingDTO;
  *
  * @author Administrator
  */
-
 public interface BookingService {
+
     int addBooking(BookingDTO bookingDTO);
+
+    int acceiptBooking(int bookingId);
+    
+    int denyBooking(int bookingId);
 }
