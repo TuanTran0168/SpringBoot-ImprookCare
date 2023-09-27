@@ -28,7 +28,7 @@ public class ApiProfileDoctorController {
     @Autowired
     private ProfileDoctorService profileDoctorService;
 
-    @PostMapping("/auth/add-profile-doctor/")
+    @PostMapping("/auth/doctor/add-profile-doctor/")
     @CrossOrigin
     public ResponseEntity<String> addProfileDoctor(@Valid @RequestBody AddProfileDoctorDTO addProfileDoctorDTO) {
         String message = "Có lỗi xảy ra!";
@@ -42,7 +42,7 @@ public class ApiProfileDoctorController {
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/auth/update-profile-doctor/")
+    @PostMapping("/auth/doctor/update-profile-doctor/")
     @CrossOrigin
     public ResponseEntity<String> updateProfileDoctor(@Valid @RequestBody UpdateProfileDoctorDTO updateProfileDoctorDTO) {
         String message = "Có lỗi xảy ra!";

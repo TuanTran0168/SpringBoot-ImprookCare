@@ -235,12 +235,12 @@ public class UserServiceImpl implements UserService {
                 user.setUsername(addUserForAdminDTO.getUsername());
             }
 
-            if (!userOptional.isPresent()) {
-                user.setUsername(addUserForAdminDTO.getUsername());
-            } else {
-                return 2; // Tồn tại số điện thoại
-
-            }
+//            if (!userOptional.isPresent()) {
+//                user.setUsername(addUserForAdminDTO.getUsername());
+//            } else {
+//                return 2; // Tồn tại số điện thoại
+//
+//            }
 
             user.setPassword(this.passworldComponent.PasswordEncoder().encode(addUserForAdminDTO.getPassword()));
             user.setFirstname(addUserForAdminDTO.getFirstname());

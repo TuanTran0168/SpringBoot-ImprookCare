@@ -27,7 +27,7 @@ public class AddProfilePatientDTO {
     @NotBlank
     private String wardName;
     @NotBlank
-    private String persionalAddress;
+    private String personalAddress;
 //    @NotBlank
 //    String address;
     @NotBlank

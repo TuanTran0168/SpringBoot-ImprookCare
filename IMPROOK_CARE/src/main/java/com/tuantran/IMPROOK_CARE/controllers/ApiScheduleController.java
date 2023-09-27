@@ -52,7 +52,7 @@ public class ApiScheduleController {
         return ResponseEntity.ok().body(this.timeSlotService.findTimeSlotByTimeDistanceIdAndActiveTrue(Integer.parseInt(timeDistanceId)));
     }
 
-    @PostMapping("/auth/add-schedule/")
+    @PostMapping("/auth/doctor/add-schedule/")
     @CrossOrigin
     public ResponseEntity<String> addSchedule(@Valid @RequestBody AddScheduleDTO addScheduleDTO) {
         String message = "Có lỗi xảy ra!";
