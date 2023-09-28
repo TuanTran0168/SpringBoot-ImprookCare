@@ -10,11 +10,14 @@ import com.tuantran.IMPROOK_CARE.service.SpecialtyService;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Administrator
  */
+
+@Service
 public class SpecialtyServiceImpl implements SpecialtyService {
 
     @Autowired
