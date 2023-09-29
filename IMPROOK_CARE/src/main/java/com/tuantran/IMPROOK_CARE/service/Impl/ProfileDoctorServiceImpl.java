@@ -14,6 +14,7 @@ import com.tuantran.IMPROOK_CARE.repository.SpecialtyRepository;
 import com.tuantran.IMPROOK_CARE.repository.UserRepository;
 import com.tuantran.IMPROOK_CARE.service.ProfileDoctorService;
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,6 +125,30 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
             return 0;
         } catch (NoSuchElementException ex) {
             return 0;
+        }
+    }
+
+    @Override
+    public List<ProfileDoctor> findAllProfileDoctorByActiveTrue() {
+        return this.profileDoctorRepository.findAllProfileDoctorByActiveTrue();
+    }
+
+    @Override
+    public ProfileDoctor findProfileDoctorByProfileDoctorIdAndActiveTrue(int profileDoctorId) {
+        try {
+            return this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(profileDoctorId).get();
+        } catch (NoSuchElementException ex) {
+            return null;
+        }
+
+    }
+
+    @Override
+    public List<ProfileDoctor> findProfilePatientByUserIdAndActiveTrue(int userId) {
+        try {
+            return this.profileDoctorRepository.findProfilePatientByUserIdAndActiveTrue(this.userRepository.findUserByUserIdAndActiveTrue(userId).get());
+        } catch (NoSuchElementException ex) {
+            return null;
         }
     }
 

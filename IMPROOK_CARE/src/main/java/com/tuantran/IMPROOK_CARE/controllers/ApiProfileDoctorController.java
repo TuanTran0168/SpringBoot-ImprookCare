@@ -6,12 +6,16 @@ package com.tuantran.IMPROOK_CARE.controllers;
 
 import com.tuantran.IMPROOK_CARE.dto.AddProfileDoctorDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateProfileDoctorDTO;
+import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import com.tuantran.IMPROOK_CARE.service.ProfileDoctorService;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,5 +58,25 @@ public class ApiProfileDoctorController {
         }
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/public/profile-doctor/")
+    @CrossOrigin
+    public ResponseEntity<List<ProfileDoctor>> listProfileDoctor() {
+        return new ResponseEntity<>(this.profileDoctorService.findAllProfileDoctorByActiveTrue(), HttpStatus.OK);
+    }
+
+    @GetMapping("/public/profile-doctor/{profileDoctorId}/")
+    @CrossOrigin
+    public ResponseEntity<ProfileDoctor> profileDoctorDetail(@PathVariable(value = "profileDoctorId") String profileDoctorId) {
+
+        return new ResponseEntity<>(this.profileDoctorService.findProfileDoctorByProfileDoctorIdAndActiveTrue(Integer.parseInt(profileDoctorId)), HttpStatus.OK);
+    }
+
+    @GetMapping("/public/user/{userId}/profile-doctor/")
+    @CrossOrigin
+    public ResponseEntity<List<ProfileDoctor>> profileDoctorByUserId(@PathVariable(value = "userId") String userId) {
+
+        return new ResponseEntity<>(this.profileDoctorService.findProfilePatientByUserIdAndActiveTrue(Integer.parseInt(userId)), HttpStatus.OK);
     }
 }
