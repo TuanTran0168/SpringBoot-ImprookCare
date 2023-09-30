@@ -6,6 +6,7 @@ package com.tuantran.IMPROOK_CARE.repository;
 
 import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -39,4 +40,19 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             + "FROM Booking b JOIN b.profilePatientId pp JOIN b.scheduleId s JOIN s.profileDoctorId pd JOIN pp.userId u "
             + "WHERE u.userId = :userId")
     List<Object[]> getBookingForUserView(@Param("userId") int userId);
+
+    @Query("SELECT ts.timeSlotId, ts.timeBegin, ts.timeEnd, s.booked "
+            + "FROM Schedule s "
+            + "JOIN s.timeSlotId ts "
+            + "JOIN s.profileDoctorId pd "
+            + "WHERE pd.profileDoctorId = :profileDoctorId "
+            + "AND s.date = :date")
+    List<Object[]> getTimeSlotsForDoctorOnDate(@Param("profileDoctorId") int profileDoctorId, @Param("date") Date date);
+
+    @Query("SELECT DISTINCT s.date "
+            + "FROM Schedule s "
+            + "JOIN s.timeSlotId ts "
+            + "JOIN s.profileDoctorId pd "
+            + "WHERE pd.profileDoctorId = :profileDoctorId")
+    List<Date> getDatesForProfileDoctor(@Param("profileDoctorId") int profileDoctorId);
 }

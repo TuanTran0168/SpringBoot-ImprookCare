@@ -4,6 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.service.Impl;
 
+import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
 import com.tuantran.IMPROOK_CARE.dto.BookingDTO;
 import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.BookingStatus;
@@ -15,6 +16,8 @@ import com.tuantran.IMPROOK_CARE.repository.ProfilePatientRepository;
 import com.tuantran.IMPROOK_CARE.repository.ScheduleRepository;
 import com.tuantran.IMPROOK_CARE.service.BookingService;
 import jakarta.persistence.criteria.Join;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -45,6 +48,8 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private BookingStatusRepository bookingStatusRepository;
     
+    @Autowired
+    private DateFormatComponent dateFormatComponent;
 
     @Override
     public int addBooking(BookingDTO bookingDTO) {
@@ -110,10 +115,25 @@ public class BookingServiceImpl implements BookingService {
 //        
 //        return this.joinBookingRepository.findBookingForUserView(specification);
 //    }
-
     @Override
     public List<Object[]> getBookingForUserView(int userId) {
         return this.bookingRepository.getBookingForUserView(userId);
+    }
+
+    @Override
+    public List<Object[]> getTimeSlotsForDoctorOnDate(int profileDoctorId, String date) {
+        try {
+            Date date_parse = this.dateFormatComponent.myDateFormat().parse(date);
+            return this.bookingRepository.getTimeSlotsForDoctorOnDate(profileDoctorId, date_parse);
+        } catch (ParseException ex) {
+            Logger.getLogger(BookingServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<Date> getDatesForProfileDoctor(int profileDoctorId) {
+        return this.bookingRepository.getDatesForProfileDoctor(profileDoctorId);
     }
 
 }

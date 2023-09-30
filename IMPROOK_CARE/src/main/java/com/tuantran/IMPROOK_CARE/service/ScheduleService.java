@@ -5,7 +5,10 @@
 package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.dto.AddScheduleDTO;
+import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import com.tuantran.IMPROOK_CARE.models.Schedule;
+import com.tuantran.IMPROOK_CARE.models.TimeSlot;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,4 +22,8 @@ public interface ScheduleService {
     int addCustomSchedule(List<AddScheduleDTO> addScheduleDTOList);
 
     Schedule findScheduleByIdAndActiveTrue(int scheduleId);
+
+    Schedule findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(int profiledoctorId, String date, int timeSlotId);
+    
+    public int isScheduleExists(int profiledoctorId, String date, int timeSlotId);
 }

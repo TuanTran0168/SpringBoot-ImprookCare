@@ -6,7 +6,9 @@ package com.tuantran.IMPROOK_CARE.service.Impl;
 
 import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
 import com.tuantran.IMPROOK_CARE.dto.AddScheduleDTO;
+import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import com.tuantran.IMPROOK_CARE.models.Schedule;
+import com.tuantran.IMPROOK_CARE.models.TimeSlot;
 import com.tuantran.IMPROOK_CARE.repository.ProfileDoctorRepository;
 import com.tuantran.IMPROOK_CARE.repository.ScheduleRepository;
 import com.tuantran.IMPROOK_CARE.repository.TimeSlotRepository;
@@ -14,6 +16,8 @@ import com.tuantran.IMPROOK_CARE.service.ScheduleService;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +38,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Autowired
     private TimeSlotRepository timeSlotRepository;
-    
+
     @Autowired
     DateFormatComponent dateFormatComponent;
 
@@ -48,7 +52,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             schedule.setCreatedDate(new Date());
             schedule.setActive(Boolean.TRUE);
             schedule.setBooked(Boolean.FALSE);
-            
+
             this.scheduleRepository.save(schedule);
             return 1;
         } catch (ParseException ex) {
@@ -59,17 +63,80 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public int addCustomSchedule(List<AddScheduleDTO> addScheduleDTOList) {
-        
-        for(AddScheduleDTO addScheduleDTO : addScheduleDTOList) {
+
+        for (AddScheduleDTO addScheduleDTO : addScheduleDTOList) {
             this.addSchedule(addScheduleDTO);
         }
-        
+
         return 1;
     }
 
     @Override
     public Schedule findScheduleByIdAndActiveTrue(int scheduleId) {
         return this.scheduleRepository.findScheduleByScheduleIdAndActiveTrue(scheduleId).get();
+    }
+
+    @Override
+    public Schedule findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(int profiledoctorId, String date, int timeSlotId) {
+
+        try {
+            Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(profiledoctorId);
+            Optional<TimeSlot> timeSlotOptional = this.timeSlotRepository.findTimeSlotByTimeSlotIdAndActiveTrue(timeSlotId);
+            Date date_parse = this.dateFormatComponent.myDateFormat().parse(date);
+
+            if (!profileDoctorOptional.isPresent()) {
+                return null;
+            }
+
+            if (!timeSlotOptional.isPresent()) {
+                return null;
+            }
+
+            Optional<Schedule> scheduleOptional = this.scheduleRepository.findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(profileDoctorOptional.get(), date_parse, timeSlotOptional.get());
+            if (scheduleOptional.isPresent()) {
+                return scheduleOptional.get();
+            } else {
+                return null;
+            }
+
+        } catch (ParseException ex) {
+            Logger.getLogger(ScheduleServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchElementException ex) {
+            Logger.getLogger(ScheduleServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public int isScheduleExists(int profiledoctorId, String date, int timeSlotId) {
+
+        try {
+            Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(profiledoctorId);
+            Optional<TimeSlot> timeSlotOptional = this.timeSlotRepository.findTimeSlotByTimeSlotIdAndActiveTrue(timeSlotId);
+            Date date_parse = this.dateFormatComponent.myDateFormat().parse(date);
+
+            if (!profileDoctorOptional.isPresent()) {
+                return 2;
+            }
+
+            if (!timeSlotOptional.isPresent()) {
+                return 2;
+            }
+
+            Optional<Schedule> scheduleOptional = this.scheduleRepository.findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(profileDoctorOptional.get(), date_parse, timeSlotOptional.get());
+            if (scheduleOptional.isPresent()) {
+                return 1;
+            } else {
+                return 0;
+            }
+
+        } catch (ParseException ex) {
+            Logger.getLogger(ScheduleServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return 2;
+        } catch (NoSuchElementException ex) {
+            Logger.getLogger(ScheduleServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return 2;
+        }
     }
 
 }

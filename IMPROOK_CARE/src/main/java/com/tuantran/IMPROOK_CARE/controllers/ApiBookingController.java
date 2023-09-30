@@ -7,6 +7,7 @@ package com.tuantran.IMPROOK_CARE.controllers;
 import com.tuantran.IMPROOK_CARE.dto.BookingDTO;
 import com.tuantran.IMPROOK_CARE.service.BookingService;
 import jakarta.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +52,20 @@ public class ApiBookingController {
     public ResponseEntity<List<Object[]>> getBookingForUserView(@RequestBody Map<String, String> params) {
         String userId = params.get("userId");
         return new ResponseEntity<>(this.bookingService.getBookingForUserView(Integer.parseInt(userId)), HttpStatus.OK);
+    }
+
+    @PostMapping("/public/time-slot-booking/")
+    @CrossOrigin
+    public ResponseEntity<List<Object[]>> getTimeSlotsForDoctorOnDate(@RequestBody Map<String, String> params) {
+        String profileDoctorId = params.get("profileDoctorId");
+        String date = params.get("date");
+        return new ResponseEntity<>(this.bookingService.getTimeSlotsForDoctorOnDate(Integer.parseInt(profileDoctorId), date), HttpStatus.OK);
+    }
+    
+    @PostMapping("/public/date-booking/")
+    @CrossOrigin
+    public ResponseEntity<List<Date>> getDatesForProfileDoctor(@RequestBody Map<String, String> params) {
+        String profileDoctorId = params.get("profileDoctorId");
+        return new ResponseEntity<>(this.bookingService.getDatesForProfileDoctor(Integer.parseInt(profileDoctorId)), HttpStatus.OK);
     }
 }
