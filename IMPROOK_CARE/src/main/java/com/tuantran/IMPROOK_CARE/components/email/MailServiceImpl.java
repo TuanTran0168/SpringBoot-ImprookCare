@@ -2,6 +2,7 @@ package com.tuantran.IMPROOK_CARE.components.email;
 
 import com.tuantran.IMPROOK_CARE.dto.EmailDTO;
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
@@ -17,7 +18,7 @@ public class MailServiceImpl implements MailService {
     private JavaMailSender javaMailSender;
 
     @Override
-    public void sendEmail(EmailDTO mail) {
+    public int sendEmail(EmailDTO mail) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
@@ -26,8 +27,13 @@ public class MailServiceImpl implements MailService {
             mimeMessageHelper.setTo(mail.getMailTo());
             mimeMessageHelper.setText(mail.getMailContent());
             javaMailSender.send(mimeMessageHelper.getMimeMessage());
-        } catch (MessagingException e) {
-            e.printStackTrace();
+            return 1;
+        } catch (AddressException ex) {
+            ex.printStackTrace();
+            return 2;
+        } catch (MessagingException ex) {
+            ex.printStackTrace();
+            return 0;
         }
     }
 

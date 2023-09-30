@@ -4,5 +4,5 @@ import com.tuantran.IMPROOK_CARE.dto.EmailDTO;
 
 public interface MailService {
 
-    public void sendEmail(EmailDTO mail);
+    public int sendEmail(EmailDTO mail);
 }
