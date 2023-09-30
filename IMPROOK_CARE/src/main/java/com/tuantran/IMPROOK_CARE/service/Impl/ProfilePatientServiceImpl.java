@@ -4,6 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.service.Impl;
 
+import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
 import com.tuantran.IMPROOK_CARE.dto.AddProfilePatientDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateProfilePatientDTO;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
@@ -11,10 +12,13 @@ import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.repository.ProfilePatientRepository;
 import com.tuantran.IMPROOK_CARE.repository.UserRepository;
 import com.tuantran.IMPROOK_CARE.service.ProfilePatientService;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -32,6 +36,9 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private DateFormatComponent dateFormatComponent;
+
     @Override
     public int addProfilePatient(AddProfilePatientDTO addProfilePatientDTO) {
         try {
@@ -39,6 +46,8 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
 
             profilePatient.setName(addProfilePatientDTO.getName());
             profilePatient.setPhonenumber(addProfilePatientDTO.getPhonenumber());
+            profilePatient.setGender(addProfilePatientDTO.getGender());
+            profilePatient.setBirthday(this.dateFormatComponent.myDateFormat().parse(addProfilePatientDTO.getBirthday()));
             profilePatient.setProvinceName(addProfilePatientDTO.getProvinceName());
             profilePatient.setDistrictName(addProfilePatientDTO.getDistrictName());
             profilePatient.setWardName(addProfilePatientDTO.getWardName());
@@ -65,9 +74,13 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
             this.profilePatientRepository.save(profilePatient);
             return 1;
         } catch (DataAccessException ex) {
-            ex.printStackTrace();
+            Logger.getLogger(ProfilePatientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
         } catch (NoSuchElementException ex) {
+            Logger.getLogger(ProfilePatientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        } catch (ParseException ex) {
+            Logger.getLogger(ProfilePatientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
         }
 
@@ -83,6 +96,8 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
                 ProfilePatient profilePatient = profilePatientOptional.get();
                 profilePatient.setName(updateProfilePatientDTO.getName());
                 profilePatient.setPhonenumber(updateProfilePatientDTO.getPhonenumber());
+                profilePatient.setGender(updateProfilePatientDTO.getGender());
+                profilePatient.setBirthday(this.dateFormatComponent.myDateFormat().parse(updateProfilePatientDTO.getBirthday()));
                 profilePatient.setProvinceName(updateProfilePatientDTO.getProvinceName());
                 profilePatient.setDistrictName(updateProfilePatientDTO.getDistrictName());
                 profilePatient.setWardName(updateProfilePatientDTO.getWardName());
@@ -107,9 +122,14 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
             }
 
         } catch (DataAccessException ex) {
+            Logger.getLogger(ProfilePatientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             ex.printStackTrace();
             return 0;
         } catch (NoSuchElementException ex) {
+            Logger.getLogger(ProfilePatientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        } catch (ParseException ex) {
+            Logger.getLogger(ProfilePatientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
         }
     }

@@ -31,7 +31,7 @@ public class ApiEmailController {
     @CrossOrigin
     public ResponseEntity<EmailDTO> addBooking() {
         EmailDTO mail = new EmailDTO();
-        mail.setMailFrom("2051050549tuan@ou.edu.vn");
+        mail.setMailFrom("trandangtuan0168@gmail.com");
         mail.setMailTo("2051050138hieu@ou.edu.vn");
         mail.setMailSubject("Chào bạn mình là Tuấn Trần");
         mail.setMailContent("DCMM!");

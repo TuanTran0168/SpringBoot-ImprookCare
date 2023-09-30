@@ -35,6 +35,7 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "ProfilePatient.findByName", query = "SELECT p FROM ProfilePatient p WHERE p.name = :name"),
     @NamedQuery(name = "ProfilePatient.findByPhonenumber", query = "SELECT p FROM ProfilePatient p WHERE p.phonenumber = :phonenumber"),
     @NamedQuery(name = "ProfilePatient.findByBirthday", query = "SELECT p FROM ProfilePatient p WHERE p.birthday = :birthday"),
+    @NamedQuery(name = "ProfilePatient.findByGender", query = "SELECT p FROM ProfilePatient p WHERE p.gender = :gender"),
     @NamedQuery(name = "ProfilePatient.findByProvinceName", query = "SELECT p FROM ProfilePatient p WHERE p.provinceName = :provinceName"),
     @NamedQuery(name = "ProfilePatient.findByDistrictName", query = "SELECT p FROM ProfilePatient p WHERE p.districtName = :districtName"),
     @NamedQuery(name = "ProfilePatient.findByWardName", query = "SELECT p FROM ProfilePatient p WHERE p.wardName = :wardName"),
@@ -61,6 +62,8 @@ public class ProfilePatient implements Serializable {
     @Column(name = "birthday")
     @Temporal(TemporalType.TIMESTAMP)
     private Date birthday;
+    @Column(name = "gender")
+    private Boolean gender;
     @Column(name = "province_name")
     private String provinceName;
     @Column(name = "district_name")
@@ -130,6 +133,14 @@ public class ProfilePatient implements Serializable {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public Boolean getGender() {
+        return gender;
+    }
+
+    public void setGender(Boolean gender) {
+        this.gender = gender;
     }
 
     public String getProvinceName() {

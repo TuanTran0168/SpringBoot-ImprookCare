@@ -22,6 +22,9 @@ public class UpdateProfilePatientDTO {
     private String name;
     @NotBlank
     private String phonenumber;
+    private Boolean gender;
+    @NotBlank
+    private String birthday;
     @NotBlank
     private String provinceName;
     @NotBlank

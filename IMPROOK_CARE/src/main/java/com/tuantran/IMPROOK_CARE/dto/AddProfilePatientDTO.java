@@ -12,14 +12,17 @@ import lombok.Setter;
  *
  * @author Administrator
  */
-
 @Getter
 @Setter
 public class AddProfilePatientDTO {
+
     @NotBlank
     private String name;
     @NotBlank
     private String phonenumber;
+    private Boolean gender;
+    @NotBlank
+    private String birthday;
     @NotBlank
     private String provinceName;
     @NotBlank
