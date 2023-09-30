@@ -29,7 +29,7 @@ public class UpdateProfilePatientDTO {
     @NotBlank
     private String wardName;
     @NotBlank
-    private String persionalAddress;
+    private String personalAddress;
 //    @NotBlank
 //    String address;
     @NotBlank

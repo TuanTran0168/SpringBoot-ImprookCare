@@ -86,9 +86,9 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
                 profilePatient.setProvinceName(updateProfilePatientDTO.getProvinceName());
                 profilePatient.setDistrictName(updateProfilePatientDTO.getDistrictName());
                 profilePatient.setWardName(updateProfilePatientDTO.getWardName());
-                profilePatient.setPersonalAddress(updateProfilePatientDTO.getPersionalAddress());
+                profilePatient.setPersonalAddress(updateProfilePatientDTO.getPersonalAddress());
                 profilePatient.setAddress(
-                        updateProfilePatientDTO.getPersionalAddress()
+                        updateProfilePatientDTO.getPersonalAddress()
                         + " " + updateProfilePatientDTO.getWardName()
                         + " " + updateProfilePatientDTO.getDistrictName()
                         + " " + updateProfilePatientDTO.getProvinceName()
