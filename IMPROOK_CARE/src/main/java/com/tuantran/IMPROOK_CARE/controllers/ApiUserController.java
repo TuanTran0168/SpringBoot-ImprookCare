@@ -29,6 +29,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -208,5 +209,12 @@ public class ApiUserController {
         }
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/public/user/{userId}/")
+    @CrossOrigin
+    public ResponseEntity<User> getUserById(@PathVariable(value = "userId") String userId) throws Exception {
+
+        return new ResponseEntity<>(this.userService.findUserByUserIdAndActiveTrue(Integer.parseInt(userId)), HttpStatus.OK);
     }
 }
