@@ -5,6 +5,8 @@
 package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.dto.AddUserForAdminDTO;
+import com.tuantran.IMPROOK_CARE.dto.ChangePasswordDTO;
+import com.tuantran.IMPROOK_CARE.dto.ForgotPasswordDTO;
 import com.tuantran.IMPROOK_CARE.dto.RegisterDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateUserForAdminDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateUserForUserDTO;
@@ -35,7 +37,11 @@ public interface UserService extends UserDetailsService {
     int registerUser(RegisterDTO registerDTO);
 
     int updateUser(UpdateUserForUserDTO updateUserForUserDTO, MultipartFile avatar);
-    
+
     int updateUser(UpdateUserForAdminDTO updateUserForAdminDTO, MultipartFile avatar);
+
+    int changePassword(ChangePasswordDTO changePasswordDTO);
+
+    int forgotPassword(ForgotPasswordDTO forgotPasswordDTO);
 
 }

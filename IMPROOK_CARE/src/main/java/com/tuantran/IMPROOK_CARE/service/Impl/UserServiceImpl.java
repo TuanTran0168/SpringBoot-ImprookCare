@@ -9,6 +9,8 @@ import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
 import com.tuantran.IMPROOK_CARE.components.password.PasswordComponent;
 import com.tuantran.IMPROOK_CARE.configs.cloudinary.CloudinaryConfig;
 import com.tuantran.IMPROOK_CARE.dto.AddUserForAdminDTO;
+import com.tuantran.IMPROOK_CARE.dto.ChangePasswordDTO;
+import com.tuantran.IMPROOK_CARE.dto.ForgotPasswordDTO;
 import com.tuantran.IMPROOK_CARE.dto.RegisterDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateUserForAdminDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateUserForUserDTO;
@@ -241,7 +243,6 @@ public class UserServiceImpl implements UserService {
 //                return 2; // Tồn tại số điện thoại
 //
 //            }
-
             user.setPassword(this.passworldComponent.PasswordEncoder().encode(addUserForAdminDTO.getPassword()));
             user.setFirstname(addUserForAdminDTO.getFirstname());
             user.setLastname(addUserForAdminDTO.getLastname());
@@ -295,6 +296,60 @@ public class UserServiceImpl implements UserService {
             Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
         } catch (ParseException ex) {
+            Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        } catch (NoSuchElementException ex) {
+            Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+    }
+
+    @Override
+    public int changePassword(ChangePasswordDTO changePasswordDTO) {
+        try {
+            Optional<User> userOptional = this.userRepository.findUserByUsernameAndActiveTrue(changePasswordDTO.getUsername());
+            if (userOptional.isPresent()) {
+
+                User user = userOptional.get();
+
+                if (this.passworldComponent.PasswordEncoder().matches(changePasswordDTO.getCurrentPassword(), user.getPassword())) {
+                    user.setPassword(this.passworldComponent.PasswordEncoder().encode(changePasswordDTO.getNewPassword()));
+                    this.userRepository.save(user);
+                    return 1;
+                } else {
+                    return 3; // mật khẩu cũ không khớp
+                }
+
+            } else {
+                return 2; // Có tìm được ai đâu mà update
+            }
+
+        } catch (DataAccessException ex) {
+            Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        } catch (NoSuchElementException ex) {
+            Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+    }
+
+    @Override
+    public int forgotPassword(ForgotPasswordDTO forgotPasswordDTO) {
+        try {
+            Optional<User> userOptional = this.userRepository.findUserByUsernameAndActiveTrue(forgotPasswordDTO.getUsername());
+            if (userOptional.isPresent()) {
+
+                User user = userOptional.get();
+
+                user.setPassword(this.passworldComponent.PasswordEncoder().encode(forgotPasswordDTO.getNewPassword()));
+                this.userRepository.save(user);
+                return 1;
+
+            } else {
+                return 2; // Có tìm được ai đâu mà update
+            }
+
+        } catch (DataAccessException ex) {
             Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
         } catch (NoSuchElementException ex) {

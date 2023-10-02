@@ -5,25 +5,23 @@
 package com.tuantran.IMPROOK_CARE.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import java.util.Date;
-import java.util.List;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
  * @author Administrator
  */
-@Data
-public class SendCustomEmailDTO {
+@Getter
+@Setter
+public class ChangePasswordDTO {
 
     @NotBlank
-    private String mailTo;
-    @NotBlank
-    private String mailSubject;
-    @NotBlank
-    private String mailContent;
+    private String username;
 
-    public Date getMailSendDate() {
-        return new Date();
-    }
+    @NotBlank
+    private String currentPassword;
+
+    @NotBlank
+    private String newPassword;
 }

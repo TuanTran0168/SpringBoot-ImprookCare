@@ -48,7 +48,7 @@ public class ApiEmailController {
 
     @PostMapping("/public/send-custom-email/")
     @CrossOrigin
-    public ResponseEntity<Map<String, String>> sendCustomEmail(@RequestBody SendCustomEmailDTO sendCustomEmailDTO) {
+    public ResponseEntity<Map<String, String>> sendCustomEmail(@Valid @RequestBody SendCustomEmailDTO sendCustomEmailDTO) {
         Map<String, String> map = new HashMap<>();
         String message = "Có lỗi xảy ra!";
 
@@ -72,7 +72,7 @@ public class ApiEmailController {
 
         if (check == 1) {
             message = "Gửi email thành công đến địa chỉ: " + emailDTO.getMailTo();
-            map.put(message, message);
+            map.put("message", message);
             return new ResponseEntity<>(map, HttpStatus.OK);
         } else if (check == 2) {
             message = "Địa chỉ email người nhận không đúng!";

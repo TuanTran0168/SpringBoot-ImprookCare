@@ -9,6 +9,8 @@ import com.tuantran.IMPROOK_CARE.components.twilio.SmsService;
 import com.tuantran.IMPROOK_CARE.configs.jwt.JwtUtils;
 import com.tuantran.IMPROOK_CARE.configs.twilio.TwilioConfiguration;
 import com.tuantran.IMPROOK_CARE.dto.AddUserForAdminDTO;
+import com.tuantran.IMPROOK_CARE.dto.ChangePasswordDTO;
+import com.tuantran.IMPROOK_CARE.dto.ForgotPasswordDTO;
 import com.tuantran.IMPROOK_CARE.dto.LoginDTO;
 import com.tuantran.IMPROOK_CARE.dto.RegisterDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateUserForAdminDTO;
@@ -144,7 +146,7 @@ public class ApiUserController {
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
-    
+
     @PostMapping(path = "/auth/admin/update-user/",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -155,7 +157,6 @@ public class ApiUserController {
         // org.springframework.web.HttpMediaTypeNotSupportedException: Content-Type 'multipart/form-data;boundary=--------------------------993163030984227239709456;charset=UTF-8' is not supported
         // Chắc là 2 loại Request khác nhau nó không chịu
         // fetch bên postman thì dùng Body form-data gửi đủ hết thông tin trong DTO + 1 avatar (file)
-        
         String message = "Có lỗi xảy ra!";
         int check = this.userService.updateUser(updateUserForAdminDTO, avatar);
 
@@ -164,9 +165,46 @@ public class ApiUserController {
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else if (check == 2) {
             message = "Người dùng không tồn tại!";
-        }
-        else if (check == 0) {
+        } else if (check == 0) {
             message = "Cập nhật thông tin thất bại!";
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/auth/change-password/")
+    @CrossOrigin
+    public ResponseEntity<String> changePassword(@Valid @RequestBody ChangePasswordDTO changePasswordDTO) throws Exception {
+        String message = "Có lỗi xảy ra!";
+        int check = this.userService.changePassword(changePasswordDTO);
+
+        if (check == 1) {
+            message = "Đổi mật khẩu thành công!";
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else if (check == 2) {
+            message = "Người dùng không tồn tại!";
+        } else if (check == 3) {
+            message = "Mật khẩu hiện tại và mật khẩu cũ không khớp!";
+        } else if (check == 0) {
+            message = "Đổi mật khẩu thất bại!";
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/public/forgot-password/")
+    @CrossOrigin
+    public ResponseEntity<String> forgotPassword(@Valid @RequestBody ForgotPasswordDTO forgotPasswordDTO) throws Exception {
+        String message = "Có lỗi xảy ra!";
+        int check = this.userService.forgotPassword(forgotPasswordDTO);
+
+        if (check == 1) {
+            message = "Đổi mật khẩu thành công!";
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else if (check == 2) {
+            message = "Người dùng không tồn tại!";
+        } else if (check == 0) {
+            message = "Đổi mật khẩu thất bại!";
         }
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
