@@ -20,7 +20,7 @@ public interface BookingService {
 
     public int cancelBooking(int bookingId);
 
-    int acceiptBooking(int bookingId);
+    int acceptBooking(int bookingId);
 
     int denyBooking(int bookingId);
 
@@ -30,4 +30,6 @@ public interface BookingService {
     List<Object[]> getTimeSlotsForDoctorOnDate(@Param("profileDoctorId") int profileDoctorId, @Param("date") String date);
 
     List<Date> getDatesForProfileDoctor(@Param("profileDoctorId") int profileDoctorId);
+    
+    List<Object[]> getBookingForDoctorView(@Param("profileDoctorId") int profileDoctorId);
 }

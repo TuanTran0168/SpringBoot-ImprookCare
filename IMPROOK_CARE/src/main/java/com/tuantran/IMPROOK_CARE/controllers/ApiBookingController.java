@@ -76,7 +76,7 @@ public class ApiBookingController {
     public ResponseEntity<String> acceptBooking(@RequestBody String bookingId) {
 
         String message = "Có lỗi xảy ra!";
-        int check = this.bookingService.acceiptBooking(Integer.parseInt(bookingId));
+        int check = this.bookingService.acceptBooking(Integer.parseInt(bookingId));
 
         if (check == 1) {
             message = "Xác nhận thành công lịch đặt khám!";
@@ -126,5 +126,12 @@ public class ApiBookingController {
         }
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+    
+    @PostMapping("/auth/booking-doctor-view/")
+    @CrossOrigin
+    public ResponseEntity<List<Object[]>> getBookingForDoctorView(@RequestBody Map<String, String> params) {
+        String profiledoctorId = params.get("profiledoctorId");
+        return new ResponseEntity<>(this.bookingService.getBookingForDoctorView(Integer.parseInt(profiledoctorId)), HttpStatus.OK);
     }
 }

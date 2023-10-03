@@ -109,7 +109,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public int acceiptBooking(int bookingId) {
+    public int acceptBooking(int bookingId) {
         try {
             Optional<Booking> bookingOptional = this.bookingRepository.findBookingByBookingIdAndActiveTrue(bookingId);
 
@@ -179,6 +179,11 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<Date> getDatesForProfileDoctor(int profileDoctorId) {
         return this.bookingRepository.getDatesForProfileDoctor(profileDoctorId);
+    }
+
+    @Override
+    public List<Object[]> getBookingForDoctorView(int profileDoctorId) {
+        return this.bookingRepository.getBookingForDoctorView(profileDoctorId);
     }
 
 }
