@@ -22,5 +22,5 @@ public interface ProfileDoctorRepository extends JpaRepository<ProfileDoctor, In
 
     List<ProfileDoctor> findAllProfileDoctorByActiveTrue();
 
-    List<ProfileDoctor> findProfilePatientByUserIdAndActiveTrue(User userId);
+    List<ProfileDoctor> findProfileDoctorByUserIdAndActiveTrue(User userId);
 }

@@ -18,6 +18,8 @@ public interface BookingService {
 
     int addBooking(BookingDTO bookingDTO);
 
+    public int cancelBooking(int bookingId);
+
     int acceiptBooking(int bookingId);
 
     int denyBooking(int bookingId);

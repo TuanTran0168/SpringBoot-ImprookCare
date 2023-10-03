@@ -144,9 +144,9 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
     }
 
     @Override
-    public List<ProfileDoctor> findProfilePatientByUserIdAndActiveTrue(int userId) {
+    public List<ProfileDoctor> findProfileDoctorByUserIdAndActiveTrue(int userId) {
         try {
-            return this.profileDoctorRepository.findProfilePatientByUserIdAndActiveTrue(this.userRepository.findUserByUserIdAndActiveTrue(userId).get());
+            return this.profileDoctorRepository.findProfileDoctorByUserIdAndActiveTrue(this.userRepository.findUserByUserIdAndActiveTrue(userId).get());
         } catch (NoSuchElementException ex) {
             return null;
         }

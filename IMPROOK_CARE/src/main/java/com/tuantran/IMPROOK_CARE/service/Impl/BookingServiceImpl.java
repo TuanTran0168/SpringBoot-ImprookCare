@@ -9,6 +9,7 @@ import com.tuantran.IMPROOK_CARE.dto.BookingDTO;
 import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.BookingStatus;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
+import com.tuantran.IMPROOK_CARE.models.Schedule;
 import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.repository.BookingRepository;
 import com.tuantran.IMPROOK_CARE.repository.BookingStatusRepository;
@@ -47,7 +48,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private BookingStatusRepository bookingStatusRepository;
-    
+
     @Autowired
     private DateFormatComponent dateFormatComponent;
 
@@ -55,27 +56,48 @@ public class BookingServiceImpl implements BookingService {
     public int addBooking(BookingDTO bookingDTO) {
         try {
             Booking booking = new Booking();
-            booking.setScheduleId(this.scheduleRepository.findScheduleByScheduleIdAndActiveTrue(Integer.parseInt(bookingDTO.getScheduleId())).get());
-            booking.setProfilePatientId(this.profilePatientRepository.findProfilePatientByProfilePatientIdAndActiveTrue(Integer.parseInt(bookingDTO.getProfilePatientId())).get());
-            booking.setCreatedDate(new Date());
+            Optional<Schedule> scheduleOptional = this.scheduleRepository.findScheduleByScheduleIdAndActiveTrue(Integer.parseInt(bookingDTO.getScheduleId()));
+
+            if (scheduleOptional.isPresent()) {
+                booking.setScheduleId(scheduleOptional.get());
+            } else {
+                return 0;
+            }
+
+            Optional<ProfilePatient> profilePatientOptional = this.profilePatientRepository.findProfilePatientByProfilePatientIdAndActiveTrue(Integer.parseInt(bookingDTO.getProfilePatientId()));
+
+            if (profilePatientOptional.isPresent()) {
+                booking.setProfilePatientId(profilePatientOptional.get());
+            } else {
+                return 0;
+            }
+
             booking.setStatusId(this.bookingStatusRepository.findBookingStatusByStatusId(1).get());
+            booking.setCreatedDate(new Date());
+
             booking.setBookingCancel(Boolean.FALSE);
+            booking.setActive(Boolean.TRUE);
             this.bookingRepository.save(booking);
             return 1;
         } catch (DataAccessException ex) {
+            ex.printStackTrace();
+            return 0;
+        } catch (NoSuchElementException ex) {
             ex.printStackTrace();
             return 0;
         }
     }
 
     @Override
-    public int acceiptBooking(int bookingId) {
+    public int cancelBooking(int bookingId) {
         try {
             Optional<Booking> bookingOptional = this.bookingRepository.findBookingByBookingIdAndActiveTrue(bookingId);
 
             if (bookingOptional.isPresent()) {
                 Booking booking = bookingOptional.get();
-                booking.setStatusId(new BookingStatus(2));
+                booking.setBookingCancel(Boolean.TRUE);
+                booking.setUpdatedDate(new Date());
+                this.bookingRepository.save(booking);
                 return 1;
             }
             return 0;
@@ -87,6 +109,27 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public int acceiptBooking(int bookingId) {
+        try {
+            Optional<Booking> bookingOptional = this.bookingRepository.findBookingByBookingIdAndActiveTrue(bookingId);
+
+            if (bookingOptional.isPresent()) {
+                Booking booking = bookingOptional.get();
+                booking.setStatusId(new BookingStatus(2));
+                booking.setUpdatedDate(new Date());
+                this.bookingRepository.save(booking);
+                return 1;
+            } else {
+                return 0;
+            }
+
+        } catch (NoSuchElementException ex) {
+            Logger.getLogger(BookingServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+    }
+
+    @Override
     public int denyBooking(int bookingId) {
         try {
             Optional<Booking> bookingOptional = this.bookingRepository.findBookingByBookingIdAndActiveTrue(bookingId);
@@ -94,6 +137,8 @@ public class BookingServiceImpl implements BookingService {
             if (bookingOptional.isPresent()) {
                 Booking booking = bookingOptional.get();
                 booking.setStatusId(new BookingStatus(3));
+                booking.setUpdatedDate(new Date());
+                this.bookingRepository.save(booking);
                 return 1;
             }
             return 0;

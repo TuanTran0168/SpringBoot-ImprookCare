@@ -77,6 +77,6 @@ public class ApiProfileDoctorController {
     @CrossOrigin
     public ResponseEntity<List<ProfileDoctor>> profileDoctorByUserId(@PathVariable(value = "userId") String userId) {
 
-        return new ResponseEntity<>(this.profileDoctorService.findProfilePatientByUserIdAndActiveTrue(Integer.parseInt(userId)), HttpStatus.OK);
+        return new ResponseEntity<>(this.profileDoctorService.findProfileDoctorByUserIdAndActiveTrue(Integer.parseInt(userId)), HttpStatus.OK);
     }
 }

@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,11 +63,68 @@ public class ApiBookingController {
         String date = params.get("date");
         return new ResponseEntity<>(this.bookingService.getTimeSlotsForDoctorOnDate(Integer.parseInt(profileDoctorId), date), HttpStatus.OK);
     }
-    
+
     @PostMapping("/public/date-booking/")
     @CrossOrigin
     public ResponseEntity<List<Date>> getDatesForProfileDoctor(@RequestBody Map<String, String> params) {
         String profileDoctorId = params.get("profileDoctorId");
         return new ResponseEntity<>(this.bookingService.getDatesForProfileDoctor(Integer.parseInt(profileDoctorId)), HttpStatus.OK);
+    }
+
+    @PostMapping("/auth/doctor/accept-booking/")
+    @CrossOrigin
+    public ResponseEntity<String> acceptBooking(@RequestBody String bookingId) {
+
+        String message = "Có lỗi xảy ra!";
+        int check = this.bookingService.acceiptBooking(Integer.parseInt(bookingId));
+
+        if (check == 1) {
+            message = "Xác nhận thành công lịch đặt khám!";
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+
+        if (check == 0) {
+            message = "Xác nhận thất bại lịch đặt khám!";
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+    
+    @PostMapping("/auth/doctor/deny-booking/")
+    @CrossOrigin
+    public ResponseEntity<String> denyBooking(@RequestBody String bookingId) {
+
+        String message = "Có lỗi xảy ra!";
+        int check = this.bookingService.denyBooking(Integer.parseInt(bookingId));
+
+        if (check == 1) {
+            message = "Từ chối thành công lịch đặt khám!";
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+
+        if (check == 0) {
+            message = "Từ chối thất bại lịch đặt khám!";
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+    
+    @PostMapping("/auth/cancel-booking/")
+    @CrossOrigin
+    public ResponseEntity<String> cancelBooking(@RequestBody String bookingId) {
+
+        String message = "Có lỗi xảy ra!";
+        int check = this.bookingService.cancelBooking(Integer.parseInt(bookingId));
+
+        if (check == 1) {
+            message = "Hủy thành công lịch đặt khám!";
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+
+        if (check == 0) {
+            message = "Hủy thất bại lịch đặt khám!";
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 }

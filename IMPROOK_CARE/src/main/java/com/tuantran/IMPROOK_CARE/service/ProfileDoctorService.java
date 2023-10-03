@@ -24,5 +24,5 @@ public interface ProfileDoctorService {
 
     ProfileDoctor findProfileDoctorByProfileDoctorIdAndActiveTrue(int profileDoctorId);
 
-    List<ProfileDoctor> findProfilePatientByUserIdAndActiveTrue(int userId);
+    List<ProfileDoctor> findProfileDoctorByUserIdAndActiveTrue(int userId);
 }
