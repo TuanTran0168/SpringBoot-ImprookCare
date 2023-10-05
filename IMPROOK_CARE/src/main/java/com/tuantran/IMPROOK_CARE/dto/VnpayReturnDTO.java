@@ -15,9 +15,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class VNPAYDTO {
+public class VnpayReturnDTO {
     @NotBlank
     private String amount;
     @NotBlank
     private String orderInfor;
+    @NotBlank
+    private String returnUrl;
 }
