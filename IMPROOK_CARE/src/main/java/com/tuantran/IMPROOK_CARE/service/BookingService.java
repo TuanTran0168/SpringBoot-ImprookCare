@@ -30,6 +30,8 @@ public interface BookingService {
     List<Object[]> getTimeSlotsForDoctorOnDate(@Param("profileDoctorId") int profileDoctorId, @Param("date") String date);
 
     List<Date> getDatesForProfileDoctor(@Param("profileDoctorId") int profileDoctorId);
-    
+
     List<Object[]> getBookingForDoctorView(@Param("profileDoctorId") int profileDoctorId);
+
+    List<Object[]> getBookingDetailsByBookingId(@Param("bookingId") int bookingId);
 }

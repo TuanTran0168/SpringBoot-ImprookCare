@@ -190,4 +190,9 @@ public class BookingServiceImpl implements BookingService {
         return this.bookingRepository.getBookingForDoctorView(profileDoctorId);
     }
 
+    @Override
+    public List<Object[]> getBookingDetailsByBookingId(int bookingId) {
+        return this.bookingRepository.getBookingDetailsByBookingId(bookingId);
+    }
+
 }

@@ -89,7 +89,7 @@ public class ApiBookingController {
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
-    
+
     @PostMapping("/auth/doctor/deny-booking/")
     @CrossOrigin
     public ResponseEntity<String> denyBooking(@RequestBody String bookingId) {
@@ -108,7 +108,7 @@ public class ApiBookingController {
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
-    
+
     @PostMapping("/auth/cancel-booking/")
     @CrossOrigin
     public ResponseEntity<String> cancelBooking(@RequestBody String bookingId) {
@@ -127,11 +127,18 @@ public class ApiBookingController {
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
-    
+
     @PostMapping("/auth/booking-doctor-view/")
     @CrossOrigin
     public ResponseEntity<List<Object[]>> getBookingForDoctorView(@RequestBody Map<String, String> params) {
         String profiledoctorId = params.get("profiledoctorId");
         return new ResponseEntity<>(this.bookingService.getBookingForDoctorView(Integer.parseInt(profiledoctorId)), HttpStatus.OK);
+    }
+
+    @PostMapping("/auth/booking-details-user-view/")
+    @CrossOrigin
+    public ResponseEntity<List<Object[]>> getBookingDetailsByBookingId(@RequestBody Map<String, String> params) {
+        String bookingId = params.get("bookingId");
+        return new ResponseEntity<>(this.bookingService.getBookingDetailsByBookingId(Integer.parseInt(bookingId)), HttpStatus.OK);
     }
 }
