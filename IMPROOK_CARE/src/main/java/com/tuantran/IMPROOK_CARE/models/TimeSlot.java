@@ -63,12 +63,12 @@ public class TimeSlot implements Serializable {
     private Date deletedDate;
     @Column(name = "active")
     private Boolean active;
-    @JsonIgnore
-    @OneToMany(mappedBy = "timeSlotId")
-    private Set<Schedule> scheduleSet;
     @JoinColumn(name = "time_distance_id", referencedColumnName = "time_distance_id")
     @ManyToOne
     private TimeDistance timeDistanceId;
+    @JsonIgnore
+    @OneToMany(mappedBy = "timeSlotId")
+    private Set<Schedule> scheduleSet;
 
     public TimeSlot() {
     }
@@ -133,20 +133,20 @@ public class TimeSlot implements Serializable {
         this.active = active;
     }
 
-    public Set<Schedule> getScheduleSet() {
-        return scheduleSet;
-    }
-
-    public void setScheduleSet(Set<Schedule> scheduleSet) {
-        this.scheduleSet = scheduleSet;
-    }
-
     public TimeDistance getTimeDistanceId() {
         return timeDistanceId;
     }
 
     public void setTimeDistanceId(TimeDistance timeDistanceId) {
         this.timeDistanceId = timeDistanceId;
+    }
+
+    public Set<Schedule> getScheduleSet() {
+        return scheduleSet;
+    }
+
+    public void setScheduleSet(Set<Schedule> scheduleSet) {
+        this.scheduleSet = scheduleSet;
     }
 
     @Override

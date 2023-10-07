@@ -69,10 +69,10 @@ public class Booking implements Serializable {
     private Schedule scheduleId;
     @JsonIgnore
     @OneToMany(mappedBy = "bookingId")
-    private Set<MedicalRecords> medicalRecordsSet;
+    private Set<Prescriptions> prescriptionsSet;
     @JsonIgnore
     @OneToMany(mappedBy = "bookingId")
-    private Set<Prescriptions> prescriptionsSet;
+    private Set<MedicalRecords> medicalRecordsSet;
 
     public Booking() {
     }
@@ -153,20 +153,20 @@ public class Booking implements Serializable {
         this.scheduleId = scheduleId;
     }
 
-    public Set<MedicalRecords> getMedicalRecordsSet() {
-        return medicalRecordsSet;
-    }
-
-    public void setMedicalRecordsSet(Set<MedicalRecords> medicalRecordsSet) {
-        this.medicalRecordsSet = medicalRecordsSet;
-    }
-
     public Set<Prescriptions> getPrescriptionsSet() {
         return prescriptionsSet;
     }
 
     public void setPrescriptionsSet(Set<Prescriptions> prescriptionsSet) {
         this.prescriptionsSet = prescriptionsSet;
+    }
+
+    public Set<MedicalRecords> getMedicalRecordsSet() {
+        return medicalRecordsSet;
+    }
+
+    public void setMedicalRecordsSet(Set<MedicalRecords> medicalRecordsSet) {
+        this.medicalRecordsSet = medicalRecordsSet;
     }
 
     @Override

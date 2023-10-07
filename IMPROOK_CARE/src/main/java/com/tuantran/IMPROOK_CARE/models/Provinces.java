@@ -51,15 +51,15 @@ public class Provinces implements Serializable {
     private String fullNameEn;
     @Column(name = "code_name")
     private String codeName;
+    @JsonIgnore
+    @OneToMany(mappedBy = "provinceCode")
+    private Set<Districts> districtsSet;
     @JoinColumn(name = "vietnam_region_id", referencedColumnName = "id")
     @ManyToOne
     private VietnamRegions vietnamRegionId;
     @JoinColumn(name = "vietnam_unit_id", referencedColumnName = "id")
     @ManyToOne
     private VietnamUnits vietnamUnitId;
-    @JsonIgnore
-    @OneToMany(mappedBy = "provinceCode")
-    private Set<Districts> districtsSet;
 
     public Provinces() {
     }
@@ -122,6 +122,14 @@ public class Provinces implements Serializable {
         this.codeName = codeName;
     }
 
+    public Set<Districts> getDistrictsSet() {
+        return districtsSet;
+    }
+
+    public void setDistrictsSet(Set<Districts> districtsSet) {
+        this.districtsSet = districtsSet;
+    }
+
     public VietnamRegions getVietnamRegionId() {
         return vietnamRegionId;
     }
@@ -136,14 +144,6 @@ public class Provinces implements Serializable {
 
     public void setVietnamUnitId(VietnamUnits vietnamUnitId) {
         this.vietnamUnitId = vietnamUnitId;
-    }
-
-    public Set<Districts> getDistrictsSet() {
-        return districtsSet;
-    }
-
-    public void setDistrictsSet(Set<Districts> districtsSet) {
-        this.districtsSet = districtsSet;
     }
 
     @Override

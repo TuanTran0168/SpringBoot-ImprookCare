@@ -41,7 +41,7 @@ CREATE TABLE `booking` (
   CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`schedule_id`),
   CONSTRAINT `booking_ibfk_2` FOREIGN KEY (`profile_patient_id`) REFERENCES `profile_patient` (`profile_patient_id`),
   CONSTRAINT `booking_ibfk_3` FOREIGN KEY (`status_id`) REFERENCES `booking_status` (`status_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,7 +50,7 @@ CREATE TABLE `booking` (
 
 LOCK TABLES `booking` WRITE;
 /*!40000 ALTER TABLE `booking` DISABLE KEYS */;
-INSERT INTO `booking` VALUES (10,9,10,'2023-10-03 18:19:10','2023-10-03 18:58:44',NULL,3,1,1);
+INSERT INTO `booking` VALUES (10,9,10,'2023-10-03 18:19:10','2023-10-03 18:58:44',NULL,3,1,1),(14,9,10,'2023-10-07 09:03:40',NULL,NULL,1,0,1);
 /*!40000 ALTER TABLE `booking` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -78,7 +78,7 @@ CREATE TABLE `booking_status` (
 
 LOCK TABLES `booking_status` WRITE;
 /*!40000 ALTER TABLE `booking_status` DISABLE KEYS */;
-INSERT INTO `booking_status` VALUES (1,'Chờ xác nhận',NULL,NULL,NULL,1),(2,'Đã xác nhạn',NULL,NULL,NULL,1),(3,'Từ chối',NULL,NULL,NULL,1);
+INSERT INTO `booking_status` VALUES (1,'Chờ xác nhận',NULL,NULL,NULL,1),(2,'Đã xác nhận',NULL,NULL,NULL,1),(3,'Từ chối',NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `booking_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,7 +94,10 @@ CREATE TABLE `collab_doctor` (
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `phonenumber` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`collab_id`)
+  `status_id` int DEFAULT NULL,
+  PRIMARY KEY (`collab_id`),
+  KEY `status_id` (`status_id`),
+  CONSTRAINT `collab_doctor_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `collab_doctor_status` (`status_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -105,6 +108,34 @@ CREATE TABLE `collab_doctor` (
 LOCK TABLES `collab_doctor` WRITE;
 /*!40000 ALTER TABLE `collab_doctor` DISABLE KEYS */;
 /*!40000 ALTER TABLE `collab_doctor` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `collab_doctor_status`
+--
+
+DROP TABLE IF EXISTS `collab_doctor_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `collab_doctor_status` (
+  `status_id` int NOT NULL AUTO_INCREMENT,
+  `status_value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  `deleted_date` datetime DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`status_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `collab_doctor_status`
+--
+
+LOCK TABLES `collab_doctor_status` WRITE;
+/*!40000 ALTER TABLE `collab_doctor_status` DISABLE KEYS */;
+INSERT INTO `collab_doctor_status` VALUES (1,'Chờ xác nhận',NULL,NULL,NULL,1),(2,'Đã xác nhận',NULL,NULL,NULL,1),(3,'Từ chối',NULL,NULL,NULL,1);
+/*!40000 ALTER TABLE `collab_doctor_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -218,6 +249,10 @@ CREATE TABLE `medicine` (
   `medicine_id` int NOT NULL AUTO_INCREMENT,
   `medicine_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `ingredients` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `dosage` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `unitPrice` decimal(10,2) DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
@@ -266,6 +301,34 @@ LOCK TABLES `medicine_category` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `medicine_payment_status`
+--
+
+DROP TABLE IF EXISTS `medicine_payment_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `medicine_payment_status` (
+  `medicine_payment_status_id` int NOT NULL AUTO_INCREMENT,
+  `medicine_payment_status_value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  `deleted_date` datetime DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`medicine_payment_status_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `medicine_payment_status`
+--
+
+LOCK TABLES `medicine_payment_status` WRITE;
+/*!40000 ALTER TABLE `medicine_payment_status` DISABLE KEYS */;
+INSERT INTO `medicine_payment_status` VALUES (1,'Chưa thanh toán',NULL,NULL,NULL,1),(2,'Đã thanh toán',NULL,NULL,NULL,1);
+/*!40000 ALTER TABLE `medicine_payment_status` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `prescription_detail`
 --
 
@@ -276,10 +339,9 @@ CREATE TABLE `prescription_detail` (
   `prescription_detail_id` int NOT NULL AUTO_INCREMENT,
   `medicine_id` int DEFAULT NULL,
   `prescription_id` int DEFAULT NULL,
-  `ingredients` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `dosage` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `usage_instruction` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `warning` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `quantity` int DEFAULT NULL,
+  `unitPrice` decimal(10,2) DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
@@ -311,14 +373,23 @@ DROP TABLE IF EXISTS `prescriptions`;
 CREATE TABLE `prescriptions` (
   `prescription_id` int NOT NULL AUTO_INCREMENT,
   `prescription_date` date DEFAULT NULL,
+  `diagnosis` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `symptoms` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `service_price` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   `booking_id` int DEFAULT NULL,
+  `medicine_payment_status_id` int DEFAULT NULL,
+  `service_payment_status_id` int DEFAULT NULL,
   PRIMARY KEY (`prescription_id`),
   KEY `booking_id` (`booking_id`),
-  CONSTRAINT `prescriptions_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`booking_id`)
+  KEY `medicine_payment_status_id` (`medicine_payment_status_id`),
+  KEY `service_payment_status_id` (`service_payment_status_id`),
+  CONSTRAINT `prescriptions_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`booking_id`),
+  CONSTRAINT `prescriptions_ibfk_2` FOREIGN KEY (`medicine_payment_status_id`) REFERENCES `medicine_payment_status` (`medicine_payment_status_id`),
+  CONSTRAINT `prescriptions_ibfk_3` FOREIGN KEY (`service_payment_status_id`) REFERENCES `service_payment_status` (`service_payment_status_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -509,8 +580,36 @@ CREATE TABLE `schedule` (
 
 LOCK TABLES `schedule` WRITE;
 /*!40000 ALTER TABLE `schedule` DISABLE KEYS */;
-INSERT INTO `schedule` VALUES (1,2,'2002-08-28','2023-09-25 15:51:09',NULL,NULL,1,1,0),(5,2,'2002-08-28','2023-09-26 10:07:17',NULL,NULL,1,2,0),(9,2,'2002-08-28','2023-09-26 21:23:47',NULL,NULL,1,6,0),(14,2,'2023-10-03','2023-10-03 18:31:53',NULL,NULL,1,4,0),(15,2,'2023-10-03','2023-10-03 18:31:53',NULL,NULL,1,1,0);
+INSERT INTO `schedule` VALUES (1,2,'2002-08-28','2023-09-25 15:51:09',NULL,NULL,1,1,0),(5,2,'2002-08-28','2023-09-26 10:07:17',NULL,NULL,1,2,0),(9,2,'2002-08-28','2023-09-26 21:23:47',NULL,NULL,1,6,1),(14,2,'2023-10-03','2023-10-03 18:31:53',NULL,NULL,1,4,0),(15,2,'2023-10-03','2023-10-03 18:31:53',NULL,NULL,1,1,0);
 /*!40000 ALTER TABLE `schedule` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `service_payment_status`
+--
+
+DROP TABLE IF EXISTS `service_payment_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `service_payment_status` (
+  `service_payment_status_id` int NOT NULL AUTO_INCREMENT,
+  `service_payment_status_value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  `deleted_date` datetime DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`service_payment_status_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `service_payment_status`
+--
+
+LOCK TABLES `service_payment_status` WRITE;
+/*!40000 ALTER TABLE `service_payment_status` DISABLE KEYS */;
+INSERT INTO `service_payment_status` VALUES (1,'Chưa thanh toán',NULL,NULL,NULL,1),(2,'Đã thanh toán',NULL,NULL,NULL,1);
+/*!40000 ALTER TABLE `service_payment_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -742,4 +841,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-07  8:49:42
+-- Dump completed on 2023-10-07 17:00:16

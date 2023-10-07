@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
@@ -48,6 +49,15 @@ public class Prescriptions implements Serializable {
     @Column(name = "prescription_date")
     @Temporal(TemporalType.DATE)
     private Date prescriptionDate;
+    @Lob
+    @Column(name = "diagnosis")
+    private String diagnosis;
+    @Lob
+    @Column(name = "symptoms")
+    private String symptoms;
+    @Lob
+    @Column(name = "service_price")
+    private String servicePrice;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -62,6 +72,12 @@ public class Prescriptions implements Serializable {
     @JoinColumn(name = "booking_id", referencedColumnName = "booking_id")
     @ManyToOne
     private Booking bookingId;
+    @JoinColumn(name = "medicine_payment_status_id", referencedColumnName = "medicine_payment_status_id")
+    @ManyToOne
+    private MedicinePaymentStatus medicinePaymentStatusId;
+    @JoinColumn(name = "service_payment_status_id", referencedColumnName = "service_payment_status_id")
+    @ManyToOne
+    private ServicePaymentStatus servicePaymentStatusId;
     @JsonIgnore
     @OneToMany(mappedBy = "prescriptionId")
     private Set<PrescriptionDetail> prescriptionDetailSet;
@@ -87,6 +103,30 @@ public class Prescriptions implements Serializable {
 
     public void setPrescriptionDate(Date prescriptionDate) {
         this.prescriptionDate = prescriptionDate;
+    }
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
+    }
+
+    public String getSymptoms() {
+        return symptoms;
+    }
+
+    public void setSymptoms(String symptoms) {
+        this.symptoms = symptoms;
+    }
+
+    public String getServicePrice() {
+        return servicePrice;
+    }
+
+    public void setServicePrice(String servicePrice) {
+        this.servicePrice = servicePrice;
     }
 
     public Date getCreatedDate() {
@@ -127,6 +167,22 @@ public class Prescriptions implements Serializable {
 
     public void setBookingId(Booking bookingId) {
         this.bookingId = bookingId;
+    }
+
+    public MedicinePaymentStatus getMedicinePaymentStatusId() {
+        return medicinePaymentStatusId;
+    }
+
+    public void setMedicinePaymentStatusId(MedicinePaymentStatus medicinePaymentStatusId) {
+        this.medicinePaymentStatusId = medicinePaymentStatusId;
+    }
+
+    public ServicePaymentStatus getServicePaymentStatusId() {
+        return servicePaymentStatusId;
+    }
+
+    public void setServicePaymentStatusId(ServicePaymentStatus servicePaymentStatusId) {
+        this.servicePaymentStatusId = servicePaymentStatusId;
     }
 
     public Set<PrescriptionDetail> getPrescriptionDetailSet() {

@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.models;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -30,6 +31,8 @@ import jakarta.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "PrescriptionDetail.findAll", query = "SELECT p FROM PrescriptionDetail p"),
     @NamedQuery(name = "PrescriptionDetail.findByPrescriptionDetailId", query = "SELECT p FROM PrescriptionDetail p WHERE p.prescriptionDetailId = :prescriptionDetailId"),
+    @NamedQuery(name = "PrescriptionDetail.findByQuantity", query = "SELECT p FROM PrescriptionDetail p WHERE p.quantity = :quantity"),
+    @NamedQuery(name = "PrescriptionDetail.findByUnitPrice", query = "SELECT p FROM PrescriptionDetail p WHERE p.unitPrice = :unitPrice"),
     @NamedQuery(name = "PrescriptionDetail.findByCreatedDate", query = "SELECT p FROM PrescriptionDetail p WHERE p.createdDate = :createdDate"),
     @NamedQuery(name = "PrescriptionDetail.findByUpdatedDate", query = "SELECT p FROM PrescriptionDetail p WHERE p.updatedDate = :updatedDate"),
     @NamedQuery(name = "PrescriptionDetail.findByDeletedDate", query = "SELECT p FROM PrescriptionDetail p WHERE p.deletedDate = :deletedDate"),
@@ -43,17 +46,13 @@ public class PrescriptionDetail implements Serializable {
     @Column(name = "prescription_detail_id")
     private Integer prescriptionDetailId;
     @Lob
-    @Column(name = "ingredients")
-    private String ingredients;
-    @Lob
-    @Column(name = "dosage")
-    private String dosage;
-    @Lob
     @Column(name = "usage_instruction")
     private String usageInstruction;
-    @Lob
-    @Column(name = "warning")
-    private String warning;
+    @Column(name = "quantity")
+    private Integer quantity;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "unitPrice")
+    private BigDecimal unitPrice;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -87,22 +86,6 @@ public class PrescriptionDetail implements Serializable {
         this.prescriptionDetailId = prescriptionDetailId;
     }
 
-    public String getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(String ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    public String getDosage() {
-        return dosage;
-    }
-
-    public void setDosage(String dosage) {
-        this.dosage = dosage;
-    }
-
     public String getUsageInstruction() {
         return usageInstruction;
     }
@@ -111,12 +94,20 @@ public class PrescriptionDetail implements Serializable {
         this.usageInstruction = usageInstruction;
     }
 
-    public String getWarning() {
-        return warning;
+    public Integer getQuantity() {
+        return quantity;
     }
 
-    public void setWarning(String warning) {
-        this.warning = warning;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
     public Date getCreatedDate() {

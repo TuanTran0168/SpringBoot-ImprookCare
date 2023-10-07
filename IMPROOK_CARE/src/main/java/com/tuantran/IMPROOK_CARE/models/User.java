@@ -82,10 +82,10 @@ public class User implements Serializable {
     private Boolean active;
     @JsonIgnore
     @OneToMany(mappedBy = "userId")
-    private Set<ProfilePatient> profilePatientSet;
+    private Set<ProfileDoctor> profileDoctorSet;
     @JsonIgnore
     @OneToMany(mappedBy = "userId")
-    private Set<ProfileDoctor> profileDoctorSet;
+    private Set<ProfilePatient> profilePatientSet;
     @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private Set<Comment> commentSet;
@@ -204,20 +204,20 @@ public class User implements Serializable {
         this.active = active;
     }
 
-    public Set<ProfilePatient> getProfilePatientSet() {
-        return profilePatientSet;
-    }
-
-    public void setProfilePatientSet(Set<ProfilePatient> profilePatientSet) {
-        this.profilePatientSet = profilePatientSet;
-    }
-
     public Set<ProfileDoctor> getProfileDoctorSet() {
         return profileDoctorSet;
     }
 
     public void setProfileDoctorSet(Set<ProfileDoctor> profileDoctorSet) {
         this.profileDoctorSet = profileDoctorSet;
+    }
+
+    public Set<ProfilePatient> getProfilePatientSet() {
+        return profilePatientSet;
+    }
+
+    public void setProfilePatientSet(Set<ProfilePatient> profilePatientSet) {
+        this.profilePatientSet = profilePatientSet;
     }
 
     public Set<Comment> getCommentSet() {

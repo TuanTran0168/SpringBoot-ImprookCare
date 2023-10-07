@@ -52,13 +52,13 @@ public class VietnamUnits implements Serializable {
     private String codeNameEn;
     @JsonIgnore
     @OneToMany(mappedBy = "vietnamUnitId")
-    private Set<Provinces> provincesSet;
-    @JsonIgnore
-    @OneToMany(mappedBy = "vietnamUnitId")
     private Set<Districts> districtsSet;
     @JsonIgnore
     @OneToMany(mappedBy = "vietnamUnitId")
     private Set<Wards> wardsSet;
+    @JsonIgnore
+    @OneToMany(mappedBy = "vietnamUnitId")
+    private Set<Provinces> provincesSet;
 
     public VietnamUnits() {
     }
@@ -123,14 +123,6 @@ public class VietnamUnits implements Serializable {
         this.codeNameEn = codeNameEn;
     }
 
-    public Set<Provinces> getProvincesSet() {
-        return provincesSet;
-    }
-
-    public void setProvincesSet(Set<Provinces> provincesSet) {
-        this.provincesSet = provincesSet;
-    }
-
     public Set<Districts> getDistrictsSet() {
         return districtsSet;
     }
@@ -145,6 +137,14 @@ public class VietnamUnits implements Serializable {
 
     public void setWardsSet(Set<Wards> wardsSet) {
         this.wardsSet = wardsSet;
+    }
+
+    public Set<Provinces> getProvincesSet() {
+        return provincesSet;
+    }
+
+    public void setProvincesSet(Set<Provinces> provincesSet) {
+        this.provincesSet = provincesSet;
     }
 
     @Override
