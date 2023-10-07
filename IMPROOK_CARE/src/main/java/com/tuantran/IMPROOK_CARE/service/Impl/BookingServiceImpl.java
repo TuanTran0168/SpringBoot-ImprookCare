@@ -76,6 +76,7 @@ public class BookingServiceImpl implements BookingService {
             booking.setCreatedDate(new Date());
 
             booking.setBookingCancel(Boolean.FALSE);
+//            booking
             booking.setActive(Boolean.TRUE);
             this.bookingRepository.save(booking);
             return 1;
