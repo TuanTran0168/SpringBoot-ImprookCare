@@ -81,6 +81,26 @@ public class ApiTwilioController {
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
+    @PostMapping("/public/verification-forgot-password/")
+    @CrossOrigin
+    public ResponseEntity<String> verification_forgotPassword(@RequestBody Map<String, String> params) {
+        String message = "Có lỗi xảy ra!";
+        String phonenumber = params.get("phonenumber"); // username nó cũng là phonenumber (Quy ước mới)
+
+        int check = this.twilioVerification.verification_forgotPassword(phonenumber);
+
+        if (check == 1) {
+            message = "Gửi tin nhắn thành công đến số điện thoại: " + phonenumber;
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else if (check == 2) {
+            message = "Số điện thoại không hợp lệ!";
+        } else if (check == 3) {
+            message = "Số điện thoại " + phonenumber + " chưa được đăng ký";
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
     @PostMapping("/public/verification-check/")
     @CrossOrigin
     public ResponseEntity<String> verification_check(@Valid @RequestBody AuthMessageTwilioDTO authMessageTwilioDTO) {

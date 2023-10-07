@@ -44,9 +44,33 @@ public class TwilioVerificationComponent {
                             "sms")
                             .create();
                     return 1; // Gửi ok
-                }
-                else {
+                } else {
                     return 3; // Số điện thoại đã tồn tại
+                }
+
+            } else {
+                return 2; // Số điện thoại không hợp lệ
+            }
+        } catch (ApiException e) {
+            return 0;
+        }
+    }
+
+    public int verification_forgotPassword(String phonenumber) {
+        try {
+            if (this.isPhoneNumberValid(phonenumber)) {
+                // username nó cũng là phonenumber (Quy ước mới)
+                User user = this.userService.findUserByUsername(phonenumber);
+                if (user != null) {
+                    String VietNam_phonenumber = this.VIETNAM_COUNTRY_CODE + phonenumber.substring(1, phonenumber.length());
+                    Verification.creator(
+                            twilioConfiguration.getServiceSid(),
+                            VietNam_phonenumber,
+                            "sms")
+                            .create();
+                    return 1; // Gửi ok
+                } else {
+                    return 3; // Số điện thoại không tồn tại trong csdl (chưa đăng ký)
                 }
 
             } else {
