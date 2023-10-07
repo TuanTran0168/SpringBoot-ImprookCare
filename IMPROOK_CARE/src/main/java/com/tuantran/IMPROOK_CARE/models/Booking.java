@@ -193,5 +193,5 @@ public class Booking implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.Booking[ bookingId=" + bookingId + " ]";
     }
-
+    
 }

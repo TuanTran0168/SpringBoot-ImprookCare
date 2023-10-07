@@ -59,7 +59,11 @@ public class BookingServiceImpl implements BookingService {
             Optional<Schedule> scheduleOptional = this.scheduleRepository.findScheduleByScheduleIdAndActiveTrue(Integer.parseInt(bookingDTO.getScheduleId()));
 
             if (scheduleOptional.isPresent()) {
-                booking.setScheduleId(scheduleOptional.get());
+                Schedule schedule = scheduleOptional.get();
+                booking.setScheduleId(schedule);
+                
+                schedule.setBooked(Boolean.TRUE);
+                this.scheduleRepository.save(schedule);
             } else {
                 return 0;
             }
@@ -76,7 +80,6 @@ public class BookingServiceImpl implements BookingService {
             booking.setCreatedDate(new Date());
 
             booking.setBookingCancel(Boolean.FALSE);
-//            booking
             booking.setActive(Boolean.TRUE);
             this.bookingRepository.save(booking);
             return 1;

@@ -41,7 +41,7 @@ CREATE TABLE `booking` (
   CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`schedule_id`),
   CONSTRAINT `booking_ibfk_2` FOREIGN KEY (`profile_patient_id`) REFERENCES `profile_patient` (`profile_patient_id`),
   CONSTRAINT `booking_ibfk_3` FOREIGN KEY (`status_id`) REFERENCES `booking_status` (`status_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,6 +50,7 @@ CREATE TABLE `booking` (
 
 LOCK TABLES `booking` WRITE;
 /*!40000 ALTER TABLE `booking` DISABLE KEYS */;
+INSERT INTO `booking` VALUES (10,9,10,'2023-10-03 18:19:10','2023-10-03 18:58:44',NULL,3,1,1);
 /*!40000 ALTER TABLE `booking` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -402,7 +403,7 @@ CREATE TABLE `profile_patient` (
   PRIMARY KEY (`profile_patient_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `profile_patient_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -411,7 +412,7 @@ CREATE TABLE `profile_patient` (
 
 LOCK TABLES `profile_patient` WRITE;
 /*!40000 ALTER TABLE `profile_patient` DISABLE KEYS */;
-INSERT INTO `profile_patient` VALUES (1,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-25 12:41:01',NULL,NULL,1,1),(2,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-26 21:14:43',NULL,NULL,1,1),(3,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-26 21:14:46',NULL,NULL,1,3),(4,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-26 21:14:51',NULL,NULL,1,3),(5,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-26 21:15:43',NULL,NULL,1,5),(6,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-27 15:22:15',NULL,NULL,1,2),(7,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-27 16:03:12',NULL,NULL,1,2),(8,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-27 16:03:59',NULL,NULL,1,2),(9,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-27 16:04:00',NULL,NULL,1,2),(10,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-28 16:49:45',NULL,NULL,1,3);
+INSERT INTO `profile_patient` VALUES (1,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-25 12:41:01',NULL,NULL,1,1),(2,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-26 21:14:43',NULL,NULL,1,1),(3,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-26 21:14:46',NULL,NULL,1,3),(4,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-26 21:14:51',NULL,NULL,1,3),(5,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-26 21:15:43',NULL,NULL,1,5),(6,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-27 15:22:15',NULL,NULL,1,2),(7,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-27 16:03:12',NULL,NULL,1,2),(8,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-27 16:03:59',NULL,NULL,1,2),(9,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-27 16:04:00',NULL,NULL,1,2),(10,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-28 16:49:45',NULL,NULL,1,3),(11,'Lê Thị Huỳnh Như','0123456789',NULL,NULL,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-30 16:35:23',NULL,NULL,1,3),(12,'Lê Thị Huỳnh Như','0123456789',NULL,1,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-30 16:35:48',NULL,NULL,1,3),(13,'Lê Thị Huỳnh Như api','0123456789 update','2002-08-28 00:00:00',0,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2023-09-30 16:41:08','2023-09-30 17:13:37',NULL,1,3);
 /*!40000 ALTER TABLE `profile_patient` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -499,7 +500,7 @@ CREATE TABLE `schedule` (
   KEY `time_slot_id` (`time_slot_id`),
   CONSTRAINT `schedule_ibfk_1` FOREIGN KEY (`profile_doctor_id`) REFERENCES `profile_doctor` (`profile_doctor_id`),
   CONSTRAINT `schedule_ibfk_2` FOREIGN KEY (`time_slot_id`) REFERENCES `time_slot` (`time_slot_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -508,7 +509,7 @@ CREATE TABLE `schedule` (
 
 LOCK TABLES `schedule` WRITE;
 /*!40000 ALTER TABLE `schedule` DISABLE KEYS */;
-INSERT INTO `schedule` VALUES (1,2,'2002-08-28','2023-09-25 15:51:09',NULL,NULL,1,1,0),(5,2,'2002-08-28','2023-09-26 10:07:17',NULL,NULL,1,2,0),(9,2,'2002-08-28','2023-09-26 21:23:47',NULL,NULL,1,6,0);
+INSERT INTO `schedule` VALUES (1,2,'2002-08-28','2023-09-25 15:51:09',NULL,NULL,1,1,0),(5,2,'2002-08-28','2023-09-26 10:07:17',NULL,NULL,1,2,0),(9,2,'2002-08-28','2023-09-26 21:23:47',NULL,NULL,1,6,0),(14,2,'2023-10-03','2023-10-03 18:31:53',NULL,NULL,1,4,0),(15,2,'2023-10-03','2023-10-03 18:31:53',NULL,NULL,1,1,0);
 /*!40000 ALTER TABLE `schedule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -638,7 +639,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Tuấn','Trần Đăng','tuan','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 00:00:00',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,1),(2,'Thành','Dương Hữu','thanh','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 00:00:00',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,2),(3,'Thái','Trương Nguyễn Minh','thai','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 00:00:00',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,3),(4,'api','api','657569','$2a$10$DjphsiFtAgTynk9FqXRSkOt7KNG5cEbEwgDwVGGZLuH8qMq8sVtM6','2023-09-10 00:00:00',0,NULL,NULL,'2023-09-25 10:50:38','2023-09-25 19:43:50',NULL,1,2),(5,'Khuê','Phan Trần Minh','65756','$2a$10$cm7d1xn/lph4zDA3tp.fVeHcmzQVz5//nMJUoW7KPI06vQMnsjWrq',NULL,1,NULL,NULL,'2023-09-26 16:15:59',NULL,NULL,1,3),(6,'Khuê','Phan Trần Minh','65756111','$2a$10$qveYUWGOC1V7f1OrEkl09uJ5xEEAC7Hcv.HKKP/y9JXte0HdgvM7C',NULL,1,NULL,NULL,'2023-09-27 10:33:47',NULL,NULL,1,3),(7,'API ADD USER FOR ADMIN','API TUẤN TRẦN','1231231','$2a$10$ha7LbigQK1jJ25o49Ap7m.5My7qlz733zujQRBP6fh8cNQ40Mb6Q.','2002-08-28 00:00:00',1,NULL,NULL,'2023-09-27 13:21:13',NULL,NULL,NULL,2),(12,'API ADD USER FOR ADMIN','API TUẤN TRẦN','12312','$2a$10$0KnswqZWesszM3UmPpR9O.0ii4rFdirholxm14qJ3cP.nGUT0x6Lq','2002-08-28 00:00:00',1,NULL,NULL,'2023-09-27 13:36:49',NULL,NULL,1,2);
+INSERT INTO `user` VALUES (1,'Tuấn','Trần Đăng','tuan','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 00:00:00',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,1),(2,'Thành','Dương Hữu','thanh','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 00:00:00',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,2),(3,'Thái','Trương Nguyễn Minh','thai','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-09-10 00:00:00',0,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1,3),(4,'api','api','657569','$2a$10$DjphsiFtAgTynk9FqXRSkOt7KNG5cEbEwgDwVGGZLuH8qMq8sVtM6','2023-09-10 00:00:00',0,NULL,NULL,'2023-09-25 10:50:38','2023-09-25 19:43:50',NULL,1,2),(5,'Khuê','Phan Trần Minh','65756','$2a$10$9sqlfuNnsRmkdyElxZ.RBeXBaIz.mGsh93klyWmSmCbHpKbAckmBO',NULL,1,NULL,NULL,'2023-09-26 16:15:59',NULL,NULL,1,3),(6,'Khuê','Phan Trần Minh','65756111','$2a$10$ctMCJpmXClv0HqUOQ8.8Heod4nzCHAJVd.NiWmOFa5afTF4uSrVpi',NULL,1,NULL,NULL,'2023-09-27 10:33:47',NULL,NULL,1,3),(7,'API ADD USER FOR ADMIN','API TUẤN TRẦN','1231231','$2a$10$ha7LbigQK1jJ25o49Ap7m.5My7qlz733zujQRBP6fh8cNQ40Mb6Q.','2002-08-28 00:00:00',1,NULL,NULL,'2023-09-27 13:21:13',NULL,NULL,1,2),(12,'API ADD USER FOR ADMIN','API TUẤN TRẦN','12312','$2a$10$0KnswqZWesszM3UmPpR9O.0ii4rFdirholxm14qJ3cP.nGUT0x6Lq','2002-08-28 00:00:00',1,NULL,NULL,'2023-09-27 13:36:49',NULL,NULL,1,2);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -741,4 +742,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-30 16:25:18
+-- Dump completed on 2023-10-07  8:49:42
