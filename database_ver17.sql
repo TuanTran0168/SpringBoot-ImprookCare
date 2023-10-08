@@ -252,7 +252,7 @@ CREATE TABLE `medicine` (
   `ingredients` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `dosage` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `unitPrice` decimal(10,2) DEFAULT NULL,
+  `unit_price` decimal(10,2) DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
@@ -261,7 +261,7 @@ CREATE TABLE `medicine` (
   PRIMARY KEY (`medicine_id`),
   KEY `category_id` (`category_id`),
   CONSTRAINT `medicine_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `medicine_category` (`category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,6 +270,7 @@ CREATE TABLE `medicine` (
 
 LOCK TABLES `medicine` WRITE;
 /*!40000 ALTER TABLE `medicine` DISABLE KEYS */;
+INSERT INTO `medicine` VALUES (1,'Thuốc sổ','Uống nhiều dễ chết','abfhjabhasdb','1 ngày 1 viên',NULL,10000.00,'2023-10-03 18:19:10',NULL,NULL,1,1),(2,'Thuốc sổ','Uống nhiều dễ chết','abfhjabhasdb','1 ngày 1 viên',NULL,20000.00,'2023-10-03 18:19:10',NULL,NULL,1,2),(3,'Thuốc sổ','Uống nhiều dễ chết','abfhjabhasdb','1 ngày 1 viên',NULL,30000.00,'2023-10-03 18:19:10',NULL,NULL,1,3),(4,'Thuốc sổ','Uống nhiều dễ chết','abfhjabhasdb','1 ngày 1 viên',NULL,40000.00,'2023-10-03 18:19:10',NULL,NULL,1,1);
 /*!40000 ALTER TABLE `medicine` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -288,7 +289,7 @@ CREATE TABLE `medicine_category` (
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -297,6 +298,7 @@ CREATE TABLE `medicine_category` (
 
 LOCK TABLES `medicine_category` WRITE;
 /*!40000 ALTER TABLE `medicine_category` DISABLE KEYS */;
+INSERT INTO `medicine_category` VALUES (1,'Thuốc viên','2023-10-03 18:19:10',NULL,NULL,1),(2,'Thuốc bột','2023-10-03 18:19:10',NULL,NULL,1),(3,'Thuốc nước','2023-10-03 18:19:10',NULL,NULL,1);
 /*!40000 ALTER TABLE `medicine_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -841,4 +843,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-07 17:00:16
+-- Dump completed on 2023-10-08 10:39:12
