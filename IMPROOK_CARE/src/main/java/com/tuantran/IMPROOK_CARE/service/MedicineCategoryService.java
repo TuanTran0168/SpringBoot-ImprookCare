@@ -4,9 +4,11 @@
  */
 package com.tuantran.IMPROOK_CARE.service;
 
+import com.tuantran.IMPROOK_CARE.dto.AddMedicineCategoryDTO;
+import com.tuantran.IMPROOK_CARE.dto.UpdateMedicineCategoryDTO;
 import com.tuantran.IMPROOK_CARE.models.MedicineCategory;
 import java.util.List;
-import java.util.Optional;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -17,4 +19,8 @@ public interface MedicineCategoryService {
     List<MedicineCategory> findMedicineCategoryByActiveTrue();
 
     MedicineCategory findMedicineCategoryByCategoryIdAndActiveTrue(int medicineCategoryId);
+
+    int addMedicineCategory(AddMedicineCategoryDTO addMedicineCategoryDTO);
+
+    int updateMedicineCategory(UpdateMedicineCategoryDTO updateMedicineCategoryDTO);
 }
