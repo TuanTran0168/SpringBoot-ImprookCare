@@ -36,7 +36,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
 //            + "AND s.profile_doctor_id = pd.profile_doctor_id "
 //            + "AND u.user_id = pp.user_id "
 //            + "AND u.user_id = :userId", nativeQuery = true)
-    @Query("SELECT u.userId, u.firstname, pp.name, pp.profilePatientId, pd.name, pp.name, b.createdDate, b.bookingCancel "
+    @Query("SELECT u.userId, u.firstname, pp.name, pp.profilePatientId, pd.name, pp.name, b.createdDate, b.bookingCancel, b.bookingId "
             + "FROM Booking b JOIN b.profilePatientId pp JOIN b.scheduleId s JOIN s.profileDoctorId pd JOIN pp.userId u "
             + "WHERE u.userId = :userId")
     List<Object[]> getBookingForUserView(@Param("userId") int userId);
@@ -67,7 +67,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             + "WHERE pd.profileDoctorId = :profileDoctorId")
     List<Object[]> getBookingForDoctorView(@Param("profileDoctorId") int profileDoctorId);
 
-    @Query("SELECT pd.name, pd.specialtyId, pd.bookingPrice, pp.name, pp.birthday, pp.phonenumber, pp.gender "
+    @Query("SELECT pd.name, pd.specialtyId, pd.bookingPrice, pp.name, pp.birthday, pp.phonenumber, pp.gender, pd.userId "
             + "FROM Booking b "
             + "JOIN b.scheduleId s "
             + "JOIN b.profilePatientId pp "

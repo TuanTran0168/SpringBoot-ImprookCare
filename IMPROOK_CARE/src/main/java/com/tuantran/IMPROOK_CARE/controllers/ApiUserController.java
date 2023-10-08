@@ -55,10 +55,10 @@ public class ApiUserController {
     @Autowired
     private AuthenticationComponent authenticationComponent;
 
-    @GetMapping("/auth/test-xiu/")
+    @GetMapping("/public/test-xiu/")
     @CrossOrigin
-    public ResponseEntity<User> test() {
-        return new ResponseEntity<>(this.userService.findUserByUsername("thai"), HttpStatus.OK);
+    public ResponseEntity<?> test(@RequestParam int pagesize, @RequestParam int pageNumber) {
+        return new ResponseEntity<>(this.userService.findAllUserPage(pagesize, pageNumber).getContent(), HttpStatus.OK);
     }
 
     @GetMapping("/public/users/")

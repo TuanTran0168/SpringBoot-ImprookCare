@@ -13,6 +13,7 @@ import com.tuantran.IMPROOK_CARE.dto.UpdateUserForUserDTO;
 import com.tuantran.IMPROOK_CARE.models.User;
 import java.util.List;
 import java.util.Map;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,5 +44,7 @@ public interface UserService extends UserDetailsService {
     int changePassword(ChangePasswordDTO changePasswordDTO);
 
     int forgotPassword(ForgotPasswordDTO forgotPasswordDTO);
+    
+    Page<User> findAllUserPage(int pagesize, int pageNumber);
 
 }

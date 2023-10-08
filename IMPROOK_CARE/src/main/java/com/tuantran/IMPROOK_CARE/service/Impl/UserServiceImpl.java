@@ -33,6 +33,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -356,5 +359,11 @@ public class UserServiceImpl implements UserService {
             Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
         }
+    }
+
+    @Override
+    public Page<User> findAllUserPage(int pagesize, int pageNumber) {
+        Pageable page = PageRequest.of(pageNumber, pagesize);
+        return this.userRepository.findUserByActiveTrue(page);
     }
 }
