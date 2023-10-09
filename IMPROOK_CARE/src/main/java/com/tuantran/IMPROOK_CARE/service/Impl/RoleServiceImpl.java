@@ -7,14 +7,17 @@ package com.tuantran.IMPROOK_CARE.service.Impl;
 import com.tuantran.IMPROOK_CARE.models.Role;
 import com.tuantran.IMPROOK_CARE.repository.RoleRepository;
 import com.tuantran.IMPROOK_CARE.service.RoleService;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Administrator
  */
+@Service
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
@@ -46,6 +49,11 @@ public class RoleServiceImpl implements RoleService {
         } catch (NoSuchElementException ex) {
             return null;
         }
+    }
+
+    @Override
+    public List<Role> findRoleByActiveTrue() {
+        return this.roleRepository.findRoleByActiveTrue();
     }
 
 }

@@ -46,5 +46,7 @@ public interface UserService extends UserDetailsService {
     int forgotPassword(ForgotPasswordDTO forgotPasswordDTO);
     
     Page<User> findAllUserPage(int pageNumber);
+    
+    List<User> findAllUserPageSpec(Map<String, String> params);
 
 }

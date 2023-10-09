@@ -21,6 +21,14 @@ public class GenericSpecifications {
         return (root, query, builder) -> builder.like(root.get(fieldName), "%" + value + "%");
     }
 
+    public static <T> Specification<T> greaterThan(String fieldName, String value) {
+        return (root, query, builder) -> builder.greaterThan(root.get(fieldName), value);
+    }
+
+    public static <T> Specification<T> lessThan(String fieldName, String value) {
+        return (root, query, builder) -> builder.lessThan(root.get(fieldName), value);
+    }
+
     public static <T> Specification<T> createSpecification(List<Specification<T>> Specifications) {
         Specification<T> combinedSpec = null;
 

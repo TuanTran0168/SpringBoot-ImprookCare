@@ -4,6 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.service.Impl;
 
+import com.tuantran.IMPROOK_CARE.Specifications.GenericSpecifications;
 import com.tuantran.IMPROOK_CARE.components.cloudinary.CloudinaryComponent;
 import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
 import com.tuantran.IMPROOK_CARE.components.password.PasswordComponent;
@@ -22,6 +23,7 @@ import com.tuantran.IMPROOK_CARE.service.UserService;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -37,6 +39,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -374,5 +377,42 @@ public class UserServiceImpl implements UserService {
     public Page<User> findAllUserPage(int pageNumber) {
         Pageable page = PageRequest.of(pageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
         return this.userRepository.findUserByActiveTrue(page);
+    }
+
+    @Override
+    public List<User> findAllUserPageSpec(Map<String, String> params) {
+        String pageNumber = params.get("pageNumber");
+        String firstname = params.get("firstname");
+        String lastname = params.get("lastname");
+        String roleId = params.get("roleId");
+        String gender = params.get("gender");
+
+        List<Specification<User>> listSpec = new ArrayList<>();
+        Pageable page = null; // Cái này null là bay màu luôn
+        if (pageNumber != null && !pageNumber.isEmpty()) {
+            page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
+        }
+
+        if (firstname != null && !firstname.isEmpty()) {
+            Specification<User> spec = GenericSpecifications.fieldContains("firstname", firstname);
+            listSpec.add(spec);
+        }
+
+        if (lastname != null && !lastname.isEmpty()) {
+            Specification<User> spec = GenericSpecifications.fieldContains("lastname", lastname);
+            listSpec.add(spec);
+        }
+        
+        if (roleId != null && !roleId.isEmpty()) {
+            Specification<User> spec = GenericSpecifications.fieldEquals("roleId", roleId);
+            listSpec.add(spec);
+        }
+        
+        if (gender != null && !gender.isEmpty()) {
+            Specification<User> spec = GenericSpecifications.fieldEquals("gender", Boolean.parseBoolean(gender));
+            listSpec.add(spec);
+        }
+
+        return this.userRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
     }
 }

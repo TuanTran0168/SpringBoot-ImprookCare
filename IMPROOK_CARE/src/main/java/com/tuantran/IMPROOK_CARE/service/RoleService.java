@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.models.Role;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -15,4 +16,5 @@ import java.util.Optional;
 public interface RoleService {
     Role findRoleByRoleNameAndActiveTrue(String roleName);
     Role findRoleByRoleIdAndActiveTrue(int roleId);
+    List<Role> findRoleByActiveTrue();
 }

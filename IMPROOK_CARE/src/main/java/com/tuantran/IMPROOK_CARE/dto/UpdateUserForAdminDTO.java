@@ -18,8 +18,8 @@ public class UpdateUserForAdminDTO {
 
     @NotBlank
     private String userId;
-    @NotBlank
-    private String username;
+//    @NotBlank
+//    private String username;
     @NotBlank
     private String firstname;
     @NotBlank
