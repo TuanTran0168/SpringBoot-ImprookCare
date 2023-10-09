@@ -14,7 +14,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class PrescriptionDetailDTO {
+public class AddPrescriptionDetailDTO {
 
     @NotBlank
     private String medicineId;
