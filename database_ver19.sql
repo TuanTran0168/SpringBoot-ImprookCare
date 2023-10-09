@@ -344,7 +344,7 @@ CREATE TABLE `prescription_detail` (
   `medicine_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `usage_instruction` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `quantity` int DEFAULT NULL,
-  `unitPrice` decimal(10,2) DEFAULT NULL,
+  `unit_price` decimal(10,2) DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
@@ -354,7 +354,7 @@ CREATE TABLE `prescription_detail` (
   KEY `prescription_id` (`prescription_id`),
   CONSTRAINT `prescription_detail_ibfk_1` FOREIGN KEY (`medicine_id`) REFERENCES `medicine` (`medicine_id`),
   CONSTRAINT `prescription_detail_ibfk_2` FOREIGN KEY (`prescription_id`) REFERENCES `prescriptions` (`prescription_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -363,6 +363,7 @@ CREATE TABLE `prescription_detail` (
 
 LOCK TABLES `prescription_detail` WRITE;
 /*!40000 ALTER TABLE `prescription_detail` DISABLE KEYS */;
+INSERT INTO `prescription_detail` VALUES (25,1,15,'Gỏi tôm tái chanh','Dùng đi',3,37000.00,'2023-10-09 12:42:57',NULL,NULL,1),(26,2,15,'Gỏi tôm tái chanh','Dùng đi',3,37000.00,'2023-10-09 12:42:57',NULL,NULL,1),(27,1,16,'Gỏi tôm tái chanh','Dùng đi',3,37000.00,'2023-10-09 12:42:58',NULL,NULL,1),(28,2,16,'Gỏi tôm tái chanh','Dùng đi',3,37000.00,'2023-10-09 12:42:58',NULL,NULL,1);
 /*!40000 ALTER TABLE `prescription_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -393,7 +394,7 @@ CREATE TABLE `prescriptions` (
   CONSTRAINT `prescriptions_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`booking_id`),
   CONSTRAINT `prescriptions_ibfk_2` FOREIGN KEY (`medicine_payment_status_id`) REFERENCES `medicine_payment_status` (`medicine_payment_status_id`),
   CONSTRAINT `prescriptions_ibfk_3` FOREIGN KEY (`service_payment_status_id`) REFERENCES `service_payment_status` (`service_payment_status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -402,6 +403,7 @@ CREATE TABLE `prescriptions` (
 
 LOCK TABLES `prescriptions` WRITE;
 /*!40000 ALTER TABLE `prescriptions` DISABLE KEYS */;
+INSERT INTO `prescriptions` VALUES (15,'2023-10-09','diagnosis','symptom','10000','2023-10-09 12:42:57',NULL,NULL,1,10,1,1),(16,'2023-10-09','diagnosis','symptom','10000','2023-10-09 12:42:58',NULL,NULL,1,10,1,1);
 /*!40000 ALTER TABLE `prescriptions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -844,4 +846,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-09  9:32:43
+-- Dump completed on 2023-10-09 12:46:03
