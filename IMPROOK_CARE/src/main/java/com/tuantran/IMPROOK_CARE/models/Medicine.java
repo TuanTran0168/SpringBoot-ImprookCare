@@ -4,9 +4,11 @@
  */
 package com.tuantran.IMPROOK_CARE.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,6 +20,7 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -76,6 +79,9 @@ public class Medicine implements Serializable {
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     @ManyToOne
     private MedicineCategory categoryId;
+    @JsonIgnore
+    @OneToMany(mappedBy = "medicineId")
+    private Set<PrescriptionDetail> prescriptionDetailSet;
 
     public Medicine() {
     }
@@ -178,6 +184,14 @@ public class Medicine implements Serializable {
 
     public void setCategoryId(MedicineCategory categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Set<PrescriptionDetail> getPrescriptionDetailSet() {
+        return prescriptionDetailSet;
+    }
+
+    public void setPrescriptionDetailSet(Set<PrescriptionDetail> prescriptionDetailSet) {
+        this.prescriptionDetailSet = prescriptionDetailSet;
     }
 
     @Override

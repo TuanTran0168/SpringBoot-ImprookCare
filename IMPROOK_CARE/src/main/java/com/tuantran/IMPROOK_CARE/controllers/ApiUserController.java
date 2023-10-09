@@ -57,8 +57,8 @@ public class ApiUserController {
 
     @GetMapping("/public/test-xiu/")
     @CrossOrigin
-    public ResponseEntity<?> test(@RequestParam int pagesize, @RequestParam int pageNumber) {
-        return new ResponseEntity<>(this.userService.findAllUserPage(pagesize, pageNumber).getContent(), HttpStatus.OK);
+    public ResponseEntity<?> test(@RequestParam int pageNumber) {
+        return new ResponseEntity<>(this.userService.findAllUserPage(pageNumber).getContent(), HttpStatus.OK);
     }
 
     @GetMapping("/public/users/")

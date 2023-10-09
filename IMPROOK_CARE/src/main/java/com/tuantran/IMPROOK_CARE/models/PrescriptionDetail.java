@@ -31,6 +31,7 @@ import jakarta.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "PrescriptionDetail.findAll", query = "SELECT p FROM PrescriptionDetail p"),
     @NamedQuery(name = "PrescriptionDetail.findByPrescriptionDetailId", query = "SELECT p FROM PrescriptionDetail p WHERE p.prescriptionDetailId = :prescriptionDetailId"),
+    @NamedQuery(name = "PrescriptionDetail.findByMedicineName", query = "SELECT p FROM PrescriptionDetail p WHERE p.medicineName = :medicineName"),
     @NamedQuery(name = "PrescriptionDetail.findByQuantity", query = "SELECT p FROM PrescriptionDetail p WHERE p.quantity = :quantity"),
     @NamedQuery(name = "PrescriptionDetail.findByUnitPrice", query = "SELECT p FROM PrescriptionDetail p WHERE p.unitPrice = :unitPrice"),
     @NamedQuery(name = "PrescriptionDetail.findByCreatedDate", query = "SELECT p FROM PrescriptionDetail p WHERE p.createdDate = :createdDate"),
@@ -45,6 +46,8 @@ public class PrescriptionDetail implements Serializable {
     @Basic(optional = false)
     @Column(name = "prescription_detail_id")
     private Integer prescriptionDetailId;
+    @Column(name = "medicine_name")
+    private String medicineName;
     @Lob
     @Column(name = "usage_instruction")
     private String usageInstruction;
@@ -84,6 +87,14 @@ public class PrescriptionDetail implements Serializable {
 
     public void setPrescriptionDetailId(Integer prescriptionDetailId) {
         this.prescriptionDetailId = prescriptionDetailId;
+    }
+
+    public String getMedicineName() {
+        return medicineName;
+    }
+
+    public void setMedicineName(String medicineName) {
+        this.medicineName = medicineName;
     }
 
     public String getUsageInstruction() {
