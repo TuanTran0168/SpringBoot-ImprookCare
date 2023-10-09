@@ -8,6 +8,8 @@ import com.tuantran.IMPROOK_CARE.models.Medicine;
 import com.tuantran.IMPROOK_CARE.models.MedicineCategory;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,4 +27,6 @@ public interface MedicineRepository extends JpaRepository<Medicine, Integer> {
     Optional<Medicine> findMedicineByMedicineIdAndActiveTrue(int medicineId);
 
     List<Medicine> findMedicineByCategoryId(MedicineCategory medicineCategoryId);
+
+    public List<Medicine> findAll(Specification<Medicine> createSpecification, Pageable page);
 }

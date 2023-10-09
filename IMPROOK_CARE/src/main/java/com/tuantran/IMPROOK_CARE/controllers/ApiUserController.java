@@ -60,7 +60,7 @@ public class ApiUserController {
     public ResponseEntity<?> test(@RequestParam int pageNumber) {
         return new ResponseEntity<>(this.userService.findAllUserPage(pageNumber).getContent(), HttpStatus.OK);
     }
-    
+
     @GetMapping("/public/test-xiu-xiu/")
     @CrossOrigin
     public ResponseEntity<?> test(@RequestParam Map<String, String> params) {
@@ -222,5 +222,11 @@ public class ApiUserController {
     public ResponseEntity<User> getUserById(@PathVariable(value = "userId") String userId) throws Exception {
 
         return new ResponseEntity<>(this.userService.findUserByUserIdAndActiveTrue(Integer.parseInt(userId)), HttpStatus.OK);
+    }
+
+    @GetMapping("/public/search-users/")
+    @CrossOrigin
+    public ResponseEntity<List<User>> listSearchUser(@RequestParam Map<String, String> params) {
+        return new ResponseEntity<>(this.userService.findAllUserPageSpec(params), HttpStatus.OK);
     }
 }

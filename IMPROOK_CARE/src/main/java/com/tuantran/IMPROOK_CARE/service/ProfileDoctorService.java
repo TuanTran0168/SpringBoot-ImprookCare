@@ -9,6 +9,9 @@ import com.tuantran.IMPROOK_CARE.dto.UpdateProfileDoctorDTO;
 import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import com.tuantran.IMPROOK_CARE.models.User;
 import java.util.List;
+import java.util.Map;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 /**
  *
@@ -25,4 +28,6 @@ public interface ProfileDoctorService {
     ProfileDoctor findProfileDoctorByProfileDoctorIdAndActiveTrue(int profileDoctorId);
 
     List<ProfileDoctor> findProfileDoctorByUserIdAndActiveTrue(int userId);
+    
+    public List<ProfileDoctor> findAllProfileDoctorPageSpec(Map<String, String> params);
 }

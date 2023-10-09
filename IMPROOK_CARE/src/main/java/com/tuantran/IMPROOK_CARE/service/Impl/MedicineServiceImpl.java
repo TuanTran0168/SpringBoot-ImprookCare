@@ -4,6 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.service.Impl;
 
+import com.tuantran.IMPROOK_CARE.Specifications.GenericSpecifications;
 import com.tuantran.IMPROOK_CARE.components.cloudinary.CloudinaryComponent;
 import com.tuantran.IMPROOK_CARE.dto.AddMedicineDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateMedicineDTO;
@@ -16,12 +17,17 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,6 +46,9 @@ public class MedicineServiceImpl implements MedicineService {
 
     @Autowired
     private CloudinaryComponent cloudinaryComponent;
+
+    @Autowired
+    private Environment environment;
 
     @Override
     public List<Medicine> findMedicineByActiveTrue() {
@@ -163,6 +172,46 @@ public class MedicineServiceImpl implements MedicineService {
             Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
         }
+    }
+
+    @Override
+    public List<Medicine> findAllMedicinePageSpec(Map<String, String> params) {
+        String pageNumber = params.get("pageNumber");
+        String medicineName = params.get("medicineName");
+        String fromPrice = params.get("fromPrice");
+        String toPrice = params.get("toPrice");
+        String categoryId = params.get("categoryId");
+
+        List<Specification<Medicine>> listSpec = new ArrayList<>();
+        Pageable page = null; // Cái này null là bay màu luôn
+        if (pageNumber != null && !pageNumber.isEmpty()) {
+            page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
+        }
+
+        if (medicineName != null && !medicineName.isEmpty()) {
+            Specification<Medicine> spec = GenericSpecifications.fieldContains("medicineName", medicineName);
+            listSpec.add(spec);
+        }
+
+        if (fromPrice != null && !fromPrice.isEmpty()) {
+            Specification<Medicine> spec = GenericSpecifications.greaterThan("unitPrice", fromPrice);
+            listSpec.add(spec);
+        }
+
+        if (toPrice != null && !toPrice.isEmpty()) {
+            Specification<Medicine> spec = GenericSpecifications.lessThan("unitPrice", toPrice);
+            listSpec.add(spec);
+        }
+
+        if (categoryId != null && !categoryId.isEmpty()) {
+            Optional<MedicineCategory> medicineCategoryOptional = this.medicineCategoryRepository.findMedicineCategoryByCategoryIdAndActiveTrue(Integer.parseInt(categoryId));
+            if (medicineCategoryOptional.isPresent()) {
+                Specification<Medicine> spec = GenericSpecifications.fieldEquals("categoryId", medicineCategoryOptional.get());
+                listSpec.add(spec);
+            }
+        }
+
+        return this.medicineRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
     }
 
 }

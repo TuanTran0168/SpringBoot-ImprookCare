@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
         user.setLastname(lastname);
         user.setGender(Boolean.parseBoolean(gender));
 
-        if (avatar != null) {
+        if (avatar != null && !avatar.isEmpty()) {
             String linkCloudinaryAvatar = cloudinaryComponent.Cloudinary(avatar).get("secure_url").toString();
             user.setAvatar(linkCloudinaryAvatar);
         }
@@ -402,12 +402,15 @@ public class UserServiceImpl implements UserService {
             Specification<User> spec = GenericSpecifications.fieldContains("lastname", lastname);
             listSpec.add(spec);
         }
-        
+
         if (roleId != null && !roleId.isEmpty()) {
-            Specification<User> spec = GenericSpecifications.fieldEquals("roleId", roleId);
-            listSpec.add(spec);
+            Optional<Role> roleOptional = this.roleRepository.findRoleByRoleIdAndActiveTrue(Integer.parseInt(roleId));
+            if (roleOptional.isPresent()) {
+                Specification<User> spec = GenericSpecifications.fieldEquals("roleId", roleOptional.get());
+                listSpec.add(spec);
+            }
         }
-        
+
         if (gender != null && !gender.isEmpty()) {
             Specification<User> spec = GenericSpecifications.fieldEquals("gender", Boolean.parseBoolean(gender));
             listSpec.add(spec);

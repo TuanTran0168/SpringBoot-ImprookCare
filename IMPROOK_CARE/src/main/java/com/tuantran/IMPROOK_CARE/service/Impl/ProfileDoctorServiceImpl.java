@@ -4,21 +4,29 @@
  */
 package com.tuantran.IMPROOK_CARE.service.Impl;
 
+import com.tuantran.IMPROOK_CARE.Specifications.GenericSpecifications;
 import com.tuantran.IMPROOK_CARE.dto.AddProfileDoctorDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateProfileDoctorDTO;
 import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
+import com.tuantran.IMPROOK_CARE.models.Role;
 import com.tuantran.IMPROOK_CARE.models.Specialty;
 import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.repository.ProfileDoctorRepository;
 import com.tuantran.IMPROOK_CARE.repository.SpecialtyRepository;
 import com.tuantran.IMPROOK_CARE.repository.UserRepository;
 import com.tuantran.IMPROOK_CARE.service.ProfileDoctorService;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,6 +44,9 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
 
     @Autowired
     private ProfileDoctorRepository profileDoctorRepository;
+
+    @Autowired
+    private Environment environment;
 
     @Override
     public int addProfileDoctor(AddProfileDoctorDTO addProfileDoctorDTO) {
@@ -150,6 +161,43 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
         } catch (NoSuchElementException ex) {
             return null;
         }
+    }
+
+    @Override
+    public List<ProfileDoctor> findAllProfileDoctorPageSpec(Map<String, String> params) {
+        String pageNumber = params.get("pageNumber");
+        String name = params.get("name");
+        String phonenumber = params.get("phonenumber");
+        String fromPrice = params.get("fromPrice");
+        String toPrice = params.get("toPrice");
+
+        List<Specification<ProfileDoctor>> listSpec = new ArrayList<>();
+        Pageable page = null; // Cái này null là bay màu luôn
+        if (pageNumber != null && !pageNumber.isEmpty()) {
+            page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
+        }
+
+        if (name != null && !name.isEmpty()) {
+            Specification<ProfileDoctor> spec = GenericSpecifications.fieldContains("name", name);
+            listSpec.add(spec);
+        }
+
+        if (phonenumber != null && !phonenumber.isEmpty()) {
+            Specification<ProfileDoctor> spec = GenericSpecifications.fieldContains("phonenumber", phonenumber);
+            listSpec.add(spec);
+        }
+
+        if (fromPrice != null && !fromPrice.isEmpty()) {
+            Specification<ProfileDoctor> spec = GenericSpecifications.greaterThan("bookingPrice", fromPrice);
+            listSpec.add(spec);
+        }
+
+        if (toPrice != null && !toPrice.isEmpty()) {
+            Specification<ProfileDoctor> spec = GenericSpecifications.lessThan("bookingPrice", toPrice);
+            listSpec.add(spec);
+        }
+
+        return this.profileDoctorRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
     }
 
 }

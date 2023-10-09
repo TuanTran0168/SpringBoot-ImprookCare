@@ -10,6 +10,7 @@ import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import com.tuantran.IMPROOK_CARE.service.ProfileDoctorService;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -78,5 +80,11 @@ public class ApiProfileDoctorController {
     public ResponseEntity<List<ProfileDoctor>> profileDoctorByUserId(@PathVariable(value = "userId") String userId) {
 
         return new ResponseEntity<>(this.profileDoctorService.findProfileDoctorByUserIdAndActiveTrue(Integer.parseInt(userId)), HttpStatus.OK);
+    }
+
+    @GetMapping("/public/search-profile-doctors/")
+    @CrossOrigin
+    public ResponseEntity<List<ProfileDoctor>> listSearchUser(@RequestParam Map<String, String> params) {
+        return new ResponseEntity<>(this.profileDoctorService.findAllProfileDoctorPageSpec(params), HttpStatus.OK);
     }
 }
