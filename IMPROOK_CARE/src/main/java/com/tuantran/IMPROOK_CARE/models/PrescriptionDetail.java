@@ -54,7 +54,7 @@ public class PrescriptionDetail implements Serializable {
     @Column(name = "quantity")
     private Integer quantity;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "unitPrice")
+    @Column(name = "unit_price")
     private BigDecimal unitPrice;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)

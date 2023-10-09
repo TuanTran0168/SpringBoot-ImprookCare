@@ -11,12 +11,14 @@ import java.util.Date;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Administrator
  */
 @Repository
+@Transactional
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     Optional<Schedule> findScheduleByScheduleIdAndActiveTrue(int scheduleId);
     Optional<Schedule> findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(ProfileDoctor profiledoctorId, Date date, TimeSlot timeSlotId);

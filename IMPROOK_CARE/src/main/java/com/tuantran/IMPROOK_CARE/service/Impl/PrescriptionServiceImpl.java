@@ -17,12 +17,15 @@ import com.tuantran.IMPROOK_CARE.repository.MedicineRepository;
 import com.tuantran.IMPROOK_CARE.repository.PrescriptionDetailRepository;
 import com.tuantran.IMPROOK_CARE.repository.PrescriptionRepository;
 import com.tuantran.IMPROOK_CARE.service.PrescriptionService;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -30,26 +33,27 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PrescriptionServiceImpl implements PrescriptionService {
-
+    
     @Autowired
     private BookingRepository bookingRepository;
-
+    
     @Autowired
     private PrescriptionRepository prescriptionRepository;
-
+    
     @Autowired
     private PrescriptionDetailRepository prescriptionDetailRepository;
-
+    
     @Autowired
     private MedicineRepository medicineRepository;
-
+    
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public int addPrescription(AddPrescriptionDTO addPrescriptionDTO, Map<String, AddPrescriptionDetailDTO> prescriptionDetailDTO) {
         try {
             Prescriptions prescriptions = new Prescriptions();
-
+            
             Optional<Booking> bookingOptional = this.bookingRepository.findBookingByBookingIdAndActiveTrue(Integer.parseInt(addPrescriptionDTO.getBookingId()));
-
+            
             if (bookingOptional.isPresent()) {
                 prescriptions.setBookingId(bookingOptional.get());
             } else {
@@ -63,34 +67,36 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             prescriptions.setActive(Boolean.TRUE);
             prescriptions.setCreatedDate(new Date());
             prescriptions.setPrescriptionDate(new Date());
-
+            
             this.prescriptionRepository.save(prescriptions);
-
+            
             for (AddPrescriptionDetailDTO presDetailDTO : prescriptionDetailDTO.values()) {
                 PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
-
+                
                 Optional<Medicine> medicineOptional = this.medicineRepository.findMedicineByMedicineIdAndActiveTrue(Integer.parseInt(presDetailDTO.getMedicineId()));
-
+                
                 if (medicineOptional.isPresent()) {
                     prescriptionDetail.setMedicineId(medicineOptional.get());
                 } else {
                     return 0;
                 }
-
+                
+                prescriptionDetail.setPrescriptionId(prescriptions);
                 prescriptionDetail.setMedicineName(presDetailDTO.getMedicineName());
+                prescriptionDetail.setUnitPrice(BigDecimal.valueOf(Double.parseDouble(presDetailDTO.getUnitPrice())));
                 prescriptionDetail.setQuantity(Integer.parseInt(presDetailDTO.getQuantity()));
                 prescriptionDetail.setUsageInstruction(presDetailDTO.getUsageInstruction());
-
+                
                 prescriptionDetail.setActive(Boolean.TRUE);
                 prescriptionDetail.setCreatedDate(new Date());
                 this.prescriptionDetailRepository.save(prescriptionDetail);
             }
-
+            
             return 1;
         } catch (DataAccessException ex) {
             ex.printStackTrace();
             return 0;
         }
     }
-
+    
 }

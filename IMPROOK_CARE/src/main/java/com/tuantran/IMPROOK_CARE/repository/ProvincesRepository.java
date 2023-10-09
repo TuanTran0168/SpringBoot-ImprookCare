@@ -7,12 +7,14 @@ package com.tuantran.IMPROOK_CARE.repository;
 import com.tuantran.IMPROOK_CARE.models.Provinces;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Administrator
  */
 @Repository
+@Transactional
 public interface ProvincesRepository extends JpaRepository<Provinces, String>{
     
 }
