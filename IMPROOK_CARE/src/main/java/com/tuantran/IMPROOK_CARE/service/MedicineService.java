@@ -7,10 +7,9 @@ package com.tuantran.IMPROOK_CARE.service;
 import com.tuantran.IMPROOK_CARE.dto.AddMedicineDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateMedicineDTO;
 import com.tuantran.IMPROOK_CARE.models.Medicine;
-import com.tuantran.IMPROOK_CARE.models.MedicineCategory;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -29,5 +28,5 @@ public interface MedicineService {
 
     int updateMedicine(UpdateMedicineDTO updateMedicineDTO, MultipartFile avatar);
     
-    public List<Medicine> findAllMedicinePageSpec(Map<String, String> params);
+    Page<Medicine> findAllMedicinePageSpec(Map<String, String> params);
 }

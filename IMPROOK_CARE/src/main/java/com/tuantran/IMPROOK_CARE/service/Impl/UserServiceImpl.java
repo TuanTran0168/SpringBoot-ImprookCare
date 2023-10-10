@@ -380,7 +380,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllUserPageSpec(Map<String, String> params) {
+    public Page<User> findAllUserPageSpec(Map<String, String> params) {
         String pageNumber = params.get("pageNumber");
         String firstname = params.get("firstname");
         String lastname = params.get("lastname");
@@ -388,7 +388,8 @@ public class UserServiceImpl implements UserService {
         String gender = params.get("gender");
 
         List<Specification<User>> listSpec = new ArrayList<>();
-        Pageable page = null; // Cái này null là bay màu luôn
+        int defaultPageNumber = 0;
+        Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
         if (pageNumber != null && !pageNumber.isEmpty()) {
             page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
         }
@@ -418,4 +419,44 @@ public class UserServiceImpl implements UserService {
 
         return this.userRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
     }
+
+//    @Override
+//    public Page<User> findAllUserPageSpec_test(Map<String, String> params) {
+//        String pageNumber = params.get("pageNumber");
+//        String firstname = params.get("firstname");
+//        String lastname = params.get("lastname");
+//        String roleId = params.get("roleId");
+//        String gender = params.get("gender");
+//
+//        List<Specification<User>> listSpec = new ArrayList<>();
+//        Pageable page = null; // Cái này null là bay màu luôn
+//        if (pageNumber != null && !pageNumber.isEmpty()) {
+//            page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
+//        }
+//
+//        if (firstname != null && !firstname.isEmpty()) {
+//            Specification<User> spec = GenericSpecifications.fieldContains("firstname", firstname);
+//            listSpec.add(spec);
+//        }
+//
+//        if (lastname != null && !lastname.isEmpty()) {
+//            Specification<User> spec = GenericSpecifications.fieldContains("lastname", lastname);
+//            listSpec.add(spec);
+//        }
+//
+//        if (roleId != null && !roleId.isEmpty()) {
+//            Optional<Role> roleOptional = this.roleRepository.findRoleByRoleIdAndActiveTrue(Integer.parseInt(roleId));
+//            if (roleOptional.isPresent()) {
+//                Specification<User> spec = GenericSpecifications.fieldEquals("roleId", roleOptional.get());
+//                listSpec.add(spec);
+//            }
+//        }
+//
+//        if (gender != null && !gender.isEmpty()) {
+//            Specification<User> spec = GenericSpecifications.fieldEquals("gender", Boolean.parseBoolean(gender));
+//            listSpec.add(spec);
+//        }
+//
+//        return this.userRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
+//    }
 }

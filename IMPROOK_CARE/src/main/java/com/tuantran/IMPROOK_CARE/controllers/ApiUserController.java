@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -226,7 +225,7 @@ public class ApiUserController {
 
     @GetMapping("/public/search-users/")
     @CrossOrigin
-    public ResponseEntity<List<User>> listSearchUser(@RequestParam Map<String, String> params) {
+    public ResponseEntity<?> listSearchUser(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.userService.findAllUserPageSpec(params), HttpStatus.OK);
     }
 }

@@ -89,7 +89,7 @@ public class ApiMedicineController {
     
     @GetMapping("/public/search-medicines/")
     @CrossOrigin
-    public ResponseEntity<List<Medicine>> listSearchMedicine(@RequestParam Map<String, String> params) {
+    public ResponseEntity<?> listSearchMedicine(@RequestParam Map<String, String> params) {
         return ResponseEntity.ok().body(this.medicineService.findAllMedicinePageSpec(params));
     }
 }

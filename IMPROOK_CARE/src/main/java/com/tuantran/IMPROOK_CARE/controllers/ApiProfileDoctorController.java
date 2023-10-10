@@ -84,7 +84,7 @@ public class ApiProfileDoctorController {
 
     @GetMapping("/public/search-profile-doctors/")
     @CrossOrigin
-    public ResponseEntity<List<ProfileDoctor>> listSearchUser(@RequestParam Map<String, String> params) {
+    public ResponseEntity<?> listSearchUser(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.profileDoctorService.findAllProfileDoctorPageSpec(params), HttpStatus.OK);
     }
 }

@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -175,7 +176,7 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
-    public List<Medicine> findAllMedicinePageSpec(Map<String, String> params) {
+    public Page<Medicine> findAllMedicinePageSpec(Map<String, String> params) {
         String pageNumber = params.get("pageNumber");
         String medicineName = params.get("medicineName");
         String fromPrice = params.get("fromPrice");
@@ -183,7 +184,8 @@ public class MedicineServiceImpl implements MedicineService {
         String categoryId = params.get("categoryId");
 
         List<Specification<Medicine>> listSpec = new ArrayList<>();
-        Pageable page = null; // Cái này null là bay màu luôn
+        int defaultPageNumber = 0;
+        Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
         if (pageNumber != null && !pageNumber.isEmpty()) {
             page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
         }

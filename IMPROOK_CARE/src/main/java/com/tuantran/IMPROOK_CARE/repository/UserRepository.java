@@ -34,5 +34,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Page<User> findUserByActiveTrue(Pageable page);
 //    Page<User> findUserPageSpec(Specification specification, Pageable page);
 
-    public List<User> findAll(Specification<User> createSpecification, Pageable page);
+//    List<User> findAll(Specification<User> createSpecification, Pageable page);
+    
+    Page<User> findAll(Specification<User> createSpecification, Pageable page);
 }

@@ -47,6 +47,8 @@ public interface UserService extends UserDetailsService {
     
     Page<User> findAllUserPage(int pageNumber);
     
-    List<User> findAllUserPageSpec(Map<String, String> params);
+    Page<User> findAllUserPageSpec(Map<String, String> params);
+    
+//    Page<User> findAllUserPageSpec_test(Map<String, String> params);
 
 }
