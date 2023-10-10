@@ -27,6 +27,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -174,10 +175,11 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
 
         List<Specification<ProfileDoctor>> listSpec = new ArrayList<>();
         int defaultPageNumber = 0;
-        Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
-        
+        Sort mySort = Sort.by("createdDate").descending();
+        Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+
         if (pageNumber != null && !pageNumber.isEmpty()) {
-            page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
+            page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
         }
 
         if (name != null && !name.isEmpty()) {
