@@ -15,7 +15,9 @@ import com.tuantran.IMPROOK_CARE.dto.LoginDTO;
 import com.tuantran.IMPROOK_CARE.dto.RegisterDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateUserForAdminDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateUserForUserDTO;
+import com.tuantran.IMPROOK_CARE.models.Prescriptions;
 import com.tuantran.IMPROOK_CARE.models.User;
+import com.tuantran.IMPROOK_CARE.service.PrescriptionService;
 import com.tuantran.IMPROOK_CARE.service.UserService;
 import jakarta.validation.Valid;
 import java.security.Principal;
@@ -53,6 +55,9 @@ public class ApiUserController {
 
     @Autowired
     private AuthenticationComponent authenticationComponent;
+    
+    @Autowired
+    private PrescriptionService prescriptionService;
 
     @GetMapping("/public/test-xiu/")
     @CrossOrigin
@@ -63,7 +68,7 @@ public class ApiUserController {
     @GetMapping("/public/test-xiu-xiu/")
     @CrossOrigin
     public ResponseEntity<?> test(@RequestParam Map<String, String> params) {
-        return new ResponseEntity<>(this.userService.findAllUserPageSpec(params), HttpStatus.OK);
+        return new ResponseEntity<>(this.prescriptionService.getPrescriptionsByProfilePatientId(params), HttpStatus.OK);
     }
 
     @GetMapping("/public/users/")

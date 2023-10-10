@@ -6,12 +6,23 @@ package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.dto.AddPrescriptionDTO;
 import com.tuantran.IMPROOK_CARE.dto.AddPrescriptionDetailDTO;
+import com.tuantran.IMPROOK_CARE.models.Prescriptions;
+import java.util.List;
 import java.util.Map;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
  * @author Administrator
  */
 public interface PrescriptionService {
+
     int addPrescription(AddPrescriptionDTO addPrescriptionDTO, Map<String, AddPrescriptionDetailDTO> prescriptionDetailDTO);
+
+    Page<Prescriptions> findAllPrescriptionPageSpec(Map<String, String> params);
+    
+    Page<Prescriptions> getPrescriptionsByProfilePatientId(Map<String, String> params);
 }

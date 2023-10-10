@@ -76,7 +76,7 @@ public class ApiMedicineCategoryController {
             message = "Cập nhật danh mục thuốc thành công!";
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else if (check == 2) {
-            message = "danh mục thuốc không tồn tại!";
+            message = "Danh mục thuốc không tồn tại!";
         } else if (check == 0) {
             message = "Cập nhật danh mục thuốc thất bại!";
         }
