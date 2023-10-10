@@ -7,10 +7,13 @@ package com.tuantran.IMPROOK_CARE.service.Impl;
 import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
 import com.tuantran.IMPROOK_CARE.dto.AddProfilePatientDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateProfilePatientDTO;
+import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
 import com.tuantran.IMPROOK_CARE.models.User;
+import com.tuantran.IMPROOK_CARE.repository.BookingRepository;
 import com.tuantran.IMPROOK_CARE.repository.ProfilePatientRepository;
 import com.tuantran.IMPROOK_CARE.repository.UserRepository;
+import com.tuantran.IMPROOK_CARE.service.BookingService;
 import com.tuantran.IMPROOK_CARE.service.ProfilePatientService;
 import java.text.ParseException;
 import java.util.Date;
@@ -22,6 +25,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -38,6 +42,12 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
 
     @Autowired
     private DateFormatComponent dateFormatComponent;
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
+    private BookingService bookingService;
 
     @Override
     public int addProfilePatient(AddProfilePatientDTO addProfilePatientDTO) {
@@ -156,5 +166,29 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
             return null;
         }
 
+    }
+
+    @Override
+    @Transactional
+    public int softDeleteProfilePatient(int profilePatientId) {
+        Optional<ProfilePatient> profilePatientOptional = this.profilePatientRepository.findProfilePatientByProfilePatientIdAndActiveTrue(profilePatientId);
+        if (profilePatientOptional.isPresent()) {
+            ProfilePatient profilePatient = profilePatientOptional.get();
+            if (profilePatient.getActive().equals(Boolean.TRUE)) {
+                profilePatient.setActive(Boolean.FALSE);
+
+                List<Booking> listBooking = this.bookingRepository.findBookingByProfilePatientIdAndActiveTrue(profilePatient);
+
+                for (Booking booking : listBooking) {
+                    this.bookingService.softDeleteBooking(booking.getBookingId());
+                }
+                return 1;
+            } else {
+                System.out.println("ProfilePatient: " + profilePatient.getActive());
+                return 2;
+            }
+        } else {
+            return 3; // Không tìm được để xóa
+        }
     }
 }

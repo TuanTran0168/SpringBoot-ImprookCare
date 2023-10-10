@@ -22,4 +22,6 @@ public interface ProfilePatientService {
     ProfilePatient findProfilePatientByProfilePatientIdAndActiveTrue(int profilePatientId);
 
     List<ProfilePatient> findProfilePatientByUserIdAndActiveTrue(int userId);
+    
+    int softDeleteProfilePatient(int profilePatientId);
 }

@@ -28,7 +28,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     Optional<Booking> findBookingByActiveTrueAndBookingCancelFalse();
 
     //User view
-    Optional<Booking> findBookingByProfilePatientIdAndActiveTrue(ProfilePatient profilePatientId);
+    List<Booking> findBookingByProfilePatientIdAndActiveTrue(ProfilePatient profilePatientId);
 
 //    Optional<Booking> findBookingByProfilePatientIdAndActiveTrue(ProfilePatient profilePatientId);
 //    @Query(value = "SELECT u.user_id, u.firstname, pp.name, pp.profile_patient_id, pd.name, pp.name, b.created_date"
@@ -76,4 +76,5 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             + "JOIN s.profileDoctorId pd "
             + "WHERE b.bookingId = :bookingId")
     List<Object[]> getBookingDetailsByBookingId(@Param("bookingId") int bookingId);
+
 }

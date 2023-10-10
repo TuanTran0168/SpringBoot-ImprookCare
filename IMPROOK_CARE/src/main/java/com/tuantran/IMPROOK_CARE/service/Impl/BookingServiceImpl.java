@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -193,6 +194,24 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<Object[]> getBookingDetailsByBookingId(int bookingId) {
         return this.bookingRepository.getBookingDetailsByBookingId(bookingId);
+    }
+
+    @Override
+    @Transactional
+    public int softDeleteBooking(int bookingId) {
+        Optional<Booking> bookingOptional = this.bookingRepository.findBookingByBookingIdAndActiveTrue(bookingId);
+        if (bookingOptional.isPresent()) {
+            Booking booking = bookingOptional.get();
+            if (booking.getActive().equals(Boolean.TRUE)) {
+                booking.setActive(Boolean.FALSE);
+                return 1;
+            } else {
+                System.out.println("Booking: " + booking.getActive());
+                return 2;
+            }
+        } else {
+            return 3; // Không tìm được để xóa
+        }
     }
 
 }

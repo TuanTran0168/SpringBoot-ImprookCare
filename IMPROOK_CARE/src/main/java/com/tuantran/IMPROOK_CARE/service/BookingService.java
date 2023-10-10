@@ -34,4 +34,6 @@ public interface BookingService {
     List<Object[]> getBookingForDoctorView(@Param("profileDoctorId") int profileDoctorId);
 
     List<Object[]> getBookingDetailsByBookingId(@Param("bookingId") int bookingId);
+    
+    int softDeleteBooking(int bookingId);
 }

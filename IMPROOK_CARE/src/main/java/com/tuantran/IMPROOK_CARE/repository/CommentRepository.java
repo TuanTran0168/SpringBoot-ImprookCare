@@ -22,5 +22,5 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
     Optional<Comment> findCommentByCommentIdAndActiveTrue(int commentId);
 
-    List<Comment> findCommentByProfileDoctorId(ProfileDoctor profileDoctorId);
+    List<Comment> findCommentByProfileDoctorIdAndActiveTrue(ProfileDoctor profileDoctorId);
 }

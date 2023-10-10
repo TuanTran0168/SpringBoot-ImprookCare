@@ -242,7 +242,7 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
                     this.scheduleService.softDeleteSchedule(schedule.getScheduleId());
                 }
 
-                List<Comment> listComment = this.commentRepository.findCommentByProfileDoctorId(profileDoctor);
+                List<Comment> listComment = this.commentRepository.findCommentByProfileDoctorIdAndActiveTrue(profileDoctor);
 
                 for (Comment comment : listComment) {
                     this.commentService.softDeleteComment(comment.getCommentId());
