@@ -24,6 +24,10 @@ public interface ScheduleService {
     Schedule findScheduleByIdAndActiveTrue(int scheduleId);
 
     Schedule findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(int profiledoctorId, String date, int timeSlotId);
-    
-    public int isScheduleExists(int profiledoctorId, String date, int timeSlotId);
+
+    int isScheduleExists(int profiledoctorId, String date, int timeSlotId);
+
+    int softDeleteSchedule(int scheduleId);
+
+    List<Schedule> findScheduleByProfileDoctorIdAndActiveTrue(int profiledoctorId);
 }

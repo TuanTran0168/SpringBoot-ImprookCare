@@ -33,22 +33,22 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api")
 public class ApiMedicineController {
-    
+
     @Autowired
     private MedicineService medicineService;
-    
+
     @GetMapping("/public/medicines/")
     @CrossOrigin
     public ResponseEntity<List<Medicine>> listMedicine() {
         return ResponseEntity.ok().body(this.medicineService.findMedicineByActiveTrue());
     }
-    
+
     @GetMapping("/public/medicine-category/{categoryId}/medicines/")
     @CrossOrigin
     public ResponseEntity<List<Medicine>> listMedicinesByCategoryId(@PathVariable(value = "categoryId") String categoryId) {
         return new ResponseEntity<>(this.medicineService.findMedicineByCategoryId(Integer.parseInt(categoryId)), HttpStatus.OK);
     }
-    
+
     @PostMapping(path = "/auth/admin/add-medicine/",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,17 +56,17 @@ public class ApiMedicineController {
     public ResponseEntity<String> addMedicine(@Valid AddMedicineDTO addMedicineDTO, @RequestPart("avatar") MultipartFile avatar) throws Exception {
         String message = "Có lỗi xảy ra!";
         int check = this.medicineService.addMedicine(addMedicineDTO, avatar);
-        
+
         if (check == 1) {
             message = "Thêm thuốc thành công!";
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else if (check == 0) {
-            message = "Đăng ký thất bại!";
+            message = "Thêm thuốc thất bại!";
         }
-        
+
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
-    
+
     @PostMapping(path = "/auth/admin/update-medicine/",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -74,7 +74,7 @@ public class ApiMedicineController {
     public ResponseEntity<String> updateMedicine(@Valid UpdateMedicineDTO updateMedicineDTO, @RequestPart("avatar") MultipartFile avatar) throws Exception {
         String message = "Có lỗi xảy ra!";
         int check = this.medicineService.updateMedicine(updateMedicineDTO, avatar);
-        
+
         if (check == 1) {
             message = "Cập nhật thuốc thành công!";
             return new ResponseEntity<>(message, HttpStatus.OK);
@@ -83,13 +83,19 @@ public class ApiMedicineController {
         } else if (check == 0) {
             message = "Cập nhật thuốc thất bại!";
         }
-        
+
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
-    
+
     @GetMapping("/public/search-medicines/")
     @CrossOrigin
     public ResponseEntity<?> listSearchMedicine(@RequestParam Map<String, String> params) {
         return ResponseEntity.ok().body(this.medicineService.findAllMedicinePageSpec(params));
+    }
+
+    @GetMapping("/public/medicines/{medicineId}/")
+    @CrossOrigin
+    public ResponseEntity<Medicine> details(@PathVariable(value = "medicineId") String medicineId) {
+        return ResponseEntity.ok().body(this.medicineService.findMedicineByMedicineIdAndActiveTrue(Integer.parseInt(medicineId)));
     }
 }

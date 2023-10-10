@@ -31,4 +31,6 @@ public interface ProfileDoctorService {
     List<ProfileDoctor> findProfileDoctorByUserIdAndActiveTrue(int userId);
     
     Page<ProfileDoctor> findAllProfileDoctorPageSpec(Map<String, String> params);
+    
+    int softDeleteProfileDoctor(int profileDoctorId);
 }

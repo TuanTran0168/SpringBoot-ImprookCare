@@ -4,10 +4,8 @@
  */
 package com.tuantran.IMPROOK_CARE.repository;
 
+import com.tuantran.IMPROOK_CARE.models.Comment;
 import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
-import com.tuantran.IMPROOK_CARE.models.Schedule;
-import com.tuantran.IMPROOK_CARE.models.TimeSlot;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,8 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional
-public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
-    Optional<Schedule> findScheduleByScheduleIdAndActiveTrue(int scheduleId);
-    Optional<Schedule> findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(ProfileDoctor profiledoctorId, Date date, TimeSlot timeSlotId);
-    List<Schedule> findScheduleByProfileDoctorIdAndActiveTrue(ProfileDoctor profiledoctorId);
+public interface CommentRepository extends JpaRepository<Comment, Integer> {
+
+    Optional<Comment> findCommentByCommentIdAndActiveTrue(int commentId);
+
+    List<Comment> findCommentByProfileDoctorId(ProfileDoctor profileDoctorId);
 }

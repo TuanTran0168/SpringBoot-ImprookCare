@@ -7,14 +7,20 @@ package com.tuantran.IMPROOK_CARE.service.Impl;
 import com.tuantran.IMPROOK_CARE.Specifications.GenericSpecifications;
 import com.tuantran.IMPROOK_CARE.dto.AddProfileDoctorDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateProfileDoctorDTO;
+import com.tuantran.IMPROOK_CARE.models.Comment;
 import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import com.tuantran.IMPROOK_CARE.models.Role;
+import com.tuantran.IMPROOK_CARE.models.Schedule;
 import com.tuantran.IMPROOK_CARE.models.Specialty;
 import com.tuantran.IMPROOK_CARE.models.User;
+import com.tuantran.IMPROOK_CARE.repository.CommentRepository;
 import com.tuantran.IMPROOK_CARE.repository.ProfileDoctorRepository;
+import com.tuantran.IMPROOK_CARE.repository.ScheduleRepository;
 import com.tuantran.IMPROOK_CARE.repository.SpecialtyRepository;
 import com.tuantran.IMPROOK_CARE.repository.UserRepository;
+import com.tuantran.IMPROOK_CARE.service.CommentService;
 import com.tuantran.IMPROOK_CARE.service.ProfileDoctorService;
+import com.tuantran.IMPROOK_CARE.service.ScheduleService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +36,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -49,6 +56,18 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
 
     @Autowired
     private Environment environment;
+
+    @Autowired
+    private ScheduleRepository scheduleRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private ScheduleService scheduleService;
+
+    @Autowired
+    private CommentService commentService;
 
     @Override
     public int addProfileDoctor(AddProfileDoctorDTO addProfileDoctorDTO) {
@@ -206,6 +225,37 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
         listSpec.add(spec);
 
         return this.profileDoctorRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
+    }
+
+    @Override
+    @Transactional
+    public int softDeleteProfileDoctor(int profileDoctorId) {
+        Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(profileDoctorId);
+        if (profileDoctorOptional.isPresent()) {
+            ProfileDoctor profileDoctor = profileDoctorOptional.get();
+            if (profileDoctor.getActive().equals(Boolean.TRUE)) {
+                profileDoctor.setActive(Boolean.FALSE);
+
+                List<Schedule> listSchedule = this.scheduleRepository.findScheduleByProfileDoctorIdAndActiveTrue(profileDoctor);
+
+                for (Schedule schedule : listSchedule) {
+                    this.scheduleService.softDeleteSchedule(schedule.getScheduleId());
+                }
+
+                List<Comment> listComment = this.commentRepository.findCommentByProfileDoctorId(profileDoctor);
+
+                for (Comment comment : listComment) {
+                    this.commentService.softDeleteComment(comment.getCommentId());
+                }
+
+                return 1;
+            } else {
+                System.out.println("ProfileDoctor: " + profileDoctor.getActive());
+                return 2;
+            }
+        } else {
+            return 3; // Không tìm được để xóa
+        }
     }
 
 }

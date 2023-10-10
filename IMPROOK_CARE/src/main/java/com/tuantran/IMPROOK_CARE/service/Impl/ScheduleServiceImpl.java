@@ -14,6 +14,7 @@ import com.tuantran.IMPROOK_CARE.repository.ScheduleRepository;
 import com.tuantran.IMPROOK_CARE.repository.TimeSlotRepository;
 import com.tuantran.IMPROOK_CARE.service.ScheduleService;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -136,6 +138,34 @@ public class ScheduleServiceImpl implements ScheduleService {
         } catch (NoSuchElementException ex) {
             Logger.getLogger(ScheduleServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             return 2;
+        }
+    }
+
+    @Override
+    @Transactional
+    public int softDeleteSchedule(int scheduleId) {
+        Optional<Schedule> scheduleOptional = this.scheduleRepository.findScheduleByScheduleIdAndActiveTrue(scheduleId);
+        if (scheduleOptional.isPresent()) {
+            Schedule schedule = scheduleOptional.get();
+            if (schedule.getActive().equals(Boolean.TRUE)) {
+                schedule.setActive(Boolean.FALSE);
+                return 1;
+            } else {
+                System.out.println("Schedule: " + schedule.getActive());
+                return 2;
+            }
+        } else {
+            return 3; // Không tìm được để xóa
+        }
+    }
+
+    @Override
+    public List<Schedule> findScheduleByProfileDoctorIdAndActiveTrue(int profiledoctorId) {
+        Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(profiledoctorId);
+        if (profileDoctorOptional.isPresent()) {
+            return this.scheduleRepository.findScheduleByProfileDoctorIdAndActiveTrue(profileDoctorOptional.get());
+        } else {
+            return new ArrayList<>();
         }
     }
 
