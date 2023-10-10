@@ -419,6 +419,9 @@ public class UserServiceImpl implements UserService {
             listSpec.add(spec);
         }
 
+        Specification<User> spec = GenericSpecifications.fieldEquals("active", Boolean.TRUE);
+        listSpec.add(spec);
+
         return this.userRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
     }
 

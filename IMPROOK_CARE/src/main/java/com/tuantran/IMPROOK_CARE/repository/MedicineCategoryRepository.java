@@ -7,6 +7,9 @@ package com.tuantran.IMPROOK_CARE.repository;
 import com.tuantran.IMPROOK_CARE.models.MedicineCategory;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,4 +25,6 @@ public interface MedicineCategoryRepository extends JpaRepository<MedicineCatego
     List<MedicineCategory> findMedicineCategoryByActiveTrue();
 
     Optional<MedicineCategory> findMedicineCategoryByCategoryIdAndActiveTrue(int medicineCategoryId);
+    
+    Page<MedicineCategory> findAll(Specification<MedicineCategory> createSpecification, Pageable page);
 }

@@ -202,6 +202,9 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
             listSpec.add(spec);
         }
 
+        Specification<ProfileDoctor> spec = GenericSpecifications.fieldEquals("active", Boolean.TRUE);
+        listSpec.add(spec);
+
         return this.profileDoctorRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
     }
 

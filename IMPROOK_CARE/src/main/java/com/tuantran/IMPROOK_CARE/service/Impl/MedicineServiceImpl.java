@@ -214,6 +214,8 @@ public class MedicineServiceImpl implements MedicineService {
                 listSpec.add(spec);
             }
         }
+        Specification<Medicine> spec = GenericSpecifications.fieldEquals("active", Boolean.TRUE);
+        listSpec.add(spec);
 
         return this.medicineRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
     }
