@@ -15,6 +15,7 @@ import com.tuantran.IMPROOK_CARE.repository.ProfileDoctorRepository;
 import com.tuantran.IMPROOK_CARE.repository.UserRepository;
 import com.tuantran.IMPROOK_CARE.service.CommentService;
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public int addComment(AddCommentDTO addCommentDTO, MultipartFile avatar) {
         try {
+
+            List<Object[]> listCheckComment = this.checkComment(Integer.parseInt(addCommentDTO.getUserId()), Integer.parseInt(addCommentDTO.getProfileDoctorId()));
+            if (listCheckComment == null || listCheckComment.isEmpty()) {
+                return 2; // Chưa khám miễn bình luận
+            }
             Comment comment = new Comment();
 
             Optional<User> userOptional = this.userRepository.findUserByUserIdAndActiveTrue(Integer.parseInt(addCommentDTO.getUserId()));
@@ -84,7 +90,7 @@ public class CommentServiceImpl implements CommentService {
                 return 0;
             }
 
-            Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(Integer.parseInt(addCommentDTO.getProfuleDoctorId()));
+            Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(Integer.parseInt(addCommentDTO.getProfileDoctorId()));
 
             if (profileDoctorOptional.isPresent()) {
                 comment.setProfileDoctorId(profileDoctorOptional.get());
@@ -119,12 +125,22 @@ public class CommentServiceImpl implements CommentService {
             Optional<Comment> commentOptional = this.commentRepository.findCommentByCommentIdAndActiveTrue(Integer.parseInt(updateCommentDTO.getCommentId()));
             if (commentOptional.isPresent()) {
                 Comment comment = commentOptional.get();
-                comment.setContent(updateCommentDTO.getContent());
-                comment.setRating(Integer.parseInt(updateCommentDTO.getRating()));
-                this.commentRepository.save(comment);
-                return 1;
+                if (comment.getUserId().equals(updateCommentDTO.getUserId())) {
+                    comment.setContent(updateCommentDTO.getContent());
+                    comment.setRating(Integer.parseInt(updateCommentDTO.getRating()));
+
+                    if (avatar != null && !avatar.isEmpty()) {
+                        String linkCloudinaryAvatar = cloudinaryComponent.Cloudinary(avatar).get("secure_url").toString();
+                        comment.setAvatar(linkCloudinaryAvatar);
+                    }
+                    comment.setUpdatedDate(new Date());
+                    this.commentRepository.save(comment);
+                    return 1;
+                } else {
+                    return 3;
+                }
             } else {
-                return 2;
+                return 2; // Không tìm thấy bình luận
             }
         } catch (DataAccessException ex) {
             ex.printStackTrace();
@@ -133,6 +149,11 @@ public class CommentServiceImpl implements CommentService {
             ex.printStackTrace();
             return 0;
         }
+    }
+
+    @Override
+    public List<Object[]> checkComment(int userId, int doctorId) {
+        return this.commentRepository.getDetailsWhenUserHavePrescriptions(userId, doctorId);
     }
 
 }

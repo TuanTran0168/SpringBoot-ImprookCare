@@ -131,7 +131,7 @@ public class ApiBookingController {
     @PostMapping("/auth/booking-doctor-view/")
     @CrossOrigin
     public ResponseEntity<List<Object[]>> getBookingForDoctorView(@RequestBody Map<String, String> params) {
-        String profiledoctorId = params.get("profiledoctorId");
+        String profiledoctorId = params.get("profileDoctorId");
         return new ResponseEntity<>(this.bookingService.getBookingForDoctorView(Integer.parseInt(profiledoctorId)), HttpStatus.OK);
     }
 

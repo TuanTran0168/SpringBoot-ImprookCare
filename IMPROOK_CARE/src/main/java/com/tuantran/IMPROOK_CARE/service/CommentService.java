@@ -7,6 +7,8 @@ package com.tuantran.IMPROOK_CARE.service;
 import com.tuantran.IMPROOK_CARE.dto.AddCommentDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateCommentDTO;
 import com.tuantran.IMPROOK_CARE.models.Comment;
+import java.util.List;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -22,4 +24,6 @@ public interface CommentService {
     int addComment(AddCommentDTO addCommentDTO, MultipartFile avatar);
 
     int updateComment(UpdateCommentDTO updateCommentDTO, MultipartFile avatar);
+    
+    List<Object[]> checkComment(@Param("userId") int userId, @Param("profileDoctorId") int profileDoctorId);
 }

@@ -18,6 +18,9 @@ public class UpdateCommentDTO {
 
     @NotBlank
     private String commentId;
+    
+    @NotBlank
+    private String userId;
 
     @NotBlank
     private String content;

@@ -17,7 +17,7 @@ import lombok.Setter;
 public class AddCommentDTO {
 
     @NotBlank
-    private String profuleDoctorId;
+    private String profileDoctorId;
 
     @NotBlank
     private String userId;
