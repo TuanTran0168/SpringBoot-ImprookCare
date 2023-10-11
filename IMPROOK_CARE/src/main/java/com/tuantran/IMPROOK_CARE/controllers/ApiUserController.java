@@ -29,6 +29,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -232,5 +233,25 @@ public class ApiUserController {
     @CrossOrigin
     public ResponseEntity<?> listSearchUser(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.userService.findAllUserPageSpec(params), HttpStatus.OK);
+    }
+    
+    @DeleteMapping("/auth/admin/soft-delete/user/{userId}/")
+    @CrossOrigin
+    public ResponseEntity<String> softDeleteUser(@PathVariable(value = "userId") String userId) {
+        String message = "Có lỗi xảy ra!";
+
+        int check = this.userService.softDeleteUser(Integer.parseInt(userId));
+
+        if (check == 1) {
+            message = "Xóa người dùng thành công!";
+            return new ResponseEntity<>(message, HttpStatus.NO_CONTENT);
+        } else if (check == 2) {
+            message = "Xóa người dùng thất bại!";
+        }
+        else if (check == 3) {
+            message = "Không tìm thấy người dùng để xóa";
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 }

@@ -44,11 +44,12 @@ public interface UserService extends UserDetailsService {
     int changePassword(ChangePasswordDTO changePasswordDTO);
 
     int forgotPassword(ForgotPasswordDTO forgotPasswordDTO);
-    
-    Page<User> findAllUserPage(int pageNumber);
-    
-    Page<User> findAllUserPageSpec(Map<String, String> params);
-    
-//    Page<User> findAllUserPageSpec_test(Map<String, String> params);
 
+    Page<User> findAllUserPage(int pageNumber);
+
+    Page<User> findAllUserPageSpec(Map<String, String> params);
+
+    int softDeleteUser(int userId);
+
+//    Page<User> findAllUserPageSpec_test(Map<String, String> params);
 }

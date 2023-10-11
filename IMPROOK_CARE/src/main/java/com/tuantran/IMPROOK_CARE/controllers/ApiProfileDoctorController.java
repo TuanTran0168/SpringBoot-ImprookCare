@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -86,5 +87,25 @@ public class ApiProfileDoctorController {
     @CrossOrigin
     public ResponseEntity<?> listSearchUser(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.profileDoctorService.findAllProfileDoctorPageSpec(params), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/auth/doctor/soft-delete/profile-doctor/{profileDoctorId}/")
+    @CrossOrigin
+    public ResponseEntity<String> softDeleteProfileDoctor(@PathVariable(value = "profileDoctorId") String profileDoctorId) {
+        String message = "Có lỗi xảy ra!";
+
+        int check = this.profileDoctorService.softDeleteProfileDoctor(Integer.parseInt(profileDoctorId));
+
+        if (check == 1) {
+            message = "Xóa hồ sơ bác sĩ thành công!";
+            return new ResponseEntity<>(message, HttpStatus.NO_CONTENT);
+        } else if (check == 2) {
+            message = "Xóa hồ sơ bác sĩ thất bại!";
+        }
+        else if (check == 3) {
+            message = "Không tìm thấy hồ sơ bác sĩ để xóa";
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 }
