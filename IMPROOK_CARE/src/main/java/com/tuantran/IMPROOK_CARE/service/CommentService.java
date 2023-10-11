@@ -4,13 +4,22 @@
  */
 package com.tuantran.IMPROOK_CARE.service;
 
+import com.tuantran.IMPROOK_CARE.dto.AddCommentDTO;
+import com.tuantran.IMPROOK_CARE.dto.UpdateCommentDTO;
 import com.tuantran.IMPROOK_CARE.models.Comment;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
  * @author Administrator
  */
 public interface CommentService {
+
     int softDeleteComment(int commentId);
+
     Comment findCommentByCommentIdAndActiveTrue(int commentId);
+
+    int addComment(AddCommentDTO addCommentDTO, MultipartFile avatar);
+
+    int updateComment(UpdateCommentDTO updateCommentDTO, MultipartFile avatar);
 }
