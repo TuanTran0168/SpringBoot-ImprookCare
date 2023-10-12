@@ -98,4 +98,11 @@ public class ApiMedicineController {
     public ResponseEntity<Medicine> details(@PathVariable(value = "medicineId") String medicineId) {
         return ResponseEntity.ok().body(this.medicineService.findMedicineByMedicineIdAndActiveTrue(Integer.parseInt(medicineId)));
     }
+
+    @GetMapping("/public/search-medicines-spec/")
+    @CrossOrigin
+    public ResponseEntity<?> test(@RequestParam Map<String, String> params) {
+        return new ResponseEntity<>(this.medicineService.findAllMedicineSpec(params), HttpStatus.OK);
+    }
+
 }

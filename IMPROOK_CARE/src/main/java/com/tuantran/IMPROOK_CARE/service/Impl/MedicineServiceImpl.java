@@ -220,4 +220,43 @@ public class MedicineServiceImpl implements MedicineService {
         return this.medicineRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
     }
 
+    @Override
+    public List<Medicine> findAllMedicineSpec(Map<String, String> params) {
+        String medicineName = params.get("medicineName");
+        String fromPrice = params.get("fromPrice");
+        String toPrice = params.get("toPrice");
+        String categoryId = params.get("categoryId");
+        
+        Sort mySort = Sort.by("createdDate").descending();
+
+        List<Specification<Medicine>> listSpec = new ArrayList<>();
+
+        if (medicineName != null && !medicineName.isEmpty()) {
+            Specification<Medicine> spec = GenericSpecifications.fieldContains("medicineName", medicineName);
+            listSpec.add(spec);
+        }
+
+        if (fromPrice != null && !fromPrice.isEmpty()) {
+            Specification<Medicine> spec = GenericSpecifications.greaterThan("unitPrice", fromPrice);
+            listSpec.add(spec);
+        }
+
+        if (toPrice != null && !toPrice.isEmpty()) {
+            Specification<Medicine> spec = GenericSpecifications.lessThan("unitPrice", toPrice);
+            listSpec.add(spec);
+        }
+
+        if (categoryId != null && !categoryId.isEmpty()) {
+            Optional<MedicineCategory> medicineCategoryOptional = this.medicineCategoryRepository.findMedicineCategoryByCategoryIdAndActiveTrue(Integer.parseInt(categoryId));
+            if (medicineCategoryOptional.isPresent()) {
+                Specification<Medicine> spec = GenericSpecifications.fieldEquals("categoryId", medicineCategoryOptional.get());
+                listSpec.add(spec);
+            }
+        }
+        Specification<Medicine> spec = GenericSpecifications.fieldEquals("active", Boolean.TRUE);
+        listSpec.add(spec);
+
+        return this.medicineRepository.findAll(GenericSpecifications.createSpecification(listSpec), mySort);
+    }
+
 }
