@@ -24,5 +24,5 @@ public interface PrescriptionService {
 
     Page<Prescriptions> findAllPrescriptionPageSpec(Map<String, String> params);
     
-    Page<Prescriptions> getPrescriptionsByProfilePatientId(Map<String, String> params);
+    Page<Prescriptions> getPrescriptionsByProfilePatientIdPageSpec(Map<String, String> params);
 }

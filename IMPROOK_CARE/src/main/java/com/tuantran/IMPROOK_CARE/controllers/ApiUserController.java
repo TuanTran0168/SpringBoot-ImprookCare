@@ -69,7 +69,7 @@ public class ApiUserController {
     @GetMapping("/public/test-xiu-xiu/")
     @CrossOrigin
     public ResponseEntity<?> test(@RequestParam Map<String, String> params) {
-        return new ResponseEntity<>(this.prescriptionService.getPrescriptionsByProfilePatientId(params), HttpStatus.OK);
+        return new ResponseEntity<>(this.prescriptionService.getPrescriptionsByProfilePatientIdPageSpec(params), HttpStatus.OK);
     }
 
     @GetMapping("/public/users/")

@@ -159,7 +159,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
-    public Page<Prescriptions> getPrescriptionsByProfilePatientId(Map<String, String> params) {
+    public Page<Prescriptions> getPrescriptionsByProfilePatientIdPageSpec(Map<String, String> params) {
         String pageNumber = params.get("pageNumber");
         String profilePatientId = params.get("profilePatientId");
         String diagnosis = params.get("diagnosis");

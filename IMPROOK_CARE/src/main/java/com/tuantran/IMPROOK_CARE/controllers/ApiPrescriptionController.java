@@ -72,6 +72,6 @@ public class ApiPrescriptionController {
     @GetMapping("/auth/search-prescriptions/")
     @CrossOrigin
     public ResponseEntity<?> listSearchPrescriptions(@RequestParam Map<String, String> params) {
-        return new ResponseEntity<>(this.prescriptionService.getPrescriptionsByProfilePatientId(params), HttpStatus.OK);
+        return new ResponseEntity<>(this.prescriptionService.getPrescriptionsByProfilePatientIdPageSpec(params), HttpStatus.OK);
     }
 }
