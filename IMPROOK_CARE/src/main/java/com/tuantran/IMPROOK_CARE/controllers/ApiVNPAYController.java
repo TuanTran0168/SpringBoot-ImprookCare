@@ -31,7 +31,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
@@ -130,7 +132,8 @@ public class ApiVNPAYController {
 ////        resp.getWriter().write(gson.toJson(job));
 //    }
 
-    @GetMapping("/public/pay/")
+    @PostMapping("/public/pay/")
+    @CrossOrigin
     public String getPay(@Valid @RequestBody VNPAYDTO vnpayDTO) throws UnsupportedEncodingException {
 
         String vnp_Version = "2.1.0";
@@ -200,7 +203,8 @@ public class ApiVNPAYController {
         return paymentUrl;
     }
     
-    @GetMapping("/public/pay-return/")
+    @PostMapping("/public/pay-return/")
+    @CrossOrigin
     public String getPay_return(@Valid @RequestBody VnpayReturnDTO vnpayReturnDTO) throws UnsupportedEncodingException {
 
         String vnp_Version = "2.1.0";
