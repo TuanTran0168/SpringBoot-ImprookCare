@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -172,7 +173,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         List<Specification<Prescriptions>> listSpec = new ArrayList<>();
 
         if (pageNumber != null && !pageNumber.isEmpty()) {
-            page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+            if (!pageNumber.equals("NaN")) {
+                page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+            }
         }
 
         if (diagnosis != null && !diagnosis.isEmpty()) {
@@ -198,4 +201,37 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         return this.prescriptionRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
     }
 
+    @Override
+    public int payMedicine(int prescriptionId) {
+        try {
+            Optional<Prescriptions> prescriptionOptional = this.prescriptionRepository.findById(prescriptionId);
+            if (prescriptionOptional.isPresent()) {
+                Prescriptions prescription = prescriptionOptional.get();
+                prescription.setMedicinePaymentStatusId(new MedicinePaymentStatus(2));
+                this.prescriptionRepository.save(prescription);
+                return 1;
+            }
+            return 0;
+        } catch (NoSuchElementException ex) {
+            ex.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    public int payService(int prescriptionId) {
+        try {
+            Optional<Prescriptions> prescriptionOptional = this.prescriptionRepository.findById(prescriptionId);
+            if (prescriptionOptional.isPresent()) {
+                Prescriptions prescription = prescriptionOptional.get();
+                prescription.setServicePaymentStatusId(new ServicePaymentStatus(2));
+                this.prescriptionRepository.save(prescription);
+                return 1;
+            }
+            return 0;
+        } catch (NoSuchElementException ex) {
+            ex.printStackTrace();
+            return 0;
+        }
+    }
 }

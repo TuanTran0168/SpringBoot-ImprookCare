@@ -110,7 +110,9 @@ public class MedicineCategoryServiceImpl implements MedicineCategoryService {
         Sort mySort = Sort.by("createdDate").descending();
         Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
         if (pageNumber != null && !pageNumber.isEmpty()) {
-            page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+            if (!pageNumber.equals("NaN")) {
+                page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+            }
         }
 
         if (categoryName != null && !categoryName.isEmpty()) {

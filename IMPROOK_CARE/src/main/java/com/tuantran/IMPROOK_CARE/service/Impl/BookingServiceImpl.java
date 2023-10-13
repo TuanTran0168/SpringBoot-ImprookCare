@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -54,6 +55,7 @@ public class BookingServiceImpl implements BookingService {
     private DateFormatComponent dateFormatComponent;
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public int addBooking(BookingDTO bookingDTO) {
         try {
             Booking booking = new Booking();
@@ -62,7 +64,7 @@ public class BookingServiceImpl implements BookingService {
             if (scheduleOptional.isPresent()) {
                 Schedule schedule = scheduleOptional.get();
                 booking.setScheduleId(schedule);
-                
+
                 schedule.setBooked(Boolean.TRUE);
                 this.scheduleRepository.save(schedule);
             } else {
@@ -94,12 +96,24 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public int cancelBooking(int bookingId) {
         try {
             Optional<Booking> bookingOptional = this.bookingRepository.findBookingByBookingIdAndActiveTrue(bookingId);
 
             if (bookingOptional.isPresent()) {
                 Booking booking = bookingOptional.get();
+
+                Optional<Schedule> scheduleOptional = this.scheduleRepository.findScheduleByScheduleIdAndActiveTrue(booking.getScheduleId().getScheduleId());
+
+                if (scheduleOptional.isPresent()) {
+                    Schedule schedule = scheduleOptional.get();
+                    schedule.setBooked(Boolean.FALSE);
+                    this.scheduleRepository.save(schedule);
+                } else {
+                    return 0;
+                }
+
                 booking.setBookingCancel(Boolean.TRUE);
                 booking.setUpdatedDate(new Date());
                 this.bookingRepository.save(booking);

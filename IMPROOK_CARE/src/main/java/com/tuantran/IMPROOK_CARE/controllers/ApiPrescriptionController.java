@@ -74,4 +74,36 @@ public class ApiPrescriptionController {
     public ResponseEntity<?> listSearchPrescriptions(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.prescriptionService.getPrescriptionsByProfilePatientIdPageSpec(params), HttpStatus.OK);
     }
+    
+    @PostMapping("/auth/pay-medicine/")
+    @CrossOrigin
+    public ResponseEntity<?> payMedicine(@RequestBody int prescriptionId) {
+        String message = "Có lỗi xảy ra!";
+        int check = this.prescriptionService.payMedicine(prescriptionId);
+
+        if (check == 1) {
+            message = "Thanh toán thuốc thành công!";
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else if (check == 0) {
+            message = "Thanh toán thuốc thất bại!";
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+    
+    @PostMapping("/auth/pay-service/")
+    @CrossOrigin
+    public ResponseEntity<?> payService(@RequestBody int prescriptionId) {
+        String message = "Có lỗi xảy ra!";
+        int check = this.prescriptionService.payService(prescriptionId);
+
+        if (check == 1) {
+            message = "Thanh toán thuốc thành công!";
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else if (check == 0) {
+            message = "Thanh toán thuốc thất bại!";
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
 }
