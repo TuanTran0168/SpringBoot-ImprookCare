@@ -4,6 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.service.Impl;
 
+import com.tuantran.IMPROOK_CARE.Specifications.GenericSpecifications;
 import com.tuantran.IMPROOK_CARE.components.cloudinary.CloudinaryComponent;
 import com.tuantran.IMPROOK_CARE.dto.AddCommentDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateCommentDTO;
@@ -14,12 +15,20 @@ import com.tuantran.IMPROOK_CARE.repository.CommentRepository;
 import com.tuantran.IMPROOK_CARE.repository.ProfileDoctorRepository;
 import com.tuantran.IMPROOK_CARE.repository.UserRepository;
 import com.tuantran.IMPROOK_CARE.service.CommentService;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +51,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private CloudinaryComponent cloudinaryComponent;
+
+    @Autowired
+    private Environment environment;
 
     @Override
     @Transactional
@@ -154,6 +166,38 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Object[]> checkComment(int userId, int doctorId) {
         return this.commentRepository.getDetailsWhenUserHavePrescriptions(userId, doctorId);
+    }
+
+    @Override
+    public Page<Comment> findAllCommentPageSpec(Map<String, String> params) {
+        String pageNumber = params.get("pageNumber");
+        String profileDoctorId = params.get("profileDoctorId");
+        String rating = params.get("rating");
+
+        List<Specification<Comment>> listSpec = new ArrayList<>();
+        int defaultPageNumber = 0;
+        Sort mySort = Sort.by("createdDate").descending();
+        Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+        if (pageNumber != null && !pageNumber.isEmpty()) {
+            if (!pageNumber.equals("NaN")) {
+                page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+            }
+        }
+
+        if (profileDoctorId != null && !profileDoctorId.isEmpty()) {
+            Specification<Comment> spec = GenericSpecifications.fieldContains("profileDoctorId", profileDoctorId);
+            listSpec.add(spec);
+        }
+
+        if (rating != null && !rating.isEmpty()) {
+            Specification<Comment> spec = GenericSpecifications.fieldContains("rating", rating);
+            listSpec.add(spec);
+        }
+
+        Specification<Comment> spec = GenericSpecifications.fieldEquals("active", Boolean.TRUE);
+        listSpec.add(spec);
+
+        return this.commentRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
     }
 
 }

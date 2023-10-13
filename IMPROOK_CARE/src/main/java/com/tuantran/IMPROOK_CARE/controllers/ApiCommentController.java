@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -83,5 +84,12 @@ public class ApiCommentController {
         String profileDoctorId = params.get("profileDoctorId");
 
         return new ResponseEntity<>(this.commentService.checkComment(Integer.parseInt(userId), Integer.parseInt(profileDoctorId)), HttpStatus.OK);
+    }
+    
+    @GetMapping("/public/search-comments/")
+    @CrossOrigin
+    public ResponseEntity<?> searchComment(@RequestParam Map<String, String> params) {
+        // Tham số bắt buộc là profileDoctorId để tìm các comment của profileDoctor đó
+        return new ResponseEntity<>(this.commentService.findAllCommentPageSpec(params), HttpStatus.OK);
     }
 }

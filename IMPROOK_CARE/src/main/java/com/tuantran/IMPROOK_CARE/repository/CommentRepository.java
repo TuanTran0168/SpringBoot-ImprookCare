@@ -8,6 +8,9 @@ import com.tuantran.IMPROOK_CARE.models.Comment;
 import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,7 +29,6 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
     List<Comment> findCommentByProfileDoctorIdAndActiveTrue(ProfileDoctor profileDoctorId);
 
-    
     // Dùng để check coi thằng user có userId này có khám chưa để cho nó comment
     @Query("SELECT u.userId, u.lastname, u.firstname, pd.profileDoctorId, pd.name, p.prescriptionId, p.diagnosis, s.profileDoctorId "
             + "FROM Prescriptions p "
@@ -38,4 +40,6 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
             + "WHERE u.userId = :userId "
             + "AND pd.profileDoctorId = :profileDoctorId")
     List<Object[]> getDetailsWhenUserHavePrescriptions(@Param("userId") int userId, @Param("profileDoctorId") int profileDoctorId);
+
+    Page<Comment> findAll(Specification<Comment> createSpecification, Pageable page);
 }
