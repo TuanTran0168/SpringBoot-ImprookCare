@@ -77,9 +77,9 @@ public class ApiPrescriptionController {
     
     @PostMapping("/auth/pay-medicine/")
     @CrossOrigin
-    public ResponseEntity<?> payMedicine(@RequestBody int prescriptionId) {
+    public ResponseEntity<?> payMedicine(@RequestBody String prescriptionId) {
         String message = "Có lỗi xảy ra!";
-        int check = this.prescriptionService.payMedicine(prescriptionId);
+        int check = this.prescriptionService.payMedicine(Integer.parseInt(prescriptionId));
 
         if (check == 1) {
             message = "Thanh toán thuốc thành công!";
@@ -93,15 +93,15 @@ public class ApiPrescriptionController {
     
     @PostMapping("/auth/pay-service/")
     @CrossOrigin
-    public ResponseEntity<?> payService(@RequestBody int prescriptionId) {
+    public ResponseEntity<?> payService(@RequestBody String prescriptionId) {
         String message = "Có lỗi xảy ra!";
-        int check = this.prescriptionService.payService(prescriptionId);
+        int check = this.prescriptionService.payService(Integer.parseInt(prescriptionId));
 
         if (check == 1) {
-            message = "Thanh toán thuốc thành công!";
+            message = "Thanh toán tiền khám thành công!";
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else if (check == 0) {
-            message = "Thanh toán thuốc thất bại!";
+            message = "Thanh toán tiền khám thất bại!";
         }
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
