@@ -207,10 +207,32 @@ public class CommentServiceImpl implements CommentService {
 
             if (profileDoctorOptional.isPresent()) {
                 String pageNumber = params.get("pageNumber");
+                String sortDate = params.get("sortDate");
+                String sortRating = params.get("sortRating");
 
                 int defaultPageNumber = 0;
                 Sort mySort = Sort.by("createdDate").descending();
                 Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+
+                if (sortDate != null && !sortDate.isEmpty()) {
+                    if (sortDate.equals("asc")) {
+                        mySort = Sort.by("createdDate").ascending();
+                    } else if (sortDate.equals("des")) {
+                        mySort = Sort.by("createdDate").ascending();
+                    } else {
+                        System.out.println("sortDate not found!");
+                    }
+                }
+
+                if (sortRating != null && !sortRating.isEmpty()) {
+                    if (sortRating.equals("asc")) {
+                        mySort = Sort.by("rating").ascending();
+                    } else if (sortRating.equals("des")) {
+                        mySort = Sort.by("rating").ascending();
+                    } else {
+                        System.out.println("sortRating not found!");
+                    }
+                }
 
                 if (pageNumber != null && !pageNumber.isEmpty()) {
                     if (!pageNumber.equals("NaN")) {

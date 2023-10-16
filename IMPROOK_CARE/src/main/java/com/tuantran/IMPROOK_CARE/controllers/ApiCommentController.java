@@ -96,7 +96,7 @@ public class ApiCommentController {
     
     @GetMapping("/public/profile-doctor/{profileDoctorId}/comments/")
     @CrossOrigin
-    public ResponseEntity<?> searchComment(@PathVariable(value = "profileDoctorId") int profileDoctorId ,@RequestParam Map<String, String> params) {
+    public ResponseEntity<?> loadCommentsPage(@PathVariable(value = "profileDoctorId") int profileDoctorId ,@RequestParam Map<String, String> params) {
         // Sắp xếp theo rating hay cũ mới từ từ làm :v
         return new ResponseEntity<>(this.commentService.findCommentByProfileDoctorIdPage(profileDoctorId, params), HttpStatus.OK);
     }
