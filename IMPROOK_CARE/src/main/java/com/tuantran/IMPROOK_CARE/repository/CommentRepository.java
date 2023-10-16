@@ -42,4 +42,6 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
     List<Object[]> getDetailsWhenUserHavePrescriptions(@Param("userId") int userId, @Param("profileDoctorId") int profileDoctorId);
 
     Page<Comment> findAll(Specification<Comment> createSpecification, Pageable page);
+
+    Page<Comment> findAllCommentByProfileDoctorIdAndActiveTrue(ProfileDoctor profileDoctorId, Pageable page);
 }

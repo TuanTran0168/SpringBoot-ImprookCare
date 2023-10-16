@@ -32,4 +32,6 @@ public interface CommentService {
     List<Object[]> checkComment(@Param("userId") int userId, @Param("profileDoctorId") int profileDoctorId);
     
     Page<Comment> findAllCommentPageSpec(Map<String, String> params);
+    
+    Page<Comment> findCommentByProfileDoctorIdPage(int profileDoctorId, Map<String, String> params);
 }

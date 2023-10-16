@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -91,5 +92,12 @@ public class ApiCommentController {
     public ResponseEntity<?> searchComment(@RequestParam Map<String, String> params) {
         // Tham số bắt buộc là profileDoctorId để tìm các comment của profileDoctor đó
         return new ResponseEntity<>(this.commentService.findAllCommentPageSpec(params), HttpStatus.OK);
+    }
+    
+    @GetMapping("/public/profile-doctor/{profileDoctorId}/comments/")
+    @CrossOrigin
+    public ResponseEntity<?> searchComment(@PathVariable(value = "profileDoctorId") int profileDoctorId ,@RequestParam Map<String, String> params) {
+        // Sắp xếp theo rating hay cũ mới từ từ làm :v
+        return new ResponseEntity<>(this.commentService.findCommentByProfileDoctorIdPage(profileDoctorId, params), HttpStatus.OK);
     }
 }

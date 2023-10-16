@@ -200,4 +200,31 @@ public class CommentServiceImpl implements CommentService {
         return this.commentRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
     }
 
+    @Override
+    public Page<Comment> findCommentByProfileDoctorIdPage(int profileDoctorId, Map<String, String> params) {
+        try {
+            Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(profileDoctorId);
+
+            if (profileDoctorOptional.isPresent()) {
+                String pageNumber = params.get("pageNumber");
+
+                int defaultPageNumber = 0;
+                Sort mySort = Sort.by("createdDate").descending();
+                Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+
+                if (pageNumber != null && !pageNumber.isEmpty()) {
+                    if (!pageNumber.equals("NaN")) {
+                        page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+                    }
+                }
+
+                ProfileDoctor profileDoctor = profileDoctorOptional.get();
+                return this.commentRepository.findAllCommentByProfileDoctorIdAndActiveTrue(profileDoctor, page);
+            }
+            return null;
+        } catch (NoSuchElementException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
 }
