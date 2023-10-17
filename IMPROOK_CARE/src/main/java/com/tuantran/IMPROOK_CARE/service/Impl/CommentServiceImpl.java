@@ -137,7 +137,7 @@ public class CommentServiceImpl implements CommentService {
             Optional<Comment> commentOptional = this.commentRepository.findCommentByCommentIdAndActiveTrue(Integer.parseInt(updateCommentDTO.getCommentId()));
             if (commentOptional.isPresent()) {
                 Comment comment = commentOptional.get();
-                if (comment.getUserId().equals(updateCommentDTO.getUserId())) {
+                if (comment.getUserId().getUserId().equals(updateCommentDTO.getUserId())) {
                     comment.setContent(updateCommentDTO.getContent());
                     comment.setRating(Integer.parseInt(updateCommentDTO.getRating()));
 
