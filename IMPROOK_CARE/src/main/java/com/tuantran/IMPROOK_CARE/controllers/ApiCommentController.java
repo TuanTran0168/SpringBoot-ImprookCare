@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -99,5 +100,25 @@ public class ApiCommentController {
     public ResponseEntity<?> loadCommentsPage(@PathVariable(value = "profileDoctorId") int profileDoctorId ,@RequestParam Map<String, String> params) {
         // Sắp xếp theo rating hay cũ mới từ từ làm :v
         return new ResponseEntity<>(this.commentService.findCommentByProfileDoctorIdPage(profileDoctorId, params), HttpStatus.OK);
+    }
+    
+    @DeleteMapping("/auth/soft-delete/comment/{commentId}/")
+    @CrossOrigin
+    public ResponseEntity<String> softDeleteUser(@PathVariable(value = "commentId") String commentId) {
+        String message = "Có lỗi xảy ra!";
+
+        int check = this.commentService.softDeleteComment(Integer.parseInt(commentId));
+
+        if (check == 1) {
+            message = "Xóa bình luận thành công!";
+            return new ResponseEntity<>(message, HttpStatus.NO_CONTENT);
+        } else if (check == 2) {
+            message = "Xóa bình luận thất bại!";
+        }
+        else if (check == 3) {
+            message = "Không tìm thấy bình luận để xóa";
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 }
