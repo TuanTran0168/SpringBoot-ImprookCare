@@ -212,13 +212,12 @@ public class CommentServiceImpl implements CommentService {
                 
                 int defaultPageNumber = 0;
                 Sort mySort = Sort.by("createdDate").descending();
-                Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
                 
                 if (sortDate != null && !sortDate.isEmpty()) {
                     if (sortDate.equals("asc")) {
                         mySort = Sort.by("createdDate").ascending();
                     } else if (sortDate.equals("des")) {
-                        mySort = Sort.by("createdDate").ascending();
+                        mySort = Sort.by("createdDate").descending();
                     } else {
                         System.out.println("sortDate not found!");
                     }
@@ -228,11 +227,13 @@ public class CommentServiceImpl implements CommentService {
                     if (sortRating.equals("asc")) {
                         mySort = Sort.by("rating").ascending();
                     } else if (sortRating.equals("des")) {
-                        mySort = Sort.by("rating").ascending();
+                        mySort = Sort.by("rating").descending();
                     } else {
                         System.out.println("sortRating not found!");
                     }
                 }
+                
+                Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
                 
                 if (pageNumber != null && !pageNumber.isEmpty()) {
                     if (!pageNumber.equals("NaN")) {
