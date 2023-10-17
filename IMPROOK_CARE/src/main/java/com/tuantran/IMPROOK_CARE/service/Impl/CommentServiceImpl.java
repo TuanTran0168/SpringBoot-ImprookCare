@@ -39,22 +39,22 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Service
 public class CommentServiceImpl implements CommentService {
-
+    
     @Autowired
     private CommentRepository commentRepository;
-
+    
     @Autowired
     private UserRepository userRepository;
-
+    
     @Autowired
     private ProfileDoctorRepository profileDoctorRepository;
-
+    
     @Autowired
     private CloudinaryComponent cloudinaryComponent;
-
+    
     @Autowired
     private Environment environment;
-
+    
     @Override
     @Transactional
     public int softDeleteComment(int commentId) {
@@ -72,52 +72,52 @@ public class CommentServiceImpl implements CommentService {
             return 3; // Không tìm được để xóa
         }
     }
-
+    
     @Override
     public Comment findCommentByCommentIdAndActiveTrue(int commentId) {
         Optional<Comment> commentOptional = this.commentRepository.findCommentByCommentIdAndActiveTrue(commentId);
-
+        
         if (commentOptional.isPresent()) {
             return commentOptional.get();
         } else {
             return null;
         }
     }
-
+    
     @Override
     public int addComment(AddCommentDTO addCommentDTO, MultipartFile avatar) {
         try {
-
+            
             List<Object[]> listCheckComment = this.checkComment(Integer.parseInt(addCommentDTO.getUserId()), Integer.parseInt(addCommentDTO.getProfileDoctorId()));
             if (listCheckComment == null || listCheckComment.isEmpty()) {
                 return 2; // Chưa khám miễn bình luận
             }
             Comment comment = new Comment();
-
+            
             Optional<User> userOptional = this.userRepository.findUserByUserIdAndActiveTrue(Integer.parseInt(addCommentDTO.getUserId()));
-
+            
             if (userOptional.isPresent()) {
                 comment.setUserId(userOptional.get());
             } else {
                 return 0;
             }
-
+            
             Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(Integer.parseInt(addCommentDTO.getProfileDoctorId()));
-
+            
             if (profileDoctorOptional.isPresent()) {
                 comment.setProfileDoctorId(profileDoctorOptional.get());
             } else {
                 return 0;
             }
-
+            
             comment.setContent(addCommentDTO.getContent());
             comment.setRating(Integer.parseInt(addCommentDTO.getRating()));
-
+            
             if (avatar != null && !avatar.isEmpty()) {
                 String linkCloudinaryAvatar = cloudinaryComponent.Cloudinary(avatar).get("secure_url").toString();
                 comment.setAvatar(linkCloudinaryAvatar);
             }
-
+            
             comment.setActive(Boolean.TRUE);
             comment.setCreatedDate(new Date());
             this.commentRepository.save(comment);
@@ -130,17 +130,17 @@ public class CommentServiceImpl implements CommentService {
             return 0;
         }
     }
-
+    
     @Override
     public int updateComment(UpdateCommentDTO updateCommentDTO, MultipartFile avatar) {
         try {
             Optional<Comment> commentOptional = this.commentRepository.findCommentByCommentIdAndActiveTrue(Integer.parseInt(updateCommentDTO.getCommentId()));
             if (commentOptional.isPresent()) {
                 Comment comment = commentOptional.get();
-                if (comment.getUserId().getUserId().equals(updateCommentDTO.getUserId())) {
+                if (comment.getUserId().getUserId().equals(Integer.parseInt(updateCommentDTO.getUserId()))) {
                     comment.setContent(updateCommentDTO.getContent());
                     comment.setRating(Integer.parseInt(updateCommentDTO.getRating()));
-
+                    
                     if (avatar != null && !avatar.isEmpty()) {
                         String linkCloudinaryAvatar = cloudinaryComponent.Cloudinary(avatar).get("secure_url").toString();
                         comment.setAvatar(linkCloudinaryAvatar);
@@ -162,18 +162,18 @@ public class CommentServiceImpl implements CommentService {
             return 0;
         }
     }
-
+    
     @Override
     public List<Object[]> checkComment(int userId, int doctorId) {
         return this.commentRepository.getDetailsWhenUserHavePrescriptions(userId, doctorId);
     }
-
+    
     @Override
     public Page<Comment> findAllCommentPageSpec(Map<String, String> params) {
         String pageNumber = params.get("pageNumber");
         String profileDoctorId = params.get("profileDoctorId");
         String rating = params.get("rating");
-
+        
         List<Specification<Comment>> listSpec = new ArrayList<>();
         int defaultPageNumber = 0;
         Sort mySort = Sort.by("createdDate").descending();
@@ -183,37 +183,37 @@ public class CommentServiceImpl implements CommentService {
                 page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
             }
         }
-
+        
         if (profileDoctorId != null && !profileDoctorId.isEmpty()) {
             Specification<Comment> spec = GenericSpecifications.fieldContains("profileDoctorId", profileDoctorId);
             listSpec.add(spec);
         }
-
+        
         if (rating != null && !rating.isEmpty()) {
             Specification<Comment> spec = GenericSpecifications.fieldContains("rating", rating);
             listSpec.add(spec);
         }
-
+        
         Specification<Comment> spec = GenericSpecifications.fieldEquals("active", Boolean.TRUE);
         listSpec.add(spec);
-
+        
         return this.commentRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
     }
-
+    
     @Override
     public Page<Comment> findCommentByProfileDoctorIdPage(int profileDoctorId, Map<String, String> params) {
         try {
             Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(profileDoctorId);
-
+            
             if (profileDoctorOptional.isPresent()) {
                 String pageNumber = params.get("pageNumber");
                 String sortDate = params.get("sortDate");
                 String sortRating = params.get("sortRating");
-
+                
                 int defaultPageNumber = 0;
                 Sort mySort = Sort.by("createdDate").descending();
                 Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
-
+                
                 if (sortDate != null && !sortDate.isEmpty()) {
                     if (sortDate.equals("asc")) {
                         mySort = Sort.by("createdDate").ascending();
@@ -223,7 +223,7 @@ public class CommentServiceImpl implements CommentService {
                         System.out.println("sortDate not found!");
                     }
                 }
-
+                
                 if (sortRating != null && !sortRating.isEmpty()) {
                     if (sortRating.equals("asc")) {
                         mySort = Sort.by("rating").ascending();
@@ -233,13 +233,13 @@ public class CommentServiceImpl implements CommentService {
                         System.out.println("sortRating not found!");
                     }
                 }
-
+                
                 if (pageNumber != null && !pageNumber.isEmpty()) {
                     if (!pageNumber.equals("NaN")) {
                         page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
                     }
                 }
-
+                
                 ProfileDoctor profileDoctor = profileDoctorOptional.get();
                 return this.commentRepository.findAllCommentByProfileDoctorIdAndActiveTrue(profileDoctor, page);
             }
