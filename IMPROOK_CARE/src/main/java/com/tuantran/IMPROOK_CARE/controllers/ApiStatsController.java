@@ -28,7 +28,7 @@ public class ApiStatsController {
     @GetMapping("/public/test-stats/")
     @CrossOrigin
     public ResponseEntity<?> test() {
-        return new ResponseEntity<>(this.statsService.statsServicePricePaid(), HttpStatus.OK);
+        return new ResponseEntity<>(this.statsService.statsRevenueMedicineAllpaid(), HttpStatus.OK);
     }
 
     @GetMapping("/public/stats-booking-by-user/")
@@ -54,7 +54,7 @@ public class ApiStatsController {
     public ResponseEntity<?> statsServicePriceAllpaid() {
         return new ResponseEntity<>(this.statsService.statsServicePriceAllpaid(), HttpStatus.OK);
     }
-    
+
     @GetMapping("/public/stats-medicine-prescription-paid/")
     @CrossOrigin
     public ResponseEntity<?> statsMedicinePrescriptionPaid() {
@@ -71,5 +71,42 @@ public class ApiStatsController {
     @CrossOrigin
     public ResponseEntity<?> statsMedicinePrescriptionAllpaid() {
         return new ResponseEntity<>(this.statsService.statsMedicinePrescriptionAllPaid(), HttpStatus.OK);
+    }
+
+    @GetMapping("/public/stats-count-medicine-allpaid/")
+    @CrossOrigin
+    public ResponseEntity<?> statsCountMedicineAllPaid() {
+        return new ResponseEntity<>(this.statsService.statsCountMedicineAllPaid(), HttpStatus.OK);
+    }
+
+    @GetMapping("/public/stats-count-medicine-paid/")
+    @CrossOrigin
+    public ResponseEntity<?> statsCountMedicinePaid() {
+        return new ResponseEntity<>(this.statsService.statsCountMedicinePaid(), HttpStatus.OK);
+    }
+
+    @GetMapping("/public/stats-count-medicine-unpaid/")
+    @CrossOrigin
+    public ResponseEntity<?> statsCountMedicineUnpaid() {
+        return new ResponseEntity<>(this.statsService.statsCountMedicineUnpaid(), HttpStatus.OK);
+    }
+
+    //====================
+    @GetMapping("/public/stats-revenue-medicine-allpaid/")
+    @CrossOrigin
+    public ResponseEntity<?> statsRevenueMedicineAllpaid() {
+        return new ResponseEntity<>(this.statsService.statsRevenueMedicineAllpaid(), HttpStatus.OK);
+    }
+
+    @GetMapping("/public/stats-revenue-medicine-paid/")
+    @CrossOrigin
+    public ResponseEntity<?> statsRevenueMedicinepaid() {
+        return new ResponseEntity<>(this.statsService.statsRevenueMedicinePaid(), HttpStatus.OK);
+    }
+    
+    @GetMapping("/public/stats-revenue-medicine-unpaid/")
+    @CrossOrigin
+    public ResponseEntity<?> statsRevenueMedicineUnpaid() {
+        return new ResponseEntity<>(this.statsService.statsRevenueMedicineUnpaid(), HttpStatus.OK);
     }
 }

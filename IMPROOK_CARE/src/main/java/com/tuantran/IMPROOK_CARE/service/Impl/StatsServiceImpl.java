@@ -55,4 +55,34 @@ public class StatsServiceImpl implements StatsService {
         return this.statsRepository.statsMedicinePrescriptionAllPaid();
     }
 
+    @Override
+    public List<Object[]> statsCountMedicineAllPaid() {
+        return this.statsRepository.statsCountMedicineAllPaid();
+    }
+
+    @Override
+    public List<Object[]> statsCountMedicinePaid() {
+        return this.statsRepository.statsCountMedicinePaid();
+    }
+
+    @Override
+    public List<Object[]> statsCountMedicineUnpaid() {
+        return this.statsRepository.statsCountMedicineUnpaid();
+    }
+
+    @Override
+    public List<Object[]> statsRevenueMedicineAllpaid() {
+        return this.statsRepository.statsRevenueMedicineAllpaid();
+    }
+
+    @Override
+    public List<Object[]> statsRevenueMedicinePaid() {
+        return this.statsRepository.statsRevenueMedicinePaid();
+    }
+
+    @Override
+    public List<Object[]> statsRevenueMedicineUnpaid() {
+        return this.statsRepository.statsRevenueMedicineUnpaid();
+    }
+
 }

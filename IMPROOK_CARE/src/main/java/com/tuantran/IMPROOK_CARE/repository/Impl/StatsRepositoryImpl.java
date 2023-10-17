@@ -125,4 +125,80 @@ public class StatsRepositoryImpl implements StatsRepository {
         return query.getResultList();
     }
 
+    @Override
+    public List<Object[]> statsCountMedicineAllPaid() {
+        String jpql = "SELECT m.medicineId, m.medicineName, SUM(pres_d.quantity) "
+                + "FROM PrescriptionDetail pres_d "
+                + "JOIN pres_d.medicineId m "
+                + "JOIN pres_d.prescriptionId pres "
+                + "GROUP BY m.medicineId, m.medicineName";
+
+        Query query = entityManager.createQuery(jpql);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Object[]> statsCountMedicinePaid() {
+        String jpql = "SELECT m.medicineId, m.medicineName, SUM(pres_d.quantity) "
+                + "FROM PrescriptionDetail pres_d "
+                + "JOIN pres_d.medicineId m "
+                + "JOIN pres_d.prescriptionId pres "
+                + "WHERE pres.medicinePaymentStatusId.medicinePaymentStatusId = 2 "
+                + "GROUP BY m.medicineId, m.medicineName";
+
+        Query query = entityManager.createQuery(jpql);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Object[]> statsCountMedicineUnpaid() {
+        String jpql = "SELECT m.medicineId, m.medicineName, SUM(pres_d.quantity) "
+                + "FROM PrescriptionDetail pres_d "
+                + "JOIN pres_d.medicineId m "
+                + "JOIN pres_d.prescriptionId pres "
+                + "WHERE pres.medicinePaymentStatusId.medicinePaymentStatusId = 1 "
+                + "GROUP BY m.medicineId, m.medicineName";
+
+        Query query = entityManager.createQuery(jpql);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Object[]> statsRevenueMedicineAllpaid() {
+        String jpql = "SELECT m.medicineId, m.medicineName, SUM(pres_d.quantity * m.unitPrice) "
+                + "FROM PrescriptionDetail pres_d "
+                + "JOIN pres_d.medicineId m "
+                + "JOIN pres_d.prescriptionId pres "
+                + "GROUP BY m.medicineId, m.medicineName";
+
+        Query query = entityManager.createQuery(jpql);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Object[]> statsRevenueMedicinePaid() {
+        String jpql = "SELECT m.medicineId, m.medicineName, SUM(pres_d.quantity * m.unitPrice) "
+                + "FROM PrescriptionDetail pres_d "
+                + "JOIN pres_d.medicineId m "
+                + "JOIN pres_d.prescriptionId pres "
+                + "WHERE pres.medicinePaymentStatusId.medicinePaymentStatusId = 2 "
+                + "GROUP BY m.medicineId, m.medicineName";
+
+        Query query = entityManager.createQuery(jpql);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Object[]> statsRevenueMedicineUnpaid() {
+        String jpql = "SELECT m.medicineId, m.medicineName, SUM(pres_d.quantity * m.unitPrice) "
+                + "FROM PrescriptionDetail pres_d "
+                + "JOIN pres_d.medicineId m "
+                + "JOIN pres_d.prescriptionId pres "
+                + "WHERE pres.medicinePaymentStatusId.medicinePaymentStatusId = 1 "
+                + "GROUP BY m.medicineId, m.medicineName";
+
+        Query query = entityManager.createQuery(jpql);
+        return query.getResultList();
+    }
+
 }
