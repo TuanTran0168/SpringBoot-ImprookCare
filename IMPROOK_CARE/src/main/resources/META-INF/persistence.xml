@@ -39,6 +39,7 @@
     <class>com.tuantran.IMPROOK_CARE.models.MedicinePaymentStatus</class>
     <class>com.tuantran.IMPROOK_CARE.models.CollabDoctorStatus</class>
     <class>com.tuantran.IMPROOK_CARE.models.ServicePaymentStatus</class>
+    <class>com.tuantran.IMPROOK_CARE.models.Message</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/saledb?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

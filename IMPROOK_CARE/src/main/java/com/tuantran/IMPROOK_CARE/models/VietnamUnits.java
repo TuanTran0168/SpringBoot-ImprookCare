@@ -171,5 +171,5 @@ public class VietnamUnits implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.VietnamUnits[ id=" + id + " ]";
     }
-    
+
 }

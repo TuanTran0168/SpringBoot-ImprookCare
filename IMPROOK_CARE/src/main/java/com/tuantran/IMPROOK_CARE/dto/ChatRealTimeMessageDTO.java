@@ -14,14 +14,14 @@ import lombok.ToString;
  *
  * @author Administrator
  */
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
 public class ChatRealTimeMessageDTO {
-     private String senderName;
+
+    private String senderName;
     private String receiverName;
     private String message;
     private String date;

@@ -88,6 +88,9 @@ public class User implements Serializable {
     private Set<ProfilePatient> profilePatientSet;
     @JsonIgnore
     @OneToMany(mappedBy = "userId")
+    private Set<Message> messageSet;
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId")
     private Set<Comment> commentSet;
     @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     @ManyToOne
@@ -220,6 +223,14 @@ public class User implements Serializable {
         this.profilePatientSet = profilePatientSet;
     }
 
+    public Set<Message> getMessageSet() {
+        return messageSet;
+    }
+
+    public void setMessageSet(Set<Message> messageSet) {
+        this.messageSet = messageSet;
+    }
+
     public Set<Comment> getCommentSet() {
         return commentSet;
     }
@@ -260,5 +271,5 @@ public class User implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.User[ userId=" + userId + " ]";
     }
-    
+
 }

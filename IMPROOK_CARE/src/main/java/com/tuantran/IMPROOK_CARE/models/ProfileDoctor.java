@@ -43,6 +43,7 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "ProfileDoctor.findByWorkPlace", query = "SELECT p FROM ProfileDoctor p WHERE p.workPlace = :workPlace"),
     @NamedQuery(name = "ProfileDoctor.findByWorkAddress", query = "SELECT p FROM ProfileDoctor p WHERE p.workAddress = :workAddress"),
     @NamedQuery(name = "ProfileDoctor.findByPosition", query = "SELECT p FROM ProfileDoctor p WHERE p.position = :position"),
+    @NamedQuery(name = "ProfileDoctor.findByProfileDoctorRating", query = "SELECT p FROM ProfileDoctor p WHERE p.profileDoctorRating = :profileDoctorRating"),
     @NamedQuery(name = "ProfileDoctor.findByCreatedDate", query = "SELECT p FROM ProfileDoctor p WHERE p.createdDate = :createdDate"),
     @NamedQuery(name = "ProfileDoctor.findByUpdatedDate", query = "SELECT p FROM ProfileDoctor p WHERE p.updatedDate = :updatedDate"),
     @NamedQuery(name = "ProfileDoctor.findByDeletedDate", query = "SELECT p FROM ProfileDoctor p WHERE p.deletedDate = :deletedDate"),
@@ -78,6 +79,8 @@ public class ProfileDoctor implements Serializable {
     private String workAddress;
     @Column(name = "position")
     private String position;
+    @Column(name = "profile_doctor_rating")
+    private Integer profileDoctorRating;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -95,6 +98,9 @@ public class ProfileDoctor implements Serializable {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @ManyToOne
     private User userId;
+    @JsonIgnore
+    @OneToMany(mappedBy = "profileDoctorId")
+    private Set<Message> messageSet;
     @JsonIgnore
     @OneToMany(mappedBy = "profileDoctorId")
     private Set<Schedule> scheduleSet;
@@ -205,6 +211,14 @@ public class ProfileDoctor implements Serializable {
         this.position = position;
     }
 
+    public Integer getProfileDoctorRating() {
+        return profileDoctorRating;
+    }
+
+    public void setProfileDoctorRating(Integer profileDoctorRating) {
+        this.profileDoctorRating = profileDoctorRating;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -253,6 +267,14 @@ public class ProfileDoctor implements Serializable {
         this.userId = userId;
     }
 
+    public Set<Message> getMessageSet() {
+        return messageSet;
+    }
+
+    public void setMessageSet(Set<Message> messageSet) {
+        this.messageSet = messageSet;
+    }
+
     public Set<Schedule> getScheduleSet() {
         return scheduleSet;
     }
@@ -293,5 +315,5 @@ public class ProfileDoctor implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.ProfileDoctor[ profileDoctorId=" + profileDoctorId + " ]";
     }
-    
+
 }

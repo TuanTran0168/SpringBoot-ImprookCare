@@ -173,5 +173,5 @@ public class TimeSlot implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.TimeSlot[ timeSlotId=" + timeSlotId + " ]";
     }
-    
+
 }

@@ -271,5 +271,5 @@ public class ProfilePatient implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.ProfilePatient[ profilePatientId=" + profilePatientId + " ]";
     }
-    
+
 }
