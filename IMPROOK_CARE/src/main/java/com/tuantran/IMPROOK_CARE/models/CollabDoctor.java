@@ -5,15 +5,20 @@
 package com.tuantran.IMPROOK_CARE.models;
 
 import java.io.Serializable;
+import java.util.Date;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 /**
  *
@@ -26,11 +31,15 @@ import jakarta.persistence.Table;
     @NamedQuery(name = "CollabDoctor.findByCollabId", query = "SELECT c FROM CollabDoctor c WHERE c.collabId = :collabId"),
     @NamedQuery(name = "CollabDoctor.findByName", query = "SELECT c FROM CollabDoctor c WHERE c.name = :name"),
     @NamedQuery(name = "CollabDoctor.findByPhonenumber", query = "SELECT c FROM CollabDoctor c WHERE c.phonenumber = :phonenumber"),
-    @NamedQuery(name = "CollabDoctor.findByEmail", query = "SELECT c FROM CollabDoctor c WHERE c.email = :email")})
+    @NamedQuery(name = "CollabDoctor.findByEmail", query = "SELECT c FROM CollabDoctor c WHERE c.email = :email"),
+    @NamedQuery(name = "CollabDoctor.findByCreatedDate", query = "SELECT c FROM CollabDoctor c WHERE c.createdDate = :createdDate"),
+    @NamedQuery(name = "CollabDoctor.findByUpdatedDate", query = "SELECT c FROM CollabDoctor c WHERE c.updatedDate = :updatedDate"),
+    @NamedQuery(name = "CollabDoctor.findByDeletedDate", query = "SELECT c FROM CollabDoctor c WHERE c.deletedDate = :deletedDate")})
 public class CollabDoctor implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "collab_id")
     private Integer collabId;
@@ -40,6 +49,15 @@ public class CollabDoctor implements Serializable {
     private String phonenumber;
     @Column(name = "email")
     private String email;
+    @Column(name = "created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+    @Column(name = "updated_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedDate;
+    @Column(name = "deleted_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedDate;
     @JoinColumn(name = "status_id", referencedColumnName = "status_id")
     @ManyToOne
     private CollabDoctorStatus statusId;
@@ -81,6 +99,30 @@ public class CollabDoctor implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public Date getDeletedDate() {
+        return deletedDate;
+    }
+
+    public void setDeletedDate(Date deletedDate) {
+        this.deletedDate = deletedDate;
     }
 
     public CollabDoctorStatus getStatusId() {

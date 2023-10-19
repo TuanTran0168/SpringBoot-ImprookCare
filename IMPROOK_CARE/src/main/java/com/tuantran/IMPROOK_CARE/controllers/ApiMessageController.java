@@ -42,7 +42,7 @@ public class ApiMessageController {
         if (check == 1) {
             message = "Gửi tin nhắn thành công!";
             return new ResponseEntity<>(message, HttpStatus.OK);
-        } else if (check == 2) {
+        } else if (check == 0) {
             message = "Gửi tin nhắn thất bại!";
         }
 
