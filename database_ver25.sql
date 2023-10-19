@@ -90,15 +90,18 @@ DROP TABLE IF EXISTS `collab_doctor`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `collab_doctor` (
-  `collab_id` int NOT NULL,
+  `collab_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `phonenumber` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status_id` int DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  `deleted_date` datetime DEFAULT NULL,
   PRIMARY KEY (`collab_id`),
   KEY `status_id` (`status_id`),
   CONSTRAINT `collab_doctor_ibfk_1` FOREIGN KEY (`status_id`) REFERENCES `collab_doctor_status` (`status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -107,6 +110,7 @@ CREATE TABLE `collab_doctor` (
 
 LOCK TABLES `collab_doctor` WRITE;
 /*!40000 ALTER TABLE `collab_doctor` DISABLE KEYS */;
+INSERT INTO `collab_doctor` VALUES (1,'Trần Đăng Tuấn','0123456789','2051050549tuan@ou.edu.vn',2,'2023-10-19 18:33:57',NULL,NULL),(2,'Trần Đăng Tuấn','0123456789','2051050549tuan@ou.edu.vn',3,'2023-10-19 18:33:57',NULL,NULL),(3,'Trần Đăng Tuấn','0123456789','2051050549tuan@ou.edu.vn',1,'2023-10-19 18:33:57',NULL,NULL);
 /*!40000 ALTER TABLE `collab_doctor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -887,4 +891,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-19 17:15:16
+-- Dump completed on 2023-10-19 19:02:49
