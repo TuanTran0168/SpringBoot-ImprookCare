@@ -170,5 +170,5 @@ public class Specialty implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.Specialty[ specialtyId=" + specialtyId + " ]";
     }
-
+    
 }

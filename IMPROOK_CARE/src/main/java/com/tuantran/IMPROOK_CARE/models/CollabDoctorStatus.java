@@ -147,5 +147,5 @@ public class CollabDoctorStatus implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.CollabDoctorStatus[ statusId=" + statusId + " ]";
     }
-
+    
 }

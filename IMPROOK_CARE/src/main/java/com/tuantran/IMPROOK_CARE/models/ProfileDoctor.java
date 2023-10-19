@@ -43,7 +43,8 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "ProfileDoctor.findByWorkPlace", query = "SELECT p FROM ProfileDoctor p WHERE p.workPlace = :workPlace"),
     @NamedQuery(name = "ProfileDoctor.findByWorkAddress", query = "SELECT p FROM ProfileDoctor p WHERE p.workAddress = :workAddress"),
     @NamedQuery(name = "ProfileDoctor.findByPosition", query = "SELECT p FROM ProfileDoctor p WHERE p.position = :position"),
-    @NamedQuery(name = "ProfileDoctor.findByProfileDoctorRating", query = "SELECT p FROM ProfileDoctor p WHERE p.profileDoctorRating = :profileDoctorRating"),
+    @NamedQuery(name = "ProfileDoctor.findByTotalRating", query = "SELECT p FROM ProfileDoctor p WHERE p.totalRating = :totalRating"),
+    @NamedQuery(name = "ProfileDoctor.findByCountRating", query = "SELECT p FROM ProfileDoctor p WHERE p.countRating = :countRating"),
     @NamedQuery(name = "ProfileDoctor.findByCreatedDate", query = "SELECT p FROM ProfileDoctor p WHERE p.createdDate = :createdDate"),
     @NamedQuery(name = "ProfileDoctor.findByUpdatedDate", query = "SELECT p FROM ProfileDoctor p WHERE p.updatedDate = :updatedDate"),
     @NamedQuery(name = "ProfileDoctor.findByDeletedDate", query = "SELECT p FROM ProfileDoctor p WHERE p.deletedDate = :deletedDate"),
@@ -79,8 +80,10 @@ public class ProfileDoctor implements Serializable {
     private String workAddress;
     @Column(name = "position")
     private String position;
-    @Column(name = "profile_doctor_rating")
-    private Integer profileDoctorRating;
+    @Column(name = "total_rating")
+    private String totalRating;
+    @Column(name = "count_rating")
+    private String countRating;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -211,12 +214,20 @@ public class ProfileDoctor implements Serializable {
         this.position = position;
     }
 
-    public Integer getProfileDoctorRating() {
-        return profileDoctorRating;
+    public String getTotalRating() {
+        return totalRating;
     }
 
-    public void setProfileDoctorRating(Integer profileDoctorRating) {
-        this.profileDoctorRating = profileDoctorRating;
+    public void setTotalRating(String totalRating) {
+        this.totalRating = totalRating;
+    }
+
+    public String getCountRating() {
+        return countRating;
+    }
+
+    public void setCountRating(String countRating) {
+        this.countRating = countRating;
     }
 
     public Date getCreatedDate() {
@@ -315,5 +326,5 @@ public class ProfileDoctor implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.ProfileDoctor[ profileDoctorId=" + profileDoctorId + " ]";
     }
-
+    
 }
