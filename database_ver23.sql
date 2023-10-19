@@ -161,7 +161,7 @@ CREATE TABLE `comment` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`profile_doctor_id`) REFERENCES `profile_doctor` (`profile_doctor_id`),
   CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -170,7 +170,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-INSERT INTO `comment` VALUES (2,14,20,'Đùa',NULL,'2023-10-16 15:26:14',NULL,NULL,5,1),(3,14,20,'Đùa nhau',NULL,'2023-10-16 15:28:06',NULL,NULL,5,1),(4,14,20,'Gì vậy',NULL,'2023-10-16 17:53:35',NULL,NULL,5,1),(5,14,20,'Ngộ',NULL,'2023-10-16 18:08:52',NULL,NULL,4,1),(6,14,20,'Gì vậy','https://res.cloudinary.com/dhwuwy0to/image/upload/v1697458002/hdkhgzxginh1clhiwohl.png','2023-10-16 19:06:44',NULL,NULL,0,1);
+INSERT INTO `comment` VALUES (2,14,20,'Đùa',NULL,'2023-10-16 15:26:14',NULL,NULL,5,1),(3,14,20,'Đùa nhau',NULL,'2023-10-16 15:28:06',NULL,NULL,5,1),(4,14,20,'Gì vậy',NULL,'2023-10-16 17:53:35',NULL,NULL,5,1),(5,14,20,'Ngộ',NULL,'2023-10-16 18:08:52',NULL,NULL,4,1),(6,14,20,'Gì vậy','https://res.cloudinary.com/dhwuwy0to/image/upload/v1697458002/hdkhgzxginh1clhiwohl.png','2023-10-16 19:06:44',NULL,NULL,0,1),(7,14,20,'Đây là API SỬA COMMENT 2',NULL,'2023-10-19 14:04:18','2023-10-19 14:16:14',NULL,2,1);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -463,7 +463,8 @@ CREATE TABLE `profile_doctor` (
   `work_place` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `work_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `position` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `profile_doctor_rating` int DEFAULT NULL,
+  `total_rating` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `count_rating` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
@@ -484,7 +485,7 @@ CREATE TABLE `profile_doctor` (
 
 LOCK TABLES `profile_doctor` WRITE;
 /*!40000 ALTER TABLE `profile_doctor` DISABLE KEYS */;
-INSERT INTO `profile_doctor` VALUES (9,'Bác sĩ Tuấn Trần 1',NULL,'0168123123','200000','2051050549tuan@ou.edu.vn','Tỉnh Quảng Ngãi','Huyện Trà Bồng','Phường Vĩnh Phúc','7G4F+4XP, ĐT622','7G4F+4XP, ĐT622 Phường Vĩnh Phúc Huyện Trà Bồng Tỉnh Quảng Ngãi','Bác sĩ của bệnh viện Phạm Ngọc Thạch',NULL,'2023-10-13 14:09:13',NULL,NULL,1,19,2),(10,'Bác sĩ Tuấn Trần 2',NULL,'0168123123','250000','2051050549tuan@ou.edu.vn','Hà Nội','Quận Cầu Giấy','Phường Yên Hoà','75','75 Phường Yên Hoà Quận Cầu Giấy Hà Nội','Bác sĩ Bệnh viện Phạm Ngọc Thạch',NULL,'2023-10-13 14:10:54',NULL,NULL,1,19,5),(11,'Bác sĩ Tuấn Trần 3',NULL,'0168123123','270000','2051050549tuan@ou.edu.vn','Hà Nội','Quận Cầu Giấy','Phường Yên Hoà','20','75 Phường Yên Hoà Quận Cầu Giấy Hà Nội','Bác sĩ Bệnh viện Phạm Ngọc Thạch',NULL,'2023-10-13 14:10:54',NULL,NULL,1,19,4),(12,'Bác sĩ Tuấn Trần 4',NULL,'0168123123','150000','2051050549tuan@ou.edu.vn','Hà Nội','Quận Cầu Giấy','Phường Yên Hoà','99','75 Phường Yên Hoà Quận Cầu Giấy Hà Nội','Bác sĩ Bệnh viện Phạm Ngọc Thạch',NULL,'2023-10-13 14:10:54',NULL,NULL,1,19,5),(13,'Bác sĩ Tuấn Trần 5',NULL,'0168123123','200000','2051050549tuan@ou.edu.vn','Tỉnh Quảng Ngãi','Huyện Trà Bồng','Phường Vĩnh Phúc','ĐT520','7G4F+4XP, ĐT622 Phường Vĩnh Phúc Huyện Trà Bồng Tỉnh Quảng Ngãi','Bác sĩ của bệnh viện Phạm Ngọc Thạch',NULL,'2023-10-13 14:09:13',NULL,NULL,1,19,1),(14,'Bác sĩ Hiếu 1',NULL,'0123456789','120000','2051050549tuan@ou.edu.vn','Tỉnh Hải Dương','Huyện Tứ Kỳ','Xã Phượng Kỳ','150','150 Xã Phượng Kỳ Huyện Tứ Kỳ Tỉnh Hải Dương','Bác sĩ Bệnh Viện Đại học Y Dược',NULL,'2023-10-13 14:16:15',NULL,NULL,1,18,4),(15,'Thái 1',NULL,'0123456789','150000','thai@gmail.com','Thành phố Hồ Chí Minh','1','Phường Cô Giang','35 Hồ Hảo Hớn','35 Hồ Hảo Hớn Phường Cô Giang 1 Thành phố Hồ Chí Minh','Bác sĩ',NULL,'2023-10-16 20:31:32',NULL,NULL,1,17,7);
+INSERT INTO `profile_doctor` VALUES (9,'Bác sĩ Tuấn Trần 1',NULL,'0168123123','200000','2051050549tuan@ou.edu.vn','Tỉnh Quảng Ngãi','Huyện Trà Bồng','Phường Vĩnh Phúc','7G4F+4XP, ĐT622','7G4F+4XP, ĐT622 Phường Vĩnh Phúc Huyện Trà Bồng Tỉnh Quảng Ngãi','Bác sĩ của bệnh viện Phạm Ngọc Thạch',NULL,NULL,'2023-10-13 14:09:13',NULL,NULL,1,19,2),(10,'Bác sĩ Tuấn Trần 2',NULL,'0168123123','250000','2051050549tuan@ou.edu.vn','Hà Nội','Quận Cầu Giấy','Phường Yên Hoà','75','75 Phường Yên Hoà Quận Cầu Giấy Hà Nội','Bác sĩ Bệnh viện Phạm Ngọc Thạch',NULL,NULL,'2023-10-13 14:10:54',NULL,NULL,1,19,5),(11,'Bác sĩ Tuấn Trần 3',NULL,'0168123123','270000','2051050549tuan@ou.edu.vn','Hà Nội','Quận Cầu Giấy','Phường Yên Hoà','20','75 Phường Yên Hoà Quận Cầu Giấy Hà Nội','Bác sĩ Bệnh viện Phạm Ngọc Thạch',NULL,NULL,'2023-10-13 14:10:54',NULL,NULL,1,19,4),(12,'Bác sĩ Tuấn Trần 4',NULL,'0168123123','150000','2051050549tuan@ou.edu.vn','Hà Nội','Quận Cầu Giấy','Phường Yên Hoà','99','75 Phường Yên Hoà Quận Cầu Giấy Hà Nội','Bác sĩ Bệnh viện Phạm Ngọc Thạch',NULL,NULL,'2023-10-13 14:10:54',NULL,NULL,1,19,5),(13,'Bác sĩ Tuấn Trần 5',NULL,'0168123123','200000','2051050549tuan@ou.edu.vn','Tỉnh Quảng Ngãi','Huyện Trà Bồng','Phường Vĩnh Phúc','ĐT520','7G4F+4XP, ĐT622 Phường Vĩnh Phúc Huyện Trà Bồng Tỉnh Quảng Ngãi','Bác sĩ của bệnh viện Phạm Ngọc Thạch',NULL,NULL,'2023-10-13 14:09:13',NULL,NULL,1,19,1),(14,'Bác sĩ Hiếu 1',NULL,'0123456789','120000','2051050549tuan@ou.edu.vn','Tỉnh Hải Dương','Huyện Tứ Kỳ','Xã Phượng Kỳ','150','150 Xã Phượng Kỳ Huyện Tứ Kỳ Tỉnh Hải Dương','Bác sĩ Bệnh Viện Đại học Y Dược','22','6','2023-10-13 14:16:15',NULL,NULL,1,18,4),(15,'Thái 1',NULL,'0123456789','150000','thai@gmail.com','Thành phố Hồ Chí Minh','1','Phường Cô Giang','35 Hồ Hảo Hớn','35 Hồ Hảo Hớn Phường Cô Giang 1 Thành phố Hồ Chí Minh','Bác sĩ',NULL,NULL,'2023-10-16 20:31:32',NULL,NULL,1,17,7);
 /*!40000 ALTER TABLE `profile_doctor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -883,4 +884,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-19  2:17:03
+-- Dump completed on 2023-10-19 14:21:41
