@@ -168,5 +168,5 @@ public class Districts implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.Districts[ code=" + code + " ]";
     }
-    
+
 }

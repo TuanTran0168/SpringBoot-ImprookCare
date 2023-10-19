@@ -20,6 +20,9 @@ public class AddMessageDTO {
 
     @NotBlank
     private String profileDoctorId;
+    
+    @NotBlank
+    private String senderId;
 
     @NotBlank
     private String messageContent;

@@ -29,6 +29,20 @@ public class GenericSpecifications {
         return (root, query, builder) -> builder.lessThan(root.get(fieldName), value);
     }
 
+    public static <T> Specification<T> orderByAscending(String fieldName) {
+        return (root, query, builder) -> {
+            query.orderBy(builder.asc(root.get(fieldName)));
+            return builder.conjunction();
+        };
+    }
+
+    public static <T> Specification<T> orderByDescending(String fieldName) {
+        return (root, query, builder) -> {
+            query.orderBy(builder.desc(root.get(fieldName)));
+            return builder.conjunction();
+        };
+    }
+
     public static <T> Specification<T> createSpecification(List<Specification<T>> Specifications) {
         Specification<T> combinedSpec = null;
 

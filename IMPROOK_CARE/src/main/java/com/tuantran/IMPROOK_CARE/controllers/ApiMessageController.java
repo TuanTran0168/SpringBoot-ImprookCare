@@ -29,38 +29,44 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api")
 public class ApiMessageController {
-    
+
     @Autowired
     private MessageService messageService;
-    
+
     @PostMapping("/auth/add-message/")
     @CrossOrigin
     public ResponseEntity<?> addMessage(@Valid AddMessageDTO addMessageDTO, @RequestPart("avatar") MultipartFile avatar) {
         String message = "Có lỗi xảy ra!";
         int check = this.messageService.addMessage(addMessageDTO, avatar);
-        
+
         if (check == 1) {
             message = "Gửi tin nhắn thành công!";
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else if (check == 2) {
             message = "Gửi tin nhắn thất bại!";
         }
-        
+
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
-    
+
     @PostMapping("/auth/get-message/")
     @CrossOrigin
     public ResponseEntity<?> getMessage(@RequestBody Map<String, String> params) {
         return new ResponseEntity<>(this.messageService.getMessagesBetweenUsersAndProfileDoctors(params), HttpStatus.OK);
     }
-    
+
+    @GetMapping("/auth/profileDoctor/{profileDoctorId}/get-message-detail-page/{userId}/")
+    @CrossOrigin
+    public ResponseEntity<?> getMessageAllView(@PathVariable(value = "profileDoctorId") int profileDoctorId, @PathVariable(value = "userId") int userId, @RequestParam Map<String, String> params) {
+        return new ResponseEntity<>(this.messageService.findMessagesByUserIdAndProfileDoctorIdPage(userId, profileDoctorId, params), HttpStatus.OK);
+    }
+
     @GetMapping("/auth/profileDoctor/{profileDoctorId}/get-message-detail/{userId}/")
     @CrossOrigin
-    public ResponseEntity<?> getMessageForDoctorView(@PathVariable(value = "profileDoctorId") int profileDoctorId, @PathVariable(value = "userId") int userId, @RequestParam Map<String, String> params) {
-        return new ResponseEntity<>(this.messageService.findMessagesByUserIdAndProfileDoctorId(userId, profileDoctorId, params), HttpStatus.OK);
+    public ResponseEntity<?> getMessageAllView(@PathVariable(value = "profileDoctorId") int profileDoctorId, @PathVariable(value = "userId") int userId) {
+        return new ResponseEntity<>(this.messageService.findMessagesByUserIdAndProfileDoctorId(userId, profileDoctorId), HttpStatus.OK);
     }
-    
+
     @GetMapping("/auth/profileDoctor/{profileDoctorId}/get-user-send-message-to-doctor/")
     @CrossOrigin
     public ResponseEntity<?> getUserSendMessageToDoctor(@PathVariable(value = "profileDoctorId") int profileDoctorId, @RequestParam Map<String, String> params) {

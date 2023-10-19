@@ -26,7 +26,7 @@ public interface PrescriptionService {
     
     Page<Prescriptions> getPrescriptionsByProfilePatientIdPageSpec(Map<String, String> params);
     
-    int payMedicine (int prescriptionId);
+    int payMedicine (int prescriptionId, String medicine_payment_TxnRef);
     
-    int payService (int prescriptionId);
+    int payService (int prescriptionId, String service_payment_TxnRef);
 }

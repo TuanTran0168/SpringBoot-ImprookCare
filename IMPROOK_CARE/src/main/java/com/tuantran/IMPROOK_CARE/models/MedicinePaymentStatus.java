@@ -147,5 +147,5 @@ public class MedicinePaymentStatus implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.MedicinePaymentStatus[ medicinePaymentStatusId=" + medicinePaymentStatusId + " ]";
     }
-    
+
 }

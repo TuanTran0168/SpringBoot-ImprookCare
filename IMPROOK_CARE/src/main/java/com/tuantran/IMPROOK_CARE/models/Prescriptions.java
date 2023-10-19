@@ -37,7 +37,9 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "Prescriptions.findByCreatedDate", query = "SELECT p FROM Prescriptions p WHERE p.createdDate = :createdDate"),
     @NamedQuery(name = "Prescriptions.findByUpdatedDate", query = "SELECT p FROM Prescriptions p WHERE p.updatedDate = :updatedDate"),
     @NamedQuery(name = "Prescriptions.findByDeletedDate", query = "SELECT p FROM Prescriptions p WHERE p.deletedDate = :deletedDate"),
-    @NamedQuery(name = "Prescriptions.findByActive", query = "SELECT p FROM Prescriptions p WHERE p.active = :active")})
+    @NamedQuery(name = "Prescriptions.findByActive", query = "SELECT p FROM Prescriptions p WHERE p.active = :active"),
+    @NamedQuery(name = "Prescriptions.findByMedicinepaymentTxnRef", query = "SELECT p FROM Prescriptions p WHERE p.medicinepaymentTxnRef = :medicinepaymentTxnRef"),
+    @NamedQuery(name = "Prescriptions.findByServicepaymentTxnRef", query = "SELECT p FROM Prescriptions p WHERE p.servicepaymentTxnRef = :servicepaymentTxnRef")})
 public class Prescriptions implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -69,6 +71,10 @@ public class Prescriptions implements Serializable {
     private Date deletedDate;
     @Column(name = "active")
     private Boolean active;
+    @Column(name = "medicine_payment_Txn_Ref")
+    private String medicinepaymentTxnRef;
+    @Column(name = "service_payment_Txn_Ref")
+    private String servicepaymentTxnRef;
     @JoinColumn(name = "booking_id", referencedColumnName = "booking_id")
     @ManyToOne
     private Booking bookingId;
@@ -161,6 +167,22 @@ public class Prescriptions implements Serializable {
         this.active = active;
     }
 
+    public String getMedicinepaymentTxnRef() {
+        return medicinepaymentTxnRef;
+    }
+
+    public void setMedicinepaymentTxnRef(String medicinepaymentTxnRef) {
+        this.medicinepaymentTxnRef = medicinepaymentTxnRef;
+    }
+
+    public String getServicepaymentTxnRef() {
+        return servicepaymentTxnRef;
+    }
+
+    public void setServicepaymentTxnRef(String servicepaymentTxnRef) {
+        this.servicepaymentTxnRef = servicepaymentTxnRef;
+    }
+
     public Booking getBookingId() {
         return bookingId;
     }
@@ -217,5 +239,5 @@ public class Prescriptions implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.Prescriptions[ prescriptionId=" + prescriptionId + " ]";
     }
-    
+
 }

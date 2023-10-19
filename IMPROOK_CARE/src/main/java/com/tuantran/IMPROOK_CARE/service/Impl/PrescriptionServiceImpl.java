@@ -202,12 +202,13 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
-    public int payMedicine(int prescriptionId) {
+    public int payMedicine(int prescriptionId, String medicine_payment_TxnRef) {
         try {
             Optional<Prescriptions> prescriptionOptional = this.prescriptionRepository.findById(prescriptionId);
             if (prescriptionOptional.isPresent()) {
                 Prescriptions prescription = prescriptionOptional.get();
                 prescription.setMedicinePaymentStatusId(new MedicinePaymentStatus(2));
+                prescription.setMedicinepaymentTxnRef(medicine_payment_TxnRef);
                 this.prescriptionRepository.save(prescription);
                 return 1;
             }
@@ -219,12 +220,13 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
-    public int payService(int prescriptionId) {
+    public int payService(int prescriptionId, String service_payment_TxnRef) {
         try {
             Optional<Prescriptions> prescriptionOptional = this.prescriptionRepository.findById(prescriptionId);
             if (prescriptionOptional.isPresent()) {
                 Prescriptions prescription = prescriptionOptional.get();
                 prescription.setServicePaymentStatusId(new ServicePaymentStatus(2));
+                prescription.setServicepaymentTxnRef(service_payment_TxnRef);
                 this.prescriptionRepository.save(prescription);
                 return 1;
             }

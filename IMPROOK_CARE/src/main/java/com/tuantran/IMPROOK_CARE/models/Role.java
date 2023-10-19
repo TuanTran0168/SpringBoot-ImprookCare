@@ -147,5 +147,5 @@ public class Role implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.Role[ roleId=" + roleId + " ]";
     }
-    
+
 }

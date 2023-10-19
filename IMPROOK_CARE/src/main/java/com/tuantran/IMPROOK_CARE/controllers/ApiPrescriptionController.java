@@ -74,12 +74,16 @@ public class ApiPrescriptionController {
     public ResponseEntity<?> listSearchPrescriptions(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.prescriptionService.getPrescriptionsByProfilePatientIdPageSpec(params), HttpStatus.OK);
     }
-    
+
     @PostMapping("/auth/pay-medicine/")
     @CrossOrigin
-    public ResponseEntity<?> payMedicine(@RequestBody String prescriptionId) {
+    public ResponseEntity<?> payMedicine(@RequestBody Map<String, String> params) {
         String message = "Có lỗi xảy ra!";
-        int check = this.prescriptionService.payMedicine(Integer.parseInt(prescriptionId));
+
+        String prescriptionId = params.get("prescriptionId");
+        String medicine_payment_TxnRef = params.get("medicine_payment_TxnRef");
+
+        int check = this.prescriptionService.payMedicine(Integer.parseInt(prescriptionId), medicine_payment_TxnRef);
 
         if (check == 1) {
             message = "Thanh toán thuốc thành công!";
@@ -90,12 +94,16 @@ public class ApiPrescriptionController {
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
-    
+
     @PostMapping("/auth/pay-service/")
     @CrossOrigin
-    public ResponseEntity<?> payService(@RequestBody String prescriptionId) {
+    public ResponseEntity<?> payService(@RequestBody Map<String, String> params) {
         String message = "Có lỗi xảy ra!";
-        int check = this.prescriptionService.payService(Integer.parseInt(prescriptionId));
+
+        String prescriptionId = params.get("prescriptionId");
+        String service_payment_TxnRef = params.get("service_payment_TxnRef");
+
+        int check = this.prescriptionService.payService(Integer.parseInt(prescriptionId), service_payment_TxnRef);
 
         if (check == 1) {
             message = "Thanh toán tiền khám thành công!";

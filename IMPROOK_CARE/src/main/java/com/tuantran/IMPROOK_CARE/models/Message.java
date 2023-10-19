@@ -30,6 +30,7 @@ import jakarta.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "Message.findAll", query = "SELECT m FROM Message m"),
     @NamedQuery(name = "Message.findByMessageId", query = "SELECT m FROM Message m WHERE m.messageId = :messageId"),
+    @NamedQuery(name = "Message.findBySenderId", query = "SELECT m FROM Message m WHERE m.senderId = :senderId"),
     @NamedQuery(name = "Message.findByAvatar", query = "SELECT m FROM Message m WHERE m.avatar = :avatar"),
     @NamedQuery(name = "Message.findByCreatedDate", query = "SELECT m FROM Message m WHERE m.createdDate = :createdDate"),
     @NamedQuery(name = "Message.findByUpdatedDate", query = "SELECT m FROM Message m WHERE m.updatedDate = :updatedDate"),
@@ -43,6 +44,8 @@ public class Message implements Serializable {
     @Basic(optional = false)
     @Column(name = "message_id")
     private Integer messageId;
+    @Column(name = "sender_id")
+    private Integer senderId;
     @Lob
     @Column(name = "message_content")
     private String messageContent;
@@ -79,6 +82,14 @@ public class Message implements Serializable {
 
     public void setMessageId(Integer messageId) {
         this.messageId = messageId;
+    }
+
+    public Integer getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(Integer senderId) {
+        this.senderId = senderId;
     }
 
     public String getMessageContent() {
