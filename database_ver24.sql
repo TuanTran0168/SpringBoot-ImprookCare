@@ -342,6 +342,7 @@ CREATE TABLE `message` (
   `message_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
   `profile_doctor_id` int DEFAULT NULL,
+  `sender_id` int DEFAULT NULL,
   `message_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
@@ -353,7 +354,7 @@ CREATE TABLE `message` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `message_ibfk_1` FOREIGN KEY (`profile_doctor_id`) REFERENCES `profile_doctor` (`profile_doctor_id`),
   CONSTRAINT `message_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -362,7 +363,7 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
-INSERT INTO `message` VALUES (7,20,14,'Chào bác sĩ',NULL,'2023-10-19 00:34:19',NULL,NULL,1),(8,20,14,'Chào bác sĩ 1',NULL,'2023-10-19 00:36:30',NULL,NULL,1),(9,20,14,'Chào bác sĩ 2',NULL,'2023-10-19 00:36:33',NULL,NULL,1),(10,20,14,'Bác sĩ chào em',NULL,'2023-10-19 00:37:18',NULL,NULL,1),(11,20,14,'Bác sĩ chào em 1',NULL,'2023-10-19 00:37:31',NULL,NULL,1),(12,20,14,'Bác sĩ chào em 2',NULL,'2023-10-19 00:37:47',NULL,NULL,1),(13,20,14,'Chào bác sĩ 3',NULL,'2023-10-19 00:37:52',NULL,NULL,1),(14,20,14,'Bác sĩ chào em 3',NULL,'2023-10-19 00:37:55',NULL,NULL,1),(15,21,14,'Chào bác sĩ 1',NULL,'2023-10-19 00:39:38',NULL,NULL,1),(16,21,14,'Bác sĩ chào em 1',NULL,'2023-10-19 00:39:49',NULL,NULL,1),(17,21,14,'Chào bác sĩ 2',NULL,'2023-10-19 00:40:01',NULL,NULL,1),(18,21,14,'Bác sĩ chào em 2',NULL,'2023-10-19 00:40:05',NULL,NULL,1);
+INSERT INTO `message` VALUES (7,20,14,NULL,'Chào bác sĩ',NULL,'2023-10-19 00:34:19',NULL,NULL,1),(8,20,14,NULL,'Chào bác sĩ 1',NULL,'2023-10-19 00:36:30',NULL,NULL,1),(9,20,14,NULL,'Chào bác sĩ 2',NULL,'2023-10-19 00:36:33',NULL,NULL,1),(10,20,14,NULL,'Bác sĩ chào em',NULL,'2023-10-19 00:37:18',NULL,NULL,1),(11,20,14,NULL,'Bác sĩ chào em 1',NULL,'2023-10-19 00:37:31',NULL,NULL,1),(12,20,14,NULL,'Bác sĩ chào em 2',NULL,'2023-10-19 00:37:47',NULL,NULL,1),(13,20,14,NULL,'Chào bác sĩ 3',NULL,'2023-10-19 00:37:52',NULL,NULL,1),(14,20,14,NULL,'Bác sĩ chào em 3',NULL,'2023-10-19 00:37:55',NULL,NULL,1),(15,21,14,NULL,'Chào bác sĩ 1',NULL,'2023-10-19 00:39:38',NULL,NULL,1),(16,21,14,NULL,'Bác sĩ chào em 1',NULL,'2023-10-19 00:39:49',NULL,NULL,1),(17,21,14,NULL,'Chào bác sĩ 2',NULL,'2023-10-19 00:40:01',NULL,NULL,1),(18,21,14,NULL,'Bác sĩ chào em 2',NULL,'2023-10-19 00:40:05',NULL,NULL,1),(19,21,14,21,'Chào bác sĩ 2',NULL,'2023-10-19 16:22:01',NULL,NULL,1),(20,21,14,21,'Chào bác sĩ 2',NULL,'2023-10-19 16:28:24',NULL,NULL,1);
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -422,7 +423,9 @@ CREATE TABLE `prescriptions` (
   `active` tinyint(1) DEFAULT NULL,
   `booking_id` int DEFAULT NULL,
   `medicine_payment_status_id` int DEFAULT NULL,
+  `medicine_payment_Txn_Ref` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `service_payment_status_id` int DEFAULT NULL,
+  `service_payment_Txn_Ref` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`prescription_id`),
   KEY `booking_id` (`booking_id`),
   KEY `medicine_payment_status_id` (`medicine_payment_status_id`),
@@ -439,7 +442,7 @@ CREATE TABLE `prescriptions` (
 
 LOCK TABLES `prescriptions` WRITE;
 /*!40000 ALTER TABLE `prescriptions` DISABLE KEYS */;
-INSERT INTO `prescriptions` VALUES (26,'2023-10-13','Đau bụng','Đau bụng, nhức đầu','120000','2023-10-13 16:55:34',NULL,NULL,1,16,2,2),(27,'2023-10-16','Ho','Đau họng','120000','2023-10-16 18:28:18',NULL,NULL,1,26,2,2),(28,'2023-10-16','Ợ Chua','Đau bụng','250000','2023-10-16 20:40:33',NULL,NULL,1,28,2,1),(29,'2023-10-16','Chóng Mặt','Buồn nôn','120000','2023-10-16 20:44:21',NULL,NULL,1,27,1,2),(30,'2023-10-16','Tê Tay','Gãy Tay','150000','2023-10-16 20:45:39',NULL,NULL,1,29,1,1),(31,'2023-10-16','Nóng trong người','Nhiệt miệng','270000','2023-10-16 20:52:09',NULL,NULL,1,31,1,2),(32,'2023-10-16','Chảy Nước Mắt','Mỏi mắt','120000','2023-10-16 20:53:11',NULL,NULL,1,32,2,1),(33,'2023-10-16','Ho Gà','Đau Họng','250000','2023-10-16 20:57:22',NULL,NULL,1,34,1,1),(34,'2023-10-16','Mất Ngủ','Đau Thần Kinh Tọa','150000','2023-10-16 20:58:39',NULL,NULL,1,33,2,1),(35,'2023-10-16','Mỏi Vai Gối','Đau Lưng','150000','2023-10-16 21:00:42',NULL,NULL,1,29,2,1);
+INSERT INTO `prescriptions` VALUES (26,'2023-10-13','Đau bụng','Đau bụng, nhức đầu','120000','2023-10-13 16:55:34',NULL,NULL,1,16,2,NULL,2,NULL),(27,'2023-10-16','Ho','Đau họng','120000','2023-10-16 18:28:18',NULL,NULL,1,26,2,NULL,2,NULL),(28,'2023-10-16','Ợ Chua','Đau bụng','250000','2023-10-16 20:40:33',NULL,NULL,1,28,2,NULL,1,NULL),(29,'2023-10-16','Chóng Mặt','Buồn nôn','120000','2023-10-16 20:44:21',NULL,NULL,1,27,1,NULL,2,NULL),(30,'2023-10-16','Tê Tay','Gãy Tay','150000','2023-10-16 20:45:39',NULL,NULL,1,29,1,NULL,1,NULL),(31,'2023-10-16','Nóng trong người','Nhiệt miệng','270000','2023-10-16 20:52:09',NULL,NULL,1,31,1,NULL,2,NULL),(32,'2023-10-16','Chảy Nước Mắt','Mỏi mắt','120000','2023-10-16 20:53:11',NULL,NULL,1,32,2,NULL,1,NULL),(33,'2023-10-16','Ho Gà','Đau Họng','250000','2023-10-16 20:57:22',NULL,NULL,1,34,1,NULL,1,NULL),(34,'2023-10-16','Mất Ngủ','Đau Thần Kinh Tọa','150000','2023-10-16 20:58:39',NULL,NULL,1,33,2,NULL,1,NULL),(35,'2023-10-16','Mỏi Vai Gối','Đau Lưng','150000','2023-10-16 21:00:42',NULL,NULL,1,29,2,'56750177',2,'56750177');
 /*!40000 ALTER TABLE `prescriptions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -884,4 +887,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-19 14:21:41
+-- Dump completed on 2023-10-19 17:15:16
