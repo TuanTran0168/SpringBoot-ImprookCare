@@ -1,5 +1,6 @@
 package com.tuantran.IMPROOK_CARE.controllers;
 
+import com.tuantran.IMPROOK_CARE.dto.AddMessageDTO;
 import com.tuantran.IMPROOK_CARE.dto.ChatRealTimeMessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -19,13 +20,27 @@ public class ApiChatRealTimeController {
 
     @MessageMapping("/message")
     @SendTo("/chatroom/public")
-    public ChatRealTimeMessageDTO receiveMessage(@Payload ChatRealTimeMessageDTO message){
+    public ChatRealTimeMessageDTO receiveMessage(@Payload ChatRealTimeMessageDTO message) {
         return message;
     }
 
+//    @MessageMapping("/private-message")
+//    public ChatRealTimeMessageDTO recMessage(@Payload ChatRealTimeMessageDTO message) {
+//        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(), "/private", message);
+//        System.out.println(message.toString());
+//        return message;
+//    }
+
     @MessageMapping("/private-message")
-    public ChatRealTimeMessageDTO recMessage(@Payload ChatRealTimeMessageDTO message){
-        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),"/private",message);
+    public AddMessageDTO recMessage(@Payload AddMessageDTO message) {
+        if (message.getSenderId().equals(message.getProfileDoctorId())) {
+            simpMessagingTemplate.convertAndSendToUser(message.getUserId(), "/private", message);
+            System.out.println("1");
+        } else {
+            simpMessagingTemplate.convertAndSendToUser(message.getProfileDoctorId(), "/private", message);
+            System.out.println("2");
+        }
+
         System.out.println(message.toString());
         return message;
     }
