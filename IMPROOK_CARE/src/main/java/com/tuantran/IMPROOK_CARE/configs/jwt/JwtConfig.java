@@ -57,13 +57,23 @@ public class JwtConfig {
         return authConfig.getAuthenticationManager();
     }
 
+    private static final String[] AUTH_WHITELIST = {
+        "/authenticate",
+        "/swagger-resources/**",
+        "/swagger-ui/**",
+        "/v3/api-docs/**",
+        "/api/v1/app/user/auth/"
+    };
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth
-                        -> auth.requestMatchers("/api/public/**").permitAll()
+                        -> auth.requestMatchers(AUTH_WHITELIST).permitAll().
+                        requestMatchers("/v3/api-docs").permitAll()
+                        .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()// Cái này permitAll thì 2 cái dưới phế :) nhưng bên Client reactJs không hiểu sao không fetch được?
                         .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/auth/doctor/**").hasRole("DOCTOR")
