@@ -74,7 +74,6 @@ public class JwtConfig {
                         -> auth.requestMatchers(AUTH_WHITELIST).permitAll().
                         requestMatchers("/v3/api-docs").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
-                        .requestMatchers("/api/auth/**").permitAll()// Cái này permitAll thì 2 cái dưới phế :) nhưng bên Client reactJs không hiểu sao không fetch được?
                         .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/auth/doctor/**").hasRole("DOCTOR")
                         .anyRequest().authenticated()
