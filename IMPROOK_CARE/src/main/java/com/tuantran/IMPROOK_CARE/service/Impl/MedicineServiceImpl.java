@@ -23,6 +23,8 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
@@ -38,6 +40,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author Administrator
  */
 @Repository
+@EnableCaching
 public class MedicineServiceImpl implements MedicineService {
 
     @Autowired
@@ -222,6 +225,7 @@ public class MedicineServiceImpl implements MedicineService {
         return this.medicineRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
     }
 
+    @Cacheable("findMedicineCache")
     @Override
     public List<Medicine> findAllMedicineSpec(Map<String, String> params) {
         String medicineName = params.get("medicineName");
