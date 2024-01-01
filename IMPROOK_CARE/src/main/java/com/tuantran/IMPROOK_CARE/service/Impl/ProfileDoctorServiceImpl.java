@@ -185,7 +185,7 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
         }
     }
 
-    @Cacheable(value = "findAllProfileDoctorPageSpec")
+//    @Cacheable(value = "findAllProfileDoctorPageSpec")
     @Override
     public Page<ProfileDoctor> findAllProfileDoctorPageSpec(Map<String, String> params) {
         String pageNumber = params.get("pageNumber");

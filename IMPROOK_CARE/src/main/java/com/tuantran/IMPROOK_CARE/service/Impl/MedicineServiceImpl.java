@@ -179,7 +179,7 @@ public class MedicineServiceImpl implements MedicineService {
         }
     }
 
-    @Cacheable(value = "findAllMedicinePageSpec")
+//    @Cacheable(value = "findAllMedicinePageSpec")
     @Override
     public Page<Medicine> findAllMedicinePageSpec(Map<String, String> params) {
         String pageNumber = params.get("pageNumber");
