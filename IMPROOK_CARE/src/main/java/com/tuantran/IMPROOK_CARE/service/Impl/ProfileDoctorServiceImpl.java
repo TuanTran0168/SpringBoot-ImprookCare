@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
@@ -184,6 +185,7 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
         }
     }
 
+    @Cacheable(value = "findAllProfileDoctorPageSpec")
     @Override
     public Page<ProfileDoctor> findAllProfileDoctorPageSpec(Map<String, String> params) {
         String pageNumber = params.get("pageNumber");

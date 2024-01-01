@@ -240,7 +240,7 @@ public class UserServiceImpl implements UserService {
                 userRegister.setFirstname(registerDTO.getFirstname());
                 userRegister.setLastname(registerDTO.getLastname());
                 userRegister.setGender(registerDTO.getGender());
-                userRegister.setRoleId(this.roleRepository.findRoleByRoleNameAndActiveTrue("USER").get());
+                userRegister.setRoleId(this.roleRepository.findRoleByRoleNameAndActiveTrue("ROLE_USER").get());
                 userRegister.setCreatedDate(new Date());
                 userRegister.setActive(Boolean.TRUE);
                 this.userRepository.save(userRegister);
@@ -278,7 +278,7 @@ public class UserServiceImpl implements UserService {
             user.setLastname(addUserForAdminDTO.getLastname());
             user.setBirthday(this.dateFormatComponent.myDateFormat().parse(addUserForAdminDTO.getBirthday()));
             user.setGender(addUserForAdminDTO.getGender());
-            user.setRoleId(this.roleRepository.findRoleByRoleNameAndActiveTrue("DOCTOR").get());
+            user.setRoleId(this.roleRepository.findRoleByRoleNameAndActiveTrue("ROLE_DOCTOR").get());
             user.setCreatedDate(new Date());
             user.setActive(Boolean.TRUE);
 
