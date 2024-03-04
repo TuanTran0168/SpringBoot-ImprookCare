@@ -396,7 +396,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<User> findAllUserPage(int pageNumber) {
         Pageable page = PageRequest.of(pageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
-        return this.userRepository.findUserByActiveTrue(page);
+        return this.userRepository.findUserByActiveTruePage(page);
     }
 
     @Override

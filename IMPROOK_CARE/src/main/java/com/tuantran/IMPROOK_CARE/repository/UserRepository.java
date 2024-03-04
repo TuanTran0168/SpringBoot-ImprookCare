@@ -29,6 +29,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findUserByUserIdAndActiveTrue(int userId);
 
+    @Query("SELECT u FROM User u WHERE u.active = true")
     List<User> findUserByActiveTrue();
 
     @Query("SELECT u FROM User u WHERE u.active = true")
