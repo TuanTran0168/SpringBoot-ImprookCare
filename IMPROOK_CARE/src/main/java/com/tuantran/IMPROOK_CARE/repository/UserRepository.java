@@ -31,7 +31,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     List<User> findUserByActiveTrue();
 
-    Page<User> findUserByActiveTrue(Pageable page);
+    @Query("SELECT u FROM User u WHERE u.active = true")
+    Page<User> findUserByActiveTruePage(Pageable page);
 //    Page<User> findUserPageSpec(Specification specification, Pageable page);
 
 //    List<User> findAll(Specification<User> createSpecification, Pageable page);
