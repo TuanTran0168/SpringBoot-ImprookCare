@@ -108,12 +108,23 @@ public class CommentServiceImpl implements CommentService {
             if (profileDoctorOptional.isPresent()) {
                 ProfileDoctor profileDoctor = profileDoctorOptional.get();
                 String currentTotalRating = profileDoctor.getTotalRating();
-                String newRating = addCommentDTO.getRating();
-                profileDoctor.setTotalRating(String.valueOf(Integer.parseInt(currentTotalRating) + Integer.parseInt(newRating)));
-
                 String currentCountRating = profileDoctor.getCountRating();
-                profileDoctor.setCountRating(String.valueOf(Integer.parseInt(currentCountRating) + 1));
-
+                String newRating = addCommentDTO.getRating();
+                
+                if (currentTotalRating == null) {
+                    profileDoctor.setTotalRating(newRating);
+                }
+                else {
+                    profileDoctor.setTotalRating(String.valueOf(Integer.parseInt(currentTotalRating) + Integer.parseInt(newRating)));
+                }
+                
+                if (currentCountRating == null) {
+                    profileDoctor.setCountRating("1");
+                }
+                else {
+                    profileDoctor.setCountRating(String.valueOf(Integer.parseInt(currentCountRating) + 1));
+                }
+                
                 comment.setProfileDoctorId(profileDoctor);
             } else {
                 return 0;
