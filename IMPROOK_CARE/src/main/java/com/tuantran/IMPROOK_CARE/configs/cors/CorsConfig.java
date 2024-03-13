@@ -11,7 +11,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class CorsConfig {
 
     private static final String[] CLIENT_WHITELIST = {
-        "http://localhost:3000"
+        "http://localhost:3000",
+        "http://localhost:5173"
     };
 
     @Bean
