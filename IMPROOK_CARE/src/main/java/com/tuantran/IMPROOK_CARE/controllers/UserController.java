@@ -18,4 +18,9 @@ public class UserController {
     public String home() {
         return "user";
     }
+    
+    @RequestMapping("/video-call")
+    public String videoCall() {
+        return "video_call";
+    }
 }

@@ -71,7 +71,10 @@ public class SecurityConfig {
         "/swagger-resources/**",
         "/swagger-ui/**",
         "/v3/api-docs/**",
-        "/api/v1/app/user/auth/"
+        "/api/v1/app/user/auth/",
+        "/",
+        "/user",
+        "/video-call",
     };
 
 //    @Bean
