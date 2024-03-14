@@ -13,6 +13,7 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -33,4 +34,6 @@ public interface ProfileDoctorService {
     Page<ProfileDoctor> findAllProfileDoctorPageSpec(Map<String, String> params);
     
     int softDeleteProfileDoctor(int profileDoctorId);
+    
+    Page<ProfileDoctor> getMessageProfileDoctorByUserIdPage (int userId, Map<String, String> params);
 }

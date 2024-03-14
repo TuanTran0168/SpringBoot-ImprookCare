@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,4 +32,12 @@ public interface ProfileDoctorRepository extends JpaRepository<ProfileDoctor, In
     List<ProfileDoctor> findProfileDoctorByUserIdAndActiveTrue(User userId);
 
     Page<ProfileDoctor> findAll(Specification<ProfileDoctor> createSpecification, Pageable page);
+    
+//    Lấy thông tin ProfileDoctor nào nhắn tin với userId
+    @Query("SELECT DISTINCT pd "
+            + "FROM Message m "
+            + "JOIN m.profileDoctorId pd "
+            + "JOIN pd.userId u "
+            + "WHERE m.userId.userId = :userId")
+    Page<ProfileDoctor> getMessageProfileDoctorByUserIdPage (@Param("userId") int userId, Pageable page);
 }

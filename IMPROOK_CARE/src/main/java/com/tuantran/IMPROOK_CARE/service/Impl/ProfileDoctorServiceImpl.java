@@ -260,4 +260,27 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
         }
     }
 
+    @Override
+    public Page<ProfileDoctor> getMessageProfileDoctorByUserIdPage(int userId, Map<String, String> params) {
+        
+//        Optional<User> userOptional = this.userRepository.findUserByUserIdAndActiveTrue(userId);
+//        
+//        if (userOptional.isPresent()) {
+//            User user = userOptional.get();
+//            
+//        }
+
+        String pageNumber = params.get("pageNumber");
+        int defaultPageNumber = 0;
+        Sort mySort = Sort.by("createdDate").descending();
+        Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+
+        if (pageNumber != null && !pageNumber.isEmpty()) {
+            page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+        }
+        
+        
+        return this.profileDoctorRepository.getMessageProfileDoctorByUserIdPage(userId, page);
+    }
+
 }
