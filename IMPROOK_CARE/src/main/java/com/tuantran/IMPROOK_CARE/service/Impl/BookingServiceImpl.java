@@ -21,12 +21,18 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -53,6 +59,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private DateFormatComponent dateFormatComponent;
+    
+    @Autowired
+    private Environment environment;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -226,6 +235,22 @@ public class BookingServiceImpl implements BookingService {
         } else {
             return 3; // Không tìm được để xóa
         }
+    }
+
+    @Override
+    public Page<Object[]> getBookingForDoctorViewPage(int profileDoctorId, int bookingStatusId, Map<String, String> params) {
+        String pageNumber = params.get("pageNumber");
+
+        int defaultPageNumber = 0;
+        Sort mySort = Sort.by("createdDate").descending();
+        Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+        if (pageNumber != null && !pageNumber.isEmpty()) {
+            if (!pageNumber.equals("NaN")) {
+                page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+            }
+        }
+        return this.bookingRepository.getBookingForDoctorViewPage(profileDoctorId, bookingStatusId, page);
+
     }
 
 }

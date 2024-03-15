@@ -8,6 +8,8 @@ import com.tuantran.IMPROOK_CARE.dto.BookingDTO;
 import com.tuantran.IMPROOK_CARE.models.Booking;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 
 /**
@@ -32,6 +34,8 @@ public interface BookingService {
     List<Date> getDatesForProfileDoctor(@Param("profileDoctorId") int profileDoctorId);
 
     List<Object[]> getBookingForDoctorView(@Param("profileDoctorId") int profileDoctorId);
+    
+    Page<Object[]> getBookingForDoctorViewPage(@Param("profileDoctorId") int profileDoctorId, @Param("bookingStatusId") int bookingStatusId, Map<String, String> params);
 
     List<Object[]> getBookingDetailsByBookingId(@Param("bookingId") int bookingId);
     

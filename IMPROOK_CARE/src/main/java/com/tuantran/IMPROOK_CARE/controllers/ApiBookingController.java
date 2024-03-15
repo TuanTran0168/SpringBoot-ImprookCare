@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -140,5 +141,20 @@ public class ApiBookingController {
     public ResponseEntity<List<Object[]>> getBookingDetailsByBookingId(@RequestBody Map<String, String> params) {
         String bookingId = params.get("bookingId");
         return new ResponseEntity<>(this.bookingService.getBookingDetailsByBookingId(Integer.parseInt(bookingId)), HttpStatus.OK);
+    }
+    
+    @PostMapping("/auth/booking-doctor-view-page/")
+    @CrossOrigin
+    public ResponseEntity<?> getBookingForDoctorViewPage(@RequestBody Map<String, String> params) {
+        try {
+            String profileDoctorId = params.get("profileDoctorId");
+            String bookingStatusId = params.get("bookingStatusId");
+            return new ResponseEntity<>(this.bookingService.getBookingForDoctorViewPage(Integer.parseInt(profileDoctorId), Integer.parseInt(bookingStatusId), params), HttpStatus.OK);
+        }
+        catch (NumberFormatException e) {
+            return new ResponseEntity<>(e.toString(), HttpStatus.BAD_REQUEST);
+        }catch (Exception e) {
+            return new ResponseEntity<>("Something wrong here, Internal Server Error!", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

@@ -8,7 +8,11 @@ import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -68,6 +72,18 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             + "JOIN s.timeSlotId ts "
             + "WHERE pd.profileDoctorId = :profileDoctorId")
     List<Object[]> getBookingForDoctorView(@Param("profileDoctorId") int profileDoctorId);
+    
+    @Query("SELECT b.bookingId, pd.name, s.date, ts.timeBegin, ts.timeEnd, bs.statusValue, pp.name, u.firstname, u.lastname "
+            + "FROM Booking b "
+            + "JOIN b.scheduleId s "
+            + "JOIN s.profileDoctorId pd "
+            + "JOIN b.statusId bs "
+            + "JOIN b.profilePatientId pp "
+            + "JOIN pp.userId u "
+            + "JOIN s.timeSlotId ts "
+            + "WHERE pd.profileDoctorId = :profileDoctorId "
+            + "AND bs.statusId = :bookingStatusId")
+    Page<Object[]> getBookingForDoctorViewPage(@Param("profileDoctorId") int profileDoctorId, @Param("bookingStatusId") int bookingStatusId, Pageable page);
 
     @Query("SELECT pd.name, pd.workAddress, pd.specialtyId, pd.bookingPrice, s.date, pp.name, pp.birthday, pp.phonenumber, pp.address, pp.gender, pd.userId, b.bookingCancel, b.statusId, b.bookingId "
             + "FROM Booking b "
