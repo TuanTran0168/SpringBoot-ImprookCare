@@ -63,6 +63,9 @@ public class TimeSlot implements Serializable {
     private Date deletedDate;
     @Column(name = "active")
     private Boolean active;
+    @JoinColumn(name = "profile_doctor_id", referencedColumnName = "profile_doctor_id")
+    @ManyToOne
+    private ProfileDoctor profileDoctorId;
     @JoinColumn(name = "time_distance_id", referencedColumnName = "time_distance_id")
     @ManyToOne
     private TimeDistance timeDistanceId;
@@ -133,6 +136,14 @@ public class TimeSlot implements Serializable {
         this.active = active;
     }
 
+    public ProfileDoctor getProfileDoctorId() {
+        return profileDoctorId;
+    }
+
+    public void setProfileDoctorId(ProfileDoctor profileDoctorId) {
+        this.profileDoctorId = profileDoctorId;
+    }
+
     public TimeDistance getTimeDistanceId() {
         return timeDistanceId;
     }
@@ -173,5 +184,5 @@ public class TimeSlot implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.TimeSlot[ timeSlotId=" + timeSlotId + " ]";
     }
-
+    
 }

@@ -103,6 +103,9 @@ public class ProfileDoctor implements Serializable {
     private User userId;
     @JsonIgnore
     @OneToMany(mappedBy = "profileDoctorId")
+    private Set<TimeSlot> timeSlotSet;
+    @JsonIgnore
+    @OneToMany(mappedBy = "profileDoctorId")
     private Set<Message> messageSet;
     @JsonIgnore
     @OneToMany(mappedBy = "profileDoctorId")
@@ -278,6 +281,14 @@ public class ProfileDoctor implements Serializable {
         this.userId = userId;
     }
 
+    public Set<TimeSlot> getTimeSlotSet() {
+        return timeSlotSet;
+    }
+
+    public void setTimeSlotSet(Set<TimeSlot> timeSlotSet) {
+        this.timeSlotSet = timeSlotSet;
+    }
+
     public Set<Message> getMessageSet() {
         return messageSet;
     }
@@ -326,5 +337,5 @@ public class ProfileDoctor implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.ProfileDoctor[ profileDoctorId=" + profileDoctorId + " ]";
     }
-
+    
 }

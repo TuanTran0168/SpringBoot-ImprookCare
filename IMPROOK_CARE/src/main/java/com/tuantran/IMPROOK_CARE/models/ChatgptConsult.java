@@ -13,8 +13,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinColumns;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
@@ -27,29 +25,25 @@ import jakarta.persistence.TemporalType;
  * @author Administrator
  */
 @Entity
-@Table(name = "comment")
+@Table(name = "chatgpt_consult")
 @NamedQueries({
-    @NamedQuery(name = "Comment.findAll", query = "SELECT c FROM Comment c"),
-    @NamedQuery(name = "Comment.findByCommentId", query = "SELECT c FROM Comment c WHERE c.commentId = :commentId"),
-    @NamedQuery(name = "Comment.findByAvatar", query = "SELECT c FROM Comment c WHERE c.avatar = :avatar"),
-    @NamedQuery(name = "Comment.findByCreatedDate", query = "SELECT c FROM Comment c WHERE c.createdDate = :createdDate"),
-    @NamedQuery(name = "Comment.findByUpdatedDate", query = "SELECT c FROM Comment c WHERE c.updatedDate = :updatedDate"),
-    @NamedQuery(name = "Comment.findByDeletedDate", query = "SELECT c FROM Comment c WHERE c.deletedDate = :deletedDate"),
-    @NamedQuery(name = "Comment.findByRating", query = "SELECT c FROM Comment c WHERE c.rating = :rating"),
-    @NamedQuery(name = "Comment.findByActive", query = "SELECT c FROM Comment c WHERE c.active = :active")})
-public class Comment implements Serializable {
+    @NamedQuery(name = "ChatgptConsult.findAll", query = "SELECT c FROM ChatgptConsult c"),
+    @NamedQuery(name = "ChatgptConsult.findByChatgptConsultId", query = "SELECT c FROM ChatgptConsult c WHERE c.chatgptConsultId = :chatgptConsultId"),
+    @NamedQuery(name = "ChatgptConsult.findByChatgptConsultAnswer", query = "SELECT c FROM ChatgptConsult c WHERE c.chatgptConsultAnswer = :chatgptConsultAnswer"),
+    @NamedQuery(name = "ChatgptConsult.findByCreatedDate", query = "SELECT c FROM ChatgptConsult c WHERE c.createdDate = :createdDate"),
+    @NamedQuery(name = "ChatgptConsult.findByUpdatedDate", query = "SELECT c FROM ChatgptConsult c WHERE c.updatedDate = :updatedDate"),
+    @NamedQuery(name = "ChatgptConsult.findByDeletedDate", query = "SELECT c FROM ChatgptConsult c WHERE c.deletedDate = :deletedDate"),
+    @NamedQuery(name = "ChatgptConsult.findByActive", query = "SELECT c FROM ChatgptConsult c WHERE c.active = :active")})
+public class ChatgptConsult implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "comment_id")
-    private Integer commentId;
-    @Lob
-    @Column(name = "content")
-    private String content;
-    @Column(name = "avatar")
-    private String avatar;
+    @Column(name = "chatgpt_consult_id")
+    private Integer chatgptConsultId;
+    @Column(name = "chatgpt_consult_answer")
+    private String chatgptConsultAnswer;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -59,46 +53,36 @@ public class Comment implements Serializable {
     @Column(name = "deleted_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
-    @Column(name = "rating")
-    private Integer rating;
     @Column(name = "active")
     private Boolean active;
-    @JoinColumn(name = "profile_doctor_id", referencedColumnName = "profile_doctor_id")
+    @JoinColumn(name = "chatgpt_question_id", referencedColumnName = "chatgpt_question_id")
     @ManyToOne
-    private ProfileDoctor profileDoctorId;
+    private ChatgptQuestion chatgptQuestionId;
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @ManyToOne
     private User userId;
 
-    public Comment() {
+    public ChatgptConsult() {
     }
 
-    public Comment(Integer commentId) {
-        this.commentId = commentId;
+    public ChatgptConsult(Integer chatgptConsultId) {
+        this.chatgptConsultId = chatgptConsultId;
     }
 
-    public Integer getCommentId() {
-        return commentId;
+    public Integer getChatgptConsultId() {
+        return chatgptConsultId;
     }
 
-    public void setCommentId(Integer commentId) {
-        this.commentId = commentId;
+    public void setChatgptConsultId(Integer chatgptConsultId) {
+        this.chatgptConsultId = chatgptConsultId;
     }
 
-    public String getContent() {
-        return content;
+    public String getChatgptConsultAnswer() {
+        return chatgptConsultAnswer;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setChatgptConsultAnswer(String chatgptConsultAnswer) {
+        this.chatgptConsultAnswer = chatgptConsultAnswer;
     }
 
     public Date getCreatedDate() {
@@ -125,14 +109,6 @@ public class Comment implements Serializable {
         this.deletedDate = deletedDate;
     }
 
-    public Integer getRating() {
-        return rating;
-    }
-
-    public void setRating(Integer rating) {
-        this.rating = rating;
-    }
-
     public Boolean getActive() {
         return active;
     }
@@ -141,12 +117,12 @@ public class Comment implements Serializable {
         this.active = active;
     }
 
-    public ProfileDoctor getProfileDoctorId() {
-        return profileDoctorId;
+    public ChatgptQuestion getChatgptQuestionId() {
+        return chatgptQuestionId;
     }
 
-    public void setProfileDoctorId(ProfileDoctor profileDoctorId) {
-        this.profileDoctorId = profileDoctorId;
+    public void setChatgptQuestionId(ChatgptQuestion chatgptQuestionId) {
+        this.chatgptQuestionId = chatgptQuestionId;
     }
 
     public User getUserId() {
@@ -160,18 +136,18 @@ public class Comment implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (commentId != null ? commentId.hashCode() : 0);
+        hash += (chatgptConsultId != null ? chatgptConsultId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Comment)) {
+        if (!(object instanceof ChatgptConsult)) {
             return false;
         }
-        Comment other = (Comment) object;
-        if ((this.commentId == null && other.commentId != null) || (this.commentId != null && !this.commentId.equals(other.commentId))) {
+        ChatgptConsult other = (ChatgptConsult) object;
+        if ((this.chatgptConsultId == null && other.chatgptConsultId != null) || (this.chatgptConsultId != null && !this.chatgptConsultId.equals(other.chatgptConsultId))) {
             return false;
         }
         return true;
@@ -179,7 +155,7 @@ public class Comment implements Serializable {
 
     @Override
     public String toString() {
-        return "com.tuantran.IMPROOK_CARE.models.Comment[ commentId=" + commentId + " ]";
+        return "com.tuantran.IMPROOK_CARE.models.ChatgptConsult[ chatgptConsultId=" + chatgptConsultId + " ]";
     }
     
 }

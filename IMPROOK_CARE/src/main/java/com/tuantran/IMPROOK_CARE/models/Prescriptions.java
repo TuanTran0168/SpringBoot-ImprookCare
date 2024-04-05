@@ -239,5 +239,5 @@ public class Prescriptions implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.Prescriptions[ prescriptionId=" + prescriptionId + " ]";
     }
-
+    
 }

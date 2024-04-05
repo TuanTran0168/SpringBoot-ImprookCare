@@ -83,6 +83,66 @@ INSERT INTO `booking_status` VALUES (1,'Chờ xác nhận',NULL,NULL,NULL,1),(2,
 UNLOCK TABLES;
 
 --
+-- Table structure for table `chatgpt_consult`
+--
+
+DROP TABLE IF EXISTS `chatgpt_consult`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `chatgpt_consult` (
+  `chatgpt_consult_id` int NOT NULL AUTO_INCREMENT,
+  `chatgpt_consult_answer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  `deleted_date` datetime DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  `chatgpt_question_id` int DEFAULT NULL,
+  PRIMARY KEY (`chatgpt_consult_id`),
+  KEY `user_id` (`user_id`),
+  KEY `chatgpt_question_id` (`chatgpt_question_id`),
+  CONSTRAINT `chatgpt_consult_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  CONSTRAINT `chatgpt_consult_ibfk_2` FOREIGN KEY (`chatgpt_question_id`) REFERENCES `chatgpt_question` (`chatgpt_question_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `chatgpt_consult`
+--
+
+LOCK TABLES `chatgpt_consult` WRITE;
+/*!40000 ALTER TABLE `chatgpt_consult` DISABLE KEYS */;
+/*!40000 ALTER TABLE `chatgpt_consult` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `chatgpt_question`
+--
+
+DROP TABLE IF EXISTS `chatgpt_question`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `chatgpt_question` (
+  `chatgpt_question_id` int NOT NULL AUTO_INCREMENT,
+  `chatgpt_question_content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  `deleted_date` datetime DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`chatgpt_question_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `chatgpt_question`
+--
+
+LOCK TABLES `chatgpt_question` WRITE;
+/*!40000 ALTER TABLE `chatgpt_question` DISABLE KEYS */;
+/*!40000 ALTER TABLE `chatgpt_question` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `collab_doctor`
 --
 
@@ -735,10 +795,13 @@ CREATE TABLE `time_slot` (
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `time_distance_id` int DEFAULT NULL,
+  `profile_doctor_id` int DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`time_slot_id`),
   KEY `time_distance_id` (`time_distance_id`),
-  CONSTRAINT `time_slot_ibfk_1` FOREIGN KEY (`time_distance_id`) REFERENCES `time_distance` (`time_distance_id`)
+  KEY `profile_doctor_id` (`profile_doctor_id`),
+  CONSTRAINT `time_slot_ibfk_1` FOREIGN KEY (`time_distance_id`) REFERENCES `time_distance` (`time_distance_id`),
+  CONSTRAINT `time_slot_ibfk_2` FOREIGN KEY (`profile_doctor_id`) REFERENCES `profile_doctor` (`profile_doctor_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -748,7 +811,6 @@ CREATE TABLE `time_slot` (
 
 LOCK TABLES `time_slot` WRITE;
 /*!40000 ALTER TABLE `time_slot` DISABLE KEYS */;
-INSERT INTO `time_slot` VALUES (1,'2023-09-10 05:00:00','2023-09-10 05:15:00',NULL,NULL,NULL,1,1),(2,'2023-09-10 05:15:00','2023-09-10 05:30:00',NULL,NULL,NULL,1,1),(3,'2023-09-10 05:30:00','2023-09-10 05:45:00',NULL,NULL,NULL,1,1),(4,'2023-09-10 05:45:00','2023-09-10 06:00:00',NULL,NULL,NULL,1,1),(5,'2023-09-10 06:00:00','2023-09-10 06:15:00',NULL,NULL,NULL,1,1),(6,'2023-09-10 06:15:00','2023-09-10 06:30:00',NULL,NULL,NULL,1,1),(7,'2023-09-10 06:30:00','2023-09-10 06:45:00',NULL,NULL,NULL,1,1),(8,'2023-09-10 06:45:00','2023-09-10 07:00:00',NULL,NULL,NULL,1,1),(9,'2023-09-10 07:00:00','2023-09-10 07:15:00',NULL,NULL,NULL,1,1),(10,'2023-09-10 07:15:00','2023-09-10 07:30:00',NULL,NULL,NULL,1,1),(11,'2023-09-10 07:30:00','2023-09-10 07:45:00',NULL,NULL,NULL,1,1),(12,'2023-09-10 07:45:00','2023-09-10 08:00:00',NULL,NULL,NULL,1,1),(13,'2023-09-10 08:00:00','2023-09-10 08:15:00',NULL,NULL,NULL,1,1),(14,'2023-09-10 08:15:00','2023-09-10 08:30:00',NULL,NULL,NULL,1,1),(15,'2023-09-10 08:30:00','2023-09-10 08:45:00',NULL,NULL,NULL,1,1),(16,'2023-09-10 08:45:00','2023-09-10 09:00:00',NULL,NULL,NULL,1,1),(17,'2023-09-10 09:00:00','2023-09-10 09:15:00',NULL,NULL,NULL,1,1),(18,'2023-09-10 09:15:00','2023-09-10 09:30:00',NULL,NULL,NULL,1,1),(19,'2023-09-10 09:30:00','2023-09-10 09:45:00',NULL,NULL,NULL,1,1),(20,'2023-09-10 09:45:00','2023-09-10 10:00:00',NULL,NULL,NULL,1,1),(21,'2023-09-10 10:00:00','2023-09-10 10:15:00',NULL,NULL,NULL,1,1),(22,'2023-09-10 10:15:00','2023-09-10 10:30:00',NULL,NULL,NULL,1,1),(23,'2023-09-10 10:30:00','2023-09-10 10:45:00',NULL,NULL,NULL,1,1),(24,'2023-09-10 10:45:00','2023-09-10 11:00:00',NULL,NULL,NULL,1,1),(25,'2023-09-10 13:00:00','2023-09-10 13:15:00',NULL,NULL,NULL,1,1),(26,'2023-09-10 13:15:00','2023-09-10 13:30:00',NULL,NULL,NULL,1,1),(27,'2023-09-10 13:30:00','2023-09-10 13:45:00',NULL,NULL,NULL,1,1),(28,'2023-09-10 13:45:00','2023-09-10 14:00:00',NULL,NULL,NULL,1,1),(29,'2023-09-10 14:00:00','2023-09-10 14:15:00',NULL,NULL,NULL,1,1),(30,'2023-09-10 14:15:00','2023-09-10 14:30:00',NULL,NULL,NULL,1,1),(31,'2023-09-10 14:30:00','2023-09-10 14:45:00',NULL,NULL,NULL,1,1),(32,'2023-09-10 14:45:00','2023-09-10 15:00:00',NULL,NULL,NULL,1,1),(33,'2023-09-10 15:00:00','2023-09-10 15:15:00',NULL,NULL,NULL,1,1),(34,'2023-09-10 15:15:00','2023-09-10 15:30:00',NULL,NULL,NULL,1,1),(35,'2023-09-10 15:30:00','2023-09-10 15:45:00',NULL,NULL,NULL,1,1),(36,'2023-09-10 15:45:00','2023-09-10 16:00:00',NULL,NULL,NULL,1,1),(37,'2023-09-10 16:00:00','2023-09-10 16:15:00',NULL,NULL,NULL,1,1),(38,'2023-09-10 16:15:00','2023-09-10 16:30:00',NULL,NULL,NULL,1,1),(39,'2023-09-10 16:30:00','2023-09-10 16:45:00',NULL,NULL,NULL,1,1),(40,'2023-09-10 16:45:00','2023-09-10 17:00:00',NULL,NULL,NULL,1,1),(41,'2023-09-10 05:00:00','2023-09-10 05:30:00',NULL,NULL,NULL,2,1),(42,'2023-09-10 05:30:00','2023-09-10 06:00:00',NULL,NULL,NULL,2,1),(43,'2023-09-10 06:00:00','2023-09-10 06:30:00',NULL,NULL,NULL,2,1),(44,'2023-09-10 06:30:00','2023-09-10 07:00:00',NULL,NULL,NULL,2,1),(45,'2023-09-10 07:00:00','2023-09-10 07:30:00',NULL,NULL,NULL,2,1),(46,'2023-09-10 07:30:00','2023-09-10 08:00:00',NULL,NULL,NULL,2,1),(47,'2023-09-10 08:00:00','2023-09-10 08:30:00',NULL,NULL,NULL,2,1),(48,'2023-09-10 08:30:00','2023-09-10 09:00:00',NULL,NULL,NULL,2,1),(49,'2023-09-10 09:00:00','2023-09-10 09:30:00',NULL,NULL,NULL,2,1),(50,'2023-09-10 09:30:00','2023-09-10 10:00:00',NULL,NULL,NULL,2,1),(51,'2023-09-10 10:00:00','2023-09-10 10:30:00',NULL,NULL,NULL,2,1),(52,'2023-09-10 10:30:00','2023-09-10 11:00:00',NULL,NULL,NULL,2,1),(53,'2023-09-10 13:00:00','2023-09-10 13:30:00',NULL,NULL,NULL,2,1),(54,'2023-09-10 13:30:00','2023-09-10 14:00:00',NULL,NULL,NULL,2,1),(55,'2023-09-10 14:00:00','2023-09-10 14:30:00',NULL,NULL,NULL,2,1),(56,'2023-09-10 14:30:00','2023-09-10 15:00:00',NULL,NULL,NULL,2,1),(57,'2023-09-10 15:00:00','2023-09-10 15:30:00',NULL,NULL,NULL,2,1),(58,'2023-09-10 15:30:00','2023-09-10 16:00:00',NULL,NULL,NULL,2,1),(59,'2023-09-10 16:00:00','2023-09-10 16:30:00',NULL,NULL,NULL,2,1),(60,'2023-09-10 16:30:00','2023-09-10 17:00:00',NULL,NULL,NULL,2,1),(61,'2023-09-10 05:00:00','2023-09-10 06:00:00',NULL,NULL,NULL,3,1),(62,'2023-09-10 06:00:00','2023-09-10 07:00:00',NULL,NULL,NULL,3,1),(63,'2023-09-10 07:00:00','2023-09-10 08:00:00',NULL,NULL,NULL,3,1),(64,'2023-09-10 08:00:00','2023-09-10 09:00:00',NULL,NULL,NULL,3,1),(65,'2023-09-10 09:00:00','2023-09-10 10:00:00',NULL,NULL,NULL,3,1),(66,'2023-09-10 10:00:00','2023-09-10 11:00:00',NULL,NULL,NULL,3,1),(67,'2023-09-10 13:00:00','2023-09-10 14:00:00',NULL,NULL,NULL,3,1),(68,'2023-09-10 14:00:00','2023-09-10 15:00:00',NULL,NULL,NULL,3,1),(69,'2023-09-10 15:00:00','2023-09-10 16:00:00',NULL,NULL,NULL,3,1),(70,'2023-09-10 16:00:00','2023-09-10 17:00:00',NULL,NULL,NULL,3,1);
 /*!40000 ALTER TABLE `time_slot` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -891,4 +953,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-09 19:48:02
+-- Dump completed on 2024-04-05 13:58:46

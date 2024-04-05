@@ -194,7 +194,7 @@ public class MedicineServiceImpl implements MedicineService {
         }
     }
 
-    // @Cacheable(value = "findAllMedicinePageSpec")
+    @Cacheable(value = "findAllMedicinePageSpec")
     @Override
     public Page<Medicine> findAllMedicinePageSpec(Map<String, String> params) {
 
@@ -205,11 +205,12 @@ public class MedicineServiceImpl implements MedicineService {
         // System.err.println(cache);
 
         // String stringCache = (String) ;
-        System.out.println(
-                "++++++++++++++++++++++++++++++++++++++++++++++++++ LẤY TRONG CACHE RA ++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println(this.baseRedisService.get("alo_1"));
-        System.out.println(
-                "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        // System.out.println(
+        // "++++++++++++++++++++++++++++++++++++++++++++++++++ LẤY TRONG CACHE RA
+        // ++++++++++++++++++++++++++++++++++++++++++");
+        // System.out.println(this.baseRedisService.get("alo_1"));
+        // System.out.println(
+        // "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         String pageNumber = params.get("pageNumber");
         String medicineName = params.get("medicineName");
         String fromPrice = params.get("fromPrice");
@@ -264,13 +265,14 @@ public class MedicineServiceImpl implements MedicineService {
         // this.medicineRepository.findAll(GenericSpecifications.createSpecification(listSpec),
         // page));
 
-        System.out.println(
-                "+++++++++++++++++++++++++++++++++++++++++ ADU +++++++++++++++++++++++++++++++++++++++++++++++++++");
-        this.baseRedisService.setPage("alo_1",
-                this.medicineRepository.findAll(GenericSpecifications.createSpecification(listSpec),
-                        page));
-        System.out.println(
-                "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        // System.out.println(
+        // "+++++++++++++++++++++++++++++++++++++++++ ADU
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++");
+        // this.baseRedisService.setPage("alo_1",
+        // this.medicineRepository.findAll(GenericSpecifications.createSpecification(listSpec),
+        // page));
+        // System.out.println(
+        // "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
         return this.medicineRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
     }

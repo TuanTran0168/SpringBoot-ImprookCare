@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
@@ -80,6 +81,9 @@ public class User implements Serializable {
     private Date deletedDate;
     @Column(name = "active")
     private Boolean active;
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId")
+    private Set<ChatgptConsult> chatgptConsultSet;
     @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private Set<ProfileDoctor> profileDoctorSet;
@@ -207,6 +211,14 @@ public class User implements Serializable {
         this.active = active;
     }
 
+    public Set<ChatgptConsult> getChatgptConsultSet() {
+        return chatgptConsultSet;
+    }
+
+    public void setChatgptConsultSet(Set<ChatgptConsult> chatgptConsultSet) {
+        this.chatgptConsultSet = chatgptConsultSet;
+    }
+
     public Set<ProfileDoctor> getProfileDoctorSet() {
         return profileDoctorSet;
     }
@@ -271,5 +283,5 @@ public class User implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.User[ userId=" + userId + " ]";
     }
-
+    
 }
