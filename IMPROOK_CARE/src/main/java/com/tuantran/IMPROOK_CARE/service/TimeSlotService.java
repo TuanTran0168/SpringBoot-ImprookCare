@@ -14,4 +14,6 @@ import java.util.List;
  */
 public interface TimeSlotService {
     List<TimeSlot> findTimeSlotByTimeDistanceIdAndActiveTrue(int timeDistanceId);
+
+    List<?> getTimeSlotByTimeDistanceIdWithCheckRegister(int timeDistanceId, int profiledoctorId, String date);
 }

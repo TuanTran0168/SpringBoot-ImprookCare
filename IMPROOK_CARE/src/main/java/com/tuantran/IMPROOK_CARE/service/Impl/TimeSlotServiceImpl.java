@@ -4,12 +4,17 @@
  */
 package com.tuantran.IMPROOK_CARE.service.Impl;
 
+import com.tuantran.IMPROOK_CARE.dto.TimeSlotWithCheckRegisterDTO;
 import com.tuantran.IMPROOK_CARE.models.TimeSlot;
 import com.tuantran.IMPROOK_CARE.repository.TimeDistanceRepository;
 import com.tuantran.IMPROOK_CARE.repository.TimeSlotRepository;
+import com.tuantran.IMPROOK_CARE.service.ScheduleService;
 import com.tuantran.IMPROOK_CARE.service.TimeSlotService;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +31,44 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     @Autowired
     private TimeDistanceRepository timeDistanceRepository;
 
+    @Autowired
+    private ScheduleService scheduleService;
+
     @Override
     public List<TimeSlot> findTimeSlotByTimeDistanceIdAndActiveTrue(int timeDistanceId) {
         try {
-            return this.timeSlotRepository.findTimeSlotByTimeDistanceIdAndActiveTrue(this.timeDistanceRepository.findTimeDistanceByTimeDistanceIdAndActiveTrue(timeDistanceId).get());
+            return this.timeSlotRepository.findTimeSlotByTimeDistanceIdAndActiveTrue(
+                    this.timeDistanceRepository.findTimeDistanceByTimeDistanceIdAndActiveTrue(timeDistanceId).get());
         } catch (NoSuchElementException ex) {
             return null;
         }
+    }
+
+    /*
+     * Tìm ra danh sách các Time Slot bằng Time Distance
+     * Và kiểm tra xem Time Slot đó đã được bác sĩ đăng ký hay chưa.
+     */
+    @Override
+    public List<?> getTimeSlotByTimeDistanceIdWithCheckRegister(int timeDistanceId, int profiledoctorId,
+            String date) {
+        List<TimeSlot> timeSlotList = this.findTimeSlotByTimeDistanceIdAndActiveTrue(timeDistanceId);
+
+        List<TimeSlotWithCheckRegisterDTO> timeSlotCheckedList = new ArrayList<>();
+        Boolean check = false;
+
+        for (TimeSlot timeSlot : timeSlotList) {
+            if (this.scheduleService.findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(profiledoctorId,
+                    date, timeSlot.getTimeSlotId()) == null) {
+                check = false;
+            } else {
+                check = true;
+            }
+
+            TimeSlotWithCheckRegisterDTO timeSlotChecked = new TimeSlotWithCheckRegisterDTO(timeSlot, check);
+            timeSlotCheckedList.add(timeSlotChecked);
+        }
+
+        return timeSlotCheckedList;
     }
 
 }
