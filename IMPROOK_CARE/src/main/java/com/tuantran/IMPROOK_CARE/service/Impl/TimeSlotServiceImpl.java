@@ -4,7 +4,9 @@
  */
 package com.tuantran.IMPROOK_CARE.service.Impl;
 
+import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
 import com.tuantran.IMPROOK_CARE.dto.TimeSlotWithCheckRegisterDTO;
+import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import com.tuantran.IMPROOK_CARE.models.TimeSlot;
 import com.tuantran.IMPROOK_CARE.repository.TimeDistanceRepository;
 import com.tuantran.IMPROOK_CARE.repository.TimeSlotRepository;
@@ -12,6 +14,7 @@ import com.tuantran.IMPROOK_CARE.service.ScheduleService;
 import com.tuantran.IMPROOK_CARE.service.TimeSlotService;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -69,6 +72,16 @@ public class TimeSlotServiceImpl implements TimeSlotService {
         }
 
         return timeSlotCheckedList;
+    }
+
+    @Override
+    public TimeSlot addTimeSlot(Date timeBegin, Date timeEnd, ProfileDoctor profileDoctor) {
+        TimeSlot timeSlot = new TimeSlot();
+
+        timeSlot.setTimeBegin(timeBegin);
+        timeSlot.setTimeEnd(timeEnd);
+
+        return this.timeSlotRepository.save(timeSlot);
     }
 
 }

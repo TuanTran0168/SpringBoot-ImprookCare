@@ -4,8 +4,10 @@
  */
 package com.tuantran.IMPROOK_CARE.service;
 
-import com.tuantran.IMPROOK_CARE.models.TimeDistance;
+import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import com.tuantran.IMPROOK_CARE.models.TimeSlot;
+
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,4 +18,6 @@ public interface TimeSlotService {
     List<TimeSlot> findTimeSlotByTimeDistanceIdAndActiveTrue(int timeDistanceId);
 
     List<?> getTimeSlotByTimeDistanceIdWithCheckRegister(int timeDistanceId, int profiledoctorId, String date);
+
+    TimeSlot addTimeSlot(Date timeBegin, Date timeEnd, ProfileDoctor profileDoctor);
 }
