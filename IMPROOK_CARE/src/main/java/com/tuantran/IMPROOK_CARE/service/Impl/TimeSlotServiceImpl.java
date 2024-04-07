@@ -80,6 +80,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 
         timeSlot.setTimeBegin(timeBegin);
         timeSlot.setTimeEnd(timeEnd);
+        timeSlot.setProfileDoctorId(profileDoctor);
 
         return this.timeSlotRepository.save(timeSlot);
     }
