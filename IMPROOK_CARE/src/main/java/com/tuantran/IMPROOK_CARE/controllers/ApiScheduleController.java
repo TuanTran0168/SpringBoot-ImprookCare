@@ -7,6 +7,7 @@ package com.tuantran.IMPROOK_CARE.controllers;
 import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
 import com.tuantran.IMPROOK_CARE.dto.AddScheduleDTO;
 import com.tuantran.IMPROOK_CARE.dto.AddTimeSlotDTO;
+import com.tuantran.IMPROOK_CARE.dto.UpdateTimeSlotDTO;
 import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import com.tuantran.IMPROOK_CARE.models.Schedule;
 import com.tuantran.IMPROOK_CARE.models.TimeDistance;
@@ -173,6 +174,37 @@ public class ApiScheduleController {
             e.printStackTrace();
             return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
         }
+    }
 
+    @PostMapping(path = "/auth/doctor/update-timeSlot/")
+    @CrossOrigin
+    public ResponseEntity<?> updateTimeSlot(@Valid @RequestBody UpdateTimeSlotDTO updateTimeSlotDTO) {
+
+        String message = "Có lỗi xảy ra!";
+        try {
+
+            Optional<TimeSlot> timeSlotOptional = this.timeSlotService
+                    .findTimeSlotByTimeSlotIdAndActiveTrue(Integer.parseInt(updateTimeSlotDTO.getTimeSlotId()));
+
+            if (timeSlotOptional.isPresent()) {
+                TimeSlot timeSlot = timeSlotOptional.get();
+
+                Date timeBeginParse = dateFormatComponent.myDateTimeFormat().parse(updateTimeSlotDTO.getTimeBegin());
+                Date timeEndParse = dateFormatComponent.myDateTimeFormat().parse(updateTimeSlotDTO.getTimeEnd());
+
+                timeSlot.setTimeBegin(timeBeginParse);
+                timeSlot.setTimeEnd(timeEndParse);
+
+                return new ResponseEntity<>(this.timeSlotService.updateTimeSlot(timeSlot), HttpStatus.OK);
+
+            } else {
+                message = "TimeSlot[" + updateTimeSlotDTO.getTimeSlotId() + "] không tồn tại!";
+                return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+        }
     }
 }

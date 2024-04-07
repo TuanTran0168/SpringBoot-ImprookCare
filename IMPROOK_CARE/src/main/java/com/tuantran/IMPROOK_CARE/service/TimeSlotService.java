@@ -9,6 +9,7 @@ import com.tuantran.IMPROOK_CARE.models.TimeSlot;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -20,4 +21,8 @@ public interface TimeSlotService {
     List<?> getTimeSlotByTimeDistanceIdWithCheckRegister(int timeDistanceId, int profiledoctorId, String date);
 
     TimeSlot addTimeSlot(Date timeBegin, Date timeEnd, ProfileDoctor profileDoctor);
+
+    TimeSlot updateTimeSlot(TimeSlot timeSlot);
+
+    Optional<TimeSlot> findTimeSlotByTimeSlotIdAndActiveTrue(int timeDistanceId);
 }

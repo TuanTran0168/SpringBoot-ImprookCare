@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,8 +82,19 @@ public class TimeSlotServiceImpl implements TimeSlotService {
         timeSlot.setTimeBegin(timeBegin);
         timeSlot.setTimeEnd(timeEnd);
         timeSlot.setProfileDoctorId(profileDoctor);
+        timeSlot.setActive(Boolean.TRUE);
 
         return this.timeSlotRepository.save(timeSlot);
+    }
+
+    @Override
+    public TimeSlot updateTimeSlot(TimeSlot timeSlot) {
+        return this.timeSlotRepository.save(timeSlot);
+    }
+
+    @Override
+    public Optional<TimeSlot> findTimeSlotByTimeSlotIdAndActiveTrue(int timeDistanceId) {
+        return this.timeSlotRepository.findTimeSlotByTimeSlotIdAndActiveTrue(timeDistanceId);
     }
 
 }
