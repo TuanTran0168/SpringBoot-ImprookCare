@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
+import com.tuantran.IMPROOK_CARE.models.Schedule;
 import com.tuantran.IMPROOK_CARE.models.TimeSlot;
 
 import java.util.Date;
@@ -25,4 +26,6 @@ public interface TimeSlotService {
     TimeSlot updateTimeSlot(TimeSlot timeSlot);
 
     Optional<TimeSlot> findTimeSlotByTimeSlotIdAndActiveTrue(int timeDistanceId);
+
+    Schedule addTimeSlotAndSchedule(Date timeBegin, Date timeEnd, ProfileDoctor profileDoctor);
 }

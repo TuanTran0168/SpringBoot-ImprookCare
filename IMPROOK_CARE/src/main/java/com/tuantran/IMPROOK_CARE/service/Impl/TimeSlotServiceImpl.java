@@ -5,13 +5,19 @@
 package com.tuantran.IMPROOK_CARE.service.Impl;
 
 import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
+import com.tuantran.IMPROOK_CARE.dto.AddScheduleDTO;
+import com.tuantran.IMPROOK_CARE.dto.AddTimeSlotAndScheduleDTO;
 import com.tuantran.IMPROOK_CARE.dto.TimeSlotWithCheckRegisterDTO;
 import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
+import com.tuantran.IMPROOK_CARE.models.Schedule;
 import com.tuantran.IMPROOK_CARE.models.TimeSlot;
 import com.tuantran.IMPROOK_CARE.repository.TimeDistanceRepository;
 import com.tuantran.IMPROOK_CARE.repository.TimeSlotRepository;
 import com.tuantran.IMPROOK_CARE.service.ScheduleService;
 import com.tuantran.IMPROOK_CARE.service.TimeSlotService;
+
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -83,6 +89,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
         timeSlot.setTimeEnd(timeEnd);
         timeSlot.setProfileDoctorId(profileDoctor);
         timeSlot.setActive(Boolean.TRUE);
+        timeSlot.setCreatedDate(new Date());
 
         return this.timeSlotRepository.save(timeSlot);
     }
@@ -95,6 +102,18 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     @Override
     public Optional<TimeSlot> findTimeSlotByTimeSlotIdAndActiveTrue(int timeDistanceId) {
         return this.timeSlotRepository.findTimeSlotByTimeSlotIdAndActiveTrue(timeDistanceId);
+    }
+
+    /*
+     * Tạo và lưu TimeSlot xong sau đó tạo luôn Schedule tương ứng
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Schedule addTimeSlotAndSchedule(Date timeBegin, Date timeEnd, ProfileDoctor profileDoctor) {
+        TimeSlot timeSlot = this.addTimeSlot(timeBegin, timeEnd, profileDoctor);
+        Schedule schedule = this.scheduleService.addSchedule(timeSlot, timeBegin, profileDoctor);
+
+        return schedule;
     }
 
 }

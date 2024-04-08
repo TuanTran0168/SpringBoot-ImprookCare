@@ -19,11 +19,14 @@ public interface ScheduleService {
 
     int addSchedule(AddScheduleDTO addScheduleDTO);
 
+    Schedule addSchedule(TimeSlot timeSlot, Date date, ProfileDoctor profileDoctor);
+
     int addCustomSchedule(List<AddScheduleDTO> addScheduleDTOList);
 
     Schedule findScheduleByIdAndActiveTrue(int scheduleId);
 
-    Schedule findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(int profiledoctorId, String date, int timeSlotId);
+    Schedule findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(int profiledoctorId, String date,
+            int timeSlotId);
 
     int isScheduleExists(int profiledoctorId, String date, int timeSlotId);
 

@@ -17,11 +17,11 @@ import com.tuantran.IMPROOK_CARE.service.ScheduleService;
 import com.tuantran.IMPROOK_CARE.service.TimeDistanceService;
 import com.tuantran.IMPROOK_CARE.service.TimeSlotService;
 import jakarta.validation.Valid;
-
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,7 +167,7 @@ public class ApiScheduleController {
                         HttpStatus.CREATED);
             } else {
                 message = "ProfileDoctor[" + addTimeSlotDTO.getProfileDoctorId() + "] không tồn tại!";
-                return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
             }
 
         } catch (ParseException e) {
@@ -203,6 +203,38 @@ public class ApiScheduleController {
             }
 
         } catch (ParseException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(path = "/auth/doctor/add-timeSlot-schedule/")
+    @CrossOrigin
+    public ResponseEntity<?> addTimeSlotAndSchedule(@Valid @RequestBody AddTimeSlotDTO addTimeSlotDTO) {
+
+        String message = "Có lỗi xảy ra!";
+        try {
+            Date timeBeginParse = dateFormatComponent.myDateTimeFormat().parse(addTimeSlotDTO.getTimeBegin());
+            Date timeEndParse = dateFormatComponent.myDateTimeFormat().parse(addTimeSlotDTO.getTimeEnd());
+
+            Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository
+                    .findProfileDoctorByProfileDoctorIdAndActiveTrue(
+                            Integer.parseInt(addTimeSlotDTO.getProfileDoctorId()));
+
+            if (profileDoctorOptional.isPresent()) {
+                ProfileDoctor profileDoctor = profileDoctorOptional.get();
+                return new ResponseEntity<>(
+                        this.timeSlotService.addTimeSlotAndSchedule(timeBeginParse, timeEndParse, profileDoctor),
+                        HttpStatus.CREATED);
+            } else {
+                message = "ProfileDoctor[" + addTimeSlotDTO.getProfileDoctorId() + "] không tồn tại!";
+                return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+        } catch (NoSuchElementException e) {
             e.printStackTrace();
             return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
         }

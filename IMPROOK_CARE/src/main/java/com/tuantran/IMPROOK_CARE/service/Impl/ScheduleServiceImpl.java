@@ -48,9 +48,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     public int addSchedule(AddScheduleDTO addScheduleDTO) {
         try {
             Schedule schedule = new Schedule();
-            schedule.setProfileDoctorId(this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(Integer.parseInt(addScheduleDTO.getProfileDoctorId())).get());
+            schedule.setProfileDoctorId(this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(
+                    Integer.parseInt(addScheduleDTO.getProfileDoctorId())).get());
             schedule.setDate(this.dateFormatComponent.myDateFormat().parse(addScheduleDTO.getDate()));
-            schedule.setTimeSlotId(this.timeSlotRepository.findTimeSlotByTimeSlotIdAndActiveTrue(Integer.parseInt(addScheduleDTO.getTimeSlotId())).get());
+            schedule.setTimeSlotId(this.timeSlotRepository
+                    .findTimeSlotByTimeSlotIdAndActiveTrue(Integer.parseInt(addScheduleDTO.getTimeSlotId())).get());
             schedule.setCreatedDate(new Date());
             schedule.setActive(Boolean.TRUE);
             schedule.setBooked(Boolean.FALSE);
@@ -79,11 +81,14 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public Schedule findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(int profiledoctorId, String date, int timeSlotId) {
+    public Schedule findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(int profiledoctorId, String date,
+            int timeSlotId) {
 
         try {
-            Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(profiledoctorId);
-            Optional<TimeSlot> timeSlotOptional = this.timeSlotRepository.findTimeSlotByTimeSlotIdAndActiveTrue(timeSlotId);
+            Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository
+                    .findProfileDoctorByProfileDoctorIdAndActiveTrue(profiledoctorId);
+            Optional<TimeSlot> timeSlotOptional = this.timeSlotRepository
+                    .findTimeSlotByTimeSlotIdAndActiveTrue(timeSlotId);
             Date date_parse = this.dateFormatComponent.myDateFormat().parse(date);
 
             if (!profileDoctorOptional.isPresent()) {
@@ -94,7 +99,9 @@ public class ScheduleServiceImpl implements ScheduleService {
                 return null;
             }
 
-            Optional<Schedule> scheduleOptional = this.scheduleRepository.findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(profileDoctorOptional.get(), date_parse, timeSlotOptional.get());
+            Optional<Schedule> scheduleOptional = this.scheduleRepository
+                    .findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(profileDoctorOptional.get(),
+                            date_parse, timeSlotOptional.get());
             if (scheduleOptional.isPresent()) {
                 return scheduleOptional.get();
             } else {
@@ -113,8 +120,10 @@ public class ScheduleServiceImpl implements ScheduleService {
     public int isScheduleExists(int profiledoctorId, String date, int timeSlotId) {
 
         try {
-            Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(profiledoctorId);
-            Optional<TimeSlot> timeSlotOptional = this.timeSlotRepository.findTimeSlotByTimeSlotIdAndActiveTrue(timeSlotId);
+            Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository
+                    .findProfileDoctorByProfileDoctorIdAndActiveTrue(profiledoctorId);
+            Optional<TimeSlot> timeSlotOptional = this.timeSlotRepository
+                    .findTimeSlotByTimeSlotIdAndActiveTrue(timeSlotId);
             Date date_parse = this.dateFormatComponent.myDateFormat().parse(date);
 
             if (!profileDoctorOptional.isPresent()) {
@@ -125,7 +134,9 @@ public class ScheduleServiceImpl implements ScheduleService {
                 return 2;
             }
 
-            Optional<Schedule> scheduleOptional = this.scheduleRepository.findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(profileDoctorOptional.get(), date_parse, timeSlotOptional.get());
+            Optional<Schedule> scheduleOptional = this.scheduleRepository
+                    .findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(profileDoctorOptional.get(),
+                            date_parse, timeSlotOptional.get());
             if (scheduleOptional.isPresent()) {
                 return 1;
             } else {
@@ -161,12 +172,26 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public List<Schedule> findScheduleByProfileDoctorIdAndActiveTrue(int profiledoctorId) {
-        Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(profiledoctorId);
+        Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository
+                .findProfileDoctorByProfileDoctorIdAndActiveTrue(profiledoctorId);
         if (profileDoctorOptional.isPresent()) {
             return this.scheduleRepository.findScheduleByProfileDoctorIdAndActiveTrue(profileDoctorOptional.get());
         } else {
             return new ArrayList<>();
         }
+    }
+
+    @Override
+    public Schedule addSchedule(TimeSlot timeSlot, Date date, ProfileDoctor profileDoctor) {
+        Schedule schedule = new Schedule();
+        schedule.setTimeSlotId(timeSlot);
+        schedule.setDate(date);
+        schedule.setProfileDoctorId(profileDoctor);
+        schedule.setCreatedDate(new Date());
+        schedule.setActive(Boolean.TRUE);
+        schedule.setBooked(Boolean.FALSE);
+
+        return this.scheduleRepository.save(schedule);
     }
 
 }
