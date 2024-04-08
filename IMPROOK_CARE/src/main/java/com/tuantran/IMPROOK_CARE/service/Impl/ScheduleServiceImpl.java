@@ -194,4 +194,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         return this.scheduleRepository.save(schedule);
     }
 
+    @Override
+    public Schedule updateSchedule(Schedule schedule) {
+        return this.scheduleRepository.save(schedule);
+    }
+
 }

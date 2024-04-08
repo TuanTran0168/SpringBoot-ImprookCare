@@ -19,6 +19,7 @@ import com.tuantran.IMPROOK_CARE.service.TimeSlotService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +44,9 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 
     @Autowired
     private ScheduleService scheduleService;
+
+    @Autowired
+    private DateFormatComponent dateFormatComponent;
 
     @Override
     public List<TimeSlot> findTimeSlotByTimeDistanceIdAndActiveTrue(int timeDistanceId) {
@@ -106,6 +110,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
 
     /*
      * Tạo và lưu TimeSlot xong sau đó tạo luôn Schedule tương ứng
+     * Lấy time begin làm gốc cho date của schedule
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -114,6 +119,27 @@ public class TimeSlotServiceImpl implements TimeSlotService {
         Schedule schedule = this.scheduleService.addSchedule(timeSlot, timeBegin, profileDoctor);
 
         return schedule;
+    }
+
+    /*
+     * Update TimeSlot xong sau đó Update luôn date trong Schedule tương ứng
+     * Lấy time begin làm gốc cho date của schedule
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Schedule updateTimeSlotAndSchedule(TimeSlot timeSlot, String dateSchedule) throws NullPointerException {
+        this.timeSlotRepository.save(timeSlot);
+
+        int timeSlotId = timeSlot.getTimeSlotId();
+        ProfileDoctor profileDoctor = timeSlot.getProfileDoctorId();
+        Date timeBeginNew = timeSlot.getTimeBegin();
+
+        Schedule schedule = this.scheduleService.findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(
+                profileDoctor.getProfileDoctorId(), dateSchedule, timeSlotId);
+
+        schedule.setDate(timeBeginNew);
+
+        return this.scheduleService.updateSchedule(schedule);
     }
 
 }

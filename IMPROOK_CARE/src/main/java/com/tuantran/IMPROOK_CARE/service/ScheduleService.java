@@ -21,6 +21,8 @@ public interface ScheduleService {
 
     Schedule addSchedule(TimeSlot timeSlot, Date date, ProfileDoctor profileDoctor);
 
+    Schedule updateSchedule(Schedule schedule);
+
     int addCustomSchedule(List<AddScheduleDTO> addScheduleDTOList);
 
     Schedule findScheduleByIdAndActiveTrue(int scheduleId);

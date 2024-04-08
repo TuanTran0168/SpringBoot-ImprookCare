@@ -208,6 +208,10 @@ public class ApiScheduleController {
         }
     }
 
+    /*
+     * Tạo và lưu TimeSlot xong sau đó tạo luôn Schedule tương ứng
+     * Lấy time begin làm gốc cho date của schedule
+     */
     @PostMapping(path = "/auth/doctor/add-timeSlot-schedule/")
     @CrossOrigin
     public ResponseEntity<?> addTimeSlotAndSchedule(@Valid @RequestBody AddTimeSlotDTO addTimeSlotDTO) {
@@ -237,6 +241,54 @@ public class ApiScheduleController {
         } catch (NoSuchElementException e) {
             e.printStackTrace();
             return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /*
+     * Update TimeSlot xong sau đó Update luôn date trong Schedule tương ứng
+     * Lấy time begin làm gốc cho date của schedule
+     */
+    @PostMapping(path = "/auth/doctor/update-timeSlot-schedule/")
+    @CrossOrigin
+    public ResponseEntity<?> updateTimeSlotAndSchedule(@Valid @RequestBody UpdateTimeSlotDTO updateTimeSlotDTO) {
+
+        String message = "Có lỗi xảy ra!";
+        try {
+
+            Optional<TimeSlot> timeSlotOptional = this.timeSlotService
+                    .findTimeSlotByTimeSlotIdAndActiveTrue(Integer.parseInt(updateTimeSlotDTO.getTimeSlotId()));
+
+            if (timeSlotOptional.isPresent()) {
+                TimeSlot timeSlot = timeSlotOptional.get();
+                Date timeBeginParse = dateFormatComponent.myDateTimeFormat().parse(updateTimeSlotDTO.getTimeBegin());
+                Date timeEndParse = dateFormatComponent.myDateTimeFormat().parse(updateTimeSlotDTO.getTimeEnd());
+
+                String oldTimeBeginString = String.valueOf(timeSlot.getTimeBegin());
+                System.out.println("AAAAAAAAAAAAAAAAAA" + oldTimeBeginString);
+
+                timeSlot.setTimeBegin(timeBeginParse);
+                timeSlot.setTimeEnd(timeEndParse);
+                timeSlot.setUpdatedDate(new Date());
+                timeSlot.setActive(Boolean.TRUE);
+
+                // Tí làm tiếp
+                return new ResponseEntity<>(
+                        this.timeSlotService.updateTimeSlotAndSchedule(timeSlot, oldTimeBeginString),
+                        HttpStatus.OK);
+            } else {
+                message = "TimeSlot[" + updateTimeSlotDTO.getTimeSlotId() + "] không tồn tại!";
+                return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
