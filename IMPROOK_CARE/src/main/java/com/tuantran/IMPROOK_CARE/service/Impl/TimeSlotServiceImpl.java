@@ -84,12 +84,13 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     }
 
     @Override
-    public TimeSlot addTimeSlot(Date timeBegin, Date timeEnd, ProfileDoctor profileDoctor) {
+    public TimeSlot addTimeSlot(Date timeBegin, Date timeEnd, String note, ProfileDoctor profileDoctor) {
         TimeSlot timeSlot = new TimeSlot();
 
         timeSlot.setTimeBegin(timeBegin);
         timeSlot.setTimeEnd(timeEnd);
         timeSlot.setProfileDoctorId(profileDoctor);
+        timeSlot.setNote(note);
         timeSlot.setActive(Boolean.TRUE);
         timeSlot.setCreatedDate(new Date());
 
@@ -112,8 +113,8 @@ public class TimeSlotServiceImpl implements TimeSlotService {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public Schedule addTimeSlotAndSchedule(Date timeBegin, Date timeEnd, ProfileDoctor profileDoctor) {
-        TimeSlot timeSlot = this.addTimeSlot(timeBegin, timeEnd, profileDoctor);
+    public Schedule addTimeSlotAndSchedule(Date timeBegin, Date timeEnd, String note, ProfileDoctor profileDoctor) {
+        TimeSlot timeSlot = this.addTimeSlot(timeBegin, timeEnd, note, profileDoctor);
         Schedule schedule = this.scheduleService.addSchedule(timeSlot, timeBegin, profileDoctor);
 
         return schedule;

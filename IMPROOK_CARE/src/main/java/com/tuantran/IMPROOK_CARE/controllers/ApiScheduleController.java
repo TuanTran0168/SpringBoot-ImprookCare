@@ -153,17 +153,18 @@ public class ApiScheduleController {
 
         String message = "Có lỗi xảy ra!";
         try {
-            Date timeBeginParse = dateFormatComponent.myDateTimeFormat().parse(addTimeSlotDTO.getTimeBegin());
-            Date timeEndParse = dateFormatComponent.myDateTimeFormat().parse(addTimeSlotDTO.getTimeEnd());
-
             Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository
                     .findProfileDoctorByProfileDoctorIdAndActiveTrue(
                             Integer.parseInt(addTimeSlotDTO.getProfileDoctorId()));
 
             if (profileDoctorOptional.isPresent()) {
                 ProfileDoctor profileDoctor = profileDoctorOptional.get();
+                Date timeBeginParse = dateFormatComponent.myDateTimeFormat().parse(addTimeSlotDTO.getTimeBegin());
+                Date timeEndParse = dateFormatComponent.myDateTimeFormat().parse(addTimeSlotDTO.getTimeEnd());
+                String note = addTimeSlotDTO.getNote();
+
                 return new ResponseEntity<>(
-                        this.timeSlotService.addTimeSlot(timeBeginParse, timeEndParse, profileDoctor),
+                        this.timeSlotService.addTimeSlot(timeBeginParse, timeEndParse, note, profileDoctor),
                         HttpStatus.CREATED);
             } else {
                 message = "ProfileDoctor[" + addTimeSlotDTO.getProfileDoctorId() + "] không tồn tại!";
@@ -218,17 +219,18 @@ public class ApiScheduleController {
 
         String message = "Có lỗi xảy ra!";
         try {
-            Date timeBeginParse = dateFormatComponent.myDateTimeFormat().parse(addTimeSlotDTO.getTimeBegin());
-            Date timeEndParse = dateFormatComponent.myDateTimeFormat().parse(addTimeSlotDTO.getTimeEnd());
-
             Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository
                     .findProfileDoctorByProfileDoctorIdAndActiveTrue(
                             Integer.parseInt(addTimeSlotDTO.getProfileDoctorId()));
 
             if (profileDoctorOptional.isPresent()) {
                 ProfileDoctor profileDoctor = profileDoctorOptional.get();
+                Date timeBeginParse = dateFormatComponent.myDateTimeFormat().parse(addTimeSlotDTO.getTimeBegin());
+                Date timeEndParse = dateFormatComponent.myDateTimeFormat().parse(addTimeSlotDTO.getTimeEnd());
+                String note = addTimeSlotDTO.getNote();
+
                 return new ResponseEntity<>(
-                        this.timeSlotService.addTimeSlotAndSchedule(timeBeginParse, timeEndParse, profileDoctor),
+                        this.timeSlotService.addTimeSlotAndSchedule(timeBeginParse, timeEndParse, note, profileDoctor),
                         HttpStatus.CREATED);
             } else {
                 message = "ProfileDoctor[" + addTimeSlotDTO.getProfileDoctorId() + "] không tồn tại!";
@@ -264,14 +266,13 @@ public class ApiScheduleController {
                 Date timeEndParse = dateFormatComponent.myDateTimeFormat().parse(updateTimeSlotDTO.getTimeEnd());
 
                 String oldTimeBeginString = String.valueOf(timeSlot.getTimeBegin());
-                System.out.println("AAAAAAAAAAAAAAAAAA" + oldTimeBeginString);
 
                 timeSlot.setTimeBegin(timeBeginParse);
                 timeSlot.setTimeEnd(timeEndParse);
+                timeSlot.setNote(updateTimeSlotDTO.getNote());
                 timeSlot.setUpdatedDate(new Date());
                 timeSlot.setActive(Boolean.TRUE);
 
-                // Tí làm tiếp
                 return new ResponseEntity<>(
                         this.timeSlotService.updateTimeSlotAndSchedule(timeSlot, oldTimeBeginString),
                         HttpStatus.OK);

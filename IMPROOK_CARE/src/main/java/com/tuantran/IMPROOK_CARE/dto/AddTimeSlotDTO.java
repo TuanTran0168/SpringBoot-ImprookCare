@@ -12,5 +12,7 @@ public class AddTimeSlotDTO {
     @NotBlank
     String timeEnd;
     @NotBlank
+    String note;
+    @NotBlank
     String profileDoctorId;
 }
