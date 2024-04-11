@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
@@ -30,14 +31,14 @@ import jakarta.persistence.TemporalType;
 @Entity
 @Table(name = "time_slot")
 @NamedQueries({
-    @NamedQuery(name = "TimeSlot.findAll", query = "SELECT t FROM TimeSlot t"),
-    @NamedQuery(name = "TimeSlot.findByTimeSlotId", query = "SELECT t FROM TimeSlot t WHERE t.timeSlotId = :timeSlotId"),
-    @NamedQuery(name = "TimeSlot.findByTimeBegin", query = "SELECT t FROM TimeSlot t WHERE t.timeBegin = :timeBegin"),
-    @NamedQuery(name = "TimeSlot.findByTimeEnd", query = "SELECT t FROM TimeSlot t WHERE t.timeEnd = :timeEnd"),
-    @NamedQuery(name = "TimeSlot.findByCreatedDate", query = "SELECT t FROM TimeSlot t WHERE t.createdDate = :createdDate"),
-    @NamedQuery(name = "TimeSlot.findByUpdatedDate", query = "SELECT t FROM TimeSlot t WHERE t.updatedDate = :updatedDate"),
-    @NamedQuery(name = "TimeSlot.findByDeletedDate", query = "SELECT t FROM TimeSlot t WHERE t.deletedDate = :deletedDate"),
-    @NamedQuery(name = "TimeSlot.findByActive", query = "SELECT t FROM TimeSlot t WHERE t.active = :active")})
+        @NamedQuery(name = "TimeSlot.findAll", query = "SELECT t FROM TimeSlot t"),
+        @NamedQuery(name = "TimeSlot.findByTimeSlotId", query = "SELECT t FROM TimeSlot t WHERE t.timeSlotId = :timeSlotId"),
+        @NamedQuery(name = "TimeSlot.findByTimeBegin", query = "SELECT t FROM TimeSlot t WHERE t.timeBegin = :timeBegin"),
+        @NamedQuery(name = "TimeSlot.findByTimeEnd", query = "SELECT t FROM TimeSlot t WHERE t.timeEnd = :timeEnd"),
+        @NamedQuery(name = "TimeSlot.findByCreatedDate", query = "SELECT t FROM TimeSlot t WHERE t.createdDate = :createdDate"),
+        @NamedQuery(name = "TimeSlot.findByUpdatedDate", query = "SELECT t FROM TimeSlot t WHERE t.updatedDate = :updatedDate"),
+        @NamedQuery(name = "TimeSlot.findByDeletedDate", query = "SELECT t FROM TimeSlot t WHERE t.deletedDate = :deletedDate"),
+        @NamedQuery(name = "TimeSlot.findByActive", query = "SELECT t FROM TimeSlot t WHERE t.active = :active") })
 public class TimeSlot implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,6 +53,9 @@ public class TimeSlot implements Serializable {
     @Column(name = "time_end")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeEnd;
+    @Lob
+    @Column(name = "note")
+    private String note;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -102,6 +106,14 @@ public class TimeSlot implements Serializable {
 
     public void setTimeEnd(Date timeEnd) {
         this.timeEnd = timeEnd;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public Date getCreatedDate() {
@@ -174,7 +186,8 @@ public class TimeSlot implements Serializable {
             return false;
         }
         TimeSlot other = (TimeSlot) object;
-        if ((this.timeSlotId == null && other.timeSlotId != null) || (this.timeSlotId != null && !this.timeSlotId.equals(other.timeSlotId))) {
+        if ((this.timeSlotId == null && other.timeSlotId != null)
+                || (this.timeSlotId != null && !this.timeSlotId.equals(other.timeSlotId))) {
             return false;
         }
         return true;
@@ -184,5 +197,5 @@ public class TimeSlot implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.TimeSlot[ timeSlotId=" + timeSlotId + " ]";
     }
-    
+
 }
