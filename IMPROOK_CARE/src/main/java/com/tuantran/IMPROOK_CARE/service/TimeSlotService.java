@@ -5,8 +5,10 @@
 package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
+import com.tuantran.IMPROOK_CARE.models.Schedule;
 import com.tuantran.IMPROOK_CARE.models.TimeSlot;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -25,4 +27,8 @@ public interface TimeSlotService {
     TimeSlot updateTimeSlot(TimeSlot timeSlot);
 
     Optional<TimeSlot> findTimeSlotByTimeSlotIdAndActiveTrue(int timeDistanceId);
+
+    Schedule addTimeSlotAndSchedule(Date timeBegin, Date timeEnd, ProfileDoctor profileDoctor);
+
+    Schedule updateTimeSlotAndSchedule(TimeSlot timeSlot, String dateSchedule) throws NullPointerException;
 }
