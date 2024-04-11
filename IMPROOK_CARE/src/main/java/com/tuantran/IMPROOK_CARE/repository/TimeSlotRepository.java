@@ -4,8 +4,12 @@
  */
 package com.tuantran.IMPROOK_CARE.repository;
 
+import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import com.tuantran.IMPROOK_CARE.models.TimeDistance;
 import com.tuantran.IMPROOK_CARE.models.TimeSlot;
+
+import io.lettuce.core.dynamic.annotation.Param;
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,4 +27,10 @@ public interface TimeSlotRepository extends JpaRepository<TimeSlot, Integer> {
     List<TimeSlot> findTimeSlotByTimeDistanceIdAndActiveTrue(TimeDistance timeDistanceId);
 
     Optional<TimeSlot> findTimeSlotByTimeSlotIdAndActiveTrue(int timeSlotId);
+
+    List<?> findTimeSlotsByProfileDoctorIdOrderByTimeBeginAsc(
+            @Param("profileDoctor") ProfileDoctor profileDoctor);
+
+    List<?> findTimeSlotsByProfileDoctorIdOrderByTimeBeginDesc(
+            @Param("profileDoctor") ProfileDoctor profileDoctor);
 }
