@@ -61,8 +61,10 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
                         + "FROM Schedule s "
                         + "JOIN s.timeSlotId ts "
                         + "JOIN s.profileDoctorId pd "
-                        + "WHERE pd.profileDoctorId = :profileDoctorId")
-        List<Date> getDatesForProfileDoctor(@Param("profileDoctorId") int profileDoctorId);
+                        + "WHERE pd.profileDoctorId = :profileDoctorId "
+                        + "AND s.date >= CURRENT_DATE "
+                        + "ORDER BY s.date ASC ")
+        List<?> getDatesForProfileDoctor(@Param("profileDoctorId") int profileDoctorId);
 
         @Query("SELECT b.bookingId, pd.name, s.date, ts.timeBegin, ts.timeEnd, bs.statusValue, pp.name, u.firstname, u.lastname "
                         + "FROM Booking b "

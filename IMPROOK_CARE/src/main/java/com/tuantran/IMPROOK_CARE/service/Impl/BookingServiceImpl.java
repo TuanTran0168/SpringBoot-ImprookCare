@@ -207,7 +207,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Date> getDatesForProfileDoctor(int profileDoctorId) {
+    public List<?> getDatesForProfileDoctor(int profileDoctorId) {
         return this.bookingRepository.getDatesForProfileDoctor(profileDoctorId);
     }
 

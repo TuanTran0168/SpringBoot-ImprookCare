@@ -17,28 +17,28 @@ import org.springframework.data.repository.query.Param;
  */
 public interface BookingService {
 
-    int addBooking(BookingDTO bookingDTO);
+        int addBooking(BookingDTO bookingDTO);
 
-    public int cancelBooking(int bookingId);
+        public int cancelBooking(int bookingId);
 
-    int acceptBooking(int bookingId);
+        int acceptBooking(int bookingId);
 
-    int denyBooking(int bookingId);
+        int denyBooking(int bookingId);
 
-    // List<Booking> findBookingForUserView(int userId);
-    List<Object[]> getBookingForUserView(@Param("userId") int userId);
+        // List<Booking> findBookingForUserView(int userId);
+        List<Object[]> getBookingForUserView(@Param("userId") int userId);
 
-    List<Object[]> getTimeSlotsForDoctorOnDate(@Param("profileDoctorId") int profileDoctorId,
-            @Param("date") String date);
+        List<Object[]> getTimeSlotsForDoctorOnDate(@Param("profileDoctorId") int profileDoctorId,
+                        @Param("date") String date);
 
-    List<Date> getDatesForProfileDoctor(@Param("profileDoctorId") int profileDoctorId);
+        List<?> getDatesForProfileDoctor(@Param("profileDoctorId") int profileDoctorId);
 
-    List<Object[]> getBookingForDoctorView(@Param("profileDoctorId") int profileDoctorId);
+        List<Object[]> getBookingForDoctorView(@Param("profileDoctorId") int profileDoctorId);
 
-    Page<Object[]> getBookingForDoctorViewPage(@Param("profileDoctorId") int profileDoctorId,
-            @Param("bookingStatusId") int bookingStatusId, Map<String, String> params);
+        Page<Object[]> getBookingForDoctorViewPage(@Param("profileDoctorId") int profileDoctorId,
+                        @Param("bookingStatusId") int bookingStatusId, Map<String, String> params);
 
-    List<Object[]> getBookingDetailsByBookingId(@Param("bookingId") int bookingId);
+        List<Object[]> getBookingDetailsByBookingId(@Param("bookingId") int bookingId);
 
-    int softDeleteBooking(int bookingId);
+        int softDeleteBooking(int bookingId);
 }

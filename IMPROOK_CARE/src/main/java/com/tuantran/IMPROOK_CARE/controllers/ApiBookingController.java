@@ -65,7 +65,7 @@ public class ApiBookingController {
 
     @PostMapping("/public/date-booking/")
     @CrossOrigin
-    public ResponseEntity<List<Date>> getDatesForProfileDoctor(@RequestBody Map<String, String> params) {
+    public ResponseEntity<?> getDatesForProfileDoctor(@RequestBody Map<String, String> params) {
         String profileDoctorId = params.get("profileDoctorId");
         return new ResponseEntity<>(this.bookingService.getDatesForProfileDoctor(Integer.parseInt(profileDoctorId)),
                 HttpStatus.OK);
