@@ -7,7 +7,6 @@ package com.tuantran.IMPROOK_CARE.controllers;
 import com.tuantran.IMPROOK_CARE.dto.AddProfileDoctorDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateProfileDoctorDTO;
 import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
-import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.service.ProfileDoctorService;
 import com.tuantran.IMPROOK_CARE.service.UserService;
 import jakarta.validation.Valid;
@@ -16,7 +15,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -39,7 +37,7 @@ public class ApiProfileDoctorController {
 
     @Autowired
     private ProfileDoctorService profileDoctorService;
-    
+
     @Autowired
     private UserService userService;
 
@@ -59,7 +57,8 @@ public class ApiProfileDoctorController {
 
     @PostMapping("/auth/doctor/update-profile-doctor/")
     @CrossOrigin
-    public ResponseEntity<String> updateProfileDoctor(@Valid @RequestBody UpdateProfileDoctorDTO updateProfileDoctorDTO) {
+    public ResponseEntity<String> updateProfileDoctor(
+            @Valid @RequestBody UpdateProfileDoctorDTO updateProfileDoctorDTO) {
         String message = "Có lỗi xảy ra!";
         int check = this.profileDoctorService.updateProfileDoctor(updateProfileDoctorDTO);
 
@@ -79,16 +78,20 @@ public class ApiProfileDoctorController {
 
     @GetMapping("/public/profile-doctor/{profileDoctorId}/")
     @CrossOrigin
-    public ResponseEntity<ProfileDoctor> profileDoctorDetail(@PathVariable(value = "profileDoctorId") String profileDoctorId) {
+    public ResponseEntity<ProfileDoctor> profileDoctorDetail(
+            @PathVariable(value = "profileDoctorId") String profileDoctorId) {
 
-        return new ResponseEntity<>(this.profileDoctorService.findProfileDoctorByProfileDoctorIdAndActiveTrue(Integer.parseInt(profileDoctorId)), HttpStatus.OK);
+        return new ResponseEntity<>(this.profileDoctorService
+                .findProfileDoctorByProfileDoctorIdAndActiveTrue(Integer.parseInt(profileDoctorId)), HttpStatus.OK);
     }
 
     @GetMapping("/public/user/{userId}/profile-doctor/")
     @CrossOrigin
     public ResponseEntity<List<ProfileDoctor>> profileDoctorByUserId(@PathVariable(value = "userId") String userId) {
 
-        return new ResponseEntity<>(this.profileDoctorService.findProfileDoctorByUserIdAndActiveTrue(Integer.parseInt(userId)), HttpStatus.OK);
+        return new ResponseEntity<>(
+                this.profileDoctorService.findProfileDoctorByUserIdAndActiveTrue(Integer.parseInt(userId)),
+                HttpStatus.OK);
     }
 
     @GetMapping("/public/search-profile-doctors/")
@@ -99,7 +102,8 @@ public class ApiProfileDoctorController {
 
     @DeleteMapping("/auth/doctor/soft-delete/profile-doctor/{profileDoctorId}/")
     @CrossOrigin
-    public ResponseEntity<String> softDeleteProfileDoctor(@PathVariable(value = "profileDoctorId") String profileDoctorId) {
+    public ResponseEntity<String> softDeleteProfileDoctor(
+            @PathVariable(value = "profileDoctorId") String profileDoctorId) {
         String message = "Có lỗi xảy ra!";
 
         int check = this.profileDoctorService.softDeleteProfileDoctor(Integer.parseInt(profileDoctorId));
@@ -109,54 +113,63 @@ public class ApiProfileDoctorController {
             return new ResponseEntity<>(message, HttpStatus.NO_CONTENT);
         } else if (check == 2) {
             message = "Xóa hồ sơ bác sĩ thất bại!";
-        }
-        else if (check == 3) {
+        } else if (check == 3) {
             message = "Không tìm thấy hồ sơ bác sĩ để xóa";
         }
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
-    
-//    @GetMapping("/auth/user/{userId}/profile-doctor-message/")
-////    @PreAuthorize("hasRole('USER')")
-//    @CrossOrigin
-//    public ResponseEntity<?> getMessageProfileDoctorByUserIdPage(@PathVariable(value = "userId") String userId, @RequestParam Map<String, String> params) {
-//        
-//        return new ResponseEntity<>(this.profileDoctorService.getMessageProfileDoctorByUserIdPage(Integer.parseInt(userId), params), HttpStatus.BAD_REQUEST);
-//    }
-    
+
+    // @GetMapping("/auth/user/{userId}/profile-doctor-message/")
+    //// @PreAuthorize("hasRole('USER')")
+    // @CrossOrigin
+    // public ResponseEntity<?>
+    // getMessageProfileDoctorByUserIdPage(@PathVariable(value = "userId") String
+    // userId, @RequestParam Map<String, String> params) {
+    //
+    // return new
+    // ResponseEntity<>(this.profileDoctorService.getMessageProfileDoctorByUserIdPage(Integer.parseInt(userId),
+    // params), HttpStatus.BAD_REQUEST);
+    // }
+
     // Thử phân quyền xíu
     // Chỉ user nào login khớp với userId truyền vào mới được fetch
     // API Lấy toàn bộ ProfileDoctor nào có nhắn tin với UserId
     @GetMapping("/auth/user/{userId}/profile-doctor-message/")
     @CrossOrigin
-    public ResponseEntity<?> getMessageProfileDoctorByUserIdPage(@PathVariable(value = "userId") String userId, @RequestParam Map<String, String> params) {
+    public ResponseEntity<?> getMessageProfileDoctorByUserIdPage(@PathVariable(value = "userId") String userId,
+            @RequestParam Map<String, String> params) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
             System.out.print(authentication.getPrincipal());
 
-            if (authentication != null && authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User) {
-                org.springframework.security.core.userdetails.User userLogin = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+            if (authentication != null
+                    && authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User) {
+                org.springframework.security.core.userdetails.User userLogin = (org.springframework.security.core.userdetails.User) authentication
+                        .getPrincipal();
 
                 String usernameLogin = userLogin.getUsername();
-                String usernameRequest = this.userService.findUserByUserIdAndActiveTrue(Integer.parseInt(userId)).getUsername();
+                String usernameRequest = this.userService.findUserByUserIdAndActiveTrue(Integer.parseInt(userId))
+                        .getUsername();
 
                 if (!usernameLogin.equals(usernameRequest)) {
                     return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
                 }
-            }
-            else {
-                // Trường hợp này gần như không xảy ra vì không cung cấp token là thằng jwt đá rồi (401)
+            } else {
+                // Trường hợp này gần như không xảy ra vì không cung cấp token là thằng jwt đá
+                // rồi (401)
                 return new ResponseEntity<>("User is not logged in!", HttpStatus.UNAUTHORIZED);
             }
         } catch (NullPointerException e) {
             return new ResponseEntity<>("User with id[" + userId + "] not found!", HttpStatus.NOT_FOUND);
-        }
-        catch (Exception e) {
-            return new ResponseEntity<>("Something wrong here, Internal Server Error!", HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Something wrong here, Internal Server Error!",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity<>(this.profileDoctorService.getMessageProfileDoctorByUserIdPage(Integer.parseInt(userId), params), HttpStatus.OK);
+        return new ResponseEntity<>(
+                this.profileDoctorService.getMessageProfileDoctorByUserIdPage(Integer.parseInt(userId), params),
+                HttpStatus.OK);
     }
 }

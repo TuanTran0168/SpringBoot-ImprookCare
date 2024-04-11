@@ -10,7 +10,6 @@ import com.tuantran.IMPROOK_CARE.models.MedicineCategory;
 import java.util.List;
 import java.util.Map;
 import org.springframework.data.domain.Page;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -25,6 +24,6 @@ public interface MedicineCategoryService {
     int addMedicineCategory(AddMedicineCategoryDTO addMedicineCategoryDTO);
 
     int updateMedicineCategory(UpdateMedicineCategoryDTO updateMedicineCategoryDTO);
-    
+
     Page<MedicineCategory> findAllMedicineCategoryPageSpec(Map<String, String> params);
 }

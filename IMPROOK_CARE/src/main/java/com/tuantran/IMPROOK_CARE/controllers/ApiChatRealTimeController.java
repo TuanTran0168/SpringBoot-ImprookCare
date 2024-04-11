@@ -7,12 +7,10 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-//@RequestMapping("/api")
+// @RequestMapping("/api")
 public class ApiChatRealTimeController {
 
     @Autowired
@@ -24,12 +22,14 @@ public class ApiChatRealTimeController {
         return message;
     }
 
-//    @MessageMapping("/private-message")
-//    public ChatRealTimeMessageDTO recMessage(@Payload ChatRealTimeMessageDTO message) {
-//        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(), "/private", message);
-//        System.out.println(message.toString());
-//        return message;
-//    }
+    // @MessageMapping("/private-message")
+    // public ChatRealTimeMessageDTO recMessage(@Payload ChatRealTimeMessageDTO
+    // message) {
+    // simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),
+    // "/private", message);
+    // System.out.println(message.toString());
+    // return message;
+    // }
 
     @MessageMapping("/private-message")
     public AddMessageDTO recMessage(@Payload AddMessageDTO message) {

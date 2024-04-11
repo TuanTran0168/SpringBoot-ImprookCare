@@ -10,7 +10,6 @@ import com.tuantran.IMPROOK_CARE.models.Medicine;
 import java.util.List;
 import java.util.Map;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -28,8 +27,8 @@ public interface MedicineService {
     int addMedicine(AddMedicineDTO addMedicineDTO, MultipartFile avatar);
 
     int updateMedicine(UpdateMedicineDTO updateMedicineDTO, MultipartFile avatar);
-    
+
     Page<Medicine> findAllMedicinePageSpec(Map<String, String> params);
-    
+
     List<Medicine> findAllMedicineSpec(Map<String, String> params);
 }

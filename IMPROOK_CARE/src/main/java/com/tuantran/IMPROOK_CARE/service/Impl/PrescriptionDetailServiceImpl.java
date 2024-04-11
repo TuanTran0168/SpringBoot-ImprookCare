@@ -4,7 +4,6 @@
  */
 package com.tuantran.IMPROOK_CARE.service.Impl;
 
-import com.tuantran.IMPROOK_CARE.Specifications.GenericSpecifications;
 import com.tuantran.IMPROOK_CARE.models.PrescriptionDetail;
 import com.tuantran.IMPROOK_CARE.models.Prescriptions;
 import com.tuantran.IMPROOK_CARE.repository.PrescriptionDetailRepository;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,7 +30,8 @@ public class PrescriptionDetailServiceImpl implements PrescriptionDetailService 
 
     @Override
     public List<PrescriptionDetail> findPrescriptionDetailByPrescriptionId(int prescriptionId) {
-//        Specification<Prescriptions> specPrescriptions = GenericSpecifications.fieldEquals("active", Boolean.TRUE);
+        // Specification<Prescriptions> specPrescriptions =
+        // GenericSpecifications.fieldEquals("active", Boolean.TRUE);
         Optional<Prescriptions> prescriptionOptional = this.prescriptionRepository.findById(prescriptionId);
 
         if (prescriptionOptional.isPresent()) {

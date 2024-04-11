@@ -13,4 +13,6 @@ public class UpdateTimeSlotDTO {
     String timeBegin;
     @NotBlank
     String timeEnd;
+    @NotBlank
+    String note;
 }

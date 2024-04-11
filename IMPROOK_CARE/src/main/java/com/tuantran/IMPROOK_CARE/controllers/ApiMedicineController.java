@@ -7,7 +7,6 @@ package com.tuantran.IMPROOK_CARE.controllers;
 import com.tuantran.IMPROOK_CARE.dto.AddMedicineDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateMedicineDTO;
 import com.tuantran.IMPROOK_CARE.models.Medicine;
-import com.tuantran.IMPROOK_CARE.models.MedicineCategory;
 import com.tuantran.IMPROOK_CARE.service.MedicineService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -45,15 +44,16 @@ public class ApiMedicineController {
 
     @GetMapping("/public/medicine-category/{categoryId}/medicines/")
     @CrossOrigin
-    public ResponseEntity<List<Medicine>> listMedicinesByCategoryId(@PathVariable(value = "categoryId") String categoryId) {
-        return new ResponseEntity<>(this.medicineService.findMedicineByCategoryId(Integer.parseInt(categoryId)), HttpStatus.OK);
+    public ResponseEntity<List<Medicine>> listMedicinesByCategoryId(
+            @PathVariable(value = "categoryId") String categoryId) {
+        return new ResponseEntity<>(this.medicineService.findMedicineByCategoryId(Integer.parseInt(categoryId)),
+                HttpStatus.OK);
     }
 
-    @PostMapping(path = "/auth/admin/add-medicine/",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/auth/admin/add-medicine/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public ResponseEntity<String> addMedicine(@Valid AddMedicineDTO addMedicineDTO, @RequestPart("avatar") MultipartFile avatar) throws Exception {
+    public ResponseEntity<String> addMedicine(@Valid AddMedicineDTO addMedicineDTO,
+            @RequestPart("avatar") MultipartFile avatar) throws Exception {
         String message = "Có lỗi xảy ra!";
         int check = this.medicineService.addMedicine(addMedicineDTO, avatar);
 
@@ -67,11 +67,10 @@ public class ApiMedicineController {
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(path = "/auth/admin/update-medicine/",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/auth/admin/update-medicine/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public ResponseEntity<String> updateMedicine(@Valid UpdateMedicineDTO updateMedicineDTO, @RequestPart("avatar") MultipartFile avatar) throws Exception {
+    public ResponseEntity<String> updateMedicine(@Valid UpdateMedicineDTO updateMedicineDTO,
+            @RequestPart("avatar") MultipartFile avatar) throws Exception {
         String message = "Có lỗi xảy ra!";
         int check = this.medicineService.updateMedicine(updateMedicineDTO, avatar);
 
@@ -96,7 +95,8 @@ public class ApiMedicineController {
     @GetMapping("/public/medicines/{medicineId}/")
     @CrossOrigin
     public ResponseEntity<Medicine> details(@PathVariable(value = "medicineId") String medicineId) {
-        return ResponseEntity.ok().body(this.medicineService.findMedicineByMedicineIdAndActiveTrue(Integer.parseInt(medicineId)));
+        return ResponseEntity.ok()
+                .body(this.medicineService.findMedicineByMedicineIdAndActiveTrue(Integer.parseInt(medicineId)));
     }
 
     @GetMapping("/public/search-medicines-spec/")

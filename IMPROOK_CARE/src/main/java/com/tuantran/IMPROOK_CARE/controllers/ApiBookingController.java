@@ -11,16 +11,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -62,14 +58,17 @@ public class ApiBookingController {
     public ResponseEntity<List<Object[]>> getTimeSlotsForDoctorOnDate(@RequestBody Map<String, String> params) {
         String profileDoctorId = params.get("profileDoctorId");
         String date = params.get("date");
-        return new ResponseEntity<>(this.bookingService.getTimeSlotsForDoctorOnDate(Integer.parseInt(profileDoctorId), date), HttpStatus.OK);
+        return new ResponseEntity<>(
+                this.bookingService.getTimeSlotsForDoctorOnDate(Integer.parseInt(profileDoctorId), date),
+                HttpStatus.OK);
     }
 
     @PostMapping("/public/date-booking/")
     @CrossOrigin
     public ResponseEntity<List<Date>> getDatesForProfileDoctor(@RequestBody Map<String, String> params) {
         String profileDoctorId = params.get("profileDoctorId");
-        return new ResponseEntity<>(this.bookingService.getDatesForProfileDoctor(Integer.parseInt(profileDoctorId)), HttpStatus.OK);
+        return new ResponseEntity<>(this.bookingService.getDatesForProfileDoctor(Integer.parseInt(profileDoctorId)),
+                HttpStatus.OK);
     }
 
     @PostMapping("/auth/doctor/accept-booking/")
@@ -133,28 +132,31 @@ public class ApiBookingController {
     @CrossOrigin
     public ResponseEntity<List<Object[]>> getBookingForDoctorView(@RequestBody Map<String, String> params) {
         String profiledoctorId = params.get("profileDoctorId");
-        return new ResponseEntity<>(this.bookingService.getBookingForDoctorView(Integer.parseInt(profiledoctorId)), HttpStatus.OK);
+        return new ResponseEntity<>(this.bookingService.getBookingForDoctorView(Integer.parseInt(profiledoctorId)),
+                HttpStatus.OK);
     }
 
     @PostMapping("/auth/booking-details-user-view/")
     @CrossOrigin
     public ResponseEntity<List<Object[]>> getBookingDetailsByBookingId(@RequestBody Map<String, String> params) {
         String bookingId = params.get("bookingId");
-        return new ResponseEntity<>(this.bookingService.getBookingDetailsByBookingId(Integer.parseInt(bookingId)), HttpStatus.OK);
+        return new ResponseEntity<>(this.bookingService.getBookingDetailsByBookingId(Integer.parseInt(bookingId)),
+                HttpStatus.OK);
     }
-    
+
     @PostMapping("/auth/booking-doctor-view-page/")
     @CrossOrigin
     public ResponseEntity<?> getBookingForDoctorViewPage(@RequestBody Map<String, String> params) {
         try {
             String profileDoctorId = params.get("profileDoctorId");
             String bookingStatusId = params.get("bookingStatusId");
-            return new ResponseEntity<>(this.bookingService.getBookingForDoctorViewPage(Integer.parseInt(profileDoctorId), Integer.parseInt(bookingStatusId), params), HttpStatus.OK);
-        }
-        catch (NumberFormatException e) {
+            return new ResponseEntity<>(this.bookingService.getBookingForDoctorViewPage(
+                    Integer.parseInt(profileDoctorId), Integer.parseInt(bookingStatusId), params), HttpStatus.OK);
+        } catch (NumberFormatException e) {
             return new ResponseEntity<>(e.toString(), HttpStatus.BAD_REQUEST);
-        }catch (Exception e) {
-            return new ResponseEntity<>("Something wrong here, Internal Server Error!", HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Something wrong here, Internal Server Error!",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

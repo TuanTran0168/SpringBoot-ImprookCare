@@ -12,7 +12,7 @@ import com.tuantran.IMPROOK_CARE.models.Medicine;
 import com.tuantran.IMPROOK_CARE.models.MedicineCategory;
 import com.tuantran.IMPROOK_CARE.repository.MedicineCategoryRepository;
 import com.tuantran.IMPROOK_CARE.repository.MedicineRepository;
-import com.tuantran.IMPROOK_CARE.service.BaseRedisService;
+// import com.tuantran.IMPROOK_CARE.service.BaseRedisService;
 import com.tuantran.IMPROOK_CARE.service.MedicineService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,7 +24,6 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
@@ -35,7 +34,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -59,8 +57,8 @@ public class MedicineServiceImpl implements MedicineService {
     @Autowired
     private Environment environment;
 
-    @Autowired
-    private BaseRedisService baseRedisService;
+    // @Autowired
+    // private BaseRedisService baseRedisService;
 
     @Override
     public List<Medicine> findMedicineByActiveTrue() {

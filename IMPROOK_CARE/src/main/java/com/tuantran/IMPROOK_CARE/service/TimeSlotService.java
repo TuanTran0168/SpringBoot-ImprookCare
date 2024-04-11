@@ -8,7 +8,6 @@ import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import com.tuantran.IMPROOK_CARE.models.Schedule;
 import com.tuantran.IMPROOK_CARE.models.TimeSlot;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,13 +21,13 @@ public interface TimeSlotService {
 
     List<?> getTimeSlotByTimeDistanceIdWithCheckRegister(int timeDistanceId, int profiledoctorId, String date);
 
-    TimeSlot addTimeSlot(Date timeBegin, Date timeEnd, ProfileDoctor profileDoctor);
+    TimeSlot addTimeSlot(Date timeBegin, Date timeEnd, String note, ProfileDoctor profileDoctor);
 
     TimeSlot updateTimeSlot(TimeSlot timeSlot);
 
     Optional<TimeSlot> findTimeSlotByTimeSlotIdAndActiveTrue(int timeDistanceId);
 
-    Schedule addTimeSlotAndSchedule(Date timeBegin, Date timeEnd, ProfileDoctor profileDoctor);
+    Schedule addTimeSlotAndSchedule(Date timeBegin, Date timeEnd, String note, ProfileDoctor profileDoctor);
 
     Schedule updateTimeSlotAndSchedule(TimeSlot timeSlot, String dateSchedule) throws NullPointerException;
 }

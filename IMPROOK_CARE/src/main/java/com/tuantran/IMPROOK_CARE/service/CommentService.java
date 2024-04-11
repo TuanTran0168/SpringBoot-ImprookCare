@@ -10,8 +10,6 @@ import com.tuantran.IMPROOK_CARE.models.Comment;
 import java.util.List;
 import java.util.Map;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,10 +26,10 @@ public interface CommentService {
     int addComment(AddCommentDTO addCommentDTO, MultipartFile avatar);
 
     int updateComment(UpdateCommentDTO updateCommentDTO, MultipartFile avatar);
-    
+
     List<Object[]> checkComment(@Param("userId") int userId, @Param("profileDoctorId") int profileDoctorId);
-    
+
     Page<Comment> findAllCommentPageSpec(Map<String, String> params);
-    
+
     Page<Comment> findCommentByProfileDoctorIdPage(int profileDoctorId, Map<String, String> params);
 }

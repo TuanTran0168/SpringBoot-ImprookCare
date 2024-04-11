@@ -5,7 +5,6 @@
 package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.models.PrescriptionDetail;
-import com.tuantran.IMPROOK_CARE.models.Prescriptions;
 import java.util.List;
 
 /**
