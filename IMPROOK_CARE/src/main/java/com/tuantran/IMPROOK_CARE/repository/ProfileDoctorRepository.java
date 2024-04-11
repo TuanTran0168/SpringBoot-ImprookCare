@@ -32,12 +32,13 @@ public interface ProfileDoctorRepository extends JpaRepository<ProfileDoctor, In
     List<ProfileDoctor> findProfileDoctorByUserIdAndActiveTrue(User userId);
 
     Page<ProfileDoctor> findAll(Specification<ProfileDoctor> createSpecification, Pageable page);
-    
-//    Lấy thông tin ProfileDoctor nào nhắn tin với userId
+
+    // Lấy thông tin ProfileDoctor nào nhắn tin với userId
     @Query("SELECT DISTINCT pd "
             + "FROM Message m "
             + "JOIN m.profileDoctorId pd "
             + "JOIN pd.userId u "
-            + "WHERE m.userId.userId = :userId")
-    Page<ProfileDoctor> getMessageProfileDoctorByUserIdPage (@Param("userId") int userId, Pageable page);
+            + "WHERE m.userId.userId = :userId "
+            + "ORDER BY pd.createdDate DESC")
+    Page<ProfileDoctor> getMessageProfileDoctorByUserIdPage(@Param("userId") int userId, Pageable page);
 }
