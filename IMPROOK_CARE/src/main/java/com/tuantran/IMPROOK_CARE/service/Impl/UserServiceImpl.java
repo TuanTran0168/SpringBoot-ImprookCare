@@ -8,7 +8,6 @@ import com.tuantran.IMPROOK_CARE.Specifications.GenericSpecifications;
 import com.tuantran.IMPROOK_CARE.components.cloudinary.CloudinaryComponent;
 import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
 import com.tuantran.IMPROOK_CARE.components.password.PasswordComponent;
-import com.tuantran.IMPROOK_CARE.configs.cloudinary.CloudinaryConfig;
 import com.tuantran.IMPROOK_CARE.dto.AddUserForAdminDTO;
 import com.tuantran.IMPROOK_CARE.dto.ChangePasswordDTO;
 import com.tuantran.IMPROOK_CARE.dto.ForgotPasswordDTO;
@@ -26,9 +25,7 @@ import com.tuantran.IMPROOK_CARE.repository.UserRepository;
 import com.tuantran.IMPROOK_CARE.service.ProfileDoctorService;
 import com.tuantran.IMPROOK_CARE.service.ProfilePatientService;
 import com.tuantran.IMPROOK_CARE.service.UserService;
-import java.io.IOException;
 import java.text.ParseException;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -59,7 +56,7 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author Administrator
  */
-//@Service
+// @Service
 @Service("userDetailsService")
 public class UserServiceImpl implements UserService {
 
@@ -106,7 +103,7 @@ public class UserServiceImpl implements UserService {
     public User addUser(Map<String, String> params, MultipartFile avatar) {
         User user = new User();
         String phonenumber = params.get("phonenumber");
-        String username = phonenumber; //username sẽ là số điện thoại lấy qua
+        String username = phonenumber; // username sẽ là số điện thoại lấy qua
         String password = params.get("password");
 
         String firstname = params.get("firstname");
@@ -116,7 +113,7 @@ public class UserServiceImpl implements UserService {
         // Đăng ký chỉ dùng 3 cái này thôi
         user.setUsername(username);
         user.setPassword(this.passworldComponent.PasswordEncoder().encode(password));
-//        user.setPhonenumber(phonenumber);
+        // user.setPhonenumber(phonenumber);
 
         user.setFirstname(firstname);
         user.setLastname(lastname);
@@ -155,12 +152,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUsername(String username) {
-//        try {
-//            
-//        }
-//        catch(NoSuchElementException ex) {
-//            return null;
-//        }
+        // try {
+        //
+        // }
+        // catch(NoSuchElementException ex) {
+        // return null;
+        // }
 
         try {
             Optional<User> userOptional = this.userRepository.findUserByUsername(username);
@@ -176,7 +173,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public int updateUser(UpdateUserForUserDTO updateUserForUserDTO, MultipartFile avatar) {
         try {
-            Optional<User> userOptional = this.userRepository.findUserByUserIdAndActiveTrue(Integer.parseInt(updateUserForUserDTO.getUserId()));
+            Optional<User> userOptional = this.userRepository
+                    .findUserByUserIdAndActiveTrue(Integer.parseInt(updateUserForUserDTO.getUserId()));
             if (userOptional.isPresent()) {
 
                 User user = userOptional.get();
@@ -188,7 +186,8 @@ public class UserServiceImpl implements UserService {
 
                 if (avatar != null && !avatar.isEmpty()) {
                     try {
-                        String linkCloudinaryAvatar = cloudinaryComponent.Cloudinary(avatar).get("secure_url").toString();
+                        String linkCloudinaryAvatar = cloudinaryComponent.Cloudinary(avatar).get("secure_url")
+                                .toString();
                         user.setAvatar(linkCloudinaryAvatar);
                     } catch (Exception ex) {
                         Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -230,12 +229,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public int registerUser(RegisterDTO registerDTO) {
         try {
-// Thực ra ở tầng verification đã xác thực phonenumber qua twilio rồi nên kiểm tra thêm cho yên tâm
+            // Thực ra ở tầng verification đã xác thực phonenumber qua twilio rồi nên kiểm
+            // tra thêm cho yên tâm
             Optional<User> userOptional = this.userRepository.findUserByUsername(registerDTO.getUsername());
 
             if (!userOptional.isPresent()) {
                 User userRegister = new User();
-                userRegister.setUsername(registerDTO.getUsername()); //Username là phonenumber (Quy ước mới)
+                userRegister.setUsername(registerDTO.getUsername()); // Username là phonenumber (Quy ước mới)
                 userRegister.setPassword(this.passworldComponent.PasswordEncoder().encode(registerDTO.getPassword()));
                 userRegister.setFirstname(registerDTO.getFirstname());
                 userRegister.setLastname(registerDTO.getLastname());
@@ -259,7 +259,8 @@ public class UserServiceImpl implements UserService {
     public int addUser(AddUserForAdminDTO addUserForAdminDTO, MultipartFile avatar) {
         try {
             User user = new User();
-            Optional<User> userOptional = this.userRepository.findUserByUsernameAndActiveTrue(addUserForAdminDTO.getUsername());
+            Optional<User> userOptional = this.userRepository
+                    .findUserByUsernameAndActiveTrue(addUserForAdminDTO.getUsername());
 
             if (userOptional.isPresent()) {
                 return 2; // Tồn tại số điện thoại
@@ -267,12 +268,12 @@ public class UserServiceImpl implements UserService {
                 user.setUsername(addUserForAdminDTO.getUsername());
             }
 
-//            if (!userOptional.isPresent()) {
-//                user.setUsername(addUserForAdminDTO.getUsername());
-//            } else {
-//                return 2; // Tồn tại số điện thoại
-//
-//            }
+            // if (!userOptional.isPresent()) {
+            // user.setUsername(addUserForAdminDTO.getUsername());
+            // } else {
+            // return 2; // Tồn tại số điện thoại
+            //
+            // }
             user.setPassword(this.passworldComponent.PasswordEncoder().encode(addUserForAdminDTO.getPassword()));
             user.setFirstname(addUserForAdminDTO.getFirstname());
             user.setLastname(addUserForAdminDTO.getLastname());
@@ -298,7 +299,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public int updateUser(UpdateUserForAdminDTO updateUserForAdminDTO, MultipartFile avatar) {
         try {
-            Optional<User> userOptional = this.userRepository.findUserByUserIdAndActiveTrue(Integer.parseInt(updateUserForAdminDTO.getUserId()));
+            Optional<User> userOptional = this.userRepository
+                    .findUserByUserIdAndActiveTrue(Integer.parseInt(updateUserForAdminDTO.getUserId()));
             if (userOptional.isPresent()) {
 
                 User user = userOptional.get();
@@ -307,7 +309,8 @@ public class UserServiceImpl implements UserService {
                 user.setGender(updateUserForAdminDTO.getGender());
                 user.setBirthday(this.dateFormatComponent.myDateFormat().parse(updateUserForAdminDTO.getBirthday()));
 
-                Optional<Role> roleOptional = this.roleRepository.findRoleByRoleIdAndActiveTrue(Integer.parseInt(updateUserForAdminDTO.getRoleId()));
+                Optional<Role> roleOptional = this.roleRepository
+                        .findRoleByRoleIdAndActiveTrue(Integer.parseInt(updateUserForAdminDTO.getRoleId()));
                 if (roleOptional.isPresent()) {
                     user.setRoleId(roleOptional.get());
                 }
@@ -315,7 +318,8 @@ public class UserServiceImpl implements UserService {
 
                 if (avatar != null && !avatar.isEmpty()) {
                     try {
-                        String linkCloudinaryAvatar = cloudinaryComponent.Cloudinary(avatar).get("secure_url").toString();
+                        String linkCloudinaryAvatar = cloudinaryComponent.Cloudinary(avatar).get("secure_url")
+                                .toString();
                         user.setAvatar(linkCloudinaryAvatar);
                     } catch (Exception ex) {
                         Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
@@ -342,13 +346,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public int changePassword(ChangePasswordDTO changePasswordDTO) {
         try {
-            Optional<User> userOptional = this.userRepository.findUserByUsernameAndActiveTrue(changePasswordDTO.getUsername());
+            Optional<User> userOptional = this.userRepository
+                    .findUserByUsernameAndActiveTrue(changePasswordDTO.getUsername());
             if (userOptional.isPresent()) {
 
                 User user = userOptional.get();
 
-                if (this.passworldComponent.PasswordEncoder().matches(changePasswordDTO.getCurrentPassword(), user.getPassword())) {
-                    user.setPassword(this.passworldComponent.PasswordEncoder().encode(changePasswordDTO.getNewPassword()));
+                if (this.passworldComponent.PasswordEncoder().matches(changePasswordDTO.getCurrentPassword(),
+                        user.getPassword())) {
+                    user.setPassword(
+                            this.passworldComponent.PasswordEncoder().encode(changePasswordDTO.getNewPassword()));
                     this.userRepository.save(user);
                     return 1;
                 } else {
@@ -371,7 +378,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public int forgotPassword(ForgotPasswordDTO forgotPasswordDTO) {
         try {
-            Optional<User> userOptional = this.userRepository.findUserByUsernameAndActiveTrue(forgotPasswordDTO.getUsername());
+            Optional<User> userOptional = this.userRepository
+                    .findUserByUsernameAndActiveTrue(forgotPasswordDTO.getUsername());
             if (userOptional.isPresent()) {
 
                 User user = userOptional.get();
@@ -395,7 +403,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<User> findAllUserPage(int pageNumber) {
-        Pageable page = PageRequest.of(pageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
+        Pageable page = PageRequest.of(pageNumber,
+                Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
         return this.userRepository.findUserByActiveTruePage(page);
     }
 
@@ -410,10 +419,13 @@ public class UserServiceImpl implements UserService {
         List<Specification<User>> listSpec = new ArrayList<>();
         int defaultPageNumber = 0;
         Sort mySort = Sort.by("createdDate").descending();
-        Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+        Pageable page = PageRequest.of(defaultPageNumber,
+                Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
         if (pageNumber != null && !pageNumber.isEmpty()) {
             if (!pageNumber.equals("NaN")) {
-                page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+                page = PageRequest.of(Integer.parseInt(pageNumber),
+                        Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")),
+                        mySort);
             }
         }
 
@@ -446,45 +458,53 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
     }
 
-//    @Override
-//    public Page<User> findAllUserPageSpec_test(Map<String, String> params) {
-//        String pageNumber = params.get("pageNumber");
-//        String firstname = params.get("firstname");
-//        String lastname = params.get("lastname");
-//        String roleId = params.get("roleId");
-//        String gender = params.get("gender");
-//
-//        List<Specification<User>> listSpec = new ArrayList<>();
-//        Pageable page = null; // Cái này null là bay màu luôn
-//        if (pageNumber != null && !pageNumber.isEmpty()) {
-//            page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
-//        }
-//
-//        if (firstname != null && !firstname.isEmpty()) {
-//            Specification<User> spec = GenericSpecifications.fieldContains("firstname", firstname);
-//            listSpec.add(spec);
-//        }
-//
-//        if (lastname != null && !lastname.isEmpty()) {
-//            Specification<User> spec = GenericSpecifications.fieldContains("lastname", lastname);
-//            listSpec.add(spec);
-//        }
-//
-//        if (roleId != null && !roleId.isEmpty()) {
-//            Optional<Role> roleOptional = this.roleRepository.findRoleByRoleIdAndActiveTrue(Integer.parseInt(roleId));
-//            if (roleOptional.isPresent()) {
-//                Specification<User> spec = GenericSpecifications.fieldEquals("roleId", roleOptional.get());
-//                listSpec.add(spec);
-//            }
-//        }
-//
-//        if (gender != null && !gender.isEmpty()) {
-//            Specification<User> spec = GenericSpecifications.fieldEquals("gender", Boolean.parseBoolean(gender));
-//            listSpec.add(spec);
-//        }
-//
-//        return this.userRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
-//    }
+    // @Override
+    // public Page<User> findAllUserPageSpec_test(Map<String, String> params) {
+    // String pageNumber = params.get("pageNumber");
+    // String firstname = params.get("firstname");
+    // String lastname = params.get("lastname");
+    // String roleId = params.get("roleId");
+    // String gender = params.get("gender");
+    //
+    // List<Specification<User>> listSpec = new ArrayList<>();
+    // Pageable page = null; // Cái này null là bay màu luôn
+    // if (pageNumber != null && !pageNumber.isEmpty()) {
+    // page = PageRequest.of(Integer.parseInt(pageNumber),
+    // Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
+    // }
+    //
+    // if (firstname != null && !firstname.isEmpty()) {
+    // Specification<User> spec = GenericSpecifications.fieldContains("firstname",
+    // firstname);
+    // listSpec.add(spec);
+    // }
+    //
+    // if (lastname != null && !lastname.isEmpty()) {
+    // Specification<User> spec = GenericSpecifications.fieldContains("lastname",
+    // lastname);
+    // listSpec.add(spec);
+    // }
+    //
+    // if (roleId != null && !roleId.isEmpty()) {
+    // Optional<Role> roleOptional =
+    // this.roleRepository.findRoleByRoleIdAndActiveTrue(Integer.parseInt(roleId));
+    // if (roleOptional.isPresent()) {
+    // Specification<User> spec = GenericSpecifications.fieldEquals("roleId",
+    // roleOptional.get());
+    // listSpec.add(spec);
+    // }
+    // }
+    //
+    // if (gender != null && !gender.isEmpty()) {
+    // Specification<User> spec = GenericSpecifications.fieldEquals("gender",
+    // Boolean.parseBoolean(gender));
+    // listSpec.add(spec);
+    // }
+    //
+    // return
+    // this.userRepository.findAll(GenericSpecifications.createSpecification(listSpec),
+    // page);
+    // }
     @Override
     @Transactional
     public int softDeleteUser(int userId) {
@@ -494,13 +514,15 @@ public class UserServiceImpl implements UserService {
             if (user.getActive().equals(Boolean.TRUE)) {
                 user.setActive(Boolean.FALSE);
 
-                List<ProfilePatient> listProfilePatient = this.profilePatientRepository.findProfilePatientByUserIdAndActiveTrue(user);
+                List<ProfilePatient> listProfilePatient = this.profilePatientRepository
+                        .findProfilePatientByUserIdAndActiveTrue(user);
 
                 for (ProfilePatient profilePatient : listProfilePatient) {
                     this.profilePatientService.softDeleteProfilePatient(profilePatient.getProfilePatientId());
                 }
 
-                List<ProfileDoctor> listProfileDoctor = this.profileDoctorRepository.findProfileDoctorByUserIdAndActiveTrue(user);
+                List<ProfileDoctor> listProfileDoctor = this.profileDoctorRepository
+                        .findProfileDoctorByUserIdAndActiveTrue(user);
 
                 for (ProfileDoctor profileDoctor : listProfileDoctor) {
                     this.profileDoctorService.softDeleteProfileDoctor(profileDoctor.getProfileDoctorId());

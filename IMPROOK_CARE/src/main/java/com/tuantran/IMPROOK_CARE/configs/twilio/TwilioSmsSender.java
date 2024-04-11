@@ -4,7 +4,6 @@ import com.tuantran.IMPROOK_CARE.components.twilio.SmsSender;
 import com.tuantran.IMPROOK_CARE.dto.SmsRequestDTO;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.rest.api.v2010.account.MessageCreator;
-import com.twilio.rest.verify.v2.service.Verification;
 import com.twilio.type.PhoneNumber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,8 +39,7 @@ public class TwilioSmsSender implements SmsSender {
 
         } else {
             throw new IllegalArgumentException(
-                    "Phone number [" + smsRequest.getPhoneNumber() + "] is not a valid number"
-            );
+                    "Phone number [" + smsRequest.getPhoneNumber() + "] is not a valid number");
         }
 
     }

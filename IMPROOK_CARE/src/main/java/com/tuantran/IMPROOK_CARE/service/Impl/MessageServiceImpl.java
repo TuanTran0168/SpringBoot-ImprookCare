@@ -14,7 +14,6 @@ import com.tuantran.IMPROOK_CARE.repository.MessageRepository;
 import com.tuantran.IMPROOK_CARE.repository.ProfileDoctorRepository;
 import com.tuantran.IMPROOK_CARE.repository.UserRepository;
 import com.tuantran.IMPROOK_CARE.service.MessageService;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -64,15 +63,21 @@ public class MessageServiceImpl implements MessageService {
 
             int defaultPageNumber = 0;
 
-            Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+            Pageable page = PageRequest.of(defaultPageNumber,
+                    Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")),
+                    mySort);
 
             if (pageNumber != null && !pageNumber.isEmpty()) {
                 if (!pageNumber.equals("NaN")) {
-                    page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+                    page = PageRequest.of(Integer.parseInt(pageNumber),
+                            Integer.parseInt(
+                                    this.environment.getProperty("spring.data.web.pageable.default-page-size")),
+                            mySort);
                 }
             }
 
-            return this.messageRepository.getMessagesBetweenUsersAndProfileDoctors(Integer.parseInt(userId), Integer.parseInt(profileDoctorId), page);
+            return this.messageRepository.getMessagesBetweenUsersAndProfileDoctors(Integer.parseInt(userId),
+                    Integer.parseInt(profileDoctorId), page);
 
         } catch (NumberFormatException ex) {
             System.out.println("Lỗi parse số rồi má ơi: " + ex);
@@ -88,7 +93,8 @@ public class MessageServiceImpl implements MessageService {
         try {
             Message message = new Message();
 
-            Optional<User> userOptional = this.userRepository.findUserByUserIdAndActiveTrue(Integer.parseInt(addMessageDTO.getUserId()));
+            Optional<User> userOptional = this.userRepository
+                    .findUserByUserIdAndActiveTrue(Integer.parseInt(addMessageDTO.getUserId()));
 
             if (!userOptional.isPresent()) {
                 return 0;
@@ -96,7 +102,9 @@ public class MessageServiceImpl implements MessageService {
 
             message.setUserId(userOptional.get());
 
-            Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(Integer.parseInt(addMessageDTO.getProfileDoctorId()));
+            Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository
+                    .findProfileDoctorByProfileDoctorIdAndActiveTrue(
+                            Integer.parseInt(addMessageDTO.getProfileDoctorId()));
 
             if (!profileDoctorOptional.isPresent()) {
                 return 0;
@@ -124,7 +132,8 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Page<Message> findMessagesByUserIdAndProfileDoctorIdPage(int userId, int profileDoctorId, Map<String, String> params) {
+    public Page<Message> findMessagesByUserIdAndProfileDoctorIdPage(int userId, int profileDoctorId,
+            Map<String, String> params) {
 
         String pageNumber = params.get("pageNumber");
 
@@ -133,22 +142,27 @@ public class MessageServiceImpl implements MessageService {
         if (!userOptional.isPresent()) {
         }
 
-        Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(profileDoctorId);
+        Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository
+                .findProfileDoctorByProfileDoctorIdAndActiveTrue(profileDoctorId);
 
         if (!profileDoctorOptional.isPresent()) {
         }
 
         int defaultPageNumber = 0;
         Sort mySort = Sort.by("createdDate").descending();
-        Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+        Pageable page = PageRequest.of(defaultPageNumber,
+                Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
 
         if (pageNumber != null && !pageNumber.isEmpty()) {
             if (!pageNumber.equals("NaN")) {
-                page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+                page = PageRequest.of(Integer.parseInt(pageNumber),
+                        Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")),
+                        mySort);
             }
         }
 
-        return this.messageRepository.findMessagesByUserIdAndProfileDoctorId(userOptional.get(), profileDoctorOptional.get(), page);
+        return this.messageRepository.findMessagesByUserIdAndProfileDoctorId(userOptional.get(),
+                profileDoctorOptional.get(), page);
 
     }
 
@@ -156,25 +170,34 @@ public class MessageServiceImpl implements MessageService {
     public Page<Object[]> getAllUsersByProfileDoctorMessaging(int profileDoctorId, Map<String, String> params) {
         String pageNumber = params.get("pageNumber");
 
-        Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(profileDoctorId);
+        Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository
+                .findProfileDoctorByProfileDoctorIdAndActiveTrue(profileDoctorId);
 
         if (!profileDoctorOptional.isPresent()) {
         }
 
         int defaultPageNumber = 0;
-//        Sort mySort = Sort.by("createdDate").descending();
-        Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
+        // Sort mySort = Sort.by("createdDate").descending();
+        Pageable page = PageRequest.of(defaultPageNumber,
+                Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
 
         if (pageNumber != null && !pageNumber.isEmpty()) {
             if (!pageNumber.equals("NaN")) {
-                page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
+                page = PageRequest.of(Integer.parseInt(pageNumber),
+                        Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
             }
         }
 
-        /* ĐÃ DISTINCT BÊN KIA THÌ KHÔNG SORT BÊN NÀY :) KHÔNG LỖI RÁNG CHỊU :)
-            java.sql.SQLSyntaxErrorException: Expression #1 of ORDER BY clause is not in GROUP BY clause and contains nonaggregated column 'improokcare.m1_0.created_date' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+        /*
+         * ĐÃ DISTINCT BÊN KIA THÌ KHÔNG SORT BÊN NÀY :) KHÔNG LỖI RÁNG CHỊU :)
+         * java.sql.SQLSyntaxErrorException: Expression #1 of ORDER BY clause is not in
+         * GROUP BY clause and contains nonaggregated column
+         * 'improokcare.m1_0.created_date' which is not functionally dependent on
+         * columns in GROUP BY clause; this is incompatible with
+         * sql_mode=only_full_group_by
          */
-//        Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
+        // Pageable page = PageRequest.of(defaultPageNumber,
+        // Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
         return this.messageRepository.getAllUsersByProfileDoctorMessaging(profileDoctorId, page);
     }
 
@@ -186,7 +209,8 @@ public class MessageServiceImpl implements MessageService {
         if (!userOptional.isPresent()) {
         }
 
-        Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository.findProfileDoctorByProfileDoctorIdAndActiveTrue(profileDoctorId);
+        Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository
+                .findProfileDoctorByProfileDoctorIdAndActiveTrue(profileDoctorId);
 
         if (!profileDoctorOptional.isPresent()) {
         }

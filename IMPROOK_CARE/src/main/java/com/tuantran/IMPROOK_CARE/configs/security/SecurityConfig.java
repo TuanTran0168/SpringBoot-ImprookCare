@@ -21,7 +21,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 /**
@@ -40,8 +39,8 @@ public class SecurityConfig {
         return new AuthTokenFilter();
     }
 
-//    @Autowired
-//    private UserService userService;
+    // @Autowired
+    // private UserService userService;
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -67,63 +66,67 @@ public class SecurityConfig {
     }
 
     private static final String[] AUTH_WHITELIST = {
-        "/authenticate",
-        "/swagger-resources/**",
-        "/swagger-ui/**",
-        "/v3/api-docs/**",
-        "/api/v1/app/user/auth/",
-        "/",
-        "/user",
-        "/video-call",
+            "/authenticate",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/api/v1/app/user/auth/",
+            "/",
+            "/user",
+            "/video-call",
     };
 
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.csrf(csrf -> csrf.disable())
-//                .cors(cors -> {
-//                    cors.configurationSource(request -> {
-//                        CorsConfiguration config = new CorsConfiguration();
-//                        config.setAllowedOrigins(Arrays.asList(CLIENT_WHITELIST)); // Thay đổi địa chỉ nguồn của bạn tại đây
-//                        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-//                        config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-//                        config.setAllowCredentials(true); // Không có dòng này mơ mà register được kênh của websocket | Enable sending credentials (e.g., cookies)
-//                        return config;
-//                    });
-//                })
-//                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .authorizeHttpRequests(auth
-//                        -> auth.requestMatchers(AUTH_WHITELIST).permitAll().
-//                        requestMatchers("/v3/api-docs").permitAll()
-//                        .requestMatchers("/api/public/**").permitAll()
-//                        .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
-//                        .requestMatchers("/api/auth/doctor/**").hasRole("DOCTOR")
-//                        .requestMatchers("/api/auth/**").hasAnyRole("ADMIN", "DOCTOR", "USER")
-//                        .anyRequest().authenticated()
-//                );
-//
-//        http.authenticationProvider(authenticationProvider());
-//
-//        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-//        return http.build();
-//    }
+    // @Bean
+    // public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    // http.csrf(csrf -> csrf.disable())
+    // .cors(cors -> {
+    // cors.configurationSource(request -> {
+    // CorsConfiguration config = new CorsConfiguration();
+    // config.setAllowedOrigins(Arrays.asList(CLIENT_WHITELIST)); // Thay đổi địa
+    // chỉ nguồn của bạn tại đây
+    // config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+    // config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+    // config.setAllowCredentials(true); // Không có dòng này mơ mà register được
+    // kênh của websocket | Enable sending credentials (e.g., cookies)
+    // return config;
+    // });
+    // })
+    // .exceptionHandling(exception ->
+    // exception.authenticationEntryPoint(unauthorizedHandler))
+    // .sessionManagement(session ->
+    // session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+    // .authorizeHttpRequests(auth
+    // -> auth.requestMatchers(AUTH_WHITELIST).permitAll().
+    // requestMatchers("/v3/api-docs").permitAll()
+    // .requestMatchers("/api/public/**").permitAll()
+    // .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
+    // .requestMatchers("/api/auth/doctor/**").hasRole("DOCTOR")
+    // .requestMatchers("/api/auth/**").hasAnyRole("ADMIN", "DOCTOR", "USER")
+    // .anyRequest().authenticated()
+    // );
+    //
+    // http.authenticationProvider(authenticationProvider());
+    //
+    // http.addFilterBefore(authenticationJwtTokenFilter(),
+    // UsernamePasswordAuthenticationFilter.class);
+    // return http.build();
+    // }
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource)
+            throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .cors(cors -> {
                     cors.configurationSource(request -> corsConfig.corsConfiguration());
                 })
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth
-                        -> auth.requestMatchers(AUTH_WHITELIST).permitAll()
+                .authorizeHttpRequests(auth -> auth.requestMatchers(AUTH_WHITELIST).permitAll()
                         .requestMatchers("/v3/api-docs").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/auth/doctor/**").hasRole("DOCTOR")
                         .requestMatchers("/api/auth/**").hasAnyRole("ADMIN", "DOCTOR", "USER")
-                        .anyRequest().authenticated()
-                );
+                        .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());
 

@@ -10,13 +10,11 @@ import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.BookingStatus;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
 import com.tuantran.IMPROOK_CARE.models.Schedule;
-import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.repository.BookingRepository;
 import com.tuantran.IMPROOK_CARE.repository.BookingStatusRepository;
 import com.tuantran.IMPROOK_CARE.repository.ProfilePatientRepository;
 import com.tuantran.IMPROOK_CARE.repository.ScheduleRepository;
 import com.tuantran.IMPROOK_CARE.service.BookingService;
-import jakarta.persistence.criteria.Join;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,7 +31,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +56,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private DateFormatComponent dateFormatComponent;
-    
+
     @Autowired
     private Environment environment;
 
@@ -68,7 +65,8 @@ public class BookingServiceImpl implements BookingService {
     public int addBooking(BookingDTO bookingDTO) {
         try {
             Booking booking = new Booking();
-            Optional<Schedule> scheduleOptional = this.scheduleRepository.findScheduleByScheduleIdAndActiveTrue(Integer.parseInt(bookingDTO.getScheduleId()));
+            Optional<Schedule> scheduleOptional = this.scheduleRepository
+                    .findScheduleByScheduleIdAndActiveTrue(Integer.parseInt(bookingDTO.getScheduleId()));
 
             if (scheduleOptional.isPresent()) {
                 Schedule schedule = scheduleOptional.get();
@@ -80,7 +78,9 @@ public class BookingServiceImpl implements BookingService {
                 return 0;
             }
 
-            Optional<ProfilePatient> profilePatientOptional = this.profilePatientRepository.findProfilePatientByProfilePatientIdAndActiveTrue(Integer.parseInt(bookingDTO.getProfilePatientId()));
+            Optional<ProfilePatient> profilePatientOptional = this.profilePatientRepository
+                    .findProfilePatientByProfilePatientIdAndActiveTrue(
+                            Integer.parseInt(bookingDTO.getProfilePatientId()));
 
             if (profilePatientOptional.isPresent()) {
                 booking.setProfilePatientId(profilePatientOptional.get());
@@ -113,7 +113,8 @@ public class BookingServiceImpl implements BookingService {
             if (bookingOptional.isPresent()) {
                 Booking booking = bookingOptional.get();
 
-                Optional<Schedule> scheduleOptional = this.scheduleRepository.findScheduleByScheduleIdAndActiveTrue(booking.getScheduleId().getScheduleId());
+                Optional<Schedule> scheduleOptional = this.scheduleRepository
+                        .findScheduleByScheduleIdAndActiveTrue(booking.getScheduleId().getScheduleId());
 
                 if (scheduleOptional.isPresent()) {
                     Schedule schedule = scheduleOptional.get();
@@ -176,18 +177,19 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-//    @Override
-//    public List<Booking> findBookingForUserView(int userId) {
-//        Specification<Booking> specification = (root, query, criteriaBuilder) -> {
-//            Join<Booking, ProfilePatient> profilePatientJoin = root.join("profilePatient");
-//            
-//            Join<ProfilePatient, User> userJoin = profilePatientJoin.join("user");
-//            
-//            return criteriaBuilder.equal(userJoin.get("userId"), userId);
-//        };
-//        
-//        return this.joinBookingRepository.findBookingForUserView(specification);
-//    }
+    // @Override
+    // public List<Booking> findBookingForUserView(int userId) {
+    // Specification<Booking> specification = (root, query, criteriaBuilder) -> {
+    // Join<Booking, ProfilePatient> profilePatientJoin =
+    // root.join("profilePatient");
+    //
+    // Join<ProfilePatient, User> userJoin = profilePatientJoin.join("user");
+    //
+    // return criteriaBuilder.equal(userJoin.get("userId"), userId);
+    // };
+    //
+    // return this.joinBookingRepository.findBookingForUserView(specification);
+    // }
     @Override
     public List<Object[]> getBookingForUserView(int userId) {
         return this.bookingRepository.getBookingForUserView(userId);
@@ -238,15 +240,19 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Page<Object[]> getBookingForDoctorViewPage(int profileDoctorId, int bookingStatusId, Map<String, String> params) {
+    public Page<Object[]> getBookingForDoctorViewPage(int profileDoctorId, int bookingStatusId,
+            Map<String, String> params) {
         String pageNumber = params.get("pageNumber");
 
         int defaultPageNumber = 0;
         Sort mySort = Sort.by("createdDate").descending();
-        Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+        Pageable page = PageRequest.of(defaultPageNumber,
+                Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
         if (pageNumber != null && !pageNumber.isEmpty()) {
             if (!pageNumber.equals("NaN")) {
-                page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+                page = PageRequest.of(Integer.parseInt(pageNumber),
+                        Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")),
+                        mySort);
             }
         }
         return this.bookingRepository.getBookingForDoctorViewPage(profileDoctorId, bookingStatusId, page);

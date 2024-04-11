@@ -4,9 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.service.Impl;
 
-import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
-import com.tuantran.IMPROOK_CARE.dto.AddScheduleDTO;
-import com.tuantran.IMPROOK_CARE.dto.AddTimeSlotAndScheduleDTO;
+// import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
 import com.tuantran.IMPROOK_CARE.dto.TimeSlotWithCheckRegisterDTO;
 import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import com.tuantran.IMPROOK_CARE.models.Schedule;
@@ -19,7 +17,7 @@ import com.tuantran.IMPROOK_CARE.service.TimeSlotService;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
+// import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,8 +43,8 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     @Autowired
     private ScheduleService scheduleService;
 
-    @Autowired
-    private DateFormatComponent dateFormatComponent;
+    // @Autowired
+    // private DateFormatComponent dateFormatComponent;
 
     @Override
     public List<TimeSlot> findTimeSlotByTimeDistanceIdAndActiveTrue(int timeDistanceId) {

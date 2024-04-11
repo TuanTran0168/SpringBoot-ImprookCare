@@ -5,7 +5,6 @@
 package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.dto.BookingDTO;
-import com.tuantran.IMPROOK_CARE.models.Booking;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -26,18 +25,20 @@ public interface BookingService {
 
     int denyBooking(int bookingId);
 
-//    List<Booking> findBookingForUserView(int userId);
+    // List<Booking> findBookingForUserView(int userId);
     List<Object[]> getBookingForUserView(@Param("userId") int userId);
 
-    List<Object[]> getTimeSlotsForDoctorOnDate(@Param("profileDoctorId") int profileDoctorId, @Param("date") String date);
+    List<Object[]> getTimeSlotsForDoctorOnDate(@Param("profileDoctorId") int profileDoctorId,
+            @Param("date") String date);
 
     List<Date> getDatesForProfileDoctor(@Param("profileDoctorId") int profileDoctorId);
 
     List<Object[]> getBookingForDoctorView(@Param("profileDoctorId") int profileDoctorId);
-    
-    Page<Object[]> getBookingForDoctorViewPage(@Param("profileDoctorId") int profileDoctorId, @Param("bookingStatusId") int bookingStatusId, Map<String, String> params);
+
+    Page<Object[]> getBookingForDoctorViewPage(@Param("profileDoctorId") int profileDoctorId,
+            @Param("bookingStatusId") int bookingStatusId, Map<String, String> params);
 
     List<Object[]> getBookingDetailsByBookingId(@Param("bookingId") int bookingId);
-    
+
     int softDeleteBooking(int bookingId);
 }
