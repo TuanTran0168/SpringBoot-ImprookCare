@@ -30,4 +30,8 @@ public interface TimeSlotService {
     Schedule addTimeSlotAndSchedule(Date timeBegin, Date timeEnd, String note, ProfileDoctor profileDoctor);
 
     Schedule updateTimeSlotAndSchedule(TimeSlot timeSlot, String dateSchedule) throws NullPointerException;
+
+    List<?> findTimeSlotsByProfileDoctorIdOrderByTimeBeginAsc(ProfileDoctor profileDoctor);
+
+    List<?> findTimeSlotsByProfileDoctorIdOrderByTimeBeginDesc(ProfileDoctor profileDoctor);
 }

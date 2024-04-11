@@ -130,21 +130,29 @@ public class ApiScheduleController {
     public ResponseEntity<?> getTimeSlotByTimeDistanceIdWithCheckRegister(
             @PathVariable(value = "timeDistanceId") String timeDistanceId,
             @RequestParam Map<String, String> params) {
-        String profileDoctorId = params.get("profileDoctorId");
-        String date = params.get("date");
 
-        if ((timeDistanceId != null && !timeDistanceId.isEmpty())
-                && (profileDoctorId != null && !profileDoctorId.isEmpty()) && (date != null && !date.isEmpty())) {
-            List<?> listTimeSlotWithCheckRegister = this.timeSlotService.getTimeSlotByTimeDistanceIdWithCheckRegister(
-                    Integer.parseInt(timeDistanceId),
-                    Integer.parseInt(profileDoctorId), date);
+        try {
+            String profileDoctorId = params.get("profileDoctorId");
+            String date = params.get("date");
 
-            return new ResponseEntity<>(listTimeSlotWithCheckRegister, HttpStatus.OK);
+            if ((timeDistanceId != null && !timeDistanceId.isEmpty())
+                    && (profileDoctorId != null && !profileDoctorId.isEmpty()) && (date != null && !date.isEmpty())) {
+                List<?> listTimeSlotWithCheckRegister = this.timeSlotService
+                        .getTimeSlotByTimeDistanceIdWithCheckRegister(
+                                Integer.parseInt(timeDistanceId),
+                                Integer.parseInt(profileDoctorId), date);
+
+                return new ResponseEntity<>(listTimeSlotWithCheckRegister, HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>(
+                    this.timeSlotService.findTimeSlotByTimeDistanceIdAndActiveTrue(Integer.parseInt(timeDistanceId)),
+                    HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResponseEntity<>(
-                this.timeSlotService.findTimeSlotByTimeDistanceIdAndActiveTrue(Integer.parseInt(timeDistanceId)),
-                HttpStatus.OK);
     }
 
     @PostMapping(path = "/auth/doctor/add-timeSlot/")
@@ -290,6 +298,43 @@ public class ApiScheduleController {
         } catch (NullPointerException e) {
             e.printStackTrace();
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /*
+     * Lấy danh sách các TimeSlot riêng dành cho từng bác sĩ
+     * Sắp xếp tăng/ giảm dần theo timeBegin của TimeSlot
+     */
+    @GetMapping("/auth/doctor/profileDoctor/{profileDoctorId}/timeSlot-for-doctor/")
+    @CrossOrigin
+    public ResponseEntity<?> listTimeSlotForDoctor(@PathVariable(value = "profileDoctorId") String profileDoctorId,
+            @RequestParam Map<String, String> params) {
+
+        String message = "Có lỗi xảy ra!";
+        Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository
+                .findProfileDoctorByProfileDoctorIdAndActiveTrue(Integer.parseInt(profileDoctorId));
+
+        if (profileDoctorOptional.isPresent()) {
+            ProfileDoctor profileDoctor = profileDoctorOptional.get();
+
+            String sort = params.get("sort");
+
+            if (sort != null && !sort.isEmpty()) {
+                if (sort.equals("asc")) {
+                    return ResponseEntity.ok().body(
+                            this.timeSlotService.findTimeSlotsByProfileDoctorIdOrderByTimeBeginAsc(profileDoctor));
+                } else {
+                    return ResponseEntity.ok().body(this.timeSlotService
+                            .findTimeSlotsByProfileDoctorIdOrderByTimeBeginDesc(profileDoctor));
+                }
+            } else {
+                return ResponseEntity.ok().body(this.timeSlotService
+                        .findTimeSlotsByProfileDoctorIdOrderByTimeBeginDesc(profileDoctor));
+            }
+
+        } else {
+            message = "ProfileDoctor[" + profileDoctorId + "] không tồn tại!";
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
     }
 }

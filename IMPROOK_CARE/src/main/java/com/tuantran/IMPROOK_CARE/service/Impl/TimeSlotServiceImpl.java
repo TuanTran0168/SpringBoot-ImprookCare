@@ -141,4 +141,14 @@ public class TimeSlotServiceImpl implements TimeSlotService {
         return this.scheduleService.updateSchedule(schedule);
     }
 
+    @Override
+    public List<?> findTimeSlotsByProfileDoctorIdOrderByTimeBeginAsc(ProfileDoctor profileDoctor) {
+        return this.timeSlotRepository.findTimeSlotsByProfileDoctorIdOrderByTimeBeginAsc(profileDoctor);
+    }
+
+    @Override
+    public List<?> findTimeSlotsByProfileDoctorIdOrderByTimeBeginDesc(ProfileDoctor profileDoctor) {
+        return this.timeSlotRepository.findTimeSlotsByProfileDoctorIdOrderByTimeBeginDesc(profileDoctor);
+    }
+
 }
