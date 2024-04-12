@@ -77,7 +77,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
                         + "WHERE pd.profileDoctorId = :profileDoctorId")
         List<Object[]> getBookingForDoctorView(@Param("profileDoctorId") int profileDoctorId);
 
-        @Query("SELECT b.bookingId, pd.name, s.date, ts.timeBegin, ts.timeEnd, bs.statusValue, pp.name, u.firstname, u.lastname "
+        @Query("SELECT b.bookingId, pd.name, s.date, ts.timeBegin, ts.timeEnd, bs.statusValue, pp.name, u.firstname, u.lastname, b.linkVideoCall "
                         + "FROM Booking b "
                         + "JOIN b.scheduleId s "
                         + "JOIN s.profileDoctorId pd "
@@ -87,7 +87,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
                         + "JOIN s.timeSlotId ts "
                         + "WHERE pd.profileDoctorId = :profileDoctorId "
                         + "AND bs.statusId = :bookingStatusId")
-        Page<Object[]> getBookingForDoctorViewPage(@Param("profileDoctorId") int profileDoctorId,
+        Page<?> getBookingForDoctorViewPage(@Param("profileDoctorId") int profileDoctorId,
                         @Param("bookingStatusId") int bookingStatusId, Pageable page);
 
         @Query("SELECT pd.name, pd.workAddress, pd.specialtyId, pd.bookingPrice, s.date, pp.name, pp.birthday, pp.phonenumber, pp.address, pp.gender, pd.userId, b.bookingCancel, b.statusId, b.bookingId "

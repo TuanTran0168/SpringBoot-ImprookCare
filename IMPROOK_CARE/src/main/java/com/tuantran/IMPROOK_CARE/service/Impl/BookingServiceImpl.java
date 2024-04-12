@@ -240,7 +240,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Page<Object[]> getBookingForDoctorViewPage(int profileDoctorId, int bookingStatusId,
+    public Page<?> getBookingForDoctorViewPage(int profileDoctorId, int bookingStatusId,
             Map<String, String> params) {
         String pageNumber = params.get("pageNumber");
 

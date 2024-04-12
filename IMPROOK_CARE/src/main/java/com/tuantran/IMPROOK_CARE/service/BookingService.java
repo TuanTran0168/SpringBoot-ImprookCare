@@ -35,7 +35,7 @@ public interface BookingService {
 
         List<Object[]> getBookingForDoctorView(@Param("profileDoctorId") int profileDoctorId);
 
-        Page<Object[]> getBookingForDoctorViewPage(@Param("profileDoctorId") int profileDoctorId,
+        Page<?> getBookingForDoctorViewPage(@Param("profileDoctorId") int profileDoctorId,
                         @Param("bookingStatusId") int bookingStatusId, Map<String, String> params);
 
         List<Object[]> getBookingDetailsByBookingId(@Param("bookingId") int bookingId);
