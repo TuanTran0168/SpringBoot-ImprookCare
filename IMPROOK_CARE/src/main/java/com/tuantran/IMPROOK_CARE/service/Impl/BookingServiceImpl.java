@@ -259,4 +259,19 @@ public class BookingServiceImpl implements BookingService {
 
     }
 
+    @Override
+    public Booking cancelBooking(Booking booking) {
+        return this.bookingRepository.save(booking);
+    }
+
+    @Override
+    public Booking acceptBooking(Booking booking) {
+        return this.bookingRepository.save(booking);
+    }
+
+    @Override
+    public Optional<Booking> findBookingByBookingIdAndActiveTrue(int bookingId) {
+        return this.bookingRepository.findBookingByBookingIdAndActiveTrue(bookingId);
+    }
+
 }

@@ -5,9 +5,12 @@
 package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.dto.BookingDTO;
-import java.util.Date;
+import com.tuantran.IMPROOK_CARE.models.Booking;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 
@@ -19,7 +22,7 @@ public interface BookingService {
 
         int addBooking(BookingDTO bookingDTO);
 
-        public int cancelBooking(int bookingId);
+        int cancelBooking(int bookingId);
 
         int acceptBooking(int bookingId);
 
@@ -41,4 +44,10 @@ public interface BookingService {
         List<Object[]> getBookingDetailsByBookingId(@Param("bookingId") int bookingId);
 
         int softDeleteBooking(int bookingId);
+
+        Booking cancelBooking(Booking booking);
+
+        Booking acceptBooking(Booking booking);
+
+        Optional<Booking> findBookingByBookingIdAndActiveTrue(int bookingId);
 }

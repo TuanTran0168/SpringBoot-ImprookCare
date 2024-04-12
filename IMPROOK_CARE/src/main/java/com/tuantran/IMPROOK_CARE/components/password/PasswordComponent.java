@@ -5,7 +5,6 @@
 package com.tuantran.IMPROOK_CARE.components.password;
 
 import java.util.Random;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -33,7 +32,6 @@ public class PasswordComponent {
         return password.toString();
     }
 
-//    @Bean
     public PasswordEncoder PasswordEncoder() {
         return new BCryptPasswordEncoder();
     }

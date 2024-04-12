@@ -4,12 +4,18 @@
  */
 package com.tuantran.IMPROOK_CARE.controllers;
 
+import com.tuantran.IMPROOK_CARE.components.UUID.UUIDGenerator;
 import com.tuantran.IMPROOK_CARE.dto.BookingDTO;
+import com.tuantran.IMPROOK_CARE.models.Booking;
+import com.tuantran.IMPROOK_CARE.models.BookingStatus;
 import com.tuantran.IMPROOK_CARE.service.BookingService;
 import jakarta.validation.Valid;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +35,9 @@ public class ApiBookingController {
 
     @Autowired
     private BookingService bookingService;
+
+    @Autowired
+    UUIDGenerator uuidGenerator;
 
     @PostMapping("/auth/add-booking/")
     @CrossOrigin
@@ -73,21 +82,27 @@ public class ApiBookingController {
 
     @PostMapping("/auth/doctor/accept-booking/")
     @CrossOrigin
-    public ResponseEntity<String> acceptBooking(@RequestBody String bookingId) {
+    public ResponseEntity<?> acceptBooking(@RequestBody String bookingId) {
 
-        String message = "Có lỗi xảy ra!";
-        int check = this.bookingService.acceptBooking(Integer.parseInt(bookingId));
+        try {
+            String message = "Có lỗi xảy ra!";
+            Optional<Booking> bookingOptional = this.bookingService
+                    .findBookingByBookingIdAndActiveTrue(Integer.parseInt(bookingId));
 
-        if (check == 1) {
-            message = "Xác nhận thành công lịch đặt khám!";
-            return new ResponseEntity<>(message, HttpStatus.OK);
+            if (bookingOptional.isPresent()) {
+                Booking booking = bookingOptional.get();
+                booking.setStatusId(new BookingStatus(2));
+                booking.setUpdatedDate(new Date());
+                // Chỗ này sau này quay lại thêm tiền tố url bên react cho cái uuid này
+                booking.setLinkVideoCall(this.uuidGenerator.generateUUID());
+                return new ResponseEntity<>(this.bookingService.acceptBooking(booking), HttpStatus.OK);
+            } else {
+                message = "Booking[" + bookingId + "] không tồn tại!";
+                return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        if (check == 0) {
-            message = "Xác nhận thất bại lịch đặt khám!";
-        }
-
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/auth/doctor/deny-booking/")
