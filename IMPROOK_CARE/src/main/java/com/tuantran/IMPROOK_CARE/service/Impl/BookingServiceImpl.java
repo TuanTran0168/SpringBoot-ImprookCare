@@ -240,7 +240,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Page<Object[]> getBookingForDoctorViewPage(int profileDoctorId, int bookingStatusId,
+    public Page<?> getBookingForDoctorViewPage(int profileDoctorId, int bookingStatusId,
             Map<String, String> params) {
         String pageNumber = params.get("pageNumber");
 
@@ -257,6 +257,21 @@ public class BookingServiceImpl implements BookingService {
         }
         return this.bookingRepository.getBookingForDoctorViewPage(profileDoctorId, bookingStatusId, page);
 
+    }
+
+    @Override
+    public Booking cancelBooking(Booking booking) {
+        return this.bookingRepository.save(booking);
+    }
+
+    @Override
+    public Booking acceptBooking(Booking booking) {
+        return this.bookingRepository.save(booking);
+    }
+
+    @Override
+    public Optional<Booking> findBookingByBookingIdAndActiveTrue(int bookingId) {
+        return this.bookingRepository.findBookingByBookingIdAndActiveTrue(bookingId);
     }
 
 }
