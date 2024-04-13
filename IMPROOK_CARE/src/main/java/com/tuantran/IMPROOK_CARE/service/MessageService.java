@@ -27,4 +27,6 @@ public interface MessageService {
     int addMessage(AddMessageDTO addMessageDTO, MultipartFile avatar);
 
     Page<Object[]> getAllUsersByProfileDoctorMessaging(int profileDoctorId, Map<String, String> params);
+
+    Message addMessage(Message message, MultipartFile avatar);
 }

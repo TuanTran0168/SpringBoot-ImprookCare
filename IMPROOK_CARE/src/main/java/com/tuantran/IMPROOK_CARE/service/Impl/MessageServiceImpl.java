@@ -224,4 +224,13 @@ public class MessageServiceImpl implements MessageService {
         return this.messageRepository.findAll(GenericSpecifications.createSpecification(listSpec));
     }
 
+    @Override
+    public Message addMessage(Message message, MultipartFile avatar) {
+        if (avatar != null && !avatar.isEmpty()) {
+            String linkCloudinaryAvatar = cloudinaryComponent.Cloudinary(avatar).get("secure_url").toString();
+            message.setAvatar(linkCloudinaryAvatar);
+        }
+        return this.messageRepository.save(message);
+    }
+
 }

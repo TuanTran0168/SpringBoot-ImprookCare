@@ -15,7 +15,7 @@ import lombok.Data;
  */
 
 @Data
-public class AddMessageDTO {
+public class AddMessageSocketDTO {
 
     @NotBlank
     private String userId;
@@ -30,5 +30,5 @@ public class AddMessageDTO {
     private String messageContent;
 
     // @NotBlank
-    private MultipartFile avatar;
+    private String avatar;
 }

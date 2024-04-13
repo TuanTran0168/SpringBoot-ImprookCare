@@ -1,6 +1,7 @@
 package com.tuantran.IMPROOK_CARE.controllers;
 
 import com.tuantran.IMPROOK_CARE.dto.AddMessageDTO;
+import com.tuantran.IMPROOK_CARE.dto.AddMessageSocketDTO;
 import com.tuantran.IMPROOK_CARE.dto.ChatRealTimeMessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -32,7 +33,7 @@ public class ApiChatRealTimeController {
     // }
 
     @MessageMapping("/private-message")
-    public AddMessageDTO recMessage(@Payload AddMessageDTO message) {
+    public AddMessageSocketDTO recMessage(@Payload AddMessageSocketDTO message) {
         if (message.getSenderId().equals(message.getProfileDoctorId())) {
             simpMessagingTemplate.convertAndSendToUser(message.getUserId(), "/private", message);
             System.out.println("1");
