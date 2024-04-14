@@ -233,4 +233,14 @@ public class MessageServiceImpl implements MessageService {
         return this.messageRepository.save(message);
     }
 
+    @Override
+    public Optional<Message> findMessageByMessageIdAndActiveTrue(int messageId) {
+        return this.messageRepository.findMessageByMessageIdAndActiveTrue(messageId);
+    }
+
+    @Override
+    public Message seenMessage(Message message) {
+        return this.messageRepository.save(message);
+    }
+
 }

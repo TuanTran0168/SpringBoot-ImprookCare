@@ -1,6 +1,5 @@
 package com.tuantran.IMPROOK_CARE.controllers;
 
-import com.tuantran.IMPROOK_CARE.dto.AddMessageDTO;
 import com.tuantran.IMPROOK_CARE.dto.AddMessageSocketDTO;
 import com.tuantran.IMPROOK_CARE.dto.ChatRealTimeMessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;

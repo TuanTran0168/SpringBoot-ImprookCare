@@ -8,6 +8,8 @@ import com.tuantran.IMPROOK_CARE.models.Message;
 import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import com.tuantran.IMPROOK_CARE.models.User;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -28,13 +30,18 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
     @Query("SELECT m.userId, m.profileDoctorId "
             + "FROM Message m "
             + "WHERE m.userId.userId = :userId AND m.profileDoctorId.profileDoctorId = :profileDoctorId")
-    Page<Message> getMessagesBetweenUsersAndProfileDoctors(@Param("userId") int userId, @Param("profileDoctorId") int profileDoctorId, Pageable page);
+    Page<Message> getMessagesBetweenUsersAndProfileDoctors(@Param("userId") int userId,
+            @Param("profileDoctorId") int profileDoctorId, Pageable page);
 
     Page<Message> findMessagesByUserIdAndProfileDoctorId(User userId, ProfileDoctor profileDoctorId, Pageable page);
 
     List<Message> findAll(Specification<Message> createSpecification);
 
     @Query("SELECT DISTINCT m.userId FROM Message m WHERE m.profileDoctorId.profileDoctorId = :profileDoctorId")
-//    @Query("SELECT m.userId.userId FROM Message m WHERE m.profileDoctorId.profileDoctorId = :profileDoctorId GROUP BY m.userId.userId")
+    // @Query("SELECT m.userId.userId FROM Message m WHERE
+    // m.profileDoctorId.profileDoctorId = :profileDoctorId GROUP BY
+    // m.userId.userId")
     Page<Object[]> getAllUsersByProfileDoctorMessaging(@Param("profileDoctorId") int profileDoctorId, Pageable page);
+
+    Optional<Message> findMessageByMessageIdAndActiveTrue(int messageId);
 }

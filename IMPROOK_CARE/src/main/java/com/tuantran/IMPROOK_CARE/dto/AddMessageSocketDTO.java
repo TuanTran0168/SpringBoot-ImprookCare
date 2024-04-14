@@ -4,8 +4,6 @@
  */
 package com.tuantran.IMPROOK_CARE.dto;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -29,6 +27,8 @@ public class AddMessageSocketDTO {
     @NotBlank
     private String messageContent;
 
-    // @NotBlank
     private String avatar;
+
+    // @NotBlank
+    private Boolean isSeen;
 }

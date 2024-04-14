@@ -70,6 +70,7 @@ public class ApiMessageController {
                 messageData.setProfileDoctorId(profileDoctorOptional.get());
                 messageData.setSenderId(Integer.parseInt(addMessageDTO.getSenderId()));
                 messageData.setMessageContent(addMessageDTO.getMessageContent());
+                messageData.setIsSeen(Boolean.FALSE);
                 messageData.setActive(Boolean.TRUE);
                 messageData.setCreatedDate(new Date());
 
@@ -114,5 +115,26 @@ public class ApiMessageController {
             @RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.messageService.getAllUsersByProfileDoctorMessaging(profileDoctorId, params),
                 HttpStatus.OK);
+    }
+
+    /*
+     * API này dùng để đánh dấu isSeen rằng client đã xem tin nhắn
+     */
+    @PostMapping("/auth/message/{messageId}/seenMessage/")
+    @CrossOrigin
+    public ResponseEntity<?> seenMessage(@PathVariable(value = "messageId") int messageId) {
+        String message = "Có lỗi xảy ra!";
+
+        Optional<Message> messageOptional = this.messageService.findMessageByMessageIdAndActiveTrue(messageId);
+        if (messageOptional.isPresent()) {
+            Message messageData = messageOptional.get();
+            messageData.setIsSeen(Boolean.TRUE);
+            return new ResponseEntity<>(this.messageService.seenMessage(messageData),
+                    HttpStatus.OK);
+        } else {
+            message = "Message[" + messageId + "] không tồn tại!";
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+
     }
 }
