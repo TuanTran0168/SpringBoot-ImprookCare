@@ -33,7 +33,7 @@ CREATE TABLE `booking` (
   `deleted_date` datetime DEFAULT NULL,
   `booking_cancel` tinyint(1) DEFAULT NULL,
   `status_id` int DEFAULT NULL,
-  `link_video_call` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `link_video_call` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`booking_id`),
   KEY `schedule_id` (`schedule_id`),
@@ -413,6 +413,7 @@ CREATE TABLE `message` (
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
+  `is_seen` tinyint(1) DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`message_id`),
   KEY `profile_doctor_id` (`profile_doctor_id`),
@@ -428,7 +429,7 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
-INSERT INTO `message` VALUES (7,20,14,NULL,'Chào bác sĩ',NULL,'2023-10-19 00:34:19',NULL,NULL,1),(8,20,14,NULL,'Chào bác sĩ 1',NULL,'2023-10-19 00:36:30',NULL,NULL,1),(9,20,14,NULL,'Chào bác sĩ 2',NULL,'2023-10-19 00:36:33',NULL,NULL,1),(10,20,14,NULL,'Bác sĩ chào em',NULL,'2023-10-19 00:37:18',NULL,NULL,1),(11,20,14,NULL,'Bác sĩ chào em 1',NULL,'2023-10-19 00:37:31',NULL,NULL,1),(12,20,14,NULL,'Bác sĩ chào em 2',NULL,'2023-10-19 00:37:47',NULL,NULL,1),(13,20,14,NULL,'Chào bác sĩ 3',NULL,'2023-10-19 00:37:52',NULL,NULL,1),(14,20,14,NULL,'Bác sĩ chào em 3',NULL,'2023-10-19 00:37:55',NULL,NULL,1),(15,21,14,NULL,'Chào bác sĩ 1',NULL,'2023-10-19 00:39:38',NULL,NULL,1),(16,21,14,NULL,'Bác sĩ chào em 1',NULL,'2023-10-19 00:39:49',NULL,NULL,1),(17,21,14,NULL,'Chào bác sĩ 2',NULL,'2023-10-19 00:40:01',NULL,NULL,1),(18,21,14,NULL,'Bác sĩ chào em 2',NULL,'2023-10-19 00:40:05',NULL,NULL,1),(19,21,14,21,'Chào bác sĩ 2',NULL,'2023-10-19 16:22:01',NULL,NULL,1),(20,21,14,21,'Chào bác sĩ 2',NULL,'2023-10-19 16:28:24',NULL,NULL,1);
+INSERT INTO `message` VALUES (7,20,14,NULL,'Chào bác sĩ',NULL,'2023-10-19 00:34:19',NULL,NULL,NULL,1),(8,20,14,NULL,'Chào bác sĩ 1',NULL,'2023-10-19 00:36:30',NULL,NULL,NULL,1),(9,20,14,NULL,'Chào bác sĩ 2',NULL,'2023-10-19 00:36:33',NULL,NULL,NULL,1),(10,20,14,NULL,'Bác sĩ chào em',NULL,'2023-10-19 00:37:18',NULL,NULL,NULL,1),(11,20,14,NULL,'Bác sĩ chào em 1',NULL,'2023-10-19 00:37:31',NULL,NULL,NULL,1),(12,20,14,NULL,'Bác sĩ chào em 2',NULL,'2023-10-19 00:37:47',NULL,NULL,NULL,1),(13,20,14,NULL,'Chào bác sĩ 3',NULL,'2023-10-19 00:37:52',NULL,NULL,NULL,1),(14,20,14,NULL,'Bác sĩ chào em 3',NULL,'2023-10-19 00:37:55',NULL,NULL,NULL,1),(15,21,14,NULL,'Chào bác sĩ 1',NULL,'2023-10-19 00:39:38',NULL,NULL,NULL,1),(16,21,14,NULL,'Bác sĩ chào em 1',NULL,'2023-10-19 00:39:49',NULL,NULL,NULL,1),(17,21,14,NULL,'Chào bác sĩ 2',NULL,'2023-10-19 00:40:01',NULL,NULL,NULL,1),(18,21,14,NULL,'Bác sĩ chào em 2',NULL,'2023-10-19 00:40:05',NULL,NULL,NULL,1),(19,21,14,21,'Chào bác sĩ 2',NULL,'2023-10-19 16:22:01',NULL,NULL,NULL,1),(20,21,14,21,'Chào bác sĩ 2',NULL,'2023-10-19 16:28:24',NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -956,4 +957,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-12 11:49:45
+-- Dump completed on 2024-04-14 13:24:57
