@@ -11,7 +11,10 @@ import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.repository.ProfileDoctorRepository;
 import com.tuantran.IMPROOK_CARE.repository.UserRepository;
 import com.tuantran.IMPROOK_CARE.service.MessageService;
-
+import com.tuantran.IMPROOK_CARE.service.ProfileDoctorService;
+import com.tuantran.IMPROOK_CARE.service.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import jakarta.validation.Valid;
 
 import java.util.Date;
@@ -48,6 +51,12 @@ public class ApiMessageController {
 
     @Autowired
     private ProfileDoctorRepository profileDoctorRepository;
+
+    @Autowired
+    private ProfileDoctorService profileDoctorService;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/auth/add-message/")
     @CrossOrigin
@@ -94,7 +103,7 @@ public class ApiMessageController {
 
     @GetMapping("/auth/profileDoctor/{profileDoctorId}/get-message-detail-page/{userId}/")
     @CrossOrigin
-    public ResponseEntity<?> getMessageAllView(@PathVariable(value = "profileDoctorId") int profileDoctorId,
+    public ResponseEntity<?> getMessageAllViewPage(@PathVariable(value = "profileDoctorId") int profileDoctorId,
             @PathVariable(value = "userId") int userId, @RequestParam Map<String, String> params) {
         return new ResponseEntity<>(
                 this.messageService.findMessagesByUserIdAndProfileDoctorIdPage(userId, profileDoctorId, params),
@@ -136,5 +145,50 @@ public class ApiMessageController {
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    // Thử phân quyền xíu
+    // Chỉ user nào login khớp với userId truyền vào mới được fetch
+    /*
+     * Lấy toàn bộ thông tin ProfileDoctor có nhắn tin với User
+     * Kèm theo tin nhắn cuối cùng giữa 2 người này
+     */
+    // @GetMapping("/auth/user/{userId}/profile-doctor-message/")
+    @GetMapping("/auth/user/{userId}/get-doctor-send-message-to-user/")
+    @CrossOrigin
+    public ResponseEntity<?> getMessageProfileDoctorByUserIdPage(@PathVariable(value = "userId") String userId,
+            @RequestParam Map<String, String> params) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            System.out.print(authentication.getPrincipal());
+
+            if (authentication != null
+                    && authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User) {
+                org.springframework.security.core.userdetails.User userLogin = (org.springframework.security.core.userdetails.User) authentication
+                        .getPrincipal();
+
+                String usernameLogin = userLogin.getUsername();
+                String usernameRequest = this.userService.findUserByUserIdAndActiveTrue(Integer.parseInt(userId))
+                        .getUsername();
+
+                if (!usernameLogin.equals(usernameRequest)) {
+                    return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+                }
+            } else {
+                // Trường hợp này gần như không xảy ra vì không cung cấp token là thằng jwt đá
+                // rồi (401)
+                return new ResponseEntity<>("User chưa đăng nhập!", HttpStatus.UNAUTHORIZED);
+            }
+        } catch (NullPointerException e) {
+            return new ResponseEntity<>("User[" + userId + "] Không tồn tại!", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Something wrong here, Internal Server Error!",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(
+                this.messageService.getMessageProfileDoctorByUserIdPage(Integer.parseInt(userId), params),
+                HttpStatus.OK);
     }
 }

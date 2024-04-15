@@ -27,21 +27,50 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface MessageRepository extends JpaRepository<Message, Integer> {
 
-    @Query("SELECT m.userId, m.profileDoctorId "
-            + "FROM Message m "
-            + "WHERE m.userId.userId = :userId AND m.profileDoctorId.profileDoctorId = :profileDoctorId")
-    Page<Message> getMessagesBetweenUsersAndProfileDoctors(@Param("userId") int userId,
-            @Param("profileDoctorId") int profileDoctorId, Pageable page);
+        @Query("SELECT m.userId, m.profileDoctorId "
+                        + "FROM Message m "
+                        + "WHERE m.userId.userId = :userId AND m.profileDoctorId.profileDoctorId = :profileDoctorId")
+        Page<Message> getMessagesBetweenUsersAndProfileDoctors(@Param("userId") int userId,
+                        @Param("profileDoctorId") int profileDoctorId, Pageable page);
 
-    Page<Message> findMessagesByUserIdAndProfileDoctorId(User userId, ProfileDoctor profileDoctorId, Pageable page);
+        Page<Message> findMessagesByUserIdAndProfileDoctorId(User userId, ProfileDoctor profileDoctorId, Pageable page);
 
-    List<Message> findAll(Specification<Message> createSpecification);
+        List<Message> findAll(Specification<Message> createSpecification);
 
-    @Query("SELECT DISTINCT m.userId FROM Message m WHERE m.profileDoctorId.profileDoctorId = :profileDoctorId")
-    // @Query("SELECT m.userId.userId FROM Message m WHERE
-    // m.profileDoctorId.profileDoctorId = :profileDoctorId GROUP BY
-    // m.userId.userId")
-    Page<Object[]> getAllUsersByProfileDoctorMessaging(@Param("profileDoctorId") int profileDoctorId, Pageable page);
+        /*
+         * Lấy toàn bộ thông tin User có nhắn tin với ProfileDoctor
+         * Kèm theo tin nhắn cuối cùng giữa 2 người này
+         */
+        @Query("SELECT m.userId, m.messageId, m.senderId, m.messageContent, m.createdDate, m.isSeen "
+                        + "FROM Message m "
+                        + "WHERE m.messageId IN (SELECT MAX(m2.messageId) FROM Message m2 WHERE m2.userId = m.userId) "
+                        + "AND m.profileDoctorId.profileDoctorId = :profileDoctorId "
+                        + "ORDER BY m.createdDate DESC")
+        Page<?> getAllUsersByProfileDoctorMessaging(@Param("profileDoctorId") int profileDoctorId,
+                        Pageable page);
 
-    Optional<Message> findMessageByMessageIdAndActiveTrue(int messageId);
+        Optional<Message> findMessageByMessageIdAndActiveTrue(int messageId);
+
+        /*
+         * Lấy toàn bộ thông tin ProfileDoctor có nhắn tin với User
+         * Kèm theo tin nhắn cuối cùng giữa 2 người này
+         */
+        // @Query("SELECT DISTINCT pd "
+        // + "FROM Message m "
+        // + "JOIN m.profileDoctorId pd "
+        // + "JOIN pd.userId u "
+        // + "WHERE m.userId.userId = :userId "
+        // + "ORDER BY pd.createdDate DESC")
+        @Query("SELECT m.profileDoctorId, m.messageId, m.senderId, m.messageContent, m.createdDate, m.isSeen "
+                        + "FROM Message m "
+                        + "JOIN m.profileDoctorId pd "
+                        + "JOIN m.userId u "
+                        + "WHERE m.userId.userId = :userId "
+                        + "AND m.messageId IN (SELECT MAX(m2.messageId) FROM Message m2 WHERE m2.profileDoctorId = pd) "
+                        + "ORDER BY m.createdDate DESC")
+        Page<?> getMessageProfileDoctorByUserIdPage(@Param("userId") int userId, Pageable page);
+
+        // Page<Message> getUsersAndFirstMessagePage(@Param("userId") int userId,
+        // @Param("profileDoctorId") int profileDoctorId,
+        // Pageable page);
 }

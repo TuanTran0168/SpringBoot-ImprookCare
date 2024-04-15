@@ -28,11 +28,13 @@ public interface MessageService {
 
     int addMessage(AddMessageDTO addMessageDTO, MultipartFile avatar);
 
-    Page<Object[]> getAllUsersByProfileDoctorMessaging(int profileDoctorId, Map<String, String> params);
+    Page<?> getAllUsersByProfileDoctorMessaging(int profileDoctorId, Map<String, String> params);
 
     Message addMessage(Message message, MultipartFile avatar);
 
     Optional<Message> findMessageByMessageIdAndActiveTrue(int messageId);
 
     Message seenMessage(Message message);
+
+    Page<?> getMessageProfileDoctorByUserIdPage(int userId, Map<String, String> params);
 }
