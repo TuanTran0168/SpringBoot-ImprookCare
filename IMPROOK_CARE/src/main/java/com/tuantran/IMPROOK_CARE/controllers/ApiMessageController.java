@@ -4,6 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.controllers;
 
+import com.tuantran.IMPROOK_CARE.components.authentication.AuthenticationComponent;
 import com.tuantran.IMPROOK_CARE.dto.AddMessageDTO;
 import com.tuantran.IMPROOK_CARE.models.Message;
 import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
@@ -11,7 +12,6 @@ import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.repository.ProfileDoctorRepository;
 import com.tuantran.IMPROOK_CARE.repository.UserRepository;
 import com.tuantran.IMPROOK_CARE.service.MessageService;
-import com.tuantran.IMPROOK_CARE.service.ProfileDoctorService;
 import com.tuantran.IMPROOK_CARE.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -53,10 +53,7 @@ public class ApiMessageController {
     private ProfileDoctorRepository profileDoctorRepository;
 
     @Autowired
-    private ProfileDoctorService profileDoctorService;
-
-    @Autowired
-    private UserService userService;
+    private AuthenticationComponent authenticationComponent;
 
     @PostMapping("/auth/add-message/")
     @CrossOrigin
@@ -163,22 +160,12 @@ public class ApiMessageController {
 
             System.out.print(authentication.getPrincipal());
 
-            if (authentication != null
-                    && authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User) {
-                org.springframework.security.core.userdetails.User userLogin = (org.springframework.security.core.userdetails.User) authentication
-                        .getPrincipal();
-
-                String usernameLogin = userLogin.getUsername();
-                String usernameRequest = this.userService.findUserByUserIdAndActiveTrue(Integer.parseInt(userId))
-                        .getUsername();
-
-                if (!usernameLogin.equals(usernameRequest)) {
-                    return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
-                }
+            if (this.authenticationComponent.isUserAuthorized(authentication, userId)) {
+                return new ResponseEntity<>(
+                        this.messageService.getMessageProfileDoctorByUserIdPage(Integer.parseInt(userId), params),
+                        HttpStatus.OK);
             } else {
-                // Trường hợp này gần như không xảy ra vì không cung cấp token là thằng jwt đá
-                // rồi (401)
-                return new ResponseEntity<>("User chưa đăng nhập!", HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>("Unauthorized!", HttpStatus.UNAUTHORIZED);
             }
         } catch (NullPointerException e) {
             return new ResponseEntity<>("User[" + userId + "] Không tồn tại!", HttpStatus.NOT_FOUND);
@@ -186,9 +173,5 @@ public class ApiMessageController {
             return new ResponseEntity<>("Something wrong here, Internal Server Error!",
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResponseEntity<>(
-                this.messageService.getMessageProfileDoctorByUserIdPage(Integer.parseInt(userId), params),
-                HttpStatus.OK);
     }
 }
