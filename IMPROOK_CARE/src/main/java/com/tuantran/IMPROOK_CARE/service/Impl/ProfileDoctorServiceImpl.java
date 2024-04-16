@@ -269,19 +269,4 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
         }
     }
 
-    @Override
-    public Page<ProfileDoctor> getMessageProfileDoctorByUserIdPage(int userId, Map<String, String> params) {
-        String pageNumber = params.get("pageNumber");
-        int defaultPageNumber = 0;
-        Pageable page = PageRequest.of(defaultPageNumber,
-                Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
-
-        if (pageNumber != null && !pageNumber.isEmpty()) {
-            page = PageRequest.of(Integer.parseInt(pageNumber),
-                    Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
-        }
-
-        return this.profileDoctorRepository.getMessageProfileDoctorByUserIdPage(userId, page);
-    }
-
 }

@@ -167,7 +167,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Page<Object[]> getAllUsersByProfileDoctorMessaging(int profileDoctorId, Map<String, String> params) {
+    public Page<?> getAllUsersByProfileDoctorMessaging(int profileDoctorId, Map<String, String> params) {
         String pageNumber = params.get("pageNumber");
 
         Optional<ProfileDoctor> profileDoctorOptional = this.profileDoctorRepository
@@ -222,6 +222,41 @@ public class MessageServiceImpl implements MessageService {
         listSpec.add(GenericSpecifications.fieldEquals("userId", userOptional.get()));
 
         return this.messageRepository.findAll(GenericSpecifications.createSpecification(listSpec));
+    }
+
+    @Override
+    public Message addMessage(Message message, MultipartFile avatar) {
+        if (avatar != null && !avatar.isEmpty()) {
+            String linkCloudinaryAvatar = cloudinaryComponent.Cloudinary(avatar).get("secure_url").toString();
+            message.setAvatar(linkCloudinaryAvatar);
+        }
+        return this.messageRepository.save(message);
+    }
+
+    @Override
+    public Optional<Message> findMessageByMessageIdAndActiveTrue(int messageId) {
+        return this.messageRepository.findMessageByMessageIdAndActiveTrue(messageId);
+    }
+
+    @Override
+    public Message seenMessage(Message message) {
+        return this.messageRepository.save(message);
+    }
+
+    // Lấy toàn bộ ProfileDoctor nào có nhắn tin với UserId
+    @Override
+    public Page<?> getMessageProfileDoctorByUserIdPage(int userId, Map<String, String> params) {
+        String pageNumber = params.get("pageNumber");
+        int defaultPageNumber = 0;
+        Pageable page = PageRequest.of(defaultPageNumber,
+                Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
+
+        if (pageNumber != null && !pageNumber.isEmpty()) {
+            page = PageRequest.of(Integer.parseInt(pageNumber),
+                    Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")));
+        }
+
+        return this.messageRepository.getMessageProfileDoctorByUserIdPage(userId, page);
     }
 
 }

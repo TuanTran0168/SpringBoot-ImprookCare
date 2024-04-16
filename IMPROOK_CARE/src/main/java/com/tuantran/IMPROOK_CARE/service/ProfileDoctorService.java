@@ -30,6 +30,4 @@ public interface ProfileDoctorService {
     Page<ProfileDoctor> findAllProfileDoctorPageSpec(Map<String, String> params);
 
     int softDeleteProfileDoctor(int profileDoctorId);
-
-    Page<ProfileDoctor> getMessageProfileDoctorByUserIdPage(int userId, Map<String, String> params);
 }
