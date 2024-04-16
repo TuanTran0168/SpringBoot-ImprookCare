@@ -6,6 +6,9 @@ package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.models.Specialty;
 import java.util.List;
+import java.util.Optional;
+
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -15,5 +18,9 @@ public interface SpecialtyService {
 
     List<Specialty> findSpecialtyByActiveTrue();
 
-    Specialty findSpecialtyBySpecialtyIdAndActiveTrue(int specialtyId);
+    Optional<Specialty> findSpecialtyBySpecialtyIdAndActiveTrue(int specialtyId);
+
+    Specialty addSpecialty(Specialty specialty, MultipartFile avatar);
+
+    Specialty updateSpecialty(Specialty specialty, MultipartFile avatar);
 }
