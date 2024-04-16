@@ -12,7 +12,6 @@ import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.repository.ProfileDoctorRepository;
 import com.tuantran.IMPROOK_CARE.repository.UserRepository;
 import com.tuantran.IMPROOK_CARE.service.MessageService;
-import com.tuantran.IMPROOK_CARE.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import jakarta.validation.Valid;
