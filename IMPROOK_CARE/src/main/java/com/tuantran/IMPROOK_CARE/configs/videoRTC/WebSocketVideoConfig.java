@@ -20,39 +20,52 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class WebSocketVideoConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(videoChatHandler(), "/api/public/video-chat/").setAllowedOrigins("*");
+        registry.addHandler(videoChatHandler(), "/api/public/video-chat/{roomId}").setAllowedOrigins("*");
     }
 
     @Bean
     public WebSocketHandler videoChatHandler() {
-        return new VideoChatHandler();
+        return new VideoChatConfig();
     }
 }
 
-class VideoChatHandler extends TextWebSocketHandler {
+// class VideoChatHandler extends TextWebSocketHandler {
 
-    private final List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
-    private final AtomicBoolean isPolitePeer = new AtomicBoolean(true);
+// private final List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
+// private final AtomicBoolean isPolitePeer = new AtomicBoolean(true);
 
-    @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        String jsonResponse = "{\"polite\": \"" + isPolitePeer.getAndSet(!isPolitePeer.get()) + "\"}";
-        session.sendMessage(new TextMessage(jsonResponse));
-        sessions.add(session);
-    }
+// @Override
+// public void afterConnectionEstablished(WebSocketSession session) throws
+// Exception {
+// String jsonResponse = "{\"polite\": \"" +
+// isPolitePeer.getAndSet(!isPolitePeer.get()) + "\"}";
+// session.sendMessage(new TextMessage(jsonResponse));
+// sessions.add(session);
+// System.out.println("-----------------------------------------------------------------------------");
+// System.out.println("Connection opened! " + jsonResponse);
+// System.out.println("-----------------------------------------------------------------------------");
+// }
 
-    @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        for (WebSocketSession s : sessions) {
-            if (!s.getId().equals(session.getId())) {
-                s.sendMessage(message);
-            }
-        }
-    }
+// @Override
+// protected void handleTextMessage(WebSocketSession session, TextMessage
+// message) throws Exception {
+// for (WebSocketSession s : sessions) {
+// if (!s.getId().equals(session.getId())) {
+// s.sendMessage(message);
+// System.out.println("-----------------------------------------------------------------------------");
+// System.out.println(message);
+// System.out.println("-----------------------------------------------------------------------------");
+// }
+// }
+// }
 
-    @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        System.out.println("INSIDE CLOSING STATE");
-        sessions.removeIf(s -> s.getId().equals(session.getId()));
-    }
-}
+// @Override
+// public void afterConnectionClosed(WebSocketSession session, CloseStatus
+// status) throws Exception {
+// System.out.println("INSIDE CLOSING STATE");
+// System.out.println("-----------------------------------------------------------------------------");
+// System.out.println("Connection Closed! " + status);
+// System.out.println("-----------------------------------------------------------------------------");
+// sessions.removeIf(s -> s.getId().equals(session.getId()));
+// }
+// }
