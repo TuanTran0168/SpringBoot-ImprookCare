@@ -61,12 +61,11 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
         // + "JOIN pd.userId u "
         // + "WHERE m.userId.userId = :userId "
         // + "ORDER BY pd.createdDate DESC")
-        @Query("SELECT m.profileDoctorId, m.messageId, m.senderId, m.messageContent, m.createdDate, m.isSeen "
+        @Query("SELECT m.profileDoctorId, m "
                         + "FROM Message m "
-                        + "JOIN m.profileDoctorId pd "
                         + "JOIN m.userId u "
                         + "WHERE m.userId.userId = :userId "
-                        + "AND m.messageId IN (SELECT MAX(m2.messageId) FROM Message m2 WHERE m2.profileDoctorId = pd) "
+                        + "AND m.messageId IN (SELECT MAX(m2.messageId) FROM Message m2 WHERE m2.userId = m.userId) "
                         + "ORDER BY m.createdDate DESC")
         Page<?> getMessageProfileDoctorByUserIdPage(@Param("userId") int userId, Pageable page);
 
