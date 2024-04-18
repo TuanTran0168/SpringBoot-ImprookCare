@@ -43,7 +43,7 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
          */
         @Query("SELECT m.userId, m.messageId, m.senderId, m.messageContent, m.createdDate, m.isSeen "
                         + "FROM Message m "
-                        + "WHERE m.messageId IN (SELECT MAX(m2.messageId) FROM Message m2 WHERE m2.userId = m.userId) "
+                        + "WHERE m.messageId IN (SELECT MAX(m2.messageId) FROM Message m2 WHERE m2.userId = m.userId AND m2.profileDoctorId = m.profileDoctorId) "
                         + "AND m.profileDoctorId.profileDoctorId = :profileDoctorId "
                         + "ORDER BY m.createdDate DESC")
         Page<?> getAllUsersByProfileDoctorMessaging(@Param("profileDoctorId") int profileDoctorId,
@@ -63,10 +63,9 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
         // + "ORDER BY pd.createdDate DESC")
         @Query("SELECT m.profileDoctorId, m.messageId, m.senderId, m.messageContent, m.createdDate, m.isSeen "
                         + "FROM Message m "
-                        + "JOIN m.profileDoctorId pd "
                         + "JOIN m.userId u "
                         + "WHERE m.userId.userId = :userId "
-                        + "AND m.messageId IN (SELECT MAX(m2.messageId) FROM Message m2 WHERE m2.profileDoctorId = pd) "
+                        + "AND m.messageId IN (SELECT MAX(m2.messageId) FROM Message m2 WHERE m2.profileDoctorId = m.profileDoctorId AND m2.userId = m.userId) "
                         + "ORDER BY m.createdDate DESC")
         Page<?> getMessageProfileDoctorByUserIdPage(@Param("userId") int userId, Pageable page);
 
