@@ -19,69 +19,69 @@ public class StatsServiceImpl implements StatsService {
 
     @Autowired
     private StatsRepository statsRepository;
-    
+
     @Override
-    public List<Object[]> statsBookingByUser() {
+    public List<?> statsBookingByUser() {
         return this.statsRepository.statsBookingByUser();
     }
 
     @Override
-    public List<Object[]> statsServicePricePaid() {
+    public List<?> statsServicePricePaid() {
         return this.statsRepository.statsServicePricePaid();
     }
 
     @Override
-    public List<Object[]> statsServicePriceUnpaid() {
+    public List<?> statsServicePriceUnpaid() {
         return this.statsRepository.statsServicePriceUnpaid();
     }
 
     @Override
-    public List<Object[]> statsServicePriceAllpaid() {
+    public List<?> statsServicePriceAllpaid() {
         return this.statsRepository.statsServicePriceAllpaid();
     }
 
     @Override
-    public List<Object[]> statsMedicinePrescriptionPaid() {
+    public List<?> statsMedicinePrescriptionPaid() {
         return this.statsRepository.statsMedicinePrescriptionPaid();
     }
 
     @Override
-    public List<Object[]> statsMedicinePrescriptionUnpaid() {
+    public List<?> statsMedicinePrescriptionUnpaid() {
         return this.statsRepository.statsMedicinePrescriptionUnpaid();
     }
 
     @Override
-    public List<Object[]> statsMedicinePrescriptionAllPaid() {
+    public List<?> statsMedicinePrescriptionAllPaid() {
         return this.statsRepository.statsMedicinePrescriptionAllPaid();
     }
 
     @Override
-    public List<Object[]> statsCountMedicineAllPaid() {
+    public List<?> statsCountMedicineAllPaid() {
         return this.statsRepository.statsCountMedicineAllPaid();
     }
 
     @Override
-    public List<Object[]> statsCountMedicinePaid() {
+    public List<?> statsCountMedicinePaid() {
         return this.statsRepository.statsCountMedicinePaid();
     }
 
     @Override
-    public List<Object[]> statsCountMedicineUnpaid() {
+    public List<?> statsCountMedicineUnpaid() {
         return this.statsRepository.statsCountMedicineUnpaid();
     }
 
     @Override
-    public List<Object[]> statsRevenueMedicineAllpaid() {
+    public List<?> statsRevenueMedicineAllpaid() {
         return this.statsRepository.statsRevenueMedicineAllpaid();
     }
 
     @Override
-    public List<Object[]> statsRevenueMedicinePaid() {
+    public List<?> statsRevenueMedicinePaid() {
         return this.statsRepository.statsRevenueMedicinePaid();
     }
 
     @Override
-    public List<Object[]> statsRevenueMedicineUnpaid() {
+    public List<?> statsRevenueMedicineUnpaid() {
         return this.statsRepository.statsRevenueMedicineUnpaid();
     }
 

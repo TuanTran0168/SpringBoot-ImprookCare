@@ -21,9 +21,6 @@ import com.tuantran.IMPROOK_CARE.service.CommentService;
 import com.tuantran.IMPROOK_CARE.service.ProfileDoctorService;
 import com.tuantran.IMPROOK_CARE.service.ScheduleService;
 
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

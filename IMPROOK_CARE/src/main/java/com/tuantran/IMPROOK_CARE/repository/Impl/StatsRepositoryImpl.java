@@ -24,7 +24,7 @@ public class StatsRepositoryImpl implements StatsRepository {
     private EntityManager entityManager;
 
     @Override
-    public List<Object[]> statsBookingByUser() {
+    public List<?> statsBookingByUser() {
         String jpql = "SELECT u.userId, CONCAT(u.lastname, ' ', u.firstname), COUNT(b.bookingId) "
                 + "FROM Booking b "
                 + "JOIN b.scheduleId s "
@@ -37,7 +37,7 @@ public class StatsRepositoryImpl implements StatsRepository {
     }
 
     @Override
-    public List<Object[]> statsServicePricePaid() {
+    public List<?> statsServicePricePaid() {
         String jpql = "SELECT u.userId, CONCAT(u.lastname, ' ', u.firstname), SUM(p.servicePrice) "
                 + "FROM Prescriptions p "
                 + "JOIN p.bookingId b "
@@ -52,7 +52,7 @@ public class StatsRepositoryImpl implements StatsRepository {
     }
 
     @Override
-    public List<Object[]> statsServicePriceUnpaid() {
+    public List<?> statsServicePriceUnpaid() {
         String jpql = "SELECT u.userId, CONCAT(u.lastname, ' ', u.firstname), SUM(p.servicePrice) "
                 + "FROM Prescriptions p "
                 + "JOIN p.bookingId b "
@@ -67,7 +67,7 @@ public class StatsRepositoryImpl implements StatsRepository {
     }
 
     @Override
-    public List<Object[]> statsServicePriceAllpaid() {
+    public List<?> statsServicePriceAllpaid() {
 
         String jpql = "SELECT u.userId, CONCAT(u.lastname, ' ', u.firstname), SUM(p.servicePrice) "
                 + "FROM Prescriptions p "
@@ -82,7 +82,7 @@ public class StatsRepositoryImpl implements StatsRepository {
     }
 
     @Override
-    public List<Object[]> statsMedicinePrescriptionPaid() {
+    public List<?> statsMedicinePrescriptionPaid() {
         String jpql = "SELECT u.firstname, SUM(pres_d.unitPrice * pres_d.quantity) "
                 + "FROM PrescriptionDetail pres_d "
                 + "JOIN pres_d.prescriptionId pres "
@@ -97,7 +97,7 @@ public class StatsRepositoryImpl implements StatsRepository {
     }
 
     @Override
-    public List<Object[]> statsMedicinePrescriptionUnpaid() {
+    public List<?> statsMedicinePrescriptionUnpaid() {
         String jpql = "SELECT u.firstname, SUM(pres_d.unitPrice * pres_d.quantity) "
                 + "FROM PrescriptionDetail pres_d "
                 + "JOIN pres_d.prescriptionId pres "
@@ -112,7 +112,7 @@ public class StatsRepositoryImpl implements StatsRepository {
     }
 
     @Override
-    public List<Object[]> statsMedicinePrescriptionAllPaid() {
+    public List<?> statsMedicinePrescriptionAllPaid() {
         String jpql = "SELECT u.firstname, SUM(pres_d.unitPrice * pres_d.quantity) "
                 + "FROM PrescriptionDetail pres_d "
                 + "JOIN pres_d.prescriptionId pres "
@@ -126,7 +126,7 @@ public class StatsRepositoryImpl implements StatsRepository {
     }
 
     @Override
-    public List<Object[]> statsCountMedicineAllPaid() {
+    public List<?> statsCountMedicineAllPaid() {
         String jpql = "SELECT m.medicineId, m.medicineName, SUM(pres_d.quantity) "
                 + "FROM PrescriptionDetail pres_d "
                 + "JOIN pres_d.medicineId m "
@@ -138,7 +138,7 @@ public class StatsRepositoryImpl implements StatsRepository {
     }
 
     @Override
-    public List<Object[]> statsCountMedicinePaid() {
+    public List<?> statsCountMedicinePaid() {
         String jpql = "SELECT m.medicineId, m.medicineName, SUM(pres_d.quantity) "
                 + "FROM PrescriptionDetail pres_d "
                 + "JOIN pres_d.medicineId m "
@@ -151,7 +151,7 @@ public class StatsRepositoryImpl implements StatsRepository {
     }
 
     @Override
-    public List<Object[]> statsCountMedicineUnpaid() {
+    public List<?> statsCountMedicineUnpaid() {
         String jpql = "SELECT m.medicineId, m.medicineName, SUM(pres_d.quantity) "
                 + "FROM PrescriptionDetail pres_d "
                 + "JOIN pres_d.medicineId m "
@@ -164,7 +164,7 @@ public class StatsRepositoryImpl implements StatsRepository {
     }
 
     @Override
-    public List<Object[]> statsRevenueMedicineAllpaid() {
+    public List<?> statsRevenueMedicineAllpaid() {
         String jpql = "SELECT m.medicineId, m.medicineName, SUM(pres_d.quantity * m.unitPrice) "
                 + "FROM PrescriptionDetail pres_d "
                 + "JOIN pres_d.medicineId m "
@@ -176,7 +176,7 @@ public class StatsRepositoryImpl implements StatsRepository {
     }
 
     @Override
-    public List<Object[]> statsRevenueMedicinePaid() {
+    public List<?> statsRevenueMedicinePaid() {
         String jpql = "SELECT m.medicineId, m.medicineName, SUM(pres_d.quantity * m.unitPrice) "
                 + "FROM PrescriptionDetail pres_d "
                 + "JOIN pres_d.medicineId m "
@@ -189,7 +189,7 @@ public class StatsRepositoryImpl implements StatsRepository {
     }
 
     @Override
-    public List<Object[]> statsRevenueMedicineUnpaid() {
+    public List<?> statsRevenueMedicineUnpaid() {
         String jpql = "SELECT m.medicineId, m.medicineName, SUM(pres_d.quantity * m.unitPrice) "
                 + "FROM PrescriptionDetail pres_d "
                 + "JOIN pres_d.medicineId m "

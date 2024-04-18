@@ -13,34 +13,36 @@ import java.util.List;
 public interface StatsRepository {
 
     // Số lượng Booking của mỗi User (bác sĩ)
-    List<Object[]> statsBookingByUser();
+    List<?> statsBookingByUser();
 
-    // Thống kê tiền khám dịch vụ từ bệnh nhân theo bác sĩ (bác sĩ này đã khám được bao nhiêu tiền)
-    List<Object[]> statsServicePricePaid();
+    // Thống kê tiền khám dịch vụ từ bệnh nhân theo bác sĩ (bác sĩ này đã khám được
+    // bao nhiêu tiền)
+    List<?> statsServicePricePaid();
 
-    List<Object[]> statsServicePriceUnpaid();
+    List<?> statsServicePriceUnpaid();
 
-    List<Object[]> statsServicePriceAllpaid();
+    List<?> statsServicePriceAllpaid();
 
-    // Thống kê tiền thuốc từ bệnh nhân theo bác sĩ (bác sĩ này kê được bao nhiêu thuốc)
-    List<Object[]> statsMedicinePrescriptionPaid();
+    // Thống kê tiền thuốc từ bệnh nhân theo bác sĩ (bác sĩ này kê được bao nhiêu
+    // thuốc)
+    List<?> statsMedicinePrescriptionPaid();
 
-    List<Object[]> statsMedicinePrescriptionUnpaid();
+    List<?> statsMedicinePrescriptionUnpaid();
 
-    List<Object[]> statsMedicinePrescriptionAllPaid();
+    List<?> statsMedicinePrescriptionAllPaid();
 
     // Thống kê số lượng thuốc đã kê từ hệ thống (đã bán)
-    List<Object[]> statsCountMedicineAllPaid();
+    List<?> statsCountMedicineAllPaid();
 
-    List<Object[]> statsCountMedicinePaid();
+    List<?> statsCountMedicinePaid();
 
-    List<Object[]> statsCountMedicineUnpaid();
+    List<?> statsCountMedicineUnpaid();
 
     // Thống kê số tiền thuốc đã kê từ hệ thống (đã bán)
-    List<Object[]> statsRevenueMedicineAllpaid();
+    List<?> statsRevenueMedicineAllpaid();
 
-    List<Object[]> statsRevenueMedicinePaid();
+    List<?> statsRevenueMedicinePaid();
 
-    List<Object[]> statsRevenueMedicineUnpaid();
+    List<?> statsRevenueMedicineUnpaid();
 
 }
