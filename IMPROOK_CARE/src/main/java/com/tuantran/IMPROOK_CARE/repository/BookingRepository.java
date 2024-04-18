@@ -66,6 +66,19 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
                         + "ORDER BY s.date ASC ")
         List<?> getDatesForProfileDoctor(@Param("profileDoctorId") int profileDoctorId);
 
+        // Cái này truy vấn thêm cái ID của Booking có trong Prescription
+        // @Query("SELECT b.bookingId, pd.name, s.date, ts.timeBegin, ts.timeEnd,
+        // bs.statusValue, pp.name, u.firstname, u.lastname, "
+        // + "CASE WHEN EXISTS (SELECT 1 FROM Prescriptions p WHERE p.bookingId = b)
+        // THEN true ELSE false END "
+        // + "FROM Booking b "
+        // + "JOIN b.scheduleId s "
+        // + "JOIN s.profileDoctorId pd "
+        // + "JOIN b.statusId bs "
+        // + "JOIN b.profilePatientId pp "
+        // + "JOIN pp.userId u "
+        // + "JOIN s.timeSlotId ts "
+        // + "WHERE pd.profileDoctorId = :profileDoctorId")
         @Query("SELECT b.bookingId, pd.name, s.date, ts.timeBegin, ts.timeEnd, bs.statusValue, pp.name, u.firstname, u.lastname "
                         + "FROM Booking b "
                         + "JOIN b.scheduleId s "

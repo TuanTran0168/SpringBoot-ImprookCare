@@ -10,11 +10,13 @@ import com.tuantran.IMPROOK_CARE.service.BookingStatusService;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Administrator
  */
+@Service
 public class BookingStatusServiceImpl implements BookingStatusService {
 
     @Autowired
@@ -23,7 +25,8 @@ public class BookingStatusServiceImpl implements BookingStatusService {
     @Override
     public BookingStatus findBookingStatusByStatusId(int bookingStatusId) {
         try {
-            Optional<BookingStatus> bookingStatusOptional = this.bookingStatusRepository.findBookingStatusByStatusId(bookingStatusId);
+            Optional<BookingStatus> bookingStatusOptional = this.bookingStatusRepository
+                    .findBookingStatusByStatusId(bookingStatusId);
             if (bookingStatusOptional.isPresent()) {
                 return bookingStatusOptional.get();
             } else {
