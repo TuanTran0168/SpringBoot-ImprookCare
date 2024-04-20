@@ -20,6 +20,7 @@ import com.tuantran.IMPROOK_CARE.repository.UserRepository;
 import com.tuantran.IMPROOK_CARE.service.CommentService;
 import com.tuantran.IMPROOK_CARE.service.ProfileDoctorService;
 import com.tuantran.IMPROOK_CARE.service.ScheduleService;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -196,6 +197,7 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
         String phonenumber = params.get("phonenumber");
         String fromPrice = params.get("fromPrice");
         String toPrice = params.get("toPrice");
+        String specialtyId = params.get("specialtyId");
 
         List<Specification<ProfileDoctor>> listSpec = new ArrayList<>();
         int defaultPageNumber = 0;
@@ -226,6 +228,11 @@ public class ProfileDoctorServiceImpl implements ProfileDoctorService {
 
         if (toPrice != null && !toPrice.isEmpty()) {
             Specification<ProfileDoctor> spec = GenericSpecifications.lessThan("bookingPrice", toPrice);
+            listSpec.add(spec);
+        }
+
+        if (specialtyId != null && !specialtyId.isEmpty()) {
+            Specification<ProfileDoctor> spec = GenericSpecifications.fieldContains("specialtyId", specialtyId);
             listSpec.add(spec);
         }
 
