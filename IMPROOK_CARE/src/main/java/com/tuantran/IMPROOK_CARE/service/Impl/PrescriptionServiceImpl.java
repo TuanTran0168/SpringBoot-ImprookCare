@@ -8,6 +8,7 @@ import com.tuantran.IMPROOK_CARE.Specifications.GenericSpecifications;
 import com.tuantran.IMPROOK_CARE.dto.AddPrescriptionDTO;
 import com.tuantran.IMPROOK_CARE.dto.AddPrescriptionDetailDTO;
 import com.tuantran.IMPROOK_CARE.models.Booking;
+import com.tuantran.IMPROOK_CARE.models.BookingStatus;
 import com.tuantran.IMPROOK_CARE.models.Medicine;
 import com.tuantran.IMPROOK_CARE.models.MedicinePaymentStatus;
 import com.tuantran.IMPROOK_CARE.models.PrescriptionDetail;
@@ -20,6 +21,7 @@ import com.tuantran.IMPROOK_CARE.repository.BookingRepository;
 import com.tuantran.IMPROOK_CARE.repository.MedicineRepository;
 import com.tuantran.IMPROOK_CARE.repository.PrescriptionDetailRepository;
 import com.tuantran.IMPROOK_CARE.repository.PrescriptionRepository;
+import com.tuantran.IMPROOK_CARE.service.BookingStatusService;
 import com.tuantran.IMPROOK_CARE.service.PrescriptionService;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
@@ -53,6 +55,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     private BookingRepository bookingRepository;
 
     @Autowired
+    private BookingStatusService bookingStatusService;
+
+    @Autowired
     private PrescriptionRepository prescriptionRepository;
 
     @Autowired
@@ -66,14 +71,19 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public int addPrescription(AddPrescriptionDTO addPrescriptionDTO, Map<String, AddPrescriptionDetailDTO> prescriptionDetailDTO) {
+    public int addPrescription(AddPrescriptionDTO addPrescriptionDTO,
+            Map<String, AddPrescriptionDetailDTO> prescriptionDetailDTO) {
         try {
             Prescriptions prescriptions = new Prescriptions();
 
-            Optional<Booking> bookingOptional = this.bookingRepository.findBookingByBookingIdAndActiveTrue(Integer.parseInt(addPrescriptionDTO.getBookingId()));
+            Optional<Booking> bookingOptional = this.bookingRepository
+                    .findBookingByBookingIdAndActiveTrue(Integer.parseInt(addPrescriptionDTO.getBookingId()));
 
             if (bookingOptional.isPresent()) {
-                prescriptions.setBookingId(bookingOptional.get());
+                Booking booking = bookingOptional.get();
+                BookingStatus bookingStatus = this.bookingStatusService.findBookingStatusByStatusId(4);
+                booking.setStatusId(bookingStatus != null ? bookingStatus : new BookingStatus(4));
+                prescriptions.setBookingId(booking);
             } else {
                 return 0;
             }
@@ -91,7 +101,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             for (AddPrescriptionDetailDTO presDetailDTO : prescriptionDetailDTO.values()) {
                 PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
 
-                Optional<Medicine> medicineOptional = this.medicineRepository.findMedicineByMedicineIdAndActiveTrue(Integer.parseInt(presDetailDTO.getMedicineId()));
+                Optional<Medicine> medicineOptional = this.medicineRepository
+                        .findMedicineByMedicineIdAndActiveTrue(Integer.parseInt(presDetailDTO.getMedicineId()));
 
                 if (medicineOptional.isPresent()) {
                     prescriptionDetail.setMedicineId(medicineOptional.get());
@@ -128,9 +139,12 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         List<Specification<Prescriptions>> listSpec = new ArrayList<>();
         int defaultPageNumber = 0;
         Sort mySort = Sort.by("createdDate").descending();
-        Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+        Pageable page = PageRequest.of(defaultPageNumber,
+                Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
         if (pageNumber != null && !pageNumber.isEmpty()) {
-            page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+            page = PageRequest.of(Integer.parseInt(pageNumber),
+                    Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")),
+                    mySort);
         }
 
         if (diagnosis != null && !diagnosis.isEmpty()) {
@@ -168,13 +182,16 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
         int defaultPageNumber = 0;
         Sort mySort = Sort.by("createdDate").descending();
-        Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+        Pageable page = PageRequest.of(defaultPageNumber,
+                Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
 
         List<Specification<Prescriptions>> listSpec = new ArrayList<>();
 
         if (pageNumber != null && !pageNumber.isEmpty()) {
             if (!pageNumber.equals("NaN")) {
-                page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+                page = PageRequest.of(Integer.parseInt(pageNumber),
+                        Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")),
+                        mySort);
             }
         }
 
@@ -193,7 +210,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             Join<Booking, ProfilePatient> profilePatientJoin = bookingJoin.join("profilePatientId");
             Join<Booking, Schedule> scheduleJoin = bookingJoin.join("scheduleId");
             Join<Schedule, ProfileDoctor> profileDoctorJoin = scheduleJoin.join("profileDoctorId");
-            Predicate profilePatientIdPredicate = criteriaBuilder.equal(profilePatientJoin.get("profilePatientId"), profilePatientId);
+            Predicate profilePatientIdPredicate = criteriaBuilder.equal(profilePatientJoin.get("profilePatientId"),
+                    profilePatientId);
             return criteriaBuilder.and(profilePatientIdPredicate);
         };
 
