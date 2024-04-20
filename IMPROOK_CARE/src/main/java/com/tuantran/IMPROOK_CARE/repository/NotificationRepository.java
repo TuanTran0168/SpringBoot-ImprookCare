@@ -22,8 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface NotificationRepository extends JpaRepository<Notification, Integer> {
-    Optional<Notification> findNotificationByNotificationId(int notificationId);
+    Optional<Notification> findNotificationByNotificationIdAndActiveTrue(int notificationId);
 
     // Lấy toàn bộ thông báo có id người nhận là user đang login
-    Page<Notification> findNotificationByReceiverIdAndActiveTrue(User userId, Pageable page);
+    // @OrderBy("createdDate DESC")
+    Page<Notification> findNotificationByReceiverIdAndActiveTrueOrderByCreatedDateDesc(User receiverId, Pageable page);
 }

@@ -4,22 +4,12 @@
  */
 package com.tuantran.IMPROOK_CARE.controllers;
 
-import com.tuantran.IMPROOK_CARE.components.authentication.AuthenticationComponent;
-import com.tuantran.IMPROOK_CARE.dto.AddMessageDTO;
 import com.tuantran.IMPROOK_CARE.dto.AddNotificationDTO;
-import com.tuantran.IMPROOK_CARE.models.Message;
 import com.tuantran.IMPROOK_CARE.models.Notification;
-import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import com.tuantran.IMPROOK_CARE.models.User;
-import com.tuantran.IMPROOK_CARE.repository.ProfileDoctorRepository;
-import com.tuantran.IMPROOK_CARE.repository.UserRepository;
-import com.tuantran.IMPROOK_CARE.service.MessageService;
 import com.tuantran.IMPROOK_CARE.service.NotificationService;
 import com.tuantran.IMPROOK_CARE.service.NotificationTypeService;
 import com.tuantran.IMPROOK_CARE.service.UserService;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import jakarta.validation.Valid;
 
 import java.util.Date;
@@ -36,7 +26,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -101,6 +90,46 @@ public class ApiNotificationController {
 
         } catch (NullPointerException e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Lấy toàn bộ thông báo có id người nhận là user đang login
+    @GetMapping("/auth/user/{userId}/get-notification/")
+    @CrossOrigin
+    public ResponseEntity<?> getNotification(@PathVariable(value = "userId") String userId,
+            @RequestParam Map<String, String> params) {
+        String message = "Có lỗi xảy ra!";
+
+        User receiverId = this.userService
+                .findUserByUserIdAndActiveTrue(Integer.parseInt(userId));
+        if (receiverId != null) {
+            return new ResponseEntity<>(
+                    this.notificationService.findNotificationByReceiverIdAndActiveTrue(receiverId, params),
+                    HttpStatus.OK);
+        } else {
+            message = "Receiver[" + userId + "] không tồn tại!";
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/auth/notification/{notificationId}/seen-notification/")
+    @CrossOrigin
+    public ResponseEntity<?> seenNotification(@PathVariable(value = "notificationId") String notificationId,
+            @RequestParam Map<String, String> params) {
+        String message = "Có lỗi xảy ra!";
+
+        Optional<Notification> notificationOptional = this.notificationService
+                .findNotificationByNotificationIdAndActiveTrue(Integer.parseInt(notificationId));
+        if (notificationOptional.isPresent()) {
+            Notification notification = notificationOptional.get();
+            notification.setIsSeen(Boolean.TRUE);
+
+            return new ResponseEntity<>(
+                    this.notificationService.seenNotification(notification),
+                    HttpStatus.OK);
+        } else {
+            message = "Notification[" + notificationId + "] không tồn tại!";
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
     }
 }
