@@ -70,7 +70,7 @@ CREATE TABLE `booking_status` (
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`status_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -79,7 +79,7 @@ CREATE TABLE `booking_status` (
 
 LOCK TABLES `booking_status` WRITE;
 /*!40000 ALTER TABLE `booking_status` DISABLE KEYS */;
-INSERT INTO `booking_status` VALUES (1,'Chờ xác nhận',NULL,NULL,NULL,1),(2,'Đã xác nhận',NULL,NULL,NULL,1),(3,'Từ chối',NULL,NULL,NULL,1);
+INSERT INTO `booking_status` VALUES (1,'Chờ xác nhận',NULL,NULL,NULL,1),(2,'Đã xác nhận',NULL,NULL,NULL,1),(3,'Từ chối',NULL,NULL,NULL,1),(4,'Đã khám xong',NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `booking_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -429,8 +429,74 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
-INSERT INTO `message` VALUES (7,20,14,NULL,'Chào bác sĩ',NULL,'2023-10-19 00:34:19',NULL,NULL,NULL,1),(8,20,14,NULL,'Chào bác sĩ 1',NULL,'2023-10-19 00:36:30',NULL,NULL,NULL,1),(9,20,14,NULL,'Chào bác sĩ 2',NULL,'2023-10-19 00:36:33',NULL,NULL,NULL,1),(10,20,14,NULL,'Bác sĩ chào em',NULL,'2023-10-19 00:37:18',NULL,NULL,NULL,1),(11,20,14,NULL,'Bác sĩ chào em 1',NULL,'2023-10-19 00:37:31',NULL,NULL,NULL,1),(12,20,14,NULL,'Bác sĩ chào em 2',NULL,'2023-10-19 00:37:47',NULL,NULL,NULL,1),(13,20,14,NULL,'Chào bác sĩ 3',NULL,'2023-10-19 00:37:52',NULL,NULL,NULL,1),(14,20,14,NULL,'Bác sĩ chào em 3',NULL,'2023-10-19 00:37:55',NULL,NULL,NULL,1),(15,21,14,NULL,'Chào bác sĩ 1',NULL,'2023-10-19 00:39:38',NULL,NULL,NULL,1),(16,21,14,NULL,'Bác sĩ chào em 1',NULL,'2023-10-19 00:39:49',NULL,NULL,NULL,1),(17,21,14,NULL,'Chào bác sĩ 2',NULL,'2023-10-19 00:40:01',NULL,NULL,NULL,1),(18,21,14,NULL,'Bác sĩ chào em 2',NULL,'2023-10-19 00:40:05',NULL,NULL,NULL,1),(19,21,14,21,'Chào bác sĩ 2',NULL,'2023-10-19 16:22:01',NULL,NULL,NULL,1),(20,21,14,21,'Chào bác sĩ 2',NULL,'2023-10-19 16:28:24',NULL,NULL,NULL,1);
+INSERT INTO `message` VALUES (7,20,14,20,'Chào bác sĩ',NULL,'2023-10-19 00:34:19',NULL,NULL,NULL,1),(8,20,14,20,'Chào bác sĩ 1',NULL,'2023-10-19 00:36:30',NULL,NULL,NULL,1),(9,20,14,20,'Chào bác sĩ 2',NULL,'2023-10-19 00:36:33',NULL,NULL,NULL,1),(10,20,14,14,'Bác sĩ chào em',NULL,'2023-10-19 00:37:18',NULL,NULL,NULL,1),(11,20,14,14,'Bác sĩ chào em 1',NULL,'2023-10-19 00:37:31',NULL,NULL,NULL,1),(12,20,14,14,'Bác sĩ chào em 2',NULL,'2023-10-19 00:37:47',NULL,NULL,NULL,1),(13,20,14,14,'Chào bác sĩ 3',NULL,'2023-10-19 00:37:52',NULL,NULL,NULL,1),(14,20,14,14,'Bác sĩ chào em 3',NULL,'2023-10-19 00:37:55',NULL,NULL,NULL,1),(15,21,14,21,'Chào bác sĩ 1',NULL,'2023-10-19 00:39:38',NULL,NULL,NULL,1),(16,21,14,14,'Bác sĩ chào em 1',NULL,'2023-10-19 00:39:49',NULL,NULL,NULL,1),(17,21,14,21,'Chào bác sĩ 2',NULL,'2023-10-19 00:40:01',NULL,NULL,NULL,1),(18,21,14,14,'Bác sĩ chào em 2',NULL,'2023-10-19 00:40:05',NULL,NULL,NULL,1),(19,21,14,21,'Chào bác sĩ 2',NULL,'2023-10-19 16:22:01',NULL,NULL,NULL,1),(20,21,14,21,'Chào bác sĩ 2',NULL,'2023-10-19 16:28:24',NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `notification`
+--
+
+DROP TABLE IF EXISTS `notification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `notification` (
+  `notification_id` int NOT NULL AUTO_INCREMENT,
+  `sender_id` int DEFAULT NULL,
+  `receiver_id` int DEFAULT NULL,
+  `notification_type_id` int DEFAULT NULL,
+  `profile_doctor_id` int DEFAULT NULL,
+  `notification_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  `deleted_date` datetime DEFAULT NULL,
+  `is_seen` tinyint(1) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`notification_id`),
+  KEY `sender_id` (`sender_id`),
+  KEY `receiver_id` (`receiver_id`),
+  KEY `notification_type_id` (`notification_type_id`),
+  CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`sender_id`) REFERENCES `user` (`user_id`),
+  CONSTRAINT `notification_ibfk_2` FOREIGN KEY (`receiver_id`) REFERENCES `user` (`user_id`),
+  CONSTRAINT `notification_ibfk_3` FOREIGN KEY (`notification_type_id`) REFERENCES `notification_type` (`notification_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `notification`
+--
+
+LOCK TABLES `notification` WRITE;
+/*!40000 ALTER TABLE `notification` DISABLE KEYS */;
+/*!40000 ALTER TABLE `notification` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `notification_type`
+--
+
+DROP TABLE IF EXISTS `notification_type`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `notification_type` (
+  `notification_type_id` int NOT NULL AUTO_INCREMENT,
+  `notification_type_value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  `deleted_date` datetime DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`notification_type_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `notification_type`
+--
+
+LOCK TABLES `notification_type` WRITE;
+/*!40000 ALTER TABLE `notification_type` DISABLE KEYS */;
+INSERT INTO `notification_type` VALUES (1,'message','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(2,'booking','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(3,'comment','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(4,'schedule','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1);
+/*!40000 ALTER TABLE `notification_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -741,7 +807,7 @@ CREATE TABLE `specialty` (
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`specialty_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -750,7 +816,7 @@ CREATE TABLE `specialty` (
 
 LOCK TABLES `specialty` WRITE;
 /*!40000 ALTER TABLE `specialty` DISABLE KEYS */;
-INSERT INTO `specialty` VALUES (1,'Khoa Tiêu Hóa','Khó Tiêu',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(2,'Khoa Nội','Nội Khoa',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(3,'Khoa Ngoại','Ngoại Khoa',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(4,'Nha Khoa','Niềng Răng',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(5,'Khoa Thần Kinh','Ủa Gì Vậy',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(6,'Khoa Cơ Xương Khớp','Nhức Đầu',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(7,'Khoa Nhi','Sửu Nhi',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(8,'Khoa Da Liễu','Đồi Mồi',NULL,'2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1);
+INSERT INTO `specialty` VALUES (1,'Khoa Tiêu Hóa','Khó Tiêu','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266147/h17azyuh1dwknbdyig7f.webp','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(2,'Khoa Nội','Nội Khoa','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266333/ddbl7rdvm01hbv9blv4p.webp','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(3,'Khoa Ngoại','Ngoại Khoa','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266422/z3vkxvzaiybogfzanj8a.webp','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(4,'Nha Khoa','Niềng Răng','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266502/qmbjwasfu0wr0husqtrr.webp','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(5,'Khoa Thần Kinh','Ủa Gì Vậy','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266540/c7fmgq4f0xp8ucuikh0q.webp','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(6,'Khoa Cơ Xương Khớp','Nhức Đầu','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266607/bemiqt3yppxblrpkbmxy.webp','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(7,'Khoa Nhi','Sửu Nhi','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266081/kxt00omgdlfg4ciyupfx.webp','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(8,'Khoa Da Liễu','Đồi Mồi','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266646/yntrsgij8uhyfwk07wfj.webp','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(9,'Khoa Tâm Thần','Thần kinh','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713265392/ibrcyexmpvqfsocxaeb4.webp','2024-04-16 18:03:09',NULL,NULL,1),(10,'Khoa Hô Hấp','Thở Oxi','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266704/ede3ephqg3rkjow8qvfk.webp','2024-04-16 18:25:02',NULL,NULL,1);
 /*!40000 ALTER TABLE `specialty` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -957,4 +1023,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-14 13:24:57
+-- Dump completed on 2024-04-20 13:31:17
