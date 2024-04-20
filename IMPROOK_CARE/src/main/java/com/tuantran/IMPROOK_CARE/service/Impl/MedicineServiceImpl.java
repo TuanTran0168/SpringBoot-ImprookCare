@@ -6,6 +6,7 @@ package com.tuantran.IMPROOK_CARE.service.Impl;
 
 import com.tuantran.IMPROOK_CARE.Specifications.GenericSpecifications;
 import com.tuantran.IMPROOK_CARE.components.cloudinary.CloudinaryComponent;
+import com.tuantran.IMPROOK_CARE.configs.redis.RestPage;
 import com.tuantran.IMPROOK_CARE.dto.AddMedicineDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateMedicineDTO;
 import com.tuantran.IMPROOK_CARE.models.Medicine;
@@ -192,23 +193,9 @@ public class MedicineServiceImpl implements MedicineService {
         }
     }
 
-    // @Cacheable(value = "findAllMedicinePageSpec")
+    @Cacheable(value = "findAllMedicinePageSpec")
     @Override
     public Page<Medicine> findAllMedicinePageSpec(Map<String, String> params) {
-
-        // Page<Medicine> cache_1 = (Page<Medicine>)
-        // redisTemplate.opsForValue().get("alo_1");
-        // System.err.println(cache_1);
-        // Object cache = this.baseRedisService.get("alo");
-        // System.err.println(cache);
-
-        // String stringCache = (String) ;
-        // System.out.println(
-        // "++++++++++++++++++++++++++++++++++++++++++++++++++ LẤY TRONG CACHE RA
-        // ++++++++++++++++++++++++++++++++++++++++++");
-        // System.out.println(this.baseRedisService.get("alo_1"));
-        // System.out.println(
-        // "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         String pageNumber = params.get("pageNumber");
         String medicineName = params.get("medicineName");
         String fromPrice = params.get("fromPrice");
@@ -255,24 +242,8 @@ public class MedicineServiceImpl implements MedicineService {
         Specification<Medicine> spec = GenericSpecifications.fieldEquals("active", Boolean.TRUE);
         listSpec.add(spec);
 
-        // this.baseRedisService.hashSet("ALO", "findAllMedicinePageSpec",
-        // this.medicineRepository.findAll(GenericSpecifications.createSpecification(listSpec),
-        // page));
-
-        // this.baseRedisService.setPage("alo",
-        // this.medicineRepository.findAll(GenericSpecifications.createSpecification(listSpec),
-        // page));
-
-        // System.out.println(
-        // "+++++++++++++++++++++++++++++++++++++++++ ADU
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++");
-        // this.baseRedisService.setPage("alo_1",
-        // this.medicineRepository.findAll(GenericSpecifications.createSpecification(listSpec),
-        // page));
-        // System.out.println(
-        // "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-
-        return this.medicineRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
+        return new RestPage<>(
+                this.medicineRepository.findAll(GenericSpecifications.createSpecification(listSpec), page));
     }
 
     @Cacheable("findMedicineCache")
