@@ -1,6 +1,7 @@
 package com.tuantran.IMPROOK_CARE.controllers;
 
 import com.tuantran.IMPROOK_CARE.dto.AddMessageSocketDTO;
+import com.tuantran.IMPROOK_CARE.dto.AddNotificationSocketDTO;
 import com.tuantran.IMPROOK_CARE.dto.ChatRealTimeMessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 // @RequestMapping("/api")
-public class ApiChatRealTimeController {
+public class ApiRealTimeController {
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -21,15 +22,6 @@ public class ApiChatRealTimeController {
     public ChatRealTimeMessageDTO receiveMessage(@Payload ChatRealTimeMessageDTO message) {
         return message;
     }
-
-    // @MessageMapping("/private-message")
-    // public ChatRealTimeMessageDTO recMessage(@Payload ChatRealTimeMessageDTO
-    // message) {
-    // simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),
-    // "/private", message);
-    // System.out.println(message.toString());
-    // return message;
-    // }
 
     @MessageMapping("/private-message")
     public AddMessageSocketDTO recMessage(@Payload AddMessageSocketDTO message) {
@@ -43,5 +35,13 @@ public class ApiChatRealTimeController {
 
         System.out.println(message.toString());
         return message;
+    }
+
+    @MessageMapping("/private-notification")
+    public AddNotificationSocketDTO notification(@Payload AddNotificationSocketDTO notification) {
+        simpMessagingTemplate.convertAndSendToUser(notification.getReceiverId(), "/notification", notification);
+
+        System.out.println(notification.toString());
+        return notification;
     }
 }
