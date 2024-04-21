@@ -1,5 +1,5 @@
 # Sử dụng hình ảnh Maven để xây dựng dự án
-FROM maven:3.9.4-openjdk-19 AS build
+FROM maven:3.9.4-openjdk-17 AS build
 # Thiết lập thư mục làm việc
 WORKDIR /app
 # Sao chép tất cả các tệp vào container
@@ -8,7 +8,7 @@ COPY . /app
 RUN mvn clean install
 
 # Sử dụng hình ảnh OpenJDK để chạy ứng dụng
-FROM openjdk:19-jdk-slim
+FROM openjdk:17-jdk
 # Thiết lập thư mục làm việc cho ứng dụng
 WORKDIR /app
 # Sao chép tệp JAR đã được xây dựng từ giai đoạn xây dựng
