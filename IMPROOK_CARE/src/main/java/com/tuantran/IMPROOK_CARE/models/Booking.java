@@ -30,13 +30,14 @@ import jakarta.persistence.TemporalType;
 @Entity
 @Table(name = "booking")
 @NamedQueries({
-    @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b"),
-    @NamedQuery(name = "Booking.findByBookingId", query = "SELECT b FROM Booking b WHERE b.bookingId = :bookingId"),
-    @NamedQuery(name = "Booking.findByCreatedDate", query = "SELECT b FROM Booking b WHERE b.createdDate = :createdDate"),
-    @NamedQuery(name = "Booking.findByUpdatedDate", query = "SELECT b FROM Booking b WHERE b.updatedDate = :updatedDate"),
-    @NamedQuery(name = "Booking.findByDeletedDate", query = "SELECT b FROM Booking b WHERE b.deletedDate = :deletedDate"),
-    @NamedQuery(name = "Booking.findByBookingCancel", query = "SELECT b FROM Booking b WHERE b.bookingCancel = :bookingCancel"),
-    @NamedQuery(name = "Booking.findByActive", query = "SELECT b FROM Booking b WHERE b.active = :active")})
+        @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b"),
+        @NamedQuery(name = "Booking.findByBookingId", query = "SELECT b FROM Booking b WHERE b.bookingId = :bookingId"),
+        @NamedQuery(name = "Booking.findByCreatedDate", query = "SELECT b FROM Booking b WHERE b.createdDate = :createdDate"),
+        @NamedQuery(name = "Booking.findByUpdatedDate", query = "SELECT b FROM Booking b WHERE b.updatedDate = :updatedDate"),
+        @NamedQuery(name = "Booking.findByDeletedDate", query = "SELECT b FROM Booking b WHERE b.deletedDate = :deletedDate"),
+        @NamedQuery(name = "Booking.findByBookingCancel", query = "SELECT b FROM Booking b WHERE b.bookingCancel = :bookingCancel"),
+        @NamedQuery(name = "Booking.findByLinkVideoCall", query = "SELECT b FROM Booking b WHERE b.linkVideoCall = :linkVideoCall"),
+        @NamedQuery(name = "Booking.findByActive", query = "SELECT b FROM Booking b WHERE b.active = :active") })
 public class Booking implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -56,6 +57,8 @@ public class Booking implements Serializable {
     private Date deletedDate;
     @Column(name = "booking_cancel")
     private Boolean bookingCancel;
+    @Column(name = "link_video_call")
+    private String linkVideoCall;
     @Column(name = "active")
     private Boolean active;
     @JoinColumn(name = "status_id", referencedColumnName = "status_id")
@@ -121,6 +124,14 @@ public class Booking implements Serializable {
         this.bookingCancel = bookingCancel;
     }
 
+    public String getLinkVideoCall() {
+        return linkVideoCall;
+    }
+
+    public void setLinkVideoCall(String linkVideoCall) {
+        this.linkVideoCall = linkVideoCall;
+    }
+
     public Boolean getActive() {
         return active;
     }
@@ -183,7 +194,8 @@ public class Booking implements Serializable {
             return false;
         }
         Booking other = (Booking) object;
-        if ((this.bookingId == null && other.bookingId != null) || (this.bookingId != null && !this.bookingId.equals(other.bookingId))) {
+        if ((this.bookingId == null && other.bookingId != null)
+                || (this.bookingId != null && !this.bookingId.equals(other.bookingId))) {
             return false;
         }
         return true;

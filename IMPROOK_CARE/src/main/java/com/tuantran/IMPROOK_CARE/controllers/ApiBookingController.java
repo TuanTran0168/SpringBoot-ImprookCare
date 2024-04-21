@@ -4,22 +4,33 @@
  */
 package com.tuantran.IMPROOK_CARE.controllers;
 
+import com.tuantran.IMPROOK_CARE.components.UUID.UUIDGenerator;
 import com.tuantran.IMPROOK_CARE.dto.BookingDTO;
+import com.tuantran.IMPROOK_CARE.models.Booking;
+import com.tuantran.IMPROOK_CARE.models.BookingStatus;
+import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
+import com.tuantran.IMPROOK_CARE.models.Schedule;
 import com.tuantran.IMPROOK_CARE.service.BookingService;
+import com.tuantran.IMPROOK_CARE.service.BookingStatusService;
+import com.tuantran.IMPROOK_CARE.service.ProfilePatientService;
+import com.tuantran.IMPROOK_CARE.service.ScheduleService;
+
 import jakarta.validation.Valid;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -33,20 +44,64 @@ public class ApiBookingController {
     @Autowired
     private BookingService bookingService;
 
+    @Autowired
+    UUIDGenerator uuidGenerator;
+
+    @Autowired
+    ScheduleService scheduleService;
+
+    @Autowired
+    ProfilePatientService profilePatientService;
+
+    @Autowired
+    BookingStatusService bookingStatusService;
+
     @PostMapping("/auth/add-booking/")
     @CrossOrigin
-    public ResponseEntity<String> addBooking(@Valid @RequestBody BookingDTO bookingDTO) {
+    public ResponseEntity<?> addBooking(@Valid @RequestBody BookingDTO bookingDTO) {
         String message = "Có lỗi xảy ra!";
-        int check = this.bookingService.addBooking(bookingDTO);
+        try {
+            Booking booking = new Booking();
+            Optional<Schedule> scheduleOptional = this.scheduleService
+                    .findScheduleByIdAndActiveTrueOptional(Integer.parseInt(bookingDTO.getScheduleId()));
 
-        if (check == 1) {
-            message = "Đặt lịch thành công!";
-            return new ResponseEntity<>(message, HttpStatus.OK);
-        } else if (check == 0) {
-            message = "Đặt lịch thất bại!";
+            if (scheduleOptional.isPresent()) {
+                Schedule schedule = scheduleOptional.get();
+                booking.setScheduleId(schedule);
+
+                schedule.setBooked(Boolean.TRUE);
+
+                Optional<ProfilePatient> profilePatientOptional = this.profilePatientService
+                        .findProfilePatientByProfilePatientIdAndActiveTrueOptional(
+                                Integer.parseInt(bookingDTO.getProfilePatientId()));
+
+                if (profilePatientOptional.isPresent()) {
+                    booking.setProfilePatientId(profilePatientOptional.get());
+
+                    booking.setStatusId(this.bookingStatusService.findBookingStatusByStatusId(1));
+                    booking.setCreatedDate(new Date());
+
+                    booking.setBookingCancel(Boolean.FALSE);
+                    booking.setActive(Boolean.TRUE);
+
+                    return new ResponseEntity<>(this.bookingService.createBooking(booking, schedule),
+                            HttpStatus.CREATED);
+                } else {
+                    message = "ProfilePatient[" + bookingDTO.getProfilePatientId() + "] không tồn tại!";
+                    return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+                }
+
+            } else {
+                message = "Schedule[" + bookingDTO.getScheduleId() + "] không tồn tại!";
+                return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+            }
+        } catch (DataAccessException ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(ex, HttpStatus.BAD_REQUEST);
+        } catch (NoSuchElementException ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(ex, HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/auth/booking-user-view/")
@@ -61,33 +116,42 @@ public class ApiBookingController {
     public ResponseEntity<List<Object[]>> getTimeSlotsForDoctorOnDate(@RequestBody Map<String, String> params) {
         String profileDoctorId = params.get("profileDoctorId");
         String date = params.get("date");
-        return new ResponseEntity<>(this.bookingService.getTimeSlotsForDoctorOnDate(Integer.parseInt(profileDoctorId), date), HttpStatus.OK);
+        return new ResponseEntity<>(
+                this.bookingService.getTimeSlotsForDoctorOnDate(Integer.parseInt(profileDoctorId), date),
+                HttpStatus.OK);
     }
 
     @PostMapping("/public/date-booking/")
     @CrossOrigin
-    public ResponseEntity<List<Date>> getDatesForProfileDoctor(@RequestBody Map<String, String> params) {
+    public ResponseEntity<?> getDatesForProfileDoctor(@RequestBody Map<String, String> params) {
         String profileDoctorId = params.get("profileDoctorId");
-        return new ResponseEntity<>(this.bookingService.getDatesForProfileDoctor(Integer.parseInt(profileDoctorId)), HttpStatus.OK);
+        return new ResponseEntity<>(this.bookingService.getDatesForProfileDoctor(Integer.parseInt(profileDoctorId)),
+                HttpStatus.OK);
     }
 
     @PostMapping("/auth/doctor/accept-booking/")
     @CrossOrigin
-    public ResponseEntity<String> acceptBooking(@RequestBody String bookingId) {
+    public ResponseEntity<?> acceptBooking(@RequestBody String bookingId) {
 
-        String message = "Có lỗi xảy ra!";
-        int check = this.bookingService.acceptBooking(Integer.parseInt(bookingId));
+        try {
+            String message = "Có lỗi xảy ra!";
+            Optional<Booking> bookingOptional = this.bookingService
+                    .findBookingByBookingIdAndActiveTrue(Integer.parseInt(bookingId));
 
-        if (check == 1) {
-            message = "Xác nhận thành công lịch đặt khám!";
-            return new ResponseEntity<>(message, HttpStatus.OK);
+            if (bookingOptional.isPresent()) {
+                Booking booking = bookingOptional.get();
+                booking.setStatusId(new BookingStatus(2));
+                booking.setUpdatedDate(new Date());
+                // Chỗ này sau này quay lại thêm tiền tố url bên react cho cái uuid này
+                booking.setLinkVideoCall(this.uuidGenerator.generateUUID());
+                return new ResponseEntity<>(this.bookingService.acceptBooking(booking), HttpStatus.OK);
+            } else {
+                message = "Booking[" + bookingId + "] không tồn tại!";
+                return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        if (check == 0) {
-            message = "Xác nhận thất bại lịch đặt khám!";
-        }
-
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/auth/doctor/deny-booking/")
@@ -132,13 +196,31 @@ public class ApiBookingController {
     @CrossOrigin
     public ResponseEntity<List<Object[]>> getBookingForDoctorView(@RequestBody Map<String, String> params) {
         String profiledoctorId = params.get("profileDoctorId");
-        return new ResponseEntity<>(this.bookingService.getBookingForDoctorView(Integer.parseInt(profiledoctorId)), HttpStatus.OK);
+        return new ResponseEntity<>(this.bookingService.getBookingForDoctorView(Integer.parseInt(profiledoctorId)),
+                HttpStatus.OK);
     }
 
     @PostMapping("/auth/booking-details-user-view/")
     @CrossOrigin
     public ResponseEntity<List<Object[]>> getBookingDetailsByBookingId(@RequestBody Map<String, String> params) {
         String bookingId = params.get("bookingId");
-        return new ResponseEntity<>(this.bookingService.getBookingDetailsByBookingId(Integer.parseInt(bookingId)), HttpStatus.OK);
+        return new ResponseEntity<>(this.bookingService.getBookingDetailsByBookingId(Integer.parseInt(bookingId)),
+                HttpStatus.OK);
+    }
+
+    @PostMapping("/auth/booking-doctor-view-page/")
+    @CrossOrigin
+    public ResponseEntity<?> getBookingForDoctorViewPage(@RequestBody Map<String, String> params) {
+        try {
+            String profileDoctorId = params.get("profileDoctorId");
+            String bookingStatusId = params.get("bookingStatusId");
+            return new ResponseEntity<>(this.bookingService.getBookingForDoctorViewPage(
+                    Integer.parseInt(profileDoctorId), Integer.parseInt(bookingStatusId), params), HttpStatus.OK);
+        } catch (NumberFormatException e) {
+            return new ResponseEntity<>(e.toString(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Something wrong here, Internal Server Error!",
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

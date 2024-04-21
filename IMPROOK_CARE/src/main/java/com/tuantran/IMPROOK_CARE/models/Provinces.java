@@ -4,9 +4,11 @@
  */
 package com.tuantran.IMPROOK_CARE.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,13 +27,13 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "provinces")
 @NamedQueries({
-    @NamedQuery(name = "Provinces.findAll", query = "SELECT p FROM Provinces p"),
-    @NamedQuery(name = "Provinces.findByCode", query = "SELECT p FROM Provinces p WHERE p.code = :code"),
-    @NamedQuery(name = "Provinces.findByName", query = "SELECT p FROM Provinces p WHERE p.name = :name"),
-    @NamedQuery(name = "Provinces.findByNameEn", query = "SELECT p FROM Provinces p WHERE p.nameEn = :nameEn"),
-    @NamedQuery(name = "Provinces.findByFullName", query = "SELECT p FROM Provinces p WHERE p.fullName = :fullName"),
-    @NamedQuery(name = "Provinces.findByFullNameEn", query = "SELECT p FROM Provinces p WHERE p.fullNameEn = :fullNameEn"),
-    @NamedQuery(name = "Provinces.findByCodeName", query = "SELECT p FROM Provinces p WHERE p.codeName = :codeName")})
+        @NamedQuery(name = "Provinces.findAll", query = "SELECT p FROM Provinces p"),
+        @NamedQuery(name = "Provinces.findByCode", query = "SELECT p FROM Provinces p WHERE p.code = :code"),
+        @NamedQuery(name = "Provinces.findByName", query = "SELECT p FROM Provinces p WHERE p.name = :name"),
+        @NamedQuery(name = "Provinces.findByNameEn", query = "SELECT p FROM Provinces p WHERE p.nameEn = :nameEn"),
+        @NamedQuery(name = "Provinces.findByFullName", query = "SELECT p FROM Provinces p WHERE p.fullName = :fullName"),
+        @NamedQuery(name = "Provinces.findByFullNameEn", query = "SELECT p FROM Provinces p WHERE p.fullNameEn = :fullNameEn"),
+        @NamedQuery(name = "Provinces.findByCodeName", query = "SELECT p FROM Provinces p WHERE p.codeName = :codeName") })
 public class Provinces implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -28,14 +28,15 @@ import jakarta.persistence.TemporalType;
 @Entity
 @Table(name = "message")
 @NamedQueries({
-    @NamedQuery(name = "Message.findAll", query = "SELECT m FROM Message m"),
-    @NamedQuery(name = "Message.findByMessageId", query = "SELECT m FROM Message m WHERE m.messageId = :messageId"),
-    @NamedQuery(name = "Message.findBySenderId", query = "SELECT m FROM Message m WHERE m.senderId = :senderId"),
-    @NamedQuery(name = "Message.findByAvatar", query = "SELECT m FROM Message m WHERE m.avatar = :avatar"),
-    @NamedQuery(name = "Message.findByCreatedDate", query = "SELECT m FROM Message m WHERE m.createdDate = :createdDate"),
-    @NamedQuery(name = "Message.findByUpdatedDate", query = "SELECT m FROM Message m WHERE m.updatedDate = :updatedDate"),
-    @NamedQuery(name = "Message.findByDeletedDate", query = "SELECT m FROM Message m WHERE m.deletedDate = :deletedDate"),
-    @NamedQuery(name = "Message.findByActive", query = "SELECT m FROM Message m WHERE m.active = :active")})
+        @NamedQuery(name = "Message.findAll", query = "SELECT m FROM Message m"),
+        @NamedQuery(name = "Message.findByMessageId", query = "SELECT m FROM Message m WHERE m.messageId = :messageId"),
+        @NamedQuery(name = "Message.findBySenderId", query = "SELECT m FROM Message m WHERE m.senderId = :senderId"),
+        @NamedQuery(name = "Message.findByAvatar", query = "SELECT m FROM Message m WHERE m.avatar = :avatar"),
+        @NamedQuery(name = "Message.findByCreatedDate", query = "SELECT m FROM Message m WHERE m.createdDate = :createdDate"),
+        @NamedQuery(name = "Message.findByUpdatedDate", query = "SELECT m FROM Message m WHERE m.updatedDate = :updatedDate"),
+        @NamedQuery(name = "Message.findByDeletedDate", query = "SELECT m FROM Message m WHERE m.deletedDate = :deletedDate"),
+        @NamedQuery(name = "Message.findByIsSeen", query = "SELECT m FROM Message m WHERE m.isSeen = :isSeen"),
+        @NamedQuery(name = "Message.findByActive", query = "SELECT m FROM Message m WHERE m.active = :active") })
 public class Message implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -60,6 +61,8 @@ public class Message implements Serializable {
     @Column(name = "deleted_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
+    @Column(name = "is_seen")
+    private Boolean isSeen;
     @Column(name = "active")
     private Boolean active;
     @JoinColumn(name = "profile_doctor_id", referencedColumnName = "profile_doctor_id")
@@ -132,6 +135,14 @@ public class Message implements Serializable {
         this.deletedDate = deletedDate;
     }
 
+    public Boolean getIsSeen() {
+        return isSeen;
+    }
+
+    public void setIsSeen(Boolean isSeen) {
+        this.isSeen = isSeen;
+    }
+
     public Boolean getActive() {
         return active;
     }
@@ -170,7 +181,8 @@ public class Message implements Serializable {
             return false;
         }
         Message other = (Message) object;
-        if ((this.messageId == null && other.messageId != null) || (this.messageId != null && !this.messageId.equals(other.messageId))) {
+        if ((this.messageId == null && other.messageId != null)
+                || (this.messageId != null && !this.messageId.equals(other.messageId))) {
             return false;
         }
         return true;
@@ -180,5 +192,5 @@ public class Message implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.Message[ messageId=" + messageId + " ]";
     }
-    
+
 }

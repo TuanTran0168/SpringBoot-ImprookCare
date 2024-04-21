@@ -6,12 +6,14 @@ package com.tuantran.IMPROOK_CARE.service.Impl;
 
 import com.tuantran.IMPROOK_CARE.Specifications.GenericSpecifications;
 import com.tuantran.IMPROOK_CARE.components.cloudinary.CloudinaryComponent;
+import com.tuantran.IMPROOK_CARE.configs.redis.RestPage;
 import com.tuantran.IMPROOK_CARE.dto.AddMedicineDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateMedicineDTO;
 import com.tuantran.IMPROOK_CARE.models.Medicine;
 import com.tuantran.IMPROOK_CARE.models.MedicineCategory;
 import com.tuantran.IMPROOK_CARE.repository.MedicineCategoryRepository;
 import com.tuantran.IMPROOK_CARE.repository.MedicineRepository;
+// import com.tuantran.IMPROOK_CARE.service.BaseRedisService;
 import com.tuantran.IMPROOK_CARE.service.MedicineService;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
@@ -55,6 +58,9 @@ public class MedicineServiceImpl implements MedicineService {
     @Autowired
     private Environment environment;
 
+    // @Autowired
+    // private BaseRedisService baseRedisService;
+
     @Override
     public List<Medicine> findMedicineByActiveTrue() {
         return this.medicineRepository.findMedicineByActiveTrue();
@@ -64,7 +70,8 @@ public class MedicineServiceImpl implements MedicineService {
     public Medicine findMedicineByMedicineIdAndActiveTrue(int medicineId) {
 
         try {
-            Optional<Medicine> medicineOptional = this.medicineRepository.findMedicineByMedicineIdAndActiveTrue(medicineId);
+            Optional<Medicine> medicineOptional = this.medicineRepository
+                    .findMedicineByMedicineIdAndActiveTrue(medicineId);
             if (medicineOptional.isPresent()) {
                 return medicineOptional.get();
             } else {
@@ -79,7 +86,8 @@ public class MedicineServiceImpl implements MedicineService {
     @Override
     public List<Medicine> findMedicineByCategoryId(int medicineCategoryId) {
         try {
-            Optional<MedicineCategory> medicineCategoryOptional = this.medicineCategoryRepository.findMedicineCategoryByCategoryIdAndActiveTrue(medicineCategoryId);
+            Optional<MedicineCategory> medicineCategoryOptional = this.medicineCategoryRepository
+                    .findMedicineCategoryByCategoryIdAndActiveTrue(medicineCategoryId);
             if (medicineCategoryOptional.isPresent()) {
                 return this.medicineRepository.findMedicineByCategoryId(medicineCategoryOptional.get());
             } else {
@@ -111,7 +119,9 @@ public class MedicineServiceImpl implements MedicineService {
                 }
             }
 
-            Optional<MedicineCategory> medicineCategoryOptional = this.medicineCategoryRepository.findMedicineCategoryByCategoryIdAndActiveTrue(Integer.parseInt(addMedicineDTO.getMedicineCategoryId()));
+            Optional<MedicineCategory> medicineCategoryOptional = this.medicineCategoryRepository
+                    .findMedicineCategoryByCategoryIdAndActiveTrue(
+                            Integer.parseInt(addMedicineDTO.getMedicineCategoryId()));
 
             if (medicineCategoryOptional.isPresent()) {
                 medicine.setCategoryId(medicineCategoryOptional.get());
@@ -135,7 +145,8 @@ public class MedicineServiceImpl implements MedicineService {
     @Override
     public int updateMedicine(UpdateMedicineDTO updateMedicineDTO, MultipartFile avatar) {
         try {
-            Optional<Medicine> medicineOptional = this.medicineRepository.findMedicineByMedicineIdAndActiveTrue(Integer.parseInt(updateMedicineDTO.getMedicineId()));
+            Optional<Medicine> medicineOptional = this.medicineRepository
+                    .findMedicineByMedicineIdAndActiveTrue(Integer.parseInt(updateMedicineDTO.getMedicineId()));
 
             if (medicineOptional.isPresent()) {
                 Medicine medicine = medicineOptional.get();
@@ -147,14 +158,17 @@ public class MedicineServiceImpl implements MedicineService {
                 medicine.setUnitPrice(BigDecimal.valueOf(Double.parseDouble(updateMedicineDTO.getUnitPrice())));
                 if (avatar != null && !avatar.isEmpty()) {
                     try {
-                        String linkCloudinaryAvatar = cloudinaryComponent.Cloudinary(avatar).get("secure_url").toString();
+                        String linkCloudinaryAvatar = cloudinaryComponent.Cloudinary(avatar).get("secure_url")
+                                .toString();
                         medicine.setAvatar(linkCloudinaryAvatar);
                     } catch (Exception ex) {
                         Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
 
-                Optional<MedicineCategory> medicineCategoryOptional = this.medicineCategoryRepository.findMedicineCategoryByCategoryIdAndActiveTrue(Integer.parseInt(updateMedicineDTO.getMedicineCategoryId()));
+                Optional<MedicineCategory> medicineCategoryOptional = this.medicineCategoryRepository
+                        .findMedicineCategoryByCategoryIdAndActiveTrue(
+                                Integer.parseInt(updateMedicineDTO.getMedicineCategoryId()));
 
                 if (medicineCategoryOptional.isPresent()) {
                     medicine.setCategoryId(medicineCategoryOptional.get());
@@ -179,7 +193,7 @@ public class MedicineServiceImpl implements MedicineService {
         }
     }
 
-//    @Cacheable(value = "findAllMedicinePageSpec")
+    @Cacheable(value = "findAllMedicinePageSpec")
     @Override
     public Page<Medicine> findAllMedicinePageSpec(Map<String, String> params) {
         String pageNumber = params.get("pageNumber");
@@ -191,10 +205,13 @@ public class MedicineServiceImpl implements MedicineService {
         List<Specification<Medicine>> listSpec = new ArrayList<>();
         int defaultPageNumber = 0;
         Sort mySort = Sort.by("createdDate").descending();
-        Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+        Pageable page = PageRequest.of(defaultPageNumber,
+                Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
         if (pageNumber != null && !pageNumber.isEmpty()) {
             if (!pageNumber.equals("NaN")) {
-                page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+                page = PageRequest.of(Integer.parseInt(pageNumber),
+                        Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")),
+                        mySort);
             }
         }
 
@@ -214,16 +231,19 @@ public class MedicineServiceImpl implements MedicineService {
         }
 
         if (categoryId != null && !categoryId.isEmpty()) {
-            Optional<MedicineCategory> medicineCategoryOptional = this.medicineCategoryRepository.findMedicineCategoryByCategoryIdAndActiveTrue(Integer.parseInt(categoryId));
+            Optional<MedicineCategory> medicineCategoryOptional = this.medicineCategoryRepository
+                    .findMedicineCategoryByCategoryIdAndActiveTrue(Integer.parseInt(categoryId));
             if (medicineCategoryOptional.isPresent()) {
-                Specification<Medicine> spec = GenericSpecifications.fieldEquals("categoryId", medicineCategoryOptional.get());
+                Specification<Medicine> spec = GenericSpecifications.fieldEquals("categoryId",
+                        medicineCategoryOptional.get());
                 listSpec.add(spec);
             }
         }
         Specification<Medicine> spec = GenericSpecifications.fieldEquals("active", Boolean.TRUE);
         listSpec.add(spec);
 
-        return this.medicineRepository.findAll(GenericSpecifications.createSpecification(listSpec), page);
+        return new RestPage<>(
+                this.medicineRepository.findAll(GenericSpecifications.createSpecification(listSpec), page));
     }
 
     @Cacheable("findMedicineCache")
@@ -254,9 +274,11 @@ public class MedicineServiceImpl implements MedicineService {
         }
 
         if (categoryId != null && !categoryId.isEmpty()) {
-            Optional<MedicineCategory> medicineCategoryOptional = this.medicineCategoryRepository.findMedicineCategoryByCategoryIdAndActiveTrue(Integer.parseInt(categoryId));
+            Optional<MedicineCategory> medicineCategoryOptional = this.medicineCategoryRepository
+                    .findMedicineCategoryByCategoryIdAndActiveTrue(Integer.parseInt(categoryId));
             if (medicineCategoryOptional.isPresent()) {
-                Specification<Medicine> spec = GenericSpecifications.fieldEquals("categoryId", medicineCategoryOptional.get());
+                Specification<Medicine> spec = GenericSpecifications.fieldEquals("categoryId",
+                        medicineCategoryOptional.get());
                 listSpec.add(spec);
             }
         }

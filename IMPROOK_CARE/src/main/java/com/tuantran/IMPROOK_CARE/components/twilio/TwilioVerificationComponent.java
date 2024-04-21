@@ -7,7 +7,6 @@ package com.tuantran.IMPROOK_CARE.components.twilio;
 import com.tuantran.IMPROOK_CARE.configs.twilio.TwilioConfiguration;
 import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.service.UserService;
-import com.twilio.Twilio;
 import com.twilio.exception.ApiException;
 import com.twilio.rest.verify.v2.service.Verification;
 import com.twilio.rest.verify.v2.service.VerificationCheck;
@@ -37,7 +36,8 @@ public class TwilioVerificationComponent {
                 // username nó cũng là phonenumber (Quy ước mới)
                 User user = this.userService.findUserByUsername(phonenumber);
                 if (user == null) {
-                    String VietNam_phonenumber = this.VIETNAM_COUNTRY_CODE + phonenumber.substring(1, phonenumber.length());
+                    String VietNam_phonenumber = this.VIETNAM_COUNTRY_CODE
+                            + phonenumber.substring(1, phonenumber.length());
                     Verification.creator(
                             twilioConfiguration.getServiceSid(),
                             VietNam_phonenumber,
@@ -62,7 +62,8 @@ public class TwilioVerificationComponent {
                 // username nó cũng là phonenumber (Quy ước mới)
                 User user = this.userService.findUserByUsername(phonenumber);
                 if (user != null) {
-                    String VietNam_phonenumber = this.VIETNAM_COUNTRY_CODE + phonenumber.substring(1, phonenumber.length());
+                    String VietNam_phonenumber = this.VIETNAM_COUNTRY_CODE
+                            + phonenumber.substring(1, phonenumber.length());
                     Verification.creator(
                             twilioConfiguration.getServiceSid(),
                             VietNam_phonenumber,
@@ -85,12 +86,13 @@ public class TwilioVerificationComponent {
         try {
             if (this.isPhoneNumberValid(phonenumber)) {
                 String VietNam_phonenumber = this.VIETNAM_COUNTRY_CODE + phonenumber.substring(1, phonenumber.length());
-                VerificationCheck erificationCheck = VerificationCheck.creator(twilioConfiguration.getServiceSid(), code)
+                VerificationCheck erificationCheck = VerificationCheck
+                        .creator(twilioConfiguration.getServiceSid(), code)
                         .setTo(VietNam_phonenumber)
                         .create();
 
                 if (erificationCheck.getStatus().equals(this.SUCCESS_STATUS)) {
-                    return 1; //Xác thực ok
+                    return 1; // Xác thực ok
                 } else if (erificationCheck.getStatus().equals(this.FAIL_STATUS)) {
                     return 2; // Sai mã xác thực
                 }

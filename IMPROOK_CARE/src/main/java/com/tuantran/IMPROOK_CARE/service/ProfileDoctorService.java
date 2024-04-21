@@ -7,12 +7,9 @@ package com.tuantran.IMPROOK_CARE.service;
 import com.tuantran.IMPROOK_CARE.dto.AddProfileDoctorDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateProfileDoctorDTO;
 import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
-import com.tuantran.IMPROOK_CARE.models.User;
 import java.util.List;
 import java.util.Map;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 
 /**
  *
@@ -29,8 +26,8 @@ public interface ProfileDoctorService {
     ProfileDoctor findProfileDoctorByProfileDoctorIdAndActiveTrue(int profileDoctorId);
 
     List<ProfileDoctor> findProfileDoctorByUserIdAndActiveTrue(int userId);
-    
+
     Page<ProfileDoctor> findAllProfileDoctorPageSpec(Map<String, String> params);
-    
+
     int softDeleteProfileDoctor(int profileDoctorId);
 }

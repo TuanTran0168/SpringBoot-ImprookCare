@@ -10,6 +10,7 @@ import com.tuantran.IMPROOK_CARE.models.Schedule;
 import com.tuantran.IMPROOK_CARE.models.TimeSlot;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -19,11 +20,20 @@ public interface ScheduleService {
 
     int addSchedule(AddScheduleDTO addScheduleDTO);
 
+    Schedule addSchedule(TimeSlot timeSlot, Date date, ProfileDoctor profileDoctor);
+
+    Schedule addSchedule(Schedule schedule);
+
+    Schedule updateSchedule(Schedule schedule);
+
     int addCustomSchedule(List<AddScheduleDTO> addScheduleDTOList);
 
     Schedule findScheduleByIdAndActiveTrue(int scheduleId);
 
-    Schedule findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(int profiledoctorId, String date, int timeSlotId);
+    Optional<Schedule> findScheduleByIdAndActiveTrueOptional(int scheduleId);
+
+    Schedule findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(int profiledoctorId, String date,
+            int timeSlotId);
 
     int isScheduleExists(int profiledoctorId, String date, int timeSlotId);
 

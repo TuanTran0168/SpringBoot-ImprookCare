@@ -4,6 +4,8 @@
  */
 package com.tuantran.IMPROOK_CARE.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -20,10 +22,13 @@ public class AddMessageDTO {
 
     @NotBlank
     private String profileDoctorId;
-    
+
     @NotBlank
     private String senderId;
 
     @NotBlank
     private String messageContent;
+
+    // @NotBlank
+    private MultipartFile avatar;
 }

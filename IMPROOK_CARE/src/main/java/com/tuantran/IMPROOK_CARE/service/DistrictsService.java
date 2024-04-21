@@ -5,7 +5,6 @@
 package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.models.Districts;
-import com.tuantran.IMPROOK_CARE.models.Provinces;
 import java.util.List;
 
 /**

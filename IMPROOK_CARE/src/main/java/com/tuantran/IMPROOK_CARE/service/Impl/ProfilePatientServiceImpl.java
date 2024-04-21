@@ -57,23 +57,25 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
             profilePatient.setName(addProfilePatientDTO.getName());
             profilePatient.setPhonenumber(addProfilePatientDTO.getPhonenumber());
             profilePatient.setGender(addProfilePatientDTO.getGender());
-            profilePatient.setBirthday(this.dateFormatComponent.myDateFormat().parse(addProfilePatientDTO.getBirthday()));
+            profilePatient
+                    .setBirthday(this.dateFormatComponent.myDateFormat().parse(addProfilePatientDTO.getBirthday()));
             profilePatient.setProvinceName(addProfilePatientDTO.getProvinceName());
             profilePatient.setDistrictName(addProfilePatientDTO.getDistrictName());
             profilePatient.setWardName(addProfilePatientDTO.getWardName());
             profilePatient.setPersonalAddress(addProfilePatientDTO.getPersonalAddress());
             profilePatient.setAddress(
                     addProfilePatientDTO.getPersonalAddress()
-                    + " " + addProfilePatientDTO.getWardName()
-                    + " " + addProfilePatientDTO.getDistrictName()
-                    + " " + addProfilePatientDTO.getProvinceName()
-            );
+                            + " " + addProfilePatientDTO.getWardName()
+                            + " " + addProfilePatientDTO.getDistrictName()
+                            + " " + addProfilePatientDTO.getProvinceName());
 
             profilePatient.setEmail(addProfilePatientDTO.getEmail());
             profilePatient.setRelationship(addProfilePatientDTO.getRelationship());
 
-//            Optional<User> userOptional = this.userRepository.findById(Integer.parseInt(addProfilePatientDTO.getUserId()));
-            Optional<User> userOptional = this.userRepository.findUserByUserIdAndActiveTrue(Integer.parseInt(addProfilePatientDTO.getUserId()));
+            // Optional<User> userOptional =
+            // this.userRepository.findById(Integer.parseInt(addProfilePatientDTO.getUserId()));
+            Optional<User> userOptional = this.userRepository
+                    .findUserByUserIdAndActiveTrue(Integer.parseInt(addProfilePatientDTO.getUserId()));
             if (userOptional.isPresent()) {
                 profilePatient.setUserId(userOptional.get());
             }
@@ -99,7 +101,9 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
     @Override
     public int updateProfilePatient(UpdateProfilePatientDTO updateProfilePatientDTO) {
         try {
-            Optional<ProfilePatient> profilePatientOptional = this.profilePatientRepository.findProfilePatientByProfilePatientIdAndActiveTrue(Integer.parseInt(updateProfilePatientDTO.getProfilePatientId()));
+            Optional<ProfilePatient> profilePatientOptional = this.profilePatientRepository
+                    .findProfilePatientByProfilePatientIdAndActiveTrue(
+                            Integer.parseInt(updateProfilePatientDTO.getProfilePatientId()));
 
             if (profilePatientOptional.isPresent()) {
 
@@ -107,17 +111,17 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
                 profilePatient.setName(updateProfilePatientDTO.getName());
                 profilePatient.setPhonenumber(updateProfilePatientDTO.getPhonenumber());
                 profilePatient.setGender(updateProfilePatientDTO.getGender());
-                profilePatient.setBirthday(this.dateFormatComponent.myDateFormat().parse(updateProfilePatientDTO.getBirthday()));
+                profilePatient.setBirthday(
+                        this.dateFormatComponent.myDateFormat().parse(updateProfilePatientDTO.getBirthday()));
                 profilePatient.setProvinceName(updateProfilePatientDTO.getProvinceName());
                 profilePatient.setDistrictName(updateProfilePatientDTO.getDistrictName());
                 profilePatient.setWardName(updateProfilePatientDTO.getWardName());
                 profilePatient.setPersonalAddress(updateProfilePatientDTO.getPersonalAddress());
                 profilePatient.setAddress(
                         updateProfilePatientDTO.getPersonalAddress()
-                        + " " + updateProfilePatientDTO.getWardName()
-                        + " " + updateProfilePatientDTO.getDistrictName()
-                        + " " + updateProfilePatientDTO.getProvinceName()
-                );
+                                + " " + updateProfilePatientDTO.getWardName()
+                                + " " + updateProfilePatientDTO.getDistrictName()
+                                + " " + updateProfilePatientDTO.getProvinceName());
 
                 profilePatient.setEmail(updateProfilePatientDTO.getEmail());
                 profilePatient.setRelationship(updateProfilePatientDTO.getRelationship());
@@ -147,7 +151,8 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
     @Override
     public ProfilePatient findProfilePatientByProfilePatientIdAndActiveTrue(int profilePatientId) {
         try {
-            Optional<ProfilePatient> profilePatientOptional = this.profilePatientRepository.findProfilePatientByProfilePatientIdAndActiveTrue(profilePatientId);
+            Optional<ProfilePatient> profilePatientOptional = this.profilePatientRepository
+                    .findProfilePatientByProfilePatientIdAndActiveTrue(profilePatientId);
             if (profilePatientOptional.isPresent()) {
                 return profilePatientOptional.get();
             } else {
@@ -161,7 +166,8 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
     @Override
     public List<ProfilePatient> findProfilePatientByUserIdAndActiveTrue(int userId) {
         try {
-            return this.profilePatientRepository.findProfilePatientByUserIdAndActiveTrue(this.userRepository.findUserByUserIdAndActiveTrue(userId).get());
+            return this.profilePatientRepository.findProfilePatientByUserIdAndActiveTrue(
+                    this.userRepository.findUserByUserIdAndActiveTrue(userId).get());
         } catch (NoSuchElementException ex) {
             return null;
         }
@@ -171,13 +177,15 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
     @Override
     @Transactional
     public int softDeleteProfilePatient(int profilePatientId) {
-        Optional<ProfilePatient> profilePatientOptional = this.profilePatientRepository.findProfilePatientByProfilePatientIdAndActiveTrue(profilePatientId);
+        Optional<ProfilePatient> profilePatientOptional = this.profilePatientRepository
+                .findProfilePatientByProfilePatientIdAndActiveTrue(profilePatientId);
         if (profilePatientOptional.isPresent()) {
             ProfilePatient profilePatient = profilePatientOptional.get();
             if (profilePatient.getActive().equals(Boolean.TRUE)) {
                 profilePatient.setActive(Boolean.FALSE);
 
-                List<Booking> listBooking = this.bookingRepository.findBookingByProfilePatientIdAndActiveTrue(profilePatient);
+                List<Booking> listBooking = this.bookingRepository
+                        .findBookingByProfilePatientIdAndActiveTrue(profilePatient);
 
                 for (Booking booking : listBooking) {
                     this.bookingService.softDeleteBooking(booking.getBookingId());
@@ -190,5 +198,10 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
         } else {
             return 3; // Không tìm được để xóa
         }
+    }
+
+    @Override
+    public Optional<ProfilePatient> findProfilePatientByProfilePatientIdAndActiveTrueOptional(int profilePatientId) {
+        return this.profilePatientRepository.findProfilePatientByProfilePatientIdAndActiveTrue(profilePatientId);
     }
 }

@@ -30,20 +30,20 @@ import jakarta.persistence.TemporalType;
 @Entity
 @Table(name = "user")
 @NamedQueries({
-    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
-    @NamedQuery(name = "User.findByUserId", query = "SELECT u FROM User u WHERE u.userId = :userId"),
-    @NamedQuery(name = "User.findByFirstname", query = "SELECT u FROM User u WHERE u.firstname = :firstname"),
-    @NamedQuery(name = "User.findByLastname", query = "SELECT u FROM User u WHERE u.lastname = :lastname"),
-    @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
-    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
-    @NamedQuery(name = "User.findByBirthday", query = "SELECT u FROM User u WHERE u.birthday = :birthday"),
-    @NamedQuery(name = "User.findByGender", query = "SELECT u FROM User u WHERE u.gender = :gender"),
-    @NamedQuery(name = "User.findByAvatar", query = "SELECT u FROM User u WHERE u.avatar = :avatar"),
-    @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
-    @NamedQuery(name = "User.findByCreatedDate", query = "SELECT u FROM User u WHERE u.createdDate = :createdDate"),
-    @NamedQuery(name = "User.findByUpdatedDate", query = "SELECT u FROM User u WHERE u.updatedDate = :updatedDate"),
-    @NamedQuery(name = "User.findByDeletedDate", query = "SELECT u FROM User u WHERE u.deletedDate = :deletedDate"),
-    @NamedQuery(name = "User.findByActive", query = "SELECT u FROM User u WHERE u.active = :active")})
+        @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
+        @NamedQuery(name = "User.findByUserId", query = "SELECT u FROM User u WHERE u.userId = :userId"),
+        @NamedQuery(name = "User.findByFirstname", query = "SELECT u FROM User u WHERE u.firstname = :firstname"),
+        @NamedQuery(name = "User.findByLastname", query = "SELECT u FROM User u WHERE u.lastname = :lastname"),
+        @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
+        @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
+        @NamedQuery(name = "User.findByBirthday", query = "SELECT u FROM User u WHERE u.birthday = :birthday"),
+        @NamedQuery(name = "User.findByGender", query = "SELECT u FROM User u WHERE u.gender = :gender"),
+        @NamedQuery(name = "User.findByAvatar", query = "SELECT u FROM User u WHERE u.avatar = :avatar"),
+        @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
+        @NamedQuery(name = "User.findByCreatedDate", query = "SELECT u FROM User u WHERE u.createdDate = :createdDate"),
+        @NamedQuery(name = "User.findByUpdatedDate", query = "SELECT u FROM User u WHERE u.updatedDate = :updatedDate"),
+        @NamedQuery(name = "User.findByDeletedDate", query = "SELECT u FROM User u WHERE u.deletedDate = :deletedDate"),
+        @NamedQuery(name = "User.findByActive", query = "SELECT u FROM User u WHERE u.active = :active") })
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -80,6 +80,9 @@ public class User implements Serializable {
     private Date deletedDate;
     @Column(name = "active")
     private Boolean active;
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId")
+    private Set<ChatgptConsult> chatgptConsultSet;
     @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private Set<ProfileDoctor> profileDoctorSet;
@@ -207,6 +210,14 @@ public class User implements Serializable {
         this.active = active;
     }
 
+    public Set<ChatgptConsult> getChatgptConsultSet() {
+        return chatgptConsultSet;
+    }
+
+    public void setChatgptConsultSet(Set<ChatgptConsult> chatgptConsultSet) {
+        this.chatgptConsultSet = chatgptConsultSet;
+    }
+
     public Set<ProfileDoctor> getProfileDoctorSet() {
         return profileDoctorSet;
     }
@@ -261,7 +272,8 @@ public class User implements Serializable {
             return false;
         }
         User other = (User) object;
-        if ((this.userId == null && other.userId != null) || (this.userId != null && !this.userId.equals(other.userId))) {
+        if ((this.userId == null && other.userId != null)
+                || (this.userId != null && !this.userId.equals(other.userId))) {
             return false;
         }
         return true;

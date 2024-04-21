@@ -5,7 +5,6 @@
 package com.tuantran.IMPROOK_CARE.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +23,6 @@ public class RegisterDTO {
     private String firstname;
     @NotBlank
     private String lastname;
-    
+
     Boolean gender;
 }

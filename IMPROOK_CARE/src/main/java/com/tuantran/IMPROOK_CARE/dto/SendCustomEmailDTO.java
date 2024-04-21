@@ -6,7 +6,6 @@ package com.tuantran.IMPROOK_CARE.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import java.util.Date;
-import java.util.List;
 import lombok.Data;
 
 /**

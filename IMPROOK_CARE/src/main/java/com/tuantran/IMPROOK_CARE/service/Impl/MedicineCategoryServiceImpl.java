@@ -10,7 +10,6 @@ import com.tuantran.IMPROOK_CARE.dto.UpdateMedicineCategoryDTO;
 import com.tuantran.IMPROOK_CARE.models.MedicineCategory;
 import com.tuantran.IMPROOK_CARE.repository.MedicineCategoryRepository;
 import com.tuantran.IMPROOK_CARE.service.MedicineCategoryService;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,9 +49,11 @@ public class MedicineCategoryServiceImpl implements MedicineCategoryService {
     @Override
     public MedicineCategory findMedicineCategoryByCategoryIdAndActiveTrue(int medicineCategoryId) {
         try {
-            Optional<MedicineCategory> medicineCategoryOptional = this.medicineCategoryRepository.findMedicineCategoryByCategoryIdAndActiveTrue(medicineCategoryId);
+            Optional<MedicineCategory> medicineCategoryOptional = this.medicineCategoryRepository
+                    .findMedicineCategoryByCategoryIdAndActiveTrue(medicineCategoryId);
             if (medicineCategoryOptional.isPresent()) {
-                return this.medicineCategoryRepository.findMedicineCategoryByCategoryIdAndActiveTrue(medicineCategoryId).get();
+                return this.medicineCategoryRepository.findMedicineCategoryByCategoryIdAndActiveTrue(medicineCategoryId)
+                        .get();
             } else {
                 return null;
             }
@@ -80,7 +81,9 @@ public class MedicineCategoryServiceImpl implements MedicineCategoryService {
     @Override
     public int updateMedicineCategory(UpdateMedicineCategoryDTO updateMedicineCategoryDTO) {
         try {
-            Optional<MedicineCategory> medicineCategoryOptional = this.medicineCategoryRepository.findMedicineCategoryByCategoryIdAndActiveTrue(Integer.parseInt(updateMedicineCategoryDTO.getMedicineCategoryId()));
+            Optional<MedicineCategory> medicineCategoryOptional = this.medicineCategoryRepository
+                    .findMedicineCategoryByCategoryIdAndActiveTrue(
+                            Integer.parseInt(updateMedicineCategoryDTO.getMedicineCategoryId()));
             if (medicineCategoryOptional.isPresent()) {
                 MedicineCategory medicineCategory = medicineCategoryOptional.get();
                 medicineCategory.setCategoryName(updateMedicineCategoryDTO.getMedicineCategoryName());
@@ -108,10 +111,13 @@ public class MedicineCategoryServiceImpl implements MedicineCategoryService {
         List<Specification<MedicineCategory>> listSpec = new ArrayList<>();
         int defaultPageNumber = 0;
         Sort mySort = Sort.by("createdDate").descending();
-        Pageable page = PageRequest.of(defaultPageNumber, Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+        Pageable page = PageRequest.of(defaultPageNumber,
+                Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
         if (pageNumber != null && !pageNumber.isEmpty()) {
             if (!pageNumber.equals("NaN")) {
-                page = PageRequest.of(Integer.parseInt(pageNumber), Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+                page = PageRequest.of(Integer.parseInt(pageNumber),
+                        Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")),
+                        mySort);
             }
         }
 

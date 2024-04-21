@@ -28,14 +28,14 @@ import jakarta.persistence.TemporalType;
 @Entity
 @Table(name = "comment")
 @NamedQueries({
-    @NamedQuery(name = "Comment.findAll", query = "SELECT c FROM Comment c"),
-    @NamedQuery(name = "Comment.findByCommentId", query = "SELECT c FROM Comment c WHERE c.commentId = :commentId"),
-    @NamedQuery(name = "Comment.findByAvatar", query = "SELECT c FROM Comment c WHERE c.avatar = :avatar"),
-    @NamedQuery(name = "Comment.findByCreatedDate", query = "SELECT c FROM Comment c WHERE c.createdDate = :createdDate"),
-    @NamedQuery(name = "Comment.findByUpdatedDate", query = "SELECT c FROM Comment c WHERE c.updatedDate = :updatedDate"),
-    @NamedQuery(name = "Comment.findByDeletedDate", query = "SELECT c FROM Comment c WHERE c.deletedDate = :deletedDate"),
-    @NamedQuery(name = "Comment.findByRating", query = "SELECT c FROM Comment c WHERE c.rating = :rating"),
-    @NamedQuery(name = "Comment.findByActive", query = "SELECT c FROM Comment c WHERE c.active = :active")})
+        @NamedQuery(name = "Comment.findAll", query = "SELECT c FROM Comment c"),
+        @NamedQuery(name = "Comment.findByCommentId", query = "SELECT c FROM Comment c WHERE c.commentId = :commentId"),
+        @NamedQuery(name = "Comment.findByAvatar", query = "SELECT c FROM Comment c WHERE c.avatar = :avatar"),
+        @NamedQuery(name = "Comment.findByCreatedDate", query = "SELECT c FROM Comment c WHERE c.createdDate = :createdDate"),
+        @NamedQuery(name = "Comment.findByUpdatedDate", query = "SELECT c FROM Comment c WHERE c.updatedDate = :updatedDate"),
+        @NamedQuery(name = "Comment.findByDeletedDate", query = "SELECT c FROM Comment c WHERE c.deletedDate = :deletedDate"),
+        @NamedQuery(name = "Comment.findByRating", query = "SELECT c FROM Comment c WHERE c.rating = :rating"),
+        @NamedQuery(name = "Comment.findByActive", query = "SELECT c FROM Comment c WHERE c.active = :active") })
 public class Comment implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -170,7 +170,8 @@ public class Comment implements Serializable {
             return false;
         }
         Comment other = (Comment) object;
-        if ((this.commentId == null && other.commentId != null) || (this.commentId != null && !this.commentId.equals(other.commentId))) {
+        if ((this.commentId == null && other.commentId != null)
+                || (this.commentId != null && !this.commentId.equals(other.commentId))) {
             return false;
         }
         return true;
@@ -180,5 +181,5 @@ public class Comment implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.Comment[ commentId=" + commentId + " ]";
     }
-    
+
 }

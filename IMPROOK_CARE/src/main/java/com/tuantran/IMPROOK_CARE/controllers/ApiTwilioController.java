@@ -4,18 +4,13 @@
  */
 package com.tuantran.IMPROOK_CARE.controllers;
 
-import com.tuantran.IMPROOK_CARE.components.twilio.SmsService;
+// import com.tuantran.IMPROOK_CARE.components.twilio.SmsService;
 import com.tuantran.IMPROOK_CARE.configs.twilio.TwilioConfiguration;
 import com.tuantran.IMPROOK_CARE.components.twilio.TwilioVerificationComponent;
 import com.tuantran.IMPROOK_CARE.configs.twilio.TwilioSmsSender;
 import com.tuantran.IMPROOK_CARE.dto.AuthMessageTwilioDTO;
 import com.tuantran.IMPROOK_CARE.dto.SmsRequestDTO;
-import com.tuantran.IMPROOK_CARE.models.User;
-import com.tuantran.IMPROOK_CARE.service.UserService;
-import com.twilio.Twilio;
-import com.twilio.exception.ApiException;
-import com.twilio.rest.verify.v2.service.Verification;
-import com.twilio.rest.verify.v2.service.VerificationCheck;
+// import com.tuantran.IMPROOK_CARE.service.UserService;
 import jakarta.validation.Valid;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +31,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class ApiTwilioController {
 
-    @Autowired
-    private SmsService smsService;
+    // @Autowired
+    // private SmsService smsService;
 
     @Autowired
     TwilioConfiguration twilioConfiguration;
@@ -45,19 +40,19 @@ public class ApiTwilioController {
     @Autowired
     TwilioVerificationComponent twilioVerification;
 
-    @Autowired
-    private UserService userService;
+    // @Autowired
+    // private UserService userService;
 
     @Autowired
     private TwilioSmsSender twilioSmsSender;
 
-    //Cái này gửi tốn tiền kinh khủng :))) 
-    //Mà chỉ gửi được có 1 số trial :) 
+    // Cái này gửi tốn tiền kinh khủng :)))
+    // Mà chỉ gửi được có 1 số trial :)
     // TỐN 1 ĐỐNG THỜI GIAN NGỒI MÒ CẤU HÌNH
-    //KHỎI LUÔN
+    // KHỎI LUÔN
     @GetMapping("/public/sendSMS/")
     public void sendSms(@Valid @RequestBody SmsRequestDTO smsRequest) {
-//        smsService.sendSms(smsRequest);
+        // smsService.sendSms(smsRequest);
         twilioSmsSender.sendSms(smsRequest);
     }
 
@@ -105,7 +100,8 @@ public class ApiTwilioController {
     @CrossOrigin
     public ResponseEntity<String> verification_check(@Valid @RequestBody AuthMessageTwilioDTO authMessageTwilioDTO) {
         String message = "Có lỗi xảy ra!";
-        int check = this.twilioVerification.verification_check(authMessageTwilioDTO.getCode(), authMessageTwilioDTO.getPhoneNumber());
+        int check = this.twilioVerification.verification_check(authMessageTwilioDTO.getCode(),
+                authMessageTwilioDTO.getPhoneNumber());
 
         if (check == 1) {
             message = "Xác thực thành công!";

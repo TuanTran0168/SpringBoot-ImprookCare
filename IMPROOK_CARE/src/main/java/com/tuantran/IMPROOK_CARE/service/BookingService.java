@@ -6,8 +6,13 @@ package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.dto.BookingDTO;
 import com.tuantran.IMPROOK_CARE.models.Booking;
-import java.util.Date;
+import com.tuantran.IMPROOK_CARE.models.Schedule;
+
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 
 /**
@@ -16,24 +21,36 @@ import org.springframework.data.repository.query.Param;
  */
 public interface BookingService {
 
-    int addBooking(BookingDTO bookingDTO);
+        int addBooking(BookingDTO bookingDTO);
 
-    public int cancelBooking(int bookingId);
+        int cancelBooking(int bookingId);
 
-    int acceptBooking(int bookingId);
+        int acceptBooking(int bookingId);
 
-    int denyBooking(int bookingId);
+        int denyBooking(int bookingId);
 
-//    List<Booking> findBookingForUserView(int userId);
-    List<Object[]> getBookingForUserView(@Param("userId") int userId);
+        // List<Booking> findBookingForUserView(int userId);
+        List<Object[]> getBookingForUserView(@Param("userId") int userId);
 
-    List<Object[]> getTimeSlotsForDoctorOnDate(@Param("profileDoctorId") int profileDoctorId, @Param("date") String date);
+        List<Object[]> getTimeSlotsForDoctorOnDate(@Param("profileDoctorId") int profileDoctorId,
+                        @Param("date") String date);
 
-    List<Date> getDatesForProfileDoctor(@Param("profileDoctorId") int profileDoctorId);
+        List<?> getDatesForProfileDoctor(@Param("profileDoctorId") int profileDoctorId);
 
-    List<Object[]> getBookingForDoctorView(@Param("profileDoctorId") int profileDoctorId);
+        List<Object[]> getBookingForDoctorView(@Param("profileDoctorId") int profileDoctorId);
 
-    List<Object[]> getBookingDetailsByBookingId(@Param("bookingId") int bookingId);
-    
-    int softDeleteBooking(int bookingId);
+        Page<?> getBookingForDoctorViewPage(@Param("profileDoctorId") int profileDoctorId,
+                        @Param("bookingStatusId") int bookingStatusId, Map<String, String> params);
+
+        List<Object[]> getBookingDetailsByBookingId(@Param("bookingId") int bookingId);
+
+        int softDeleteBooking(int bookingId);
+
+        Booking cancelBooking(Booking booking);
+
+        Booking acceptBooking(Booking booking);
+
+        Optional<Booking> findBookingByBookingIdAndActiveTrue(int bookingId);
+
+        Booking createBooking(Booking booking, Schedule schedule);
 }

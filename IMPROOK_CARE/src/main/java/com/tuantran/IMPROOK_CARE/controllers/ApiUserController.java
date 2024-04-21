@@ -5,9 +5,7 @@
 package com.tuantran.IMPROOK_CARE.controllers;
 
 import com.tuantran.IMPROOK_CARE.components.authentication.AuthenticationComponent;
-import com.tuantran.IMPROOK_CARE.components.twilio.SmsService;
 import com.tuantran.IMPROOK_CARE.configs.jwt.JwtUtils;
-import com.tuantran.IMPROOK_CARE.configs.twilio.TwilioConfiguration;
 import com.tuantran.IMPROOK_CARE.dto.AddUserForAdminDTO;
 import com.tuantran.IMPROOK_CARE.dto.ChangePasswordDTO;
 import com.tuantran.IMPROOK_CARE.dto.ForgotPasswordDTO;
@@ -15,7 +13,6 @@ import com.tuantran.IMPROOK_CARE.dto.LoginDTO;
 import com.tuantran.IMPROOK_CARE.dto.RegisterDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateUserForAdminDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateUserForUserDTO;
-import com.tuantran.IMPROOK_CARE.models.Prescriptions;
 import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.service.PrescriptionService;
 import com.tuantran.IMPROOK_CARE.service.UserService;
@@ -56,7 +53,7 @@ public class ApiUserController {
 
     @Autowired
     private AuthenticationComponent authenticationComponent;
-    
+
     @Autowired
     private PrescriptionService prescriptionService;
 
@@ -69,7 +66,8 @@ public class ApiUserController {
     @GetMapping("/public/test-xiu-xiu/")
     @CrossOrigin
     public ResponseEntity<?> test(@RequestParam Map<String, String> params) {
-        return new ResponseEntity<>(this.prescriptionService.getPrescriptionsByProfilePatientIdPageSpec(params), HttpStatus.OK);
+        return new ResponseEntity<>(this.prescriptionService.getPrescriptionsByProfilePatientIdPageSpec(params),
+                HttpStatus.OK);
     }
 
     @GetMapping("/public/users/")
@@ -116,16 +114,19 @@ public class ApiUserController {
         }
     }
 
-    @PostMapping(path = "/auth/update-user/",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/auth/update-user/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public ResponseEntity<String> updateUserForUser(@Valid UpdateUserForUserDTO updateUserForUserDTO, @RequestPart("avatar") MultipartFile avatar) {
+    public ResponseEntity<String> updateUserForUser(@Valid UpdateUserForUserDTO updateUserForUserDTO,
+            @RequestPart("avatar") MultipartFile avatar) {
 
-        // Dùng RequestPart để gửi ảnh thì dẹp luôn @RequestBody của thằng user trong DTO chứ không nó lỗi 
-        // org.springframework.web.HttpMediaTypeNotSupportedException: Content-Type 'multipart/form-data;boundary=--------------------------993163030984227239709456;charset=UTF-8' is not supported
+        // Dùng RequestPart để gửi ảnh thì dẹp luôn @RequestBody của thằng user trong
+        // DTO chứ không nó lỗi
+        // org.springframework.web.HttpMediaTypeNotSupportedException: Content-Type
+        // 'multipart/form-data;boundary=--------------------------993163030984227239709456;charset=UTF-8'
+        // is not supported
         // Chắc là 2 loại Request khác nhau nó không chịu
-        // fetch bên postman thì dùng Body form-data gửi đủ hết thông tin trong DTO + 1 avatar (file)
+        // fetch bên postman thì dùng Body form-data gửi đủ hết thông tin trong DTO + 1
+        // avatar (file)
         String message = "Có lỗi xảy ra!";
         int check = this.userService.updateUser(updateUserForUserDTO, avatar);
 
@@ -139,11 +140,10 @@ public class ApiUserController {
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(path = "/auth/admin/add-user/",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/auth/admin/add-user/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public ResponseEntity<String> addUser(@Valid AddUserForAdminDTO addUserForAdminDTO, @RequestPart("avatar") MultipartFile avatar) throws Exception {
+    public ResponseEntity<String> addUser(@Valid AddUserForAdminDTO addUserForAdminDTO,
+            @RequestPart("avatar") MultipartFile avatar) throws Exception {
         String message = "Có lỗi xảy ra!";
         int check = this.userService.addUser(addUserForAdminDTO, avatar);
 
@@ -159,16 +159,19 @@ public class ApiUserController {
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(path = "/auth/admin/update-user/",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/auth/admin/update-user/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public ResponseEntity<String> updateUserForAdmin(@Valid UpdateUserForAdminDTO updateUserForAdminDTO, @RequestPart("avatar") MultipartFile avatar) {
+    public ResponseEntity<String> updateUserForAdmin(@Valid UpdateUserForAdminDTO updateUserForAdminDTO,
+            @RequestPart("avatar") MultipartFile avatar) {
 
-        // Dùng RequestPart để gửi ảnh thì dẹp luôn @RequestBody của thằng user trong DTO chứ không nó lỗi 
-        // org.springframework.web.HttpMediaTypeNotSupportedException: Content-Type 'multipart/form-data;boundary=--------------------------993163030984227239709456;charset=UTF-8' is not supported
+        // Dùng RequestPart để gửi ảnh thì dẹp luôn @RequestBody của thằng user trong
+        // DTO chứ không nó lỗi
+        // org.springframework.web.HttpMediaTypeNotSupportedException: Content-Type
+        // 'multipart/form-data;boundary=--------------------------993163030984227239709456;charset=UTF-8'
+        // is not supported
         // Chắc là 2 loại Request khác nhau nó không chịu
-        // fetch bên postman thì dùng Body form-data gửi đủ hết thông tin trong DTO + 1 avatar (file)
+        // fetch bên postman thì dùng Body form-data gửi đủ hết thông tin trong DTO + 1
+        // avatar (file)
         String message = "Có lỗi xảy ra!";
         int check = this.userService.updateUser(updateUserForAdminDTO, avatar);
 
@@ -186,7 +189,8 @@ public class ApiUserController {
 
     @PostMapping("/auth/change-password/")
     @CrossOrigin
-    public ResponseEntity<String> changePassword(@Valid @RequestBody ChangePasswordDTO changePasswordDTO) throws Exception {
+    public ResponseEntity<String> changePassword(@Valid @RequestBody ChangePasswordDTO changePasswordDTO)
+            throws Exception {
         String message = "Có lỗi xảy ra!";
         int check = this.userService.changePassword(changePasswordDTO);
 
@@ -206,7 +210,8 @@ public class ApiUserController {
 
     @PostMapping("/public/forgot-password/")
     @CrossOrigin
-    public ResponseEntity<String> forgotPassword(@Valid @RequestBody ForgotPasswordDTO forgotPasswordDTO) throws Exception {
+    public ResponseEntity<String> forgotPassword(@Valid @RequestBody ForgotPasswordDTO forgotPasswordDTO)
+            throws Exception {
         String message = "Có lỗi xảy ra!";
         int check = this.userService.forgotPassword(forgotPasswordDTO);
 
@@ -226,7 +231,8 @@ public class ApiUserController {
     @CrossOrigin
     public ResponseEntity<User> getUserById(@PathVariable(value = "userId") String userId) throws Exception {
 
-        return new ResponseEntity<>(this.userService.findUserByUserIdAndActiveTrue(Integer.parseInt(userId)), HttpStatus.OK);
+        return new ResponseEntity<>(this.userService.findUserByUserIdAndActiveTrue(Integer.parseInt(userId)),
+                HttpStatus.OK);
     }
 
     @GetMapping("/public/search-users/")
@@ -234,7 +240,7 @@ public class ApiUserController {
     public ResponseEntity<?> listSearchUser(@RequestParam Map<String, String> params) {
         return new ResponseEntity<>(this.userService.findAllUserPageSpec(params), HttpStatus.OK);
     }
-    
+
     @DeleteMapping("/auth/admin/soft-delete/user/{userId}/")
     @CrossOrigin
     public ResponseEntity<String> softDeleteUser(@PathVariable(value = "userId") String userId) {
@@ -247,8 +253,7 @@ public class ApiUserController {
             return new ResponseEntity<>(message, HttpStatus.NO_CONTENT);
         } else if (check == 2) {
             message = "Xóa người dùng thất bại!";
-        }
-        else if (check == 3) {
+        } else if (check == 3) {
             message = "Không tìm thấy người dùng để xóa";
         }
 

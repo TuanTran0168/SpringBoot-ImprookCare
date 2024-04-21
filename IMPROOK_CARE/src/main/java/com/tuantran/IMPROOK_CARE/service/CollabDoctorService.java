@@ -8,8 +8,6 @@ import com.tuantran.IMPROOK_CARE.dto.AddCollabDoctorDTO;
 import com.tuantran.IMPROOK_CARE.models.CollabDoctor;
 import java.util.Map;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 
 /**
  *
@@ -17,7 +15,10 @@ import org.springframework.data.jpa.domain.Specification;
  */
 public interface CollabDoctorService {
     int addCollabDoctor(AddCollabDoctorDTO addCollabDoctorDTO);
+
     Page<CollabDoctor> findAllCollabDoctorPageSpec(Map<String, String> params);
+
     int acceptCollabDoctor(int collabDoctorId);
+
     int denyCollabDoctor(int collabDoctorId);
 }

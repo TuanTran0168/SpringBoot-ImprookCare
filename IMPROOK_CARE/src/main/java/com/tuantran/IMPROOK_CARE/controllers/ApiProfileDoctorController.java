@@ -51,7 +51,8 @@ public class ApiProfileDoctorController {
 
     @PostMapping("/auth/doctor/update-profile-doctor/")
     @CrossOrigin
-    public ResponseEntity<String> updateProfileDoctor(@Valid @RequestBody UpdateProfileDoctorDTO updateProfileDoctorDTO) {
+    public ResponseEntity<String> updateProfileDoctor(
+            @Valid @RequestBody UpdateProfileDoctorDTO updateProfileDoctorDTO) {
         String message = "Có lỗi xảy ra!";
         int check = this.profileDoctorService.updateProfileDoctor(updateProfileDoctorDTO);
 
@@ -71,16 +72,20 @@ public class ApiProfileDoctorController {
 
     @GetMapping("/public/profile-doctor/{profileDoctorId}/")
     @CrossOrigin
-    public ResponseEntity<ProfileDoctor> profileDoctorDetail(@PathVariable(value = "profileDoctorId") String profileDoctorId) {
+    public ResponseEntity<ProfileDoctor> profileDoctorDetail(
+            @PathVariable(value = "profileDoctorId") String profileDoctorId) {
 
-        return new ResponseEntity<>(this.profileDoctorService.findProfileDoctorByProfileDoctorIdAndActiveTrue(Integer.parseInt(profileDoctorId)), HttpStatus.OK);
+        return new ResponseEntity<>(this.profileDoctorService
+                .findProfileDoctorByProfileDoctorIdAndActiveTrue(Integer.parseInt(profileDoctorId)), HttpStatus.OK);
     }
 
     @GetMapping("/public/user/{userId}/profile-doctor/")
     @CrossOrigin
     public ResponseEntity<List<ProfileDoctor>> profileDoctorByUserId(@PathVariable(value = "userId") String userId) {
 
-        return new ResponseEntity<>(this.profileDoctorService.findProfileDoctorByUserIdAndActiveTrue(Integer.parseInt(userId)), HttpStatus.OK);
+        return new ResponseEntity<>(
+                this.profileDoctorService.findProfileDoctorByUserIdAndActiveTrue(Integer.parseInt(userId)),
+                HttpStatus.OK);
     }
 
     @GetMapping("/public/search-profile-doctors/")
@@ -91,7 +96,8 @@ public class ApiProfileDoctorController {
 
     @DeleteMapping("/auth/doctor/soft-delete/profile-doctor/{profileDoctorId}/")
     @CrossOrigin
-    public ResponseEntity<String> softDeleteProfileDoctor(@PathVariable(value = "profileDoctorId") String profileDoctorId) {
+    public ResponseEntity<String> softDeleteProfileDoctor(
+            @PathVariable(value = "profileDoctorId") String profileDoctorId) {
         String message = "Có lỗi xảy ra!";
 
         int check = this.profileDoctorService.softDeleteProfileDoctor(Integer.parseInt(profileDoctorId));
@@ -101,11 +107,23 @@ public class ApiProfileDoctorController {
             return new ResponseEntity<>(message, HttpStatus.NO_CONTENT);
         } else if (check == 2) {
             message = "Xóa hồ sơ bác sĩ thất bại!";
-        }
-        else if (check == 3) {
+        } else if (check == 3) {
             message = "Không tìm thấy hồ sơ bác sĩ để xóa";
         }
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
+
+    // @GetMapping("/auth/user/{userId}/profile-doctor-message/")
+    //// @PreAuthorize("hasRole('USER')")
+    // @CrossOrigin
+    // public ResponseEntity<?>
+    // getMessageProfileDoctorByUserIdPage(@PathVariable(value = "userId") String
+    // userId, @RequestParam Map<String, String> params) {
+    //
+    // return new
+    // ResponseEntity<>(this.profileDoctorService.getMessageProfileDoctorByUserIdPage(Integer.parseInt(userId),
+    // params), HttpStatus.BAD_REQUEST);
+    // }
+
 }
