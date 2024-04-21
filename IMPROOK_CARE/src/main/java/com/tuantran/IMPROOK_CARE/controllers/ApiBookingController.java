@@ -8,15 +8,23 @@ import com.tuantran.IMPROOK_CARE.components.UUID.UUIDGenerator;
 import com.tuantran.IMPROOK_CARE.dto.BookingDTO;
 import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.BookingStatus;
+import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
+import com.tuantran.IMPROOK_CARE.models.Schedule;
 import com.tuantran.IMPROOK_CARE.service.BookingService;
+import com.tuantran.IMPROOK_CARE.service.BookingStatusService;
+import com.tuantran.IMPROOK_CARE.service.ProfilePatientService;
+import com.tuantran.IMPROOK_CARE.service.ScheduleService;
+
 import jakarta.validation.Valid;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -39,20 +47,61 @@ public class ApiBookingController {
     @Autowired
     UUIDGenerator uuidGenerator;
 
+    @Autowired
+    ScheduleService scheduleService;
+
+    @Autowired
+    ProfilePatientService profilePatientService;
+
+    @Autowired
+    BookingStatusService bookingStatusService;
+
     @PostMapping("/auth/add-booking/")
     @CrossOrigin
-    public ResponseEntity<String> addBooking(@Valid @RequestBody BookingDTO bookingDTO) {
+    public ResponseEntity<?> addBooking(@Valid @RequestBody BookingDTO bookingDTO) {
         String message = "Có lỗi xảy ra!";
-        int check = this.bookingService.addBooking(bookingDTO);
+        try {
+            Booking booking = new Booking();
+            Optional<Schedule> scheduleOptional = this.scheduleService
+                    .findScheduleByIdAndActiveTrueOptional(Integer.parseInt(bookingDTO.getScheduleId()));
 
-        if (check == 1) {
-            message = "Đặt lịch thành công!";
-            return new ResponseEntity<>(message, HttpStatus.OK);
-        } else if (check == 0) {
-            message = "Đặt lịch thất bại!";
+            if (scheduleOptional.isPresent()) {
+                Schedule schedule = scheduleOptional.get();
+                booking.setScheduleId(schedule);
+
+                schedule.setBooked(Boolean.TRUE);
+
+                Optional<ProfilePatient> profilePatientOptional = this.profilePatientService
+                        .findProfilePatientByProfilePatientIdAndActiveTrueOptional(
+                                Integer.parseInt(bookingDTO.getProfilePatientId()));
+
+                if (profilePatientOptional.isPresent()) {
+                    booking.setProfilePatientId(profilePatientOptional.get());
+
+                    booking.setStatusId(this.bookingStatusService.findBookingStatusByStatusId(1));
+                    booking.setCreatedDate(new Date());
+
+                    booking.setBookingCancel(Boolean.FALSE);
+                    booking.setActive(Boolean.TRUE);
+
+                    return new ResponseEntity<>(this.bookingService.createBooking(booking, schedule),
+                            HttpStatus.CREATED);
+                } else {
+                    message = "ProfilePatient[" + bookingDTO.getProfilePatientId() + "] không tồn tại!";
+                    return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+                }
+
+            } else {
+                message = "Schedule[" + bookingDTO.getScheduleId() + "] không tồn tại!";
+                return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+            }
+        } catch (DataAccessException ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(ex, HttpStatus.BAD_REQUEST);
+        } catch (NoSuchElementException ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(ex, HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/auth/booking-user-view/")
