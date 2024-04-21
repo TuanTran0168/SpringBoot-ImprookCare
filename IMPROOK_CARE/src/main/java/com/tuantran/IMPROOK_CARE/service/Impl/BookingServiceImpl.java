@@ -274,4 +274,11 @@ public class BookingServiceImpl implements BookingService {
         return this.bookingRepository.findBookingByBookingIdAndActiveTrue(bookingId);
     }
 
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Booking createBooking(Booking booking, Schedule schedule) {
+        this.scheduleRepository.save(schedule);
+        return this.bookingRepository.save(booking);
+    }
+
 }

@@ -81,6 +81,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    public Optional<Schedule> findScheduleByIdAndActiveTrueOptional(int scheduleId) {
+        return this.scheduleRepository.findScheduleByScheduleIdAndActiveTrue(scheduleId);
+    }
+
+    @Override
     public Schedule findScheduleByProfileDoctorIdAndDateAndTimeSlotIdAndActiveTrue(int profiledoctorId, String date,
             int timeSlotId) {
 
@@ -196,6 +201,11 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public Schedule updateSchedule(Schedule schedule) {
+        return this.scheduleRepository.save(schedule);
+    }
+
+    @Override
+    public Schedule addSchedule(Schedule schedule) {
         return this.scheduleRepository.save(schedule);
     }
 
