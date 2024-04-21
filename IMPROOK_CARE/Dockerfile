@@ -1,19 +1,16 @@
-# Sử dụng hình ảnh Maven để xây dựng dự án
-FROM maven:3.9.4-openjdk-17 AS build
-# Thiết lập thư mục làm việc
+#
+# Build stage
+#
+FROM maven:3.8.3-openjdk-17 AS build
 WORKDIR /app
-# Sao chép tất cả các tệp vào container
-COPY . /app
-# Xây dựng ứng dụng Spring Boot với Maven
-RUN mvn clean install
+COPY . /app/
+RUN mvn clean package
 
-# Sử dụng hình ảnh OpenJDK để chạy ứng dụng
-FROM openjdk:17-jdk
-# Thiết lập thư mục làm việc cho ứng dụng
+#
+# Package stage
+#
+FROM openjdk:17-alpine
 WORKDIR /app
-# Sao chép tệp JAR đã được xây dựng từ giai đoạn xây dựng
 COPY --from=build /app/target/*.jar /app/app.jar
-# Thiết lập biến môi trường cho cổng dịch vụ
-ENV SERVER_PORT=2024
-# Chạy ứng dụng Spring Boot
-CMD ["java", "-jar", "app.jar"]
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","app.jar"]
