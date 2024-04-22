@@ -31,15 +31,16 @@ import jakarta.persistence.TemporalType;
 @Entity
 @Table(name = "prescriptions")
 @NamedQueries({
-    @NamedQuery(name = "Prescriptions.findAll", query = "SELECT p FROM Prescriptions p"),
-    @NamedQuery(name = "Prescriptions.findByPrescriptionId", query = "SELECT p FROM Prescriptions p WHERE p.prescriptionId = :prescriptionId"),
-    @NamedQuery(name = "Prescriptions.findByPrescriptionDate", query = "SELECT p FROM Prescriptions p WHERE p.prescriptionDate = :prescriptionDate"),
-    @NamedQuery(name = "Prescriptions.findByCreatedDate", query = "SELECT p FROM Prescriptions p WHERE p.createdDate = :createdDate"),
-    @NamedQuery(name = "Prescriptions.findByUpdatedDate", query = "SELECT p FROM Prescriptions p WHERE p.updatedDate = :updatedDate"),
-    @NamedQuery(name = "Prescriptions.findByDeletedDate", query = "SELECT p FROM Prescriptions p WHERE p.deletedDate = :deletedDate"),
-    @NamedQuery(name = "Prescriptions.findByActive", query = "SELECT p FROM Prescriptions p WHERE p.active = :active"),
-    @NamedQuery(name = "Prescriptions.findByMedicinepaymentTxnRef", query = "SELECT p FROM Prescriptions p WHERE p.medicinepaymentTxnRef = :medicinepaymentTxnRef"),
-    @NamedQuery(name = "Prescriptions.findByServicepaymentTxnRef", query = "SELECT p FROM Prescriptions p WHERE p.servicepaymentTxnRef = :servicepaymentTxnRef")})
+        @NamedQuery(name = "Prescriptions.findAll", query = "SELECT p FROM Prescriptions p"),
+        @NamedQuery(name = "Prescriptions.findByPrescriptionId", query = "SELECT p FROM Prescriptions p WHERE p.prescriptionId = :prescriptionId"),
+        @NamedQuery(name = "Prescriptions.findByPrescriptionDate", query = "SELECT p FROM Prescriptions p WHERE p.prescriptionDate = :prescriptionDate"),
+        @NamedQuery(name = "Prescriptions.findByCreatedDate", query = "SELECT p FROM Prescriptions p WHERE p.createdDate = :createdDate"),
+        @NamedQuery(name = "Prescriptions.findByUpdatedDate", query = "SELECT p FROM Prescriptions p WHERE p.updatedDate = :updatedDate"),
+        @NamedQuery(name = "Prescriptions.findByDeletedDate", query = "SELECT p FROM Prescriptions p WHERE p.deletedDate = :deletedDate"),
+        @NamedQuery(name = "Prescriptions.findByActive", query = "SELECT p FROM Prescriptions p WHERE p.active = :active"),
+        @NamedQuery(name = "Prescriptions.findByMedicinepaymentTxnRef", query = "SELECT p FROM Prescriptions p WHERE p.medicinepaymentTxnRef = :medicinepaymentTxnRef"),
+        @NamedQuery(name = "Prescriptions.findByServicepaymentTxnRef", query = "SELECT p FROM Prescriptions p WHERE p.servicepaymentTxnRef = :servicepaymentTxnRef"),
+        @NamedQuery(name = "Prescriptions.findByPreviousPrescriptionId", query = "SELECT p FROM Prescriptions p WHERE p.previousPrescriptionId = :previousPrescriptionId") })
 public class Prescriptions implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -75,6 +76,8 @@ public class Prescriptions implements Serializable {
     private String medicinepaymentTxnRef;
     @Column(name = "service_payment_Txn_Ref")
     private String servicepaymentTxnRef;
+    @Column(name = "previous_prescription_id")
+    private Integer previousPrescriptionId;
     @JoinColumn(name = "booking_id", referencedColumnName = "booking_id")
     @ManyToOne
     private Booking bookingId;
@@ -183,6 +186,14 @@ public class Prescriptions implements Serializable {
         this.servicepaymentTxnRef = servicepaymentTxnRef;
     }
 
+    public Integer getPreviousPrescriptionId() {
+        return previousPrescriptionId;
+    }
+
+    public void setPreviousPrescriptionId(Integer previousPrescriptionId) {
+        this.previousPrescriptionId = previousPrescriptionId;
+    }
+
     public Booking getBookingId() {
         return bookingId;
     }
@@ -229,7 +240,8 @@ public class Prescriptions implements Serializable {
             return false;
         }
         Prescriptions other = (Prescriptions) object;
-        if ((this.prescriptionId == null && other.prescriptionId != null) || (this.prescriptionId != null && !this.prescriptionId.equals(other.prescriptionId))) {
+        if ((this.prescriptionId == null && other.prescriptionId != null)
+                || (this.prescriptionId != null && !this.prescriptionId.equals(other.prescriptionId))) {
             return false;
         }
         return true;
@@ -239,5 +251,5 @@ public class Prescriptions implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.Prescriptions[ prescriptionId=" + prescriptionId + " ]";
     }
-    
+
 }
