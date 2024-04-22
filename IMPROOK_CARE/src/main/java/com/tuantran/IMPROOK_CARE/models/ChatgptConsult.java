@@ -27,13 +27,14 @@ import jakarta.persistence.TemporalType;
 @Entity
 @Table(name = "chatgpt_consult")
 @NamedQueries({
-    @NamedQuery(name = "ChatgptConsult.findAll", query = "SELECT c FROM ChatgptConsult c"),
-    @NamedQuery(name = "ChatgptConsult.findByChatgptConsultId", query = "SELECT c FROM ChatgptConsult c WHERE c.chatgptConsultId = :chatgptConsultId"),
-    @NamedQuery(name = "ChatgptConsult.findByChatgptConsultAnswer", query = "SELECT c FROM ChatgptConsult c WHERE c.chatgptConsultAnswer = :chatgptConsultAnswer"),
-    @NamedQuery(name = "ChatgptConsult.findByCreatedDate", query = "SELECT c FROM ChatgptConsult c WHERE c.createdDate = :createdDate"),
-    @NamedQuery(name = "ChatgptConsult.findByUpdatedDate", query = "SELECT c FROM ChatgptConsult c WHERE c.updatedDate = :updatedDate"),
-    @NamedQuery(name = "ChatgptConsult.findByDeletedDate", query = "SELECT c FROM ChatgptConsult c WHERE c.deletedDate = :deletedDate"),
-    @NamedQuery(name = "ChatgptConsult.findByActive", query = "SELECT c FROM ChatgptConsult c WHERE c.active = :active")})
+        @NamedQuery(name = "ChatgptConsult.findAll", query = "SELECT c FROM ChatgptConsult c"),
+        @NamedQuery(name = "ChatgptConsult.findByChatgptConsultId", query = "SELECT c FROM ChatgptConsult c WHERE c.chatgptConsultId = :chatgptConsultId"),
+        @NamedQuery(name = "ChatgptConsult.findByPatientQuestion", query = "SELECT c FROM ChatgptConsult c WHERE c.patientQuestion = :patientQuestion"),
+        @NamedQuery(name = "ChatgptConsult.findByChatgptConsultAnswer", query = "SELECT c FROM ChatgptConsult c WHERE c.chatgptConsultAnswer = :chatgptConsultAnswer"),
+        @NamedQuery(name = "ChatgptConsult.findByCreatedDate", query = "SELECT c FROM ChatgptConsult c WHERE c.createdDate = :createdDate"),
+        @NamedQuery(name = "ChatgptConsult.findByUpdatedDate", query = "SELECT c FROM ChatgptConsult c WHERE c.updatedDate = :updatedDate"),
+        @NamedQuery(name = "ChatgptConsult.findByDeletedDate", query = "SELECT c FROM ChatgptConsult c WHERE c.deletedDate = :deletedDate"),
+        @NamedQuery(name = "ChatgptConsult.findByActive", query = "SELECT c FROM ChatgptConsult c WHERE c.active = :active") })
 public class ChatgptConsult implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,6 +43,8 @@ public class ChatgptConsult implements Serializable {
     @Basic(optional = false)
     @Column(name = "chatgpt_consult_id")
     private Integer chatgptConsultId;
+    @Column(name = "patient_question")
+    private String patientQuestion;
     @Column(name = "chatgpt_consult_answer")
     private String chatgptConsultAnswer;
     @Column(name = "created_date")
@@ -75,6 +78,14 @@ public class ChatgptConsult implements Serializable {
 
     public void setChatgptConsultId(Integer chatgptConsultId) {
         this.chatgptConsultId = chatgptConsultId;
+    }
+
+    public String getPatientQuestion() {
+        return patientQuestion;
+    }
+
+    public void setPatientQuestion(String patientQuestion) {
+        this.patientQuestion = patientQuestion;
     }
 
     public String getChatgptConsultAnswer() {
@@ -147,7 +158,8 @@ public class ChatgptConsult implements Serializable {
             return false;
         }
         ChatgptConsult other = (ChatgptConsult) object;
-        if ((this.chatgptConsultId == null && other.chatgptConsultId != null) || (this.chatgptConsultId != null && !this.chatgptConsultId.equals(other.chatgptConsultId))) {
+        if ((this.chatgptConsultId == null && other.chatgptConsultId != null)
+                || (this.chatgptConsultId != null && !this.chatgptConsultId.equals(other.chatgptConsultId))) {
             return false;
         }
         return true;
@@ -157,5 +169,5 @@ public class ChatgptConsult implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.ChatgptConsult[ chatgptConsultId=" + chatgptConsultId + " ]";
     }
-    
+
 }

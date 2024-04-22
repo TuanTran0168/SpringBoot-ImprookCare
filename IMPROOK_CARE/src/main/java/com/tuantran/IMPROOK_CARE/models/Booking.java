@@ -37,7 +37,8 @@ import jakarta.persistence.TemporalType;
         @NamedQuery(name = "Booking.findByDeletedDate", query = "SELECT b FROM Booking b WHERE b.deletedDate = :deletedDate"),
         @NamedQuery(name = "Booking.findByBookingCancel", query = "SELECT b FROM Booking b WHERE b.bookingCancel = :bookingCancel"),
         @NamedQuery(name = "Booking.findByLinkVideoCall", query = "SELECT b FROM Booking b WHERE b.linkVideoCall = :linkVideoCall"),
-        @NamedQuery(name = "Booking.findByActive", query = "SELECT b FROM Booking b WHERE b.active = :active") })
+        @NamedQuery(name = "Booking.findByActive", query = "SELECT b FROM Booking b WHERE b.active = :active"),
+        @NamedQuery(name = "Booking.findByPreviousBookingId", query = "SELECT b FROM Booking b WHERE b.previousBookingId = :previousBookingId") })
 public class Booking implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,6 +62,8 @@ public class Booking implements Serializable {
     private String linkVideoCall;
     @Column(name = "active")
     private Boolean active;
+    @Column(name = "previous_booking_id")
+    private Integer previousBookingId;
     @JoinColumn(name = "status_id", referencedColumnName = "status_id")
     @ManyToOne
     private BookingStatus statusId;
@@ -138,6 +141,14 @@ public class Booking implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Integer getPreviousBookingId() {
+        return previousBookingId;
+    }
+
+    public void setPreviousBookingId(Integer previousBookingId) {
+        this.previousBookingId = previousBookingId;
     }
 
     public BookingStatus getStatusId() {
