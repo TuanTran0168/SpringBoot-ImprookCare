@@ -35,7 +35,6 @@ CREATE TABLE `booking` (
   `status_id` int DEFAULT NULL,
   `link_video_call` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
-  `previous_booking_id` int DEFAULT NULL,
   PRIMARY KEY (`booking_id`),
   KEY `schedule_id` (`schedule_id`),
   KEY `profile_patient_id` (`profile_patient_id`),
@@ -52,7 +51,7 @@ CREATE TABLE `booking` (
 
 LOCK TABLES `booking` WRITE;
 /*!40000 ALTER TABLE `booking` DISABLE KEYS */;
-INSERT INTO `booking` VALUES (15,35,15,'2023-10-13 16:32:22','2023-10-13 16:37:26',NULL,0,3,NULL,1,NULL),(16,28,16,'2023-10-13 16:35:41','2023-10-13 16:37:18',NULL,0,2,NULL,1,NULL),(17,65,15,'2023-10-13 16:35:58',NULL,NULL,0,1,NULL,1,NULL),(18,92,15,'2023-10-13 16:36:25',NULL,NULL,0,1,NULL,1,NULL),(19,91,15,'2023-10-13 16:36:37',NULL,NULL,0,1,NULL,1,NULL),(20,78,16,'2023-10-13 16:38:12',NULL,NULL,0,1,NULL,1,NULL),(21,79,16,'2023-10-13 16:38:20',NULL,NULL,0,1,NULL,1,NULL),(22,60,16,'2023-10-13 16:38:28',NULL,NULL,0,1,NULL,1,NULL),(23,29,16,'2023-10-13 16:38:47','2023-10-13 16:41:01',NULL,0,2,NULL,1,NULL),(24,37,15,'2023-10-13 16:39:01',NULL,NULL,0,1,NULL,1,NULL),(25,128,15,'2023-10-13 16:40:29',NULL,NULL,0,1,NULL,1,NULL),(26,46,16,'2023-10-16 18:26:34','2023-10-16 18:27:04',NULL,0,2,NULL,1,NULL),(27,129,22,'2023-10-16 20:38:46','2023-10-16 20:43:41',NULL,0,2,NULL,1,NULL),(28,97,21,'2023-10-16 20:39:06','2023-10-16 20:40:02',NULL,0,2,NULL,1,NULL),(29,140,22,'2023-10-16 20:42:50','2023-10-16 20:45:08',NULL,0,2,NULL,1,NULL),(30,134,21,'2023-10-16 20:43:03',NULL,NULL,0,1,NULL,1,NULL),(31,187,24,'2023-10-16 20:50:15','2023-10-16 20:50:56',NULL,0,2,NULL,1,NULL),(32,137,23,'2023-10-16 20:50:26','2023-10-16 20:52:28',NULL,0,2,NULL,1,NULL),(33,148,15,'2023-10-16 20:55:30','2023-10-16 20:57:44',NULL,0,2,NULL,1,NULL),(34,110,16,'2023-10-16 20:55:52','2023-10-16 20:56:20',NULL,0,2,NULL,1,NULL);
+INSERT INTO `booking` VALUES (15,35,15,'2023-10-13 16:32:22','2023-10-13 16:37:26',NULL,0,3,NULL,1),(16,28,16,'2023-10-13 16:35:41','2023-10-13 16:37:18',NULL,0,2,NULL,1),(17,65,15,'2023-10-13 16:35:58',NULL,NULL,0,1,NULL,1),(18,92,15,'2023-10-13 16:36:25',NULL,NULL,0,1,NULL,1),(19,91,15,'2023-10-13 16:36:37',NULL,NULL,0,1,NULL,1),(20,78,16,'2023-10-13 16:38:12',NULL,NULL,0,1,NULL,1),(21,79,16,'2023-10-13 16:38:20',NULL,NULL,0,1,NULL,1),(22,60,16,'2023-10-13 16:38:28',NULL,NULL,0,1,NULL,1),(23,29,16,'2023-10-13 16:38:47','2023-10-13 16:41:01',NULL,0,2,NULL,1),(24,37,15,'2023-10-13 16:39:01',NULL,NULL,0,1,NULL,1),(25,128,15,'2023-10-13 16:40:29',NULL,NULL,0,1,NULL,1),(26,46,16,'2023-10-16 18:26:34','2023-10-16 18:27:04',NULL,0,2,NULL,1),(27,129,22,'2023-10-16 20:38:46','2023-10-16 20:43:41',NULL,0,2,NULL,1),(28,97,21,'2023-10-16 20:39:06','2023-10-16 20:40:02',NULL,0,2,NULL,1),(29,140,22,'2023-10-16 20:42:50','2023-10-16 20:45:08',NULL,0,2,NULL,1),(30,134,21,'2023-10-16 20:43:03',NULL,NULL,0,1,NULL,1),(31,187,24,'2023-10-16 20:50:15','2023-10-16 20:50:56',NULL,0,2,NULL,1),(32,137,23,'2023-10-16 20:50:26','2023-10-16 20:52:28',NULL,0,2,NULL,1),(33,148,15,'2023-10-16 20:55:30','2023-10-16 20:57:44',NULL,0,2,NULL,1),(34,110,16,'2023-10-16 20:55:52','2023-10-16 20:56:20',NULL,0,2,NULL,1);
 /*!40000 ALTER TABLE `booking` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -80,7 +79,7 @@ CREATE TABLE `booking_status` (
 
 LOCK TABLES `booking_status` WRITE;
 /*!40000 ALTER TABLE `booking_status` DISABLE KEYS */;
-INSERT INTO `booking_status` VALUES (1,'Chờ xác nhận',NULL,NULL,NULL,1),(2,'Đã xác nhận',NULL,NULL,NULL,1),(3,'Từ chối',NULL,NULL,NULL,1),(4,'Đã khám xong',NULL,NULL,NULL,1),(5,'Chờ tái khám',NULL,NULL,NULL,1),(6,'Tái khám xong',NULL,NULL,NULL,1);
+INSERT INTO `booking_status` VALUES (1,'Chờ xác nhận',NULL,NULL,NULL,1),(2,'Đã xác nhận',NULL,NULL,NULL,1),(3,'Từ chối',NULL,NULL,NULL,1),(4,'Đã khám xong',NULL,NULL,NULL,1),(5,'Tái khám',NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `booking_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,7 +93,7 @@ DROP TABLE IF EXISTS `chatgpt_consult`;
 CREATE TABLE `chatgpt_consult` (
   `chatgpt_consult_id` int NOT NULL AUTO_INCREMENT,
   `patient_question` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `chatgpt_consult_answer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `chatgpt_consult_answer` varchar(10000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
@@ -106,7 +105,7 @@ CREATE TABLE `chatgpt_consult` (
   KEY `chatgpt_question_id` (`chatgpt_question_id`),
   CONSTRAINT `chatgpt_consult_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
   CONSTRAINT `chatgpt_consult_ibfk_2` FOREIGN KEY (`chatgpt_question_id`) REFERENCES `chatgpt_question` (`chatgpt_question_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,6 +114,7 @@ CREATE TABLE `chatgpt_consult` (
 
 LOCK TABLES `chatgpt_consult` WRITE;
 /*!40000 ALTER TABLE `chatgpt_consult` DISABLE KEYS */;
+INSERT INTO `chatgpt_consult` VALUES (4,'Tôi đang đau bụng','Dự đoán bệnh: Đau bụng có thể do nhiều nguyên nhân khác nhau như tiêu chảy, táo bón, vi khuẩn, viêm loét dạ dày...\nLời khuyên: Hãy uống nhiều nước, tránh thức ăn nặng và khó tiêu, nếu đau bụng kéo dài hoặc trở nên nghiêm trọng hơn hãy nên đi khám bác sĩ để được tư vấn cụ thể và điều trị kịp thời.','2024-04-22 15:32:28',NULL,NULL,1,1,NULL),(5,'Tôi đang đau bụng và đau lưng','Dự đoán bệnh: Dựa vào các triệu chứng bạn đưa ra, có thể bạn đang gặp vấn đề về tiêu hóa hoặc cột sống. Tuy nhiên, chính xác hơn cần phải được khám bệnh để đưa ra kết luận chính xác. \n\nLời khuyên: Bạn nên đến gặp bác sĩ để được khám và tư vấn cụ thể về tình trạng sức khỏe của mình. Đừng tự chữa trị hoặc lặp lại các triệu chứng mà không có sự hướng dẫn từ chuyên gia y tế. Để đặt lịch hẹn khám bệnh, bạn có thể liên hệ trực tiếp tại phòng khám hoặc gọi đến số điện thoại của chúng tôi trong giờ làm việc hàng ngày.','2024-04-22 15:36:00',NULL,NULL,1,1,NULL),(6,'Tôi đang đau bụng và đau lưng','Dự đoán bệnh: Đau bụng và đau lưng có thể là dấu hiệu của nhiều vấn đề sức khỏe khác nhau như vi khuẩn đường tiểu hoặc viêm túi mật. Tuy nhiên, cần phải thăm khám bác sĩ để biết chính xác nguyên nhân của triệu chứng này.\n\nLời khuyên: Bạn nên thăm khám bác sĩ để được tư vấn và chẩn đoán chính xác bệnh tình của mình. Bác sĩ sẽ thực hiện các xét nghiệm cần thiết và đưa ra phác đồ điều trị phù hợp. Đừng tự điều trị hoặc trì hoãn việc thăm khám với bác sĩ để tránh các vấn đề sức khỏe nghiêm trọng.','2024-04-22 22:52:54',NULL,NULL,1,1,NULL);
 /*!40000 ALTER TABLE `chatgpt_consult` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -238,7 +238,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-INSERT INTO `comment` VALUES (2,14,20,'Đùa',NULL,'2023-10-16 15:26:14',NULL,NULL,5,1),(3,14,20,'Đùa nhau',NULL,'2023-10-16 15:28:06',NULL,NULL,5,1),(4,14,20,'Gì vậy',NULL,'2023-10-16 17:53:35',NULL,NULL,5,1),(5,14,20,'Ngộ',NULL,'2023-10-16 18:08:52',NULL,NULL,4,1),(6,14,20,'Gì vậy','https://res.cloudinary.com/dhwuwy0to/image/upload/v1697458002/hdkhgzxginh1clhiwohl.png','2023-10-16 19:06:44',NULL,NULL,0,1),(7,14,20,'Đây là API SỬA COMMENT 2',NULL,'2023-10-19 14:04:18','2023-10-19 14:16:14',NULL,2,1);
+INSERT INTO `comment` VALUES (2,14,20,'Khám ổn',NULL,'2023-10-16 15:26:14',NULL,NULL,5,1),(3,14,20,'Khám rất tốt',NULL,'2023-10-16 15:28:06',NULL,NULL,5,1),(4,14,20,'Khám tạm được',NULL,'2023-10-16 17:53:35',NULL,NULL,5,1),(5,14,20,'Tui chưa hết bệnh',NULL,'2023-10-16 18:08:52',NULL,NULL,4,1),(6,14,20,'Gì vậy','https://res.cloudinary.com/dhwuwy0to/image/upload/v1697458002/hdkhgzxginh1clhiwohl.png','2023-10-16 19:06:44',NULL,NULL,0,1),(7,14,20,'Khám bệnh ổn',NULL,'2023-10-19 14:04:18','2023-10-19 14:16:14',NULL,2,1);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -503,6 +503,51 @@ INSERT INTO `notification_type` VALUES (1,'message','2023-09-10 11:30:31',NULL,'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `payment_history`
+--
+
+DROP TABLE IF EXISTS `payment_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `payment_history` (
+  `payment_history_id` int NOT NULL,
+  `payment_status` tinyint(1) DEFAULT NULL,
+  `booking_id` int DEFAULT NULL,
+  `vnp_amount` varchar(255) DEFAULT NULL,
+  `vnp_bankcode` varchar(255) DEFAULT NULL,
+  `vnp_command` varchar(255) DEFAULT NULL,
+  `vnp_createdate` varchar(255) DEFAULT NULL,
+  `vnp_currcode` varchar(255) DEFAULT NULL,
+  `vnp_expiredate` varchar(255) DEFAULT NULL,
+  `vnp_ipaddr` varchar(255) DEFAULT NULL,
+  `vnp_locale` varchar(255) DEFAULT NULL,
+  `vnp_orderinfo` varchar(255) DEFAULT NULL,
+  `vnp_ordertype` varchar(255) DEFAULT NULL,
+  `vnp_returnurl` varchar(255) DEFAULT NULL,
+  `vnp_tmncode` varchar(255) DEFAULT NULL,
+  `vnp_txnref` varchar(255) DEFAULT NULL,
+  `vnp_version` varchar(255) DEFAULT NULL,
+  `vnp_securehash` varchar(255) DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  `deleted_date` datetime DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`payment_history_id`),
+  KEY `booking_id` (`booking_id`),
+  CONSTRAINT `payment_history_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`booking_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `payment_history`
+--
+
+LOCK TABLES `payment_history` WRITE;
+/*!40000 ALTER TABLE `payment_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `payment_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `prescription_detail`
 --
 
@@ -549,6 +594,7 @@ DROP TABLE IF EXISTS `prescriptions`;
 CREATE TABLE `prescriptions` (
   `prescription_id` int NOT NULL AUTO_INCREMENT,
   `prescription_date` date DEFAULT NULL,
+  `re_examination_date` date DEFAULT NULL,
   `diagnosis` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `symptoms` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `service_price` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
@@ -561,7 +607,6 @@ CREATE TABLE `prescriptions` (
   `medicine_payment_Txn_Ref` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `service_payment_status_id` int DEFAULT NULL,
   `service_payment_Txn_Ref` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `previous_prescription_id` int DEFAULT NULL,
   PRIMARY KEY (`prescription_id`),
   KEY `booking_id` (`booking_id`),
   KEY `medicine_payment_status_id` (`medicine_payment_status_id`),
@@ -578,7 +623,7 @@ CREATE TABLE `prescriptions` (
 
 LOCK TABLES `prescriptions` WRITE;
 /*!40000 ALTER TABLE `prescriptions` DISABLE KEYS */;
-INSERT INTO `prescriptions` VALUES (26,'2023-10-13','Đau bụng','Đau bụng, nhức đầu','120000','2023-10-13 16:55:34',NULL,NULL,1,16,2,NULL,2,NULL,NULL),(27,'2023-10-16','Ho','Đau họng','120000','2023-10-16 18:28:18',NULL,NULL,1,26,2,NULL,2,NULL,NULL),(28,'2023-10-16','Ợ Chua','Đau bụng','250000','2023-10-16 20:40:33',NULL,NULL,1,28,2,NULL,1,NULL,NULL),(29,'2023-10-16','Chóng Mặt','Buồn nôn','120000','2023-10-16 20:44:21',NULL,NULL,1,27,1,NULL,2,NULL,NULL),(30,'2023-10-16','Tê Tay','Gãy Tay','150000','2023-10-16 20:45:39',NULL,NULL,1,29,1,NULL,1,NULL,NULL),(31,'2023-10-16','Nóng trong người','Nhiệt miệng','270000','2023-10-16 20:52:09',NULL,NULL,1,31,1,NULL,2,NULL,NULL),(32,'2023-10-16','Chảy Nước Mắt','Mỏi mắt','120000','2023-10-16 20:53:11',NULL,NULL,1,32,2,NULL,1,NULL,NULL),(33,'2023-10-16','Ho Gà','Đau Họng','250000','2023-10-16 20:57:22',NULL,NULL,1,34,1,NULL,1,NULL,NULL),(34,'2023-10-16','Mất Ngủ','Đau Thần Kinh Tọa','150000','2023-10-16 20:58:39',NULL,NULL,1,33,2,NULL,1,NULL,NULL),(35,'2023-10-16','Mỏi Vai Gối','Đau Lưng','150000','2023-10-16 21:00:42',NULL,NULL,1,29,2,'56750177',2,'56750177',NULL);
+INSERT INTO `prescriptions` VALUES (26,'2023-10-13',NULL,'Đau bụng','Đau bụng, nhức đầu','120000','2023-10-13 16:55:34',NULL,NULL,1,16,2,NULL,2,NULL),(27,'2023-10-16',NULL,'Ho','Đau họng','120000','2023-10-16 18:28:18',NULL,NULL,1,26,2,NULL,2,NULL),(28,'2023-10-16',NULL,'Ợ Chua','Đau bụng','250000','2023-10-16 20:40:33',NULL,NULL,1,28,2,NULL,1,NULL),(29,'2023-10-16',NULL,'Chóng Mặt','Buồn nôn','120000','2023-10-16 20:44:21',NULL,NULL,1,27,1,NULL,2,NULL),(30,'2023-10-16',NULL,'Tê Tay','Gãy Tay','150000','2023-10-16 20:45:39',NULL,NULL,1,29,1,NULL,1,NULL),(31,'2023-10-16',NULL,'Nóng trong người','Nhiệt miệng','270000','2023-10-16 20:52:09',NULL,NULL,1,31,1,NULL,2,NULL),(32,'2023-10-16',NULL,'Chảy Nước Mắt','Mỏi mắt','120000','2023-10-16 20:53:11',NULL,NULL,1,32,2,NULL,1,NULL),(33,'2023-10-16',NULL,'Ho Gà','Đau Họng','250000','2023-10-16 20:57:22',NULL,NULL,1,34,1,NULL,1,NULL),(34,'2023-10-16',NULL,'Mất Ngủ','Đau Thần Kinh Tọa','150000','2023-10-16 20:58:39',NULL,NULL,1,33,2,NULL,1,NULL),(35,'2023-10-16',NULL,'Mỏi Vai Gối','Đau Lưng','150000','2023-10-16 21:00:42',NULL,NULL,1,29,2,'56750177',2,'56750177');
 /*!40000 ALTER TABLE `prescriptions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -652,11 +697,12 @@ CREATE TABLE `profile_patient` (
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
+  `lock` tinyint(1) DEFAULT NULL,
   `user_id` int DEFAULT NULL,
   PRIMARY KEY (`profile_patient_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `profile_patient_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -665,7 +711,7 @@ CREATE TABLE `profile_patient` (
 
 LOCK TABLES `profile_patient` WRITE;
 /*!40000 ALTER TABLE `profile_patient` DISABLE KEYS */;
-INSERT INTO `profile_patient` VALUES (15,'Bệnh nhân Tuấn 1','0345809638','2002-08-28 00:00:00',1,'Thành phố Hồ Chí Minh','Thành phố Thủ Đức','Phường Bình Chiểu','74','74 Phường Bình Chiểu Thành phố Thủ Đức Thành phố Hồ Chí Minh','2051050549tuan@ou.edu.vn','Khác','2023-10-13 14:55:20',NULL,NULL,1,20),(16,'Bệnh nhân Tuấn 2','0345809638','2023-10-13 00:00:00',1,'Thành phố Hồ Chí Minh','Thành phố Thủ Đức','Phường Bình Chiểu','76','76 Phường Bình Chiểu Thành phố Thủ Đức Thành phố Hồ Chí Minh','2051050549tuan@ou.edu.vn','Khác','2023-10-13 14:55:43',NULL,NULL,1,20),(20,'Thanh Ngar','0123698547','2023-10-13 00:00:00',0,'Tỉnh Phú Thọ','Thị xã Phú Thọ','Phường Phong Châu','17','17 Phường Phong Châu Thị xã Phú Thọ Tỉnh Phú Thọ','2051052125thai@gmail.com','Mẹ','2023-10-13 20:28:26',NULL,NULL,1,18),(21,'Lê Thị Huỳnh Như','0123456789','2023-10-16 00:00:00',0,'Hà Nội','Ba Đình','Phúc Xá','12','12 Phúc Xá Ba Đình Hà Nội','nhu@gmailcom','Mẹ','2023-10-16 20:29:14',NULL,NULL,1,21),(22,'Lưu Quỳnh Như','0123456789','2023-10-16 00:00:00',0,'Hà Nội','Ba Đình','Phúc Xá','13','13 Phúc Xá Ba Đình Hà Nội','nhule@gmail.com','Con','2023-10-16 20:29:51',NULL,NULL,1,21),(23,'Thái Nguyễn','0136547892','2023-10-16 00:00:00',1,'Hà Nội','Ba Đình','Phúc Xá','32','32 Phúc Xá Ba Đình Hà Nội','thai@gmail.com','Khác','2023-10-16 20:49:31',NULL,NULL,1,22),(24,'Thái Minh','01336982257','2023-10-16 00:00:00',1,'Hà Nội','Ba Đình','Phúc Xá','78','78 Phúc Xá Ba Đình Hà Nội','thai@gmail.com','Cha','2023-10-16 20:49:57',NULL,NULL,1,22);
+INSERT INTO `profile_patient` VALUES (15,'Bệnh nhân Tuấn 1','0345809638','2002-08-28 00:00:00',1,'Thành phố Hồ Chí Minh','Thành phố Thủ Đức','Phường Bình Chiểu','74','74 Phường Bình Chiểu Thành phố Thủ Đức Thành phố Hồ Chí Minh','2051050549tuan@ou.edu.vn','Khác','2023-10-13 14:55:20',NULL,NULL,1,1,20),(16,'Bệnh nhân Tuấn 2','0345809638','2023-10-13 00:00:00',1,'Thành phố Hồ Chí Minh','Thành phố Thủ Đức','Phường Bình Chiểu','76','76 Phường Bình Chiểu Thành phố Thủ Đức Thành phố Hồ Chí Minh','2051050549tuan@ou.edu.vn','Khác','2023-10-13 14:55:43',NULL,NULL,1,1,20),(20,'Thanh Ngar','0123698547','2023-10-13 00:00:00',0,'Tỉnh Phú Thọ','Thị xã Phú Thọ','Phường Phong Châu','17','17 Phường Phong Châu Thị xã Phú Thọ Tỉnh Phú Thọ','2051052125thai@gmail.com','Mẹ','2023-10-13 20:28:26',NULL,NULL,1,0,18),(21,'Lê Thị Huỳnh Như','0123456789','2023-10-16 00:00:00',0,'Hà Nội','Ba Đình','Phúc Xá','12','12 Phúc Xá Ba Đình Hà Nội','nhu@gmailcom','Mẹ','2023-10-16 20:29:14',NULL,NULL,1,1,21),(22,'Lưu Quỳnh Như','0123456789','2023-10-16 00:00:00',0,'Hà Nội','Ba Đình','Phúc Xá','13','13 Phúc Xá Ba Đình Hà Nội','nhule@gmail.com','Con','2023-10-16 20:29:51',NULL,NULL,1,1,21),(23,'Thái Nguyễn','0136547892','2023-10-16 00:00:00',1,'Hà Nội','Ba Đình','Phúc Xá','32','32 Phúc Xá Ba Đình Hà Nội','thai@gmail.com','Khác','2023-10-16 20:49:31',NULL,NULL,1,1,22),(24,'Thái Minh','01336982257','2023-10-16 00:00:00',1,'Hà Nội','Ba Đình','Phúc Xá','78','78 Phúc Xá Ba Đình Hà Nội','thai@gmail.com','Cha','2023-10-16 20:49:57',NULL,NULL,1,1,22);
 /*!40000 ALTER TABLE `profile_patient` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -718,7 +764,7 @@ CREATE TABLE `role` (
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -727,7 +773,7 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (1,'ROLE_ADMIN','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(2,'ROLE_DOCTOR','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(3,'ROLE_USER','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1);
+INSERT INTO `role` VALUES (1,'ROLE_ADMIN','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(2,'ROLE_DOCTOR','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(3,'ROLE_USER','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(4,'ROLE_NURSE','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1);
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -822,6 +868,70 @@ LOCK TABLES `specialty` WRITE;
 /*!40000 ALTER TABLE `specialty` DISABLE KEYS */;
 INSERT INTO `specialty` VALUES (1,'Khoa Tiêu Hóa','Khó Tiêu','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266147/h17azyuh1dwknbdyig7f.webp','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(2,'Khoa Nội','Nội Khoa','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266333/ddbl7rdvm01hbv9blv4p.webp','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(3,'Khoa Ngoại','Ngoại Khoa','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266422/z3vkxvzaiybogfzanj8a.webp','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(4,'Nha Khoa','Niềng Răng','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266502/qmbjwasfu0wr0husqtrr.webp','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(5,'Khoa Thần Kinh','Ủa Gì Vậy','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266540/c7fmgq4f0xp8ucuikh0q.webp','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(6,'Khoa Cơ Xương Khớp','Nhức Đầu','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266607/bemiqt3yppxblrpkbmxy.webp','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(7,'Khoa Nhi','Sửu Nhi','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266081/kxt00omgdlfg4ciyupfx.webp','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(8,'Khoa Da Liễu','Đồi Mồi','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266646/yntrsgij8uhyfwk07wfj.webp','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(9,'Khoa Tâm Thần','Thần kinh','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713265392/ibrcyexmpvqfsocxaeb4.webp','2024-04-16 18:03:09',NULL,NULL,1),(10,'Khoa Hô Hấp','Thở Oxi','https://res.cloudinary.com/dhwuwy0to/image/upload/v1713266704/ede3ephqg3rkjow8qvfk.webp','2024-04-16 18:25:02',NULL,NULL,1);
 /*!40000 ALTER TABLE `specialty` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `test_result`
+--
+
+DROP TABLE IF EXISTS `test_result`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `test_result` (
+  `test_result_id` int NOT NULL,
+  `test_service_id` int DEFAULT NULL,
+  `booking_id` int DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  `test_result_value` varchar(255) DEFAULT NULL,
+  `test_result_diagnosis` varchar(255) DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  `deleted_date` datetime DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`test_result_id`),
+  KEY `test_service_id` (`test_service_id`),
+  KEY `booking_id` (`booking_id`),
+  KEY `user_id` (`user_id`) /*!80000 INVISIBLE */,
+  CONSTRAINT `test_result_ibfk_1` FOREIGN KEY (`test_service_id`) REFERENCES `test_service` (`test_service_id`),
+  CONSTRAINT `test_result_ibfk_2` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`booking_id`),
+  CONSTRAINT `test_result_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `test_result`
+--
+
+LOCK TABLES `test_result` WRITE;
+/*!40000 ALTER TABLE `test_result` DISABLE KEYS */;
+/*!40000 ALTER TABLE `test_result` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `test_service`
+--
+
+DROP TABLE IF EXISTS `test_service`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `test_service` (
+  `test_service_id` int NOT NULL,
+  `test_service_name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_cs_0900_ai_ci DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  `deleted_date` datetime DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`test_service_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_cs_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `test_service`
+--
+
+LOCK TABLES `test_service` WRITE;
+/*!40000 ALTER TABLE `test_service` DISABLE KEYS */;
+/*!40000 ALTER TABLE `test_service` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1027,4 +1137,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-22 14:05:36
+-- Dump completed on 2024-04-23 13:42:18
