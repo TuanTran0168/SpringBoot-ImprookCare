@@ -24,13 +24,18 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -56,6 +61,9 @@ public class ApiBookingController {
     @Autowired
     BookingStatusService bookingStatusService;
 
+    @Autowired
+    private Environment environment;
+
     @PostMapping("/auth/add-booking/")
     @CrossOrigin
     public ResponseEntity<?> addBooking(@Valid @RequestBody BookingDTO bookingDTO) {
@@ -76,7 +84,10 @@ public class ApiBookingController {
                                 Integer.parseInt(bookingDTO.getProfilePatientId()));
 
                 if (profilePatientOptional.isPresent()) {
-                    booking.setProfilePatientId(profilePatientOptional.get());
+                    ProfilePatient profilePatient = profilePatientOptional.get();
+                    profilePatient.setIsLock(Boolean.TRUE);
+
+                    booking.setProfilePatientId(profilePatient);
 
                     booking.setStatusId(this.bookingStatusService.findBookingStatusByStatusId(1));
                     booking.setCreatedDate(new Date());
@@ -84,7 +95,7 @@ public class ApiBookingController {
                     booking.setBookingCancel(Boolean.FALSE);
                     booking.setActive(Boolean.TRUE);
 
-                    return new ResponseEntity<>(this.bookingService.createBooking(booking, schedule),
+                    return new ResponseEntity<>(this.bookingService.createBooking(booking, schedule, profilePatient),
                             HttpStatus.CREATED);
                 } else {
                     message = "ProfilePatient[" + bookingDTO.getProfilePatientId() + "] không tồn tại!";
@@ -109,6 +120,28 @@ public class ApiBookingController {
     public ResponseEntity<List<Object[]>> getBookingForUserView(@RequestBody Map<String, String> params) {
         String userId = params.get("userId");
         return new ResponseEntity<>(this.bookingService.getBookingForUserView(Integer.parseInt(userId)), HttpStatus.OK);
+    }
+
+    @PostMapping("/auth/booking-user-view-page/")
+    @CrossOrigin
+    public ResponseEntity<?> getBookingForUserViewPage(@RequestBody Map<String, String> params,
+            @RequestParam("pageNumber") String pageNumber) {
+        String userId = params.get("userId");
+        String bookingStatusId = params.get("bookingStatusId");
+        // String pageNumber = params.get("pageNumber");
+        int defaultPageNumber = 0;
+        Sort mySort = Sort.by("createdDate").descending();
+        Pageable page = PageRequest.of(defaultPageNumber,
+                Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")), mySort);
+        if (pageNumber != null && !pageNumber.isEmpty()) {
+            if (!pageNumber.equals("NaN")) {
+                page = PageRequest.of(Integer.parseInt(pageNumber),
+                        Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")),
+                        mySort);
+            }
+        }
+        return new ResponseEntity<>(this.bookingService.getBookingForUserView(Integer.parseInt(userId),
+                Integer.parseInt(bookingStatusId), page), HttpStatus.OK);
     }
 
     @PostMapping("/public/time-slot-booking/")

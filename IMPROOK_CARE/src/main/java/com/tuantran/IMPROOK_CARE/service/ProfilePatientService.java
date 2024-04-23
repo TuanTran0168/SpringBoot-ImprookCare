@@ -7,8 +7,14 @@ package com.tuantran.IMPROOK_CARE.service;
 import com.tuantran.IMPROOK_CARE.dto.AddProfilePatientDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateProfilePatientDTO;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
+import com.tuantran.IMPROOK_CARE.models.User;
+
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 /**
  *
@@ -27,4 +33,8 @@ public interface ProfilePatientService {
     List<ProfilePatient> findProfilePatientByUserIdAndActiveTrue(int userId);
 
     int softDeleteProfilePatient(int profilePatientId);
+
+    List<?> findProfilePatientByUserIdAndIsLockAndActiveTrue(User userId, Boolean lock);
+
+    Page<?> findAllProfilePatientPageSpec(Specification<?> createSpecification, Pageable page);
 }
