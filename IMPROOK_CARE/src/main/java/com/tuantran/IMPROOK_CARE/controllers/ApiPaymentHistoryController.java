@@ -48,7 +48,7 @@ public class ApiPaymentHistoryController {
     @Autowired
     private ProfilePatientService profilePatientService;
 
-    @GetMapping("/public/profile-patient/{profilePatientId}/payment-history/")
+    @GetMapping("/auth/profile-patient/{profilePatientId}/payment-history/")
     @CrossOrigin
     public ResponseEntity<?> findPaymentHistoryByProfilePatientId(
             @PathVariable(value = "profilePatientId") String profilePatientId,
