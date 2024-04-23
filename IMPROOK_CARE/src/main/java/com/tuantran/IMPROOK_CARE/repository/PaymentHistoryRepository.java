@@ -4,7 +4,6 @@
  */
 package com.tuantran.IMPROOK_CARE.repository;
 
-import com.tuantran.IMPROOK_CARE.models.BookingStatus;
 import com.tuantran.IMPROOK_CARE.models.PaymentHistory;
 
 import java.util.Optional;
@@ -16,7 +15,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
 
 /**
  *

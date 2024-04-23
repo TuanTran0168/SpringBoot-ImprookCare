@@ -4,6 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.controllers;
 
+import com.tuantran.IMPROOK_CARE.Specifications.GenericSpecifications;
 import com.tuantran.IMPROOK_CARE.dto.AddProfilePatientDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateProfilePatientDTO;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
@@ -12,7 +13,17 @@ import com.tuantran.IMPROOK_CARE.service.ProfilePatientService;
 import com.tuantran.IMPROOK_CARE.service.UserService;
 
 import jakarta.validation.Valid;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -38,6 +49,9 @@ public class ApiProfilePatientController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    Environment environment;
 
     @PostMapping("/auth/add-profile-patient/")
     @CrossOrigin
@@ -80,14 +94,55 @@ public class ApiProfilePatientController {
     @GetMapping("/auth/user/{userId}/profile-patient/")
     @CrossOrigin
     public ResponseEntity<?> profilePatientByUserId(@PathVariable(value = "userId") String userId,
-            @RequestParam("lock") String lock) {
+            @RequestParam Map<String, String> params) {
         String message = "Có lỗi xảy ra!";
 
         User user = this.userService.findUserByUserIdAndActiveTrue(Integer.parseInt(userId));
         if (user != null) {
+            String pageNumber = params.get("pageNumber");
+            String isLock = params.get("isLock");
+            String profilePatientName = params.get("profilePatientName");
+            String phonenumber = params.get("phonenumber");
+            String gender = params.get("gender");
+
+            List<Specification<ProfilePatient>> listSpec = new ArrayList<>();
+
+            int defaultPageNumber = 0;
+            Sort mySort = Sort.by("createdDate").descending();
+            Pageable page = PageRequest.of(defaultPageNumber,
+                    Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")),
+                    mySort);
+            if (pageNumber != null && !pageNumber.isEmpty()) {
+                if (!pageNumber.equals("NaN")) {
+                    page = PageRequest.of(Integer.parseInt(pageNumber),
+                            Integer.parseInt(
+                                    this.environment.getProperty("spring.data.web.pageable.default-page-size")),
+                            mySort);
+                }
+            }
+
+            if (isLock != null && !isLock.isEmpty()) {
+                Specification<ProfilePatient> spec = GenericSpecifications.fieldEquals("isLock",
+                        Boolean.parseBoolean(isLock));
+                listSpec.add(spec);
+            }
+            if (profilePatientName != null && !profilePatientName.isEmpty()) {
+                Specification<ProfilePatient> spec = GenericSpecifications.fieldEquals("name", profilePatientName);
+                listSpec.add(spec);
+            }
+            if (phonenumber != null && !phonenumber.isEmpty()) {
+                Specification<ProfilePatient> spec = GenericSpecifications.fieldContains("phonenumber", phonenumber);
+                listSpec.add(spec);
+            }
+            if (gender != null && !gender.isEmpty()) {
+                Specification<ProfilePatient> spec = GenericSpecifications.fieldEquals("gender",
+                        Boolean.parseBoolean(gender));
+                listSpec.add(spec);
+            }
+
             return new ResponseEntity<>(
-                    this.profilePatientService.findProfilePatientByUserIdAndIsLockAndActiveTrue(user,
-                            Boolean.parseBoolean(lock)),
+                    this.profilePatientService
+                            .findAllProfilePatientPageSpec(GenericSpecifications.createSpecification(listSpec), page),
                     HttpStatus.OK);
         } else {
             message = "User[" + userId + "] không tồn tại!";

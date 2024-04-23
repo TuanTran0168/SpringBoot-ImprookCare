@@ -24,6 +24,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -209,5 +212,10 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
     @Override
     public List<?> findProfilePatientByUserIdAndIsLockAndActiveTrue(User userId, Boolean lock) {
         return this.profilePatientRepository.findProfilePatientByUserIdAndIsLockAndActiveTrue(userId, lock);
+    }
+
+    @Override
+    public Page<?> findAllProfilePatientPageSpec(Specification<?> createSpecification, Pageable page) {
+        return this.profilePatientRepository.findAll(createSpecification, page);
     }
 }

@@ -12,6 +12,10 @@ import com.tuantran.IMPROOK_CARE.models.User;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+
 /**
  *
  * @author Administrator
@@ -31,4 +35,6 @@ public interface ProfilePatientService {
     int softDeleteProfilePatient(int profilePatientId);
 
     List<?> findProfilePatientByUserIdAndIsLockAndActiveTrue(User userId, Boolean lock);
+
+    Page<?> findAllProfilePatientPageSpec(Specification<?> createSpecification, Pageable page);
 }

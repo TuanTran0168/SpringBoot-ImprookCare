@@ -4,16 +4,9 @@
  */
 package com.tuantran.IMPROOK_CARE.controllers;
 
-import com.tuantran.IMPROOK_CARE.models.Districts;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
-import com.tuantran.IMPROOK_CARE.models.Provinces;
-import com.tuantran.IMPROOK_CARE.models.Wards;
-import com.tuantran.IMPROOK_CARE.service.DistrictsService;
 import com.tuantran.IMPROOK_CARE.service.PaymentHistoryService;
 import com.tuantran.IMPROOK_CARE.service.ProfilePatientService;
-import com.tuantran.IMPROOK_CARE.service.ProvincesService;
-import com.tuantran.IMPROOK_CARE.service.WardsService;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
