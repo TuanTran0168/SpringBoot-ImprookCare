@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -123,10 +124,11 @@ public class ApiBookingController {
 
     @PostMapping("/auth/booking-user-view-page/")
     @CrossOrigin
-    public ResponseEntity<?> getBookingForUserViewPage(@RequestBody Map<String, String> params) {
+    public ResponseEntity<?> getBookingForUserViewPage(@RequestBody Map<String, String> params,
+            @RequestParam("pageNumber") String pageNumber) {
         String userId = params.get("userId");
         String bookingStatusId = params.get("bookingStatusId");
-        String pageNumber = params.get("pageNumber");
+        // String pageNumber = params.get("pageNumber");
         int defaultPageNumber = 0;
         Sort mySort = Sort.by("createdDate").descending();
         Pageable page = PageRequest.of(defaultPageNumber,
