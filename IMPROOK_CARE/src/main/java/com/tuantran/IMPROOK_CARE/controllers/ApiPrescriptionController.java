@@ -10,6 +10,10 @@ import com.tuantran.IMPROOK_CARE.dto.AddPrescriptionDetailDTO;
 import com.tuantran.IMPROOK_CARE.service.PrescriptionService;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,6 +34,9 @@ public class ApiPrescriptionController {
 
     @Autowired
     private PrescriptionService prescriptionService;
+
+    @Autowired
+    private Environment environment;
 
     // @PostMapping("/auth/doctor/add-prescription/")
     // @CrossOrigin
@@ -117,5 +124,30 @@ public class ApiPrescriptionController {
         }
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/auth/search-custom-prescriptions/")
+    @CrossOrigin
+    public ResponseEntity<?> listSearchCustomPrescriptions(@RequestParam Map<String, String> params) {
+        // String pageNumber = params.get("pageNumber");
+        String profilePatientId = params.get("profilePatientId");
+        // String pageNumber = params.get("pageNumber");
+        // int defaultPageNumber = 0;
+        // Sort mySort = Sort.by("createdDate").descending();
+        // Pageable page = PageRequest.of(defaultPageNumber,
+        // Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")),
+        // mySort);
+
+        // if (pageNumber != null && !pageNumber.isEmpty()) {
+        // if (!pageNumber.equals("NaN")) {
+        // page = PageRequest.of(Integer.parseInt(pageNumber),
+        // Integer.parseInt(this.environment.getProperty("spring.data.web.pageable.default-page-size")),
+        // mySort);
+        // }
+        // }
+
+        return new ResponseEntity<>(
+                this.prescriptionService.findCustomPrescriptionsList(Integer.parseInt(profilePatientId)),
+                HttpStatus.OK);
     }
 }

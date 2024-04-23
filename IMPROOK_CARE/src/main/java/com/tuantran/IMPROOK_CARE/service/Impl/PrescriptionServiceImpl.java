@@ -254,4 +254,14 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             return 0;
         }
     }
+
+    @Override
+    public Page<?> findCustomPrescriptions(int patientId, Pageable page) {
+        return this.prescriptionRepository.findCustomPrescriptions(patientId, page);
+    }
+
+    @Override
+    public List<?> findCustomPrescriptionsList(int patientId) {
+        return this.prescriptionRepository.findCustomPrescriptionsList(patientId);
+    }
 }
