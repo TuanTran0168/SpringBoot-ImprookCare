@@ -76,7 +76,10 @@ public class ApiBookingController {
                                 Integer.parseInt(bookingDTO.getProfilePatientId()));
 
                 if (profilePatientOptional.isPresent()) {
-                    booking.setProfilePatientId(profilePatientOptional.get());
+                    ProfilePatient profilePatient = profilePatientOptional.get();
+                    profilePatient.setLock(Boolean.TRUE);
+
+                    booking.setProfilePatientId(profilePatient);
 
                     booking.setStatusId(this.bookingStatusService.findBookingStatusByStatusId(1));
                     booking.setCreatedDate(new Date());
@@ -84,7 +87,7 @@ public class ApiBookingController {
                     booking.setBookingCancel(Boolean.FALSE);
                     booking.setActive(Boolean.TRUE);
 
-                    return new ResponseEntity<>(this.bookingService.createBooking(booking, schedule),
+                    return new ResponseEntity<>(this.bookingService.createBooking(booking, schedule, profilePatient),
                             HttpStatus.CREATED);
                 } else {
                     message = "ProfilePatient[" + bookingDTO.getProfilePatientId() + "] không tồn tại!";

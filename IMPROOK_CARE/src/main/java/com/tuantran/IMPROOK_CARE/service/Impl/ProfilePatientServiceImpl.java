@@ -80,6 +80,7 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
                 profilePatient.setUserId(userOptional.get());
             }
 
+            profilePatient.setLock(Boolean.FALSE);
             profilePatient.setActive(Boolean.TRUE);
             profilePatient.setCreatedDate(new Date());
 

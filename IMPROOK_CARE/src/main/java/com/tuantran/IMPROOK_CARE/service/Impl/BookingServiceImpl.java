@@ -276,8 +276,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public Booking createBooking(Booking booking, Schedule schedule) {
+    public Booking createBooking(Booking booking, Schedule schedule, ProfilePatient profilePatient) {
         this.scheduleRepository.save(schedule);
+        this.profilePatientRepository.save(profilePatient);
         return this.bookingRepository.save(booking);
     }
 
