@@ -282,4 +282,9 @@ public class BookingServiceImpl implements BookingService {
         return this.bookingRepository.save(booking);
     }
 
+    @Override
+    public Page<?> getBookingForUserView(int userId, int bookingStatusId, Pageable page) {
+        return this.bookingRepository.getBookingForUserView(userId, bookingStatusId, page);
+    }
+
 }

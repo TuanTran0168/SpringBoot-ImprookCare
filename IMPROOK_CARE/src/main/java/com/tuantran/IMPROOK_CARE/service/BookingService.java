@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
 /**
@@ -32,6 +33,9 @@ public interface BookingService {
 
         // List<Booking> findBookingForUserView(int userId);
         List<Object[]> getBookingForUserView(@Param("userId") int userId);
+
+        Page<?> getBookingForUserView(@Param("userId") int userId, @Param("bookingStatus") int bookingStatusId,
+                        Pageable page);
 
         List<Object[]> getTimeSlotsForDoctorOnDate(@Param("profileDoctorId") int profileDoctorId,
                         @Param("date") String date);
