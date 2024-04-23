@@ -140,6 +140,10 @@ public class ApiProfilePatientController {
                 listSpec.add(spec);
             }
 
+            Specification<ProfilePatient> spec = GenericSpecifications.fieldEquals("userId",
+                    user);
+            listSpec.add(spec);
+
             return new ResponseEntity<>(
                     this.profilePatientService
                             .findAllProfilePatientPageSpec(GenericSpecifications.createSpecification(listSpec), page),
