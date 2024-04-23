@@ -6,12 +6,19 @@ package com.tuantran.IMPROOK_CARE.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.gson.JsonObject;
 //import com.google.gson.Gson;
 //import com.google.gson.JsonObject;
 import com.tuantran.IMPROOK_CARE.configs.vnpay.VNPAYConfig;
 import com.tuantran.IMPROOK_CARE.dto.VNPAYDTO;
 import com.tuantran.IMPROOK_CARE.dto.VnpayReturnDTO;
+
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -25,6 +32,11 @@ import java.util.Map;
 import java.util.TimeZone;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.logging.Level;
@@ -222,4 +234,232 @@ public class ApiVNPAYController {
 
         return new ResponseEntity<>(false, HttpStatus.OK);
     }
+
+    @PostMapping("/public/refund/")
+    @CrossOrigin
+    public String refund() throws IOException {
+
+        // Command: refund
+        String vnp_RequestId = VNPAYConfig.getRandomNumber(8);
+        String vnp_Version = "2.1.0";
+        String vnp_Command = "refund";
+        String vnp_TmnCode = VNPAYConfig.vnp_TmnCode;
+        String vnp_TransactionType = "02";
+        String vnp_TxnRef = "45242740";
+        long amount = Integer.parseInt("10000") * 100;
+        String vnp_Amount = String.valueOf(amount);
+        String vnp_OrderInfo = "Hoan tien GD OrderId:" + vnp_TxnRef;
+        String vnp_TransactionNo = "45242740"; // Assuming value of the parameter "vnp_TransactionNo" does not exist on
+                                               // your
+        // system.
+        String vnp_TransactionDate = "20240423093713";
+        String vnp_CreateBy = "tamthy12345@gmail.com";
+
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        String vnp_CreateDate = formatter.format(cld.getTime());
+
+        String vnp_IpAddr = "192.168.28.8";
+
+        JsonObject vnp_Params = new JsonObject();
+
+        vnp_Params.addProperty("vnp_RequestId", vnp_RequestId);
+        vnp_Params.addProperty("vnp_Version", vnp_Version);
+        vnp_Params.addProperty("vnp_Command", vnp_Command);
+        vnp_Params.addProperty("vnp_TmnCode", vnp_TmnCode);
+        vnp_Params.addProperty("vnp_TransactionType", vnp_TransactionType);
+        vnp_Params.addProperty("vnp_TxnRef", vnp_TxnRef);
+        vnp_Params.addProperty("vnp_Amount", vnp_Amount);
+        vnp_Params.addProperty("vnp_OrderInfo", vnp_OrderInfo);
+
+        if (vnp_TransactionNo != null && !vnp_TransactionNo.isEmpty()) {
+            vnp_Params.addProperty("vnp_TransactionNo", "{get value of vnp_TransactionNo}");
+        }
+
+        vnp_Params.addProperty("vnp_TransactionDate", vnp_TransactionDate);
+        vnp_Params.addProperty("vnp_CreateBy", vnp_CreateBy);
+        vnp_Params.addProperty("vnp_CreateDate", vnp_CreateDate);
+        vnp_Params.addProperty("vnp_IpAddr", vnp_IpAddr);
+
+        String hash_Data = String.join("|", vnp_RequestId, vnp_Version, vnp_Command, vnp_TmnCode,
+                vnp_TransactionType, vnp_TxnRef, vnp_Amount, vnp_TransactionNo, vnp_TransactionDate,
+                vnp_CreateBy, vnp_CreateDate, vnp_IpAddr, vnp_OrderInfo);
+
+        String vnp_SecureHash = VNPAYConfig.hmacSHA512(VNPAYConfig.secretKey, hash_Data.toString());
+
+        vnp_Params.addProperty("vnp_SecureHash", vnp_SecureHash);
+
+        URL url = new URL(VNPAYConfig.vnp_ApiUrl);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(vnp_Params.toString());
+        wr.flush();
+        wr.close();
+        int responseCode = con.getResponseCode();
+        System.out.println("nSending 'POST' request to URL : " + url);
+        System.out.println("Post Data : " + vnp_Params);
+        System.out.println("Response Code : " + responseCode);
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String output;
+        StringBuffer response = new StringBuffer();
+        while ((output = in.readLine()) != null) {
+            response.append(output);
+        }
+        in.close();
+        System.out.println(response.toString());
+
+        return response.toString();
+    }
+    // @PostMapping("/public/refund/")
+    // @CrossOrigin
+    // public String refund() throws IOException {
+
+    // // Command: refund
+    // String vnp_RequestId = VNPAYConfig.getRandomNumber(8);
+    // String vnp_Version = "2.1.0";
+    // String vnp_Command = "refund";
+    // String vnp_TmnCode = VNPAYConfig.vnp_TmnCode;
+    // String vnp_TransactionType = "03"; // Hoàn tiền toàn phần
+    // String vnp_TxnRef = "45242740";
+    // long amount = Integer.parseInt("10000") * 100;
+    // String vnp_Amount = String.valueOf(amount);
+    // String vnp_OrderInfo = "Hoan tien GD OrderId:" + vnp_TxnRef;
+    // String vnp_TransactionNo = ""; // Assuming value of the parameter
+    // "vnp_TransactionNo" does not exist on your
+    // // system.
+    // String vnp_TransactionDate = "20240423093713";
+    // String vnp_CreateBy = "tamthy12345@gmail.com";
+
+    // Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+    // SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+    // String vnp_CreateDate = formatter.format(cld.getTime());
+
+    // String vnp_IpAddr = "192.168.28.8";
+
+    // JsonObject vnp_Params = new JsonObject();
+
+    // vnp_Params.addProperty("vnp_RequestId", vnp_RequestId);
+    // vnp_Params.addProperty("vnp_Version", vnp_Version);
+    // vnp_Params.addProperty("vnp_Command", vnp_Command);
+    // vnp_Params.addProperty("vnp_TmnCode", vnp_TmnCode);
+    // vnp_Params.addProperty("vnp_TransactionType", vnp_TransactionType);
+    // vnp_Params.addProperty("vnp_TxnRef", vnp_TxnRef);
+    // vnp_Params.addProperty("vnp_Amount", vnp_Amount);
+    // vnp_Params.addProperty("vnp_OrderInfo", vnp_OrderInfo);
+
+    // if (vnp_TransactionNo != null && !vnp_TransactionNo.isEmpty()) {
+    // vnp_Params.addProperty("vnp_TransactionNo", "{get value of
+    // vnp_TransactionNo}");
+    // }
+
+    // vnp_Params.addProperty("vnp_TransactionDate", vnp_TransactionDate);
+    // vnp_Params.addProperty("vnp_CreateBy", vnp_CreateBy);
+    // vnp_Params.addProperty("vnp_CreateDate", vnp_CreateDate);
+    // vnp_Params.addProperty("vnp_IpAddr", vnp_IpAddr);
+
+    // String hash_Data = String.join("|", vnp_RequestId, vnp_Version, vnp_Command,
+    // vnp_TmnCode,
+    // vnp_TransactionType, vnp_TxnRef, vnp_Amount, vnp_TransactionNo,
+    // vnp_TransactionDate,
+    // vnp_CreateBy, vnp_CreateDate, vnp_IpAddr, vnp_OrderInfo);
+
+    // System.out.println(hash_Data);
+    // String vnp_SecureHash = VNPAYConfig.hmacSHA512(VNPAYConfig.secretKey,
+    // hash_Data.toString());
+
+    // vnp_Params.addProperty("vnp_SecureHash", vnp_SecureHash);
+
+    // URL url = new URL(VNPAYConfig.vnp_ApiUrl);
+    // HttpURLConnection con = (HttpURLConnection) url.openConnection();
+    // con.setRequestMethod("POST");
+    // con.setRequestProperty("Content-Type", "application/json");
+    // con.setDoOutput(true);
+    // DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+    // wr.writeBytes(vnp_Params.toString());
+    // wr.flush();
+    // wr.close();
+    // int responseCode = con.getResponseCode();
+    // System.out.println("nSending 'POST' request to URL : " + url);
+    // System.out.println("Post Data : " + vnp_Params);
+    // System.out.println("Response Code : " + responseCode);
+    // BufferedReader in = new BufferedReader(
+    // new InputStreamReader(con.getInputStream()));
+    // String output;
+    // StringBuffer response = new StringBuffer();
+    // while ((output = in.readLine()) != null) {
+    // response.append(output);
+    // }
+    // in.close();
+    // System.out.println(response.toString());
+
+    // return response.toString();
+    // }
+
+    @PostMapping("/public/querydr/")
+    @CrossOrigin
+    public String queryVNP() throws IOException {
+
+        String vnp_RequestId = VNPAYConfig.getRandomNumber(8);
+        String vnp_Version = "2.1.0";
+        String vnp_Command = "querydr";
+        String vnp_TmnCode = VNPAYConfig.vnp_TmnCode;
+        String vnp_TxnRef = "45242740";
+        String vnp_OrderInfo = "Kiem tra ket qua GD OrderId:" + vnp_TxnRef;
+        // String vnp_TransactionNo = req.getParameter("transactionNo");
+        String vnp_TransDate = "20240423093713";
+
+        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+        String vnp_CreateDate = formatter.format(cld.getTime());
+
+        String vnp_IpAddr = "192.168.28.8";
+
+        JsonObject vnp_Params = new JsonObject();
+
+        vnp_Params.addProperty("vnp_RequestId", vnp_RequestId);
+        vnp_Params.addProperty("vnp_Version", vnp_Version);
+        vnp_Params.addProperty("vnp_Command", vnp_Command);
+        vnp_Params.addProperty("vnp_TmnCode", vnp_TmnCode);
+        vnp_Params.addProperty("vnp_TxnRef", vnp_TxnRef);
+        vnp_Params.addProperty("vnp_OrderInfo", vnp_OrderInfo);
+        // vnp_Params.put("vnp_TransactionNo", vnp_TransactionNo);
+        vnp_Params.addProperty("vnp_TransactionDate", vnp_TransDate);
+        vnp_Params.addProperty("vnp_CreateDate", vnp_CreateDate);
+        vnp_Params.addProperty("vnp_IpAddr", vnp_IpAddr);
+
+        String hash_Data = String.join("|", vnp_RequestId, vnp_Version, vnp_Command, vnp_TmnCode, vnp_TxnRef,
+                vnp_TransDate, vnp_CreateDate, vnp_IpAddr, vnp_OrderInfo);
+        String vnp_SecureHash = VNPAYConfig.hmacSHA512(VNPAYConfig.secretKey, hash_Data.toString());
+
+        vnp_Params.addProperty("vnp_SecureHash", vnp_SecureHash);
+
+        URL url = new URL(VNPAYConfig.vnp_ApiUrl);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(vnp_Params.toString());
+        wr.flush();
+        wr.close();
+        int responseCode = con.getResponseCode();
+        System.out.println("nSending 'POST' request to URL : " + url);
+        System.out.println("Post Data : " + vnp_Params);
+        System.out.println("Response Code : " + responseCode);
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String output;
+        StringBuffer response = new StringBuffer();
+        while ((output = in.readLine()) != null) {
+            response.append(output);
+        }
+        in.close();
+        System.out.println(response.toString());
+        return response.toString();
+    }
+
 }
