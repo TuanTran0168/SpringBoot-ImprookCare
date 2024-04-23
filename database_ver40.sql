@@ -79,7 +79,7 @@ CREATE TABLE `booking_status` (
 
 LOCK TABLES `booking_status` WRITE;
 /*!40000 ALTER TABLE `booking_status` DISABLE KEYS */;
-INSERT INTO `booking_status` VALUES (1,'Chờ xác nhận',NULL,NULL,NULL,1),(2,'Đã xác nhận',NULL,NULL,NULL,1),(3,'Từ chối',NULL,NULL,NULL,1),(4,'Đã khám xong',NULL,NULL,NULL,1),(5,'Tái khám',NULL,NULL,NULL,1);
+INSERT INTO `booking_status` VALUES (1,'Chờ xác nhận',NULL,NULL,NULL,1),(2,'Đã xác nhận',NULL,NULL,NULL,1),(3,'Từ chối',NULL,NULL,NULL,1),(4,'Đã khám xong',NULL,NULL,NULL,1),(5,'Tái khám',NULL,NULL,NULL,1),(6,'Chưa thanh toán',NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `booking_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1137,4 +1137,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-23 13:42:18
+-- Dump completed on 2024-04-23 13:58:05
