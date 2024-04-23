@@ -85,7 +85,7 @@ public class ApiBookingController {
 
                 if (profilePatientOptional.isPresent()) {
                     ProfilePatient profilePatient = profilePatientOptional.get();
-                    profilePatient.setLock(Boolean.TRUE);
+                    profilePatient.setIsLock(Boolean.TRUE);
 
                     booking.setProfilePatientId(profilePatient);
 

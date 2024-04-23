@@ -30,5 +30,5 @@ public interface ProfilePatientService {
 
     int softDeleteProfilePatient(int profilePatientId);
 
-    List<?> findProfilePatientByUserIdAndLockAndActiveTrue(User userId, Boolean lock);
+    List<?> findProfilePatientByUserIdAndIsLockAndActiveTrue(User userId, Boolean lock);
 }

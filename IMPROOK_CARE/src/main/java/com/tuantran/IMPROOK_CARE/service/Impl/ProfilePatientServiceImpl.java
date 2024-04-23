@@ -80,7 +80,7 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
                 profilePatient.setUserId(userOptional.get());
             }
 
-            profilePatient.setLock(Boolean.FALSE);
+            profilePatient.setIsLock(Boolean.FALSE);
             profilePatient.setActive(Boolean.TRUE);
             profilePatient.setCreatedDate(new Date());
 
@@ -207,7 +207,7 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
     }
 
     @Override
-    public List<?> findProfilePatientByUserIdAndLockAndActiveTrue(User userId, Boolean lock) {
-        return this.profilePatientRepository.findProfilePatientByUserIdAndLockAndActiveTrue(userId, lock);
+    public List<?> findProfilePatientByUserIdAndIsLockAndActiveTrue(User userId, Boolean lock) {
+        return this.profilePatientRepository.findProfilePatientByUserIdAndIsLockAndActiveTrue(userId, lock);
     }
 }

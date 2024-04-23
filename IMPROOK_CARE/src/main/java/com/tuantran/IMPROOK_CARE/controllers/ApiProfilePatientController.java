@@ -85,8 +85,10 @@ public class ApiProfilePatientController {
 
         User user = this.userService.findUserByUserIdAndActiveTrue(Integer.parseInt(userId));
         if (user != null) {
-            return new ResponseEntity<>(this.profilePatientService.findProfilePatientByUserIdAndLockAndActiveTrue(user,
-                    Boolean.parseBoolean(lock)), HttpStatus.OK);
+            return new ResponseEntity<>(
+                    this.profilePatientService.findProfilePatientByUserIdAndIsLockAndActiveTrue(user,
+                            Boolean.parseBoolean(lock)),
+                    HttpStatus.OK);
         } else {
             message = "User[" + userId + "] không tồn tại!";
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);

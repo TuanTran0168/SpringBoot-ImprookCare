@@ -47,7 +47,7 @@ import jakarta.persistence.TemporalType;
         @NamedQuery(name = "ProfilePatient.findByUpdatedDate", query = "SELECT p FROM ProfilePatient p WHERE p.updatedDate = :updatedDate"),
         @NamedQuery(name = "ProfilePatient.findByDeletedDate", query = "SELECT p FROM ProfilePatient p WHERE p.deletedDate = :deletedDate"),
         @NamedQuery(name = "ProfilePatient.findByActive", query = "SELECT p FROM ProfilePatient p WHERE p.active = :active"),
-        @NamedQuery(name = "ProfilePatient.findByLock", query = "SELECT p FROM ProfilePatient p WHERE p.lock = :lock") })
+        @NamedQuery(name = "ProfilePatient.findByIsLock", query = "SELECT p FROM ProfilePatient p WHERE p.isLock = :isLock") })
 public class ProfilePatient implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -90,8 +90,8 @@ public class ProfilePatient implements Serializable {
     private Date deletedDate;
     @Column(name = "active")
     private Boolean active;
-    @Column(name = "lock")
-    private Boolean lock;
+    @Column(name = "is_lock")
+    private Boolean isLock;
     @JsonIgnore
     @OneToMany(mappedBy = "profilePatientId")
     private Set<Booking> bookingSet;
@@ -234,12 +234,12 @@ public class ProfilePatient implements Serializable {
         this.active = active;
     }
 
-    public Boolean getLock() {
-        return lock;
+    public Boolean getIsLock() {
+        return isLock;
     }
 
-    public void setLock(Boolean lock) {
-        this.lock = lock;
+    public void setIsLock(Boolean isLock) {
+        this.isLock = isLock;
     }
 
     public Set<Booking> getBookingSet() {
