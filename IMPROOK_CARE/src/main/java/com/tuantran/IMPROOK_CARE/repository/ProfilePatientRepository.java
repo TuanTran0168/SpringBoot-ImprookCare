@@ -23,4 +23,6 @@ public interface ProfilePatientRepository extends JpaRepository<ProfilePatient, 
     Optional<ProfilePatient> findProfilePatientByProfilePatientIdAndActiveTrue(int profilePatientId);
 
     List<ProfilePatient> findProfilePatientByUserIdAndActiveTrue(User userId);
+
+    List<?> findProfilePatientByUserIdAndLockAndActiveTrue(User userId, Boolean lock);
 }

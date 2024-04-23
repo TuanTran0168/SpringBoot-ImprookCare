@@ -205,4 +205,9 @@ public class ProfilePatientServiceImpl implements ProfilePatientService {
     public Optional<ProfilePatient> findProfilePatientByProfilePatientIdAndActiveTrueOptional(int profilePatientId) {
         return this.profilePatientRepository.findProfilePatientByProfilePatientIdAndActiveTrue(profilePatientId);
     }
+
+    @Override
+    public List<?> findProfilePatientByUserIdAndLockAndActiveTrue(User userId, Boolean lock) {
+        return this.profilePatientRepository.findProfilePatientByUserIdAndLockAndActiveTrue(userId, lock);
+    }
 }

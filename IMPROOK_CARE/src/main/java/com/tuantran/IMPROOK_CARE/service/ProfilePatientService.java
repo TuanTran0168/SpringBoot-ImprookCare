@@ -7,6 +7,8 @@ package com.tuantran.IMPROOK_CARE.service;
 import com.tuantran.IMPROOK_CARE.dto.AddProfilePatientDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateProfilePatientDTO;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
+import com.tuantran.IMPROOK_CARE.models.User;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -27,4 +29,6 @@ public interface ProfilePatientService {
     List<ProfilePatient> findProfilePatientByUserIdAndActiveTrue(int userId);
 
     int softDeleteProfilePatient(int profilePatientId);
+
+    List<?> findProfilePatientByUserIdAndLockAndActiveTrue(User userId, Boolean lock);
 }
