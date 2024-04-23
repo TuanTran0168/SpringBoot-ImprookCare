@@ -697,12 +697,12 @@ CREATE TABLE `profile_patient` (
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
-  `lock` tinyint(1) DEFAULT NULL,
+  `is_lock` tinyint(1) DEFAULT NULL,
   `user_id` int DEFAULT NULL,
   PRIMARY KEY (`profile_patient_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `profile_patient_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -711,7 +711,7 @@ CREATE TABLE `profile_patient` (
 
 LOCK TABLES `profile_patient` WRITE;
 /*!40000 ALTER TABLE `profile_patient` DISABLE KEYS */;
-INSERT INTO `profile_patient` VALUES (15,'Bệnh nhân Tuấn 1','0345809638','2002-08-28 00:00:00',1,'Thành phố Hồ Chí Minh','Thành phố Thủ Đức','Phường Bình Chiểu','74','74 Phường Bình Chiểu Thành phố Thủ Đức Thành phố Hồ Chí Minh','2051050549tuan@ou.edu.vn','Khác','2023-10-13 14:55:20',NULL,NULL,1,1,20),(16,'Bệnh nhân Tuấn 2','0345809638','2023-10-13 00:00:00',1,'Thành phố Hồ Chí Minh','Thành phố Thủ Đức','Phường Bình Chiểu','76','76 Phường Bình Chiểu Thành phố Thủ Đức Thành phố Hồ Chí Minh','2051050549tuan@ou.edu.vn','Khác','2023-10-13 14:55:43',NULL,NULL,1,1,20),(20,'Thanh Ngar','0123698547','2023-10-13 00:00:00',0,'Tỉnh Phú Thọ','Thị xã Phú Thọ','Phường Phong Châu','17','17 Phường Phong Châu Thị xã Phú Thọ Tỉnh Phú Thọ','2051052125thai@gmail.com','Mẹ','2023-10-13 20:28:26',NULL,NULL,1,0,18),(21,'Lê Thị Huỳnh Như','0123456789','2023-10-16 00:00:00',0,'Hà Nội','Ba Đình','Phúc Xá','12','12 Phúc Xá Ba Đình Hà Nội','nhu@gmailcom','Mẹ','2023-10-16 20:29:14',NULL,NULL,1,1,21),(22,'Lưu Quỳnh Như','0123456789','2023-10-16 00:00:00',0,'Hà Nội','Ba Đình','Phúc Xá','13','13 Phúc Xá Ba Đình Hà Nội','nhule@gmail.com','Con','2023-10-16 20:29:51',NULL,NULL,1,1,21),(23,'Thái Nguyễn','0136547892','2023-10-16 00:00:00',1,'Hà Nội','Ba Đình','Phúc Xá','32','32 Phúc Xá Ba Đình Hà Nội','thai@gmail.com','Khác','2023-10-16 20:49:31',NULL,NULL,1,1,22),(24,'Thái Minh','01336982257','2023-10-16 00:00:00',1,'Hà Nội','Ba Đình','Phúc Xá','78','78 Phúc Xá Ba Đình Hà Nội','thai@gmail.com','Cha','2023-10-16 20:49:57',NULL,NULL,1,1,22);
+INSERT INTO `profile_patient` VALUES (15,'Bệnh nhân Tuấn 1','0345809638','2002-08-28 00:00:00',1,'Thành phố Hồ Chí Minh','Thành phố Thủ Đức','Phường Bình Chiểu','74','74 Phường Bình Chiểu Thành phố Thủ Đức Thành phố Hồ Chí Minh','2051050549tuan@ou.edu.vn','Khác','2023-10-13 14:55:20',NULL,NULL,1,1,20),(16,'Bệnh nhân Tuấn 2','0345809638','2023-10-13 00:00:00',1,'Thành phố Hồ Chí Minh','Thành phố Thủ Đức','Phường Bình Chiểu','76','76 Phường Bình Chiểu Thành phố Thủ Đức Thành phố Hồ Chí Minh','2051050549tuan@ou.edu.vn','Khác','2023-10-13 14:55:43',NULL,NULL,1,1,20),(20,'Thanh Ngar','0123698547','2023-10-13 00:00:00',0,'Tỉnh Phú Thọ','Thị xã Phú Thọ','Phường Phong Châu','17','17 Phường Phong Châu Thị xã Phú Thọ Tỉnh Phú Thọ','2051052125thai@gmail.com','Mẹ','2023-10-13 20:28:26',NULL,NULL,1,0,18),(21,'Lê Thị Huỳnh Như','0123456789','2023-10-16 00:00:00',0,'Hà Nội','Ba Đình','Phúc Xá','12','12 Phúc Xá Ba Đình Hà Nội','nhu@gmailcom','Mẹ','2023-10-16 20:29:14',NULL,NULL,1,1,21),(22,'Lưu Quỳnh Như','0123456789','2023-10-16 00:00:00',0,'Hà Nội','Ba Đình','Phúc Xá','13','13 Phúc Xá Ba Đình Hà Nội','nhule@gmail.com','Con','2023-10-16 20:29:51',NULL,NULL,1,1,21),(23,'Thái Nguyễn','0136547892','2023-10-16 00:00:00',1,'Hà Nội','Ba Đình','Phúc Xá','32','32 Phúc Xá Ba Đình Hà Nội','thai@gmail.com','Khác','2023-10-16 20:49:31',NULL,NULL,1,1,22),(24,'Thái Minh','01336982257','2023-10-16 00:00:00',1,'Hà Nội','Ba Đình','Phúc Xá','78','78 Phúc Xá Ba Đình Hà Nội','thai@gmail.com','Cha','2023-10-16 20:49:57',NULL,NULL,1,1,22),(26,'Lê Thị Huỳnh Như','0123456789','2002-08-28 00:00:00',1,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2024-04-23 20:39:36',NULL,NULL,1,0,NULL);
 /*!40000 ALTER TABLE `profile_patient` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1137,4 +1137,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-23 13:58:05
+-- Dump completed on 2024-04-23 20:41:55
