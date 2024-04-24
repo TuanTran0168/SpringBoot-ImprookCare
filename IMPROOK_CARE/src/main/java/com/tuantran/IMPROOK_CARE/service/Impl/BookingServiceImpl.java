@@ -8,11 +8,13 @@ import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
 import com.tuantran.IMPROOK_CARE.dto.BookingDTO;
 import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.BookingStatus;
+import com.tuantran.IMPROOK_CARE.models.Prescriptions;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
 import com.tuantran.IMPROOK_CARE.models.Schedule;
 import com.tuantran.IMPROOK_CARE.models.TimeSlot;
 import com.tuantran.IMPROOK_CARE.repository.BookingRepository;
 import com.tuantran.IMPROOK_CARE.repository.BookingStatusRepository;
+import com.tuantran.IMPROOK_CARE.repository.PrescriptionRepository;
 import com.tuantran.IMPROOK_CARE.repository.ProfilePatientRepository;
 import com.tuantran.IMPROOK_CARE.repository.ScheduleRepository;
 import com.tuantran.IMPROOK_CARE.repository.TimeSlotRepository;
@@ -64,6 +66,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private TimeSlotRepository timeSlotRepository;
+
+    @Autowired
+    private PrescriptionRepository prescriptionRepository;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -308,7 +313,23 @@ public class BookingServiceImpl implements BookingService {
          */
         this.profilePatientRepository.save(profilePatient);
 
-        return this.bookingRepository.save(booking);
+        Booking bookingSaved = this.bookingRepository.save(booking);
+
+        /*
+         * Sẽ có trường hợp tới khám nhưng không kê toa thuốc vì lý do gì đó
+         * mà bác sĩ sẽ hẹn lần sau tới khám thì sao?
+         * 
+         * Nếu chưa tạo toa thuốc (tức là chưa khám xong)
+         * mà tạo lịch tái khám thì chỗ này tạm thời xử lý như đoạn code bên dưới
+         */
+
+        Optional<Prescriptions> prescriptionOptional = this.prescriptionRepository.findByBookingId(bookingSaved);
+        if (prescriptionOptional.isPresent()) {
+            Prescriptions prescription = prescriptionOptional.get();
+            prescription.setReExaminationDate(timeSlotSaved.getTimeBegin());
+        }
+
+        return bookingSaved;
     }
 
 }

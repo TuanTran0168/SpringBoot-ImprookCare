@@ -4,7 +4,13 @@
  */
 package com.tuantran.IMPROOK_CARE.repository;
 
+import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.Prescriptions;
+
+import jakarta.persistence.NonUniqueResultException;
+
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -23,6 +29,8 @@ public interface PrescriptionRepository extends JpaRepository<Prescriptions, Int
     Page<Prescriptions> findAll(Specification<Prescriptions> createSpecification, Pageable page);
 
     Page<Prescriptions> findAll(Specification<Prescriptions> createSpecification);
+
+    Optional<Prescriptions> findByBookingId(Booking bookingId) throws NonUniqueResultException;
 
     // @Query("SELECT p "
     // + "FROM Prescriptions p "

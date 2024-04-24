@@ -21,6 +21,8 @@ import com.tuantran.IMPROOK_CARE.repository.PrescriptionDetailRepository;
 import com.tuantran.IMPROOK_CARE.repository.PrescriptionRepository;
 import com.tuantran.IMPROOK_CARE.service.BookingStatusService;
 import com.tuantran.IMPROOK_CARE.service.PrescriptionService;
+
+import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import java.math.BigDecimal;
@@ -252,5 +254,10 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             ex.printStackTrace();
             return 0;
         }
+    }
+
+    @Override
+    public Optional<Prescriptions> findByBookingId(Booking bookingId) throws NonUniqueResultException {
+        return this.prescriptionRepository.findByBookingId(bookingId);
     }
 }

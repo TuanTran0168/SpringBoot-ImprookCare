@@ -292,7 +292,7 @@ public class ApiBookingController {
     public ResponseEntity<?> createBookingReExamination(@Valid @RequestBody Map<String, String> params) {
 
         /*
-         * createBookingReExamination cần TimeSlot, Schedule, Booking, ProfilePatient
+         * createBookingReExamination cần: TimeSlot, Schedule, Booking, ProfilePatient
          * Không lưu bất kỳ Object nào tại đây để sang Service dùng Transaction
          */
 
