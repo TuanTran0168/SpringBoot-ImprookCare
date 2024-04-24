@@ -5,18 +5,23 @@
 package com.tuantran.IMPROOK_CARE.controllers;
 
 import com.tuantran.IMPROOK_CARE.components.UUID.UUIDGenerator;
+import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
 import com.tuantran.IMPROOK_CARE.dto.BookingDTO;
 import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.BookingStatus;
+import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
 import com.tuantran.IMPROOK_CARE.models.Schedule;
+import com.tuantran.IMPROOK_CARE.models.TimeSlot;
 import com.tuantran.IMPROOK_CARE.service.BookingService;
 import com.tuantran.IMPROOK_CARE.service.BookingStatusService;
+import com.tuantran.IMPROOK_CARE.service.ProfileDoctorService;
 import com.tuantran.IMPROOK_CARE.service.ProfilePatientService;
 import com.tuantran.IMPROOK_CARE.service.ScheduleService;
 
 import jakarta.validation.Valid;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +69,12 @@ public class ApiBookingController {
     @Autowired
     private Environment environment;
 
+    @Autowired
+    private ProfileDoctorService profileDoctorService;
+
+    @Autowired
+    DateFormatComponent dateFormatComponent;
+
     @PostMapping("/auth/add-booking/")
     @CrossOrigin
     public ResponseEntity<?> addBooking(@Valid @RequestBody BookingDTO bookingDTO) {
@@ -89,7 +100,18 @@ public class ApiBookingController {
 
                     booking.setProfilePatientId(profilePatient);
 
-                    booking.setStatusId(this.bookingStatusService.findBookingStatusByStatusId(1));
+                    /*
+                     * (Cơ chế mới)
+                     * Status số 6 là chưa thanh toán - sẽ không hiện ở view bác sĩ
+                     * Mặc định khi tạo sẽ là chưa thanh toán (status_id là 6)
+                     * 
+                     * Sau khi thanh toán sẽ chuyển status về 1 (Chờ bác sĩ xác nhận) - lúc này mới
+                     * hiện ở bác sĩ.
+                     * 
+                     * Chuyển status về 1 khi thanh toán sẽ thực hiện ở 1 API khác
+                     */
+
+                    booking.setStatusId(this.bookingStatusService.findBookingStatusByStatusId(6));
                     booking.setCreatedDate(new Date());
 
                     booking.setBookingCancel(Boolean.FALSE);
@@ -254,6 +276,115 @@ public class ApiBookingController {
         } catch (Exception e) {
             return new ResponseEntity<>("Something wrong here, Internal Server Error!",
                     HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /*
+     * API này dùng để tạo lịch tái khám (Booking)
+     * Gồm các bước:
+     * - Tạo TimeSlot
+     * - Tạo Schedule
+     * - Tạo Booking
+     * 
+     */
+    @PostMapping("/auth/create-booking-re-examination/")
+    @CrossOrigin
+    public ResponseEntity<?> createBookingReExamination(@Valid @RequestBody Map<String, String> params) {
+
+        /*
+         * createBookingReExamination cần TimeSlot, Schedule, Booking, ProfilePatient
+         * Không lưu bất kỳ Object nào tại đây để sang Service dùng Transaction
+         */
+
+        try {
+            String message = "Có lỗi xảy ra!";
+            String timeBegin = params.get("timeBegin");
+            String timeEnd = params.get("timeEnd");
+            String note = params.get("note");
+            String profileDoctorId = params.get("profileDoctorId");
+            String profilePatientId = params.get("profilePatientId");
+
+            ProfileDoctor profileDoctor = this.profileDoctorService
+                    .findProfileDoctorByProfileDoctorIdAndActiveTrue(Integer.parseInt(profileDoctorId));
+
+            if (profileDoctor != null) {
+                /*
+                 * Tạo TimeSlot custom và Schedule
+                 */
+                Date timeBeginParse = dateFormatComponent.myDateTimeFormat().parse(timeBegin);
+                Date timeEndParse = dateFormatComponent.myDateTimeFormat().parse(timeEnd);
+
+                TimeSlot timeSlot = new TimeSlot();
+
+                timeSlot.setTimeBegin(timeBeginParse);
+                timeSlot.setTimeEnd(timeEndParse);
+                timeSlot.setNote(note);
+                timeSlot.setProfileDoctorId(profileDoctor);
+                /*
+                 * Schedule này chưa set id của TimeSlot vì TimeSlot chưa lưu nên không có id
+                 */
+                Schedule schedule = new Schedule();
+
+                schedule.setProfileDoctorId(profileDoctor);
+                schedule.setDate(this.dateFormatComponent.myDateFormat().parse(timeBegin));
+                schedule.setCreatedDate(new Date());
+                schedule.setActive(Boolean.TRUE);
+                schedule.setBooked(Boolean.FALSE);
+
+                /*
+                 * Không dùng được phương thức cũ vì nó sẽ lưu luôn xuống database kể cả các
+                 * bước sau fail
+                 */
+                // Schedule schedule =
+                // this.timeSlotService.addTimeSlotAndSchedule(timeBeginParse, timeEndParse,
+                // note, profileDoctor);
+
+                /*
+                 * Booking này chưa set id của Schedule vì Schedule chưa lưu
+                 */
+                Booking booking = new Booking();
+
+                schedule.setBooked(Boolean.TRUE);
+                Optional<ProfilePatient> profilePatientOptional = this.profilePatientService
+                        .findProfilePatientByProfilePatientIdAndActiveTrueOptional(
+                                Integer.parseInt(profilePatientId));
+
+                if (profilePatientOptional.isPresent()) {
+                    ProfilePatient profilePatient = profilePatientOptional.get();
+                    profilePatient.setIsLock(Boolean.TRUE);
+                    booking.setProfilePatientId(profilePatient);
+                    booking.setStatusId(this.bookingStatusService.findBookingStatusByStatusId(6));
+                    booking.setCreatedDate(new Date());
+                    booking.setBookingCancel(Boolean.FALSE);
+                    booking.setActive(Boolean.TRUE);
+
+                    return new ResponseEntity<>(
+                            this.bookingService.createBookingReExamination(timeSlot, booking, schedule,
+                                    profilePatient),
+                            HttpStatus.CREATED);
+
+                } else {
+                    message = "ProfilePatient[" + profilePatientId + "] không tồn tại!";
+                    return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+                }
+
+            } else {
+                message = "ProfileDoctor[" + profileDoctorId + "] không tồn tại!";
+                return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+            }
+
+        } catch (DataAccessException ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(ex, HttpStatus.BAD_REQUEST);
+        } catch (NoSuchElementException ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(ex, HttpStatus.BAD_REQUEST);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(ex, HttpStatus.BAD_REQUEST);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>(ex, HttpStatus.BAD_REQUEST);
         }
     }
 }

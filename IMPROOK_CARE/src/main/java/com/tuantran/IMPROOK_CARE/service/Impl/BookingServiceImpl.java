@@ -10,10 +10,12 @@ import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.BookingStatus;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
 import com.tuantran.IMPROOK_CARE.models.Schedule;
+import com.tuantran.IMPROOK_CARE.models.TimeSlot;
 import com.tuantran.IMPROOK_CARE.repository.BookingRepository;
 import com.tuantran.IMPROOK_CARE.repository.BookingStatusRepository;
 import com.tuantran.IMPROOK_CARE.repository.ProfilePatientRepository;
 import com.tuantran.IMPROOK_CARE.repository.ScheduleRepository;
+import com.tuantran.IMPROOK_CARE.repository.TimeSlotRepository;
 import com.tuantran.IMPROOK_CARE.service.BookingService;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -59,6 +61,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private Environment environment;
+
+    @Autowired
+    private TimeSlotRepository timeSlotRepository;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -285,6 +290,25 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Page<?> getBookingForUserView(int userId, int bookingStatusId, Pageable page) {
         return this.bookingRepository.getBookingForUserView(userId, bookingStatusId, page);
+    }
+
+    @Override
+    public Booking createBookingReExamination(TimeSlot timeSlot, Booking booking, Schedule schedule,
+            ProfilePatient profilePatient) {
+
+        TimeSlot timeSlotSaved = this.timeSlotRepository.save(timeSlot);
+        schedule.setTimeSlotId(timeSlotSaved);
+
+        Schedule scheduleSaved = this.scheduleRepository.save(schedule);
+        booking.setScheduleId(scheduleSaved);
+
+        /*
+         * Lưu lại ProfilePatient cái field isLock
+         * Thực ra nó đã lock = true rồi nhưng save lần nữa cho an tâm
+         */
+        this.profilePatientRepository.save(profilePatient);
+
+        return this.bookingRepository.save(booking);
     }
 
 }
