@@ -101,7 +101,6 @@ public class ApiTestResultController {
     }
 
     @PostMapping("/auth/doctor/update-test-result/")
-    @PreAuthorize("hasRole('NURSE')")
     @CrossOrigin
     public ResponseEntity<?> updateTestResult(@Valid @RequestBody UpdateTestResultDTO updateTestResultDTO) {
         String message = "Có lỗi xảy ra!";
