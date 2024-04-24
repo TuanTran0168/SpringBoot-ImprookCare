@@ -6,17 +6,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateTestResultDTO {
-
+public class ReturnTestResultDTO {
     @NotBlank
     private String testResultId;
 
+    @NotBlank
     private String userId; // Kết quả test được thực hiện bởi user nào
 
+    @NotBlank
     private String testResultValue;
 
+    @NotBlank
     private String testResultDiagnosis;
-
-    private String testServiceId;
-
 }

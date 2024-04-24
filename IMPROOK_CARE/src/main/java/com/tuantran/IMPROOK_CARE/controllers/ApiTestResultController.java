@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.controllers;
 
 import com.tuantran.IMPROOK_CARE.dto.AddTestResultDTO;
+import com.tuantran.IMPROOK_CARE.dto.ReturnTestResultDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateTestResultDTO;
 import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.TestResult;
@@ -76,25 +77,48 @@ public class ApiTestResultController {
 
     }
 
-    @PostMapping("/auth/nurse/update-test-result/")
+    @PostMapping("/auth/nurse/return-test-result/")
+    @PreAuthorize("hasRole('NURSE')")
+    @CrossOrigin
+    public ResponseEntity<?> returnTestResult(@Valid @RequestBody ReturnTestResultDTO returnTestResultDTO) {
+        String message = "Có lỗi xảy ra!";
+        Optional<TestResult> testResultOptional = this.testResultService
+                .findByTestResultIdAndActiveTrue(Integer.parseInt(returnTestResultDTO.getTestResultId()));
+        User user = this.userService.findUserByUserIdAndActiveTrue(Integer.parseInt(returnTestResultDTO.getUserId()));
+
+        if (testResultOptional.isPresent() && user != null) {
+            TestResult testResult = testResultOptional.get();
+            testResult.setTestResultDiagnosis(returnTestResultDTO.getTestResultDiagnosis());
+            testResult.setTestResultValue(returnTestResultDTO.getTestResultValue());
+            testResult.setUserId(user);
+
+            return new ResponseEntity<>(this.testResultService.updateTestResult(testResult), HttpStatus.OK);
+        } else {
+            message = "TestResult[" + returnTestResultDTO.getTestResultId() + "] hoặc User[ "
+                    + returnTestResultDTO.getUserId() + "] không tồn tại!";
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/auth/doctor/update-test-result/")
     @PreAuthorize("hasRole('NURSE')")
     @CrossOrigin
     public ResponseEntity<?> updateTestResult(@Valid @RequestBody UpdateTestResultDTO updateTestResultDTO) {
         String message = "Có lỗi xảy ra!";
         Optional<TestResult> testResultOptional = this.testResultService
                 .findByTestResultIdAndActiveTrue(Integer.parseInt(updateTestResultDTO.getTestResultId()));
-        User user = this.userService.findUserByUserIdAndActiveTrue(Integer.parseInt(updateTestResultDTO.getUserId()));
 
-        if (testResultOptional.isPresent() && user != null) {
+        if (testResultOptional.isPresent()) {
             TestResult testResult = testResultOptional.get();
-            testResult.setTestResultDiagnosis(updateTestResultDTO.getTestResultDiagnosis());
-            testResult.setTestResultValue(updateTestResultDTO.getTestResultValue());
-            testResult.setUserId(user);
+            Optional<TestService> testServiceOptional = this.testServiceService
+                    .findByTestServiceId(Integer.parseInt(updateTestResultDTO.getTestServiceId()));
+            if (testServiceOptional.isPresent()) {
+                testResult.setTestServiceId(testServiceOptional.get());
+            }
 
             return new ResponseEntity<>(this.testResultService.updateTestResult(testResult), HttpStatus.OK);
         } else {
-            message = "TestResult[" + updateTestResultDTO.getTestResultId() + "] hoặc User[ "
-                    + updateTestResultDTO.getUserId() + "] không tồn tại!";
+            message = "TestResult[" + updateTestResultDTO.getTestResultId() + "] không tồn tại!";
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
     }
