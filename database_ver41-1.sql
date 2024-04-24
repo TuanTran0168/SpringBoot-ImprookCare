@@ -931,6 +931,7 @@ CREATE TABLE `test_service` (
 
 LOCK TABLES `test_service` WRITE;
 /*!40000 ALTER TABLE `test_service` DISABLE KEYS */;
+INSERT INTO `test_service` VALUES (1,'Xét nghiệm máu',NULL,NULL,NULL,1),(2,'Siêu âm',NULL,NULL,NULL,1),(3,'Nội soi dạ dày',NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `test_service` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1025,7 +1026,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `email_UNIQUE` (`email`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1034,7 +1035,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Tuấn','Trần Đăng','tuan','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-08-28 00:00:00',1,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg','Bỏ không xài field này','2023-09-10 11:30:31',NULL,NULL,1,1),(17,'Thái','Trương Nguyễn Minh','thai','$2a$10$YL9qLmDFX324vBvBRiS0zOucL8P/AHtVsbz25A53fxgbjDchDWxga','2002-09-25 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697172693/bomq43pvq0frdbsqxpgw.png',NULL,'2023-10-13 11:51:31',NULL,NULL,1,2),(18,'Hiếu','Nguyễn Minh','hieu','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365732/enqzai9whaxf8e4sqflm.png',NULL,'2023-10-13 12:01:05','2023-10-15 17:28:50',NULL,1,2),(19,'Tuấn','Trần','0168123123','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365764/spo3srne5ctbn5oplkzy.png',NULL,'2023-10-13 12:01:05','2023-10-15 17:29:23',NULL,1,2),(20,'Tuấn','Trần','user1','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697173267/iasqfelcfgkatxpjc4eg.png',NULL,'2023-10-13 12:01:05',NULL,NULL,1,3),(21,'Như','Lê','nhu','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',0,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365764/spo3srne5ctbn5oplkzy.png',NULL,'2023-10-13 12:01:05',NULL,NULL,1,3),(22,'Thái','Trương','user2','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365764/spo3srne5ctbn5oplkzy.png',NULL,'2023-10-13 12:01:05',NULL,NULL,1,3);
+INSERT INTO `user` VALUES (1,'Tuấn','Trần Đăng','tuan','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-08-28 00:00:00',1,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg','Bỏ không xài field này','2023-09-10 11:30:31',NULL,NULL,1,1),(17,'Thái','Trương Nguyễn Minh','thai','$2a$10$YL9qLmDFX324vBvBRiS0zOucL8P/AHtVsbz25A53fxgbjDchDWxga','2002-09-25 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697172693/bomq43pvq0frdbsqxpgw.png',NULL,'2023-10-13 11:51:31',NULL,NULL,1,2),(18,'Hiếu','Nguyễn Minh','hieu','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365732/enqzai9whaxf8e4sqflm.png',NULL,'2023-10-13 12:01:05','2023-10-15 17:28:50',NULL,1,2),(19,'Tuấn','Trần','0168123123','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365764/spo3srne5ctbn5oplkzy.png',NULL,'2023-10-13 12:01:05','2023-10-15 17:29:23',NULL,1,2),(20,'Tuấn','Trần','user1','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697173267/iasqfelcfgkatxpjc4eg.png',NULL,'2023-10-13 12:01:05',NULL,NULL,1,3),(21,'Như','Lê','nhu','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',0,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365764/spo3srne5ctbn5oplkzy.png',NULL,'2023-10-13 12:01:05',NULL,NULL,1,3),(22,'Thái','Trương','user2','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365764/spo3srne5ctbn5oplkzy.png',NULL,'2023-10-13 12:01:05',NULL,NULL,1,3),(23,'Nhung','Hồng','nhung','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365764/spo3srne5ctbn5oplkzy.png',NULL,'2023-10-13 12:01:05',NULL,NULL,1,4);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1137,4 +1138,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-23 20:41:55
+-- Dump completed on 2024-04-24 17:26:11
