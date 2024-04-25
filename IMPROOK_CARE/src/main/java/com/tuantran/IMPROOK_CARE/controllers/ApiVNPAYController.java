@@ -401,16 +401,16 @@ public class ApiVNPAYController {
 
     @PostMapping("/public/querydr/")
     @CrossOrigin
-    public String queryVNP() throws IOException {
+    public String queryVNP(@RequestBody Map<String, String> params) throws IOException {
 
         String vnp_RequestId = VNPAYConfig.getRandomNumber(8);
         String vnp_Version = "2.1.0";
         String vnp_Command = "querydr";
         String vnp_TmnCode = VNPAYConfig.vnp_TmnCode;
-        String vnp_TxnRef = "45242740";
+        String vnp_TxnRef = params.get("vnp_TxnRef");
         String vnp_OrderInfo = "Kiem tra ket qua GD OrderId:" + vnp_TxnRef;
         // String vnp_TransactionNo = req.getParameter("transactionNo");
-        String vnp_TransDate = "20240423093713";
+        String vnp_TransDate = params.get("vnp_TransactionDate");
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
