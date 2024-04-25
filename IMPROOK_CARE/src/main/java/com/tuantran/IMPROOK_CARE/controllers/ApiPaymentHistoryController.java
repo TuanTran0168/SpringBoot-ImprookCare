@@ -122,6 +122,7 @@ public class ApiPaymentHistoryController {
         String vnp_bankcode = params.get("vnp_bankcode");
         String vnp_PayDate = params.get("vnp_PayDate");
         String vnp_TransactionNo = params.get("vnp_TransactionNo");
+        String vnp_TransactionType = params.get("vnp_TransactionType");
         String vnp_TransactionStatus = params.get("vnp_TransactionStatus");
         String vnp_securehash = params.get("vnp_securehash");
 
@@ -144,6 +145,7 @@ public class ApiPaymentHistoryController {
             paymentHistory.setVnpBankcode(vnp_bankcode);
             paymentHistory.setVnpPaydate(vnp_PayDate);
             paymentHistory.setVnpTransactionno(vnp_TransactionNo);
+            paymentHistory.setVnpTransactiontype(vnp_TransactionType);
             paymentHistory.setVnpTransactionstatus(vnp_TransactionStatus);
             paymentHistory.setVnpSecurehash(vnp_securehash);
 

@@ -245,15 +245,15 @@ public class ApiVNPAYController {
         String vnp_Command = "refund";
         String vnp_TmnCode = VNPAYConfig.vnp_TmnCode;
         String vnp_TransactionType = "02";
-        String vnp_TxnRef = "45242740";
+        String vnp_TxnRef = "65245271";
         long amount = Integer.parseInt("10000") * 100;
         String vnp_Amount = String.valueOf(amount);
         String vnp_OrderInfo = "Hoan tien GD OrderId:" + vnp_TxnRef;
-        String vnp_TransactionNo = "45242740"; // Assuming value of the parameter "vnp_TransactionNo" does not exist on
+        String vnp_TransactionNo = "14392274"; // Assuming value of the parameter "vnp_TransactionNo" does not exist on
                                                // your
         // system.
-        String vnp_TransactionDate = "20240423093713";
-        String vnp_CreateBy = "tamthy12345@gmail.com";
+        String vnp_TransactionDate = "20240425141945";
+        String vnp_CreateBy = "admin";
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -273,7 +273,7 @@ public class ApiVNPAYController {
         vnp_Params.addProperty("vnp_OrderInfo", vnp_OrderInfo);
 
         if (vnp_TransactionNo != null && !vnp_TransactionNo.isEmpty()) {
-            vnp_Params.addProperty("vnp_TransactionNo", "{get value of vnp_TransactionNo}");
+            vnp_Params.addProperty("vnp_TransactionNo", vnp_TransactionNo);
         }
 
         vnp_Params.addProperty("vnp_TransactionDate", vnp_TransactionDate);

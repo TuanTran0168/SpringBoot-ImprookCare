@@ -9,7 +9,8 @@ import com.tuantran.IMPROOK_CARE.models.PaymentHistory;
 import com.tuantran.IMPROOK_CARE.repository.BookingRepository;
 import com.tuantran.IMPROOK_CARE.repository.PaymentHistoryRepository;
 import com.tuantran.IMPROOK_CARE.service.PaymentHistoryService;
-
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +35,7 @@ public class PaymentHistoryServiceImpl implements PaymentHistoryService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public PaymentHistory addPaymentHistory(PaymentHistory paymentHistory, Booking booking) {
         this.bookingRepository.save(booking);
         return this.paymentHistoryRepository.save(paymentHistory);
