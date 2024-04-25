@@ -4,17 +4,20 @@
  */
 package com.tuantran.IMPROOK_CARE.service;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
-import com.tuantran.IMPROOK_CARE.models.PaymentHistory;
+import com.tuantran.IMPROOK_CARE.models.TestService;
 
 /**
  *
  * @author Administrator
  */
-public interface PaymentHistoryService {
-        Page<?> findPaymentHistoryByProfilePatientId(int profilePatientId, Pageable page);
+public interface TestServiceService {
+        Optional<TestService> findByTestServiceId(Integer testServiceId);
 
-        PaymentHistory addPaymentHistory(PaymentHistory paymentHistory);
+        Page<?> findAll(Specification<?> createSpecification, Pageable page);
 }
