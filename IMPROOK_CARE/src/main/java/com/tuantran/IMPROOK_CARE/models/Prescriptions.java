@@ -34,13 +34,13 @@ import jakarta.persistence.TemporalType;
         @NamedQuery(name = "Prescriptions.findAll", query = "SELECT p FROM Prescriptions p"),
         @NamedQuery(name = "Prescriptions.findByPrescriptionId", query = "SELECT p FROM Prescriptions p WHERE p.prescriptionId = :prescriptionId"),
         @NamedQuery(name = "Prescriptions.findByPrescriptionDate", query = "SELECT p FROM Prescriptions p WHERE p.prescriptionDate = :prescriptionDate"),
+        @NamedQuery(name = "Prescriptions.findByReExaminationDate", query = "SELECT p FROM Prescriptions p WHERE p.reExaminationDate = :reExaminationDate"),
         @NamedQuery(name = "Prescriptions.findByCreatedDate", query = "SELECT p FROM Prescriptions p WHERE p.createdDate = :createdDate"),
         @NamedQuery(name = "Prescriptions.findByUpdatedDate", query = "SELECT p FROM Prescriptions p WHERE p.updatedDate = :updatedDate"),
         @NamedQuery(name = "Prescriptions.findByDeletedDate", query = "SELECT p FROM Prescriptions p WHERE p.deletedDate = :deletedDate"),
         @NamedQuery(name = "Prescriptions.findByActive", query = "SELECT p FROM Prescriptions p WHERE p.active = :active"),
         @NamedQuery(name = "Prescriptions.findByMedicinepaymentTxnRef", query = "SELECT p FROM Prescriptions p WHERE p.medicinepaymentTxnRef = :medicinepaymentTxnRef"),
-        @NamedQuery(name = "Prescriptions.findByServicepaymentTxnRef", query = "SELECT p FROM Prescriptions p WHERE p.servicepaymentTxnRef = :servicepaymentTxnRef"),
-        @NamedQuery(name = "Prescriptions.findByPreviousPrescriptionId", query = "SELECT p FROM Prescriptions p WHERE p.previousPrescriptionId = :previousPrescriptionId") })
+        @NamedQuery(name = "Prescriptions.findByServicepaymentTxnRef", query = "SELECT p FROM Prescriptions p WHERE p.servicepaymentTxnRef = :servicepaymentTxnRef") })
 public class Prescriptions implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,6 +52,9 @@ public class Prescriptions implements Serializable {
     @Column(name = "prescription_date")
     @Temporal(TemporalType.DATE)
     private Date prescriptionDate;
+    @Column(name = "re_examination_date")
+    @Temporal(TemporalType.DATE)
+    private Date reExaminationDate;
     @Lob
     @Column(name = "diagnosis")
     private String diagnosis;
@@ -76,8 +79,6 @@ public class Prescriptions implements Serializable {
     private String medicinepaymentTxnRef;
     @Column(name = "service_payment_Txn_Ref")
     private String servicepaymentTxnRef;
-    @Column(name = "previous_prescription_id")
-    private Integer previousPrescriptionId;
     @JoinColumn(name = "booking_id", referencedColumnName = "booking_id")
     @ManyToOne
     private Booking bookingId;
@@ -112,6 +113,14 @@ public class Prescriptions implements Serializable {
 
     public void setPrescriptionDate(Date prescriptionDate) {
         this.prescriptionDate = prescriptionDate;
+    }
+
+    public Date getReExaminationDate() {
+        return reExaminationDate;
+    }
+
+    public void setReExaminationDate(Date reExaminationDate) {
+        this.reExaminationDate = reExaminationDate;
     }
 
     public String getDiagnosis() {
@@ -184,14 +193,6 @@ public class Prescriptions implements Serializable {
 
     public void setServicepaymentTxnRef(String servicepaymentTxnRef) {
         this.servicepaymentTxnRef = servicepaymentTxnRef;
-    }
-
-    public Integer getPreviousPrescriptionId() {
-        return previousPrescriptionId;
-    }
-
-    public void setPreviousPrescriptionId(Integer previousPrescriptionId) {
-        this.previousPrescriptionId = previousPrescriptionId;
     }
 
     public Booking getBookingId() {

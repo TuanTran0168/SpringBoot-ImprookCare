@@ -6,6 +6,7 @@ package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.dto.BookingDTO;
 import com.tuantran.IMPROOK_CARE.models.Booking;
+import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
 import com.tuantran.IMPROOK_CARE.models.Schedule;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
 /**
@@ -31,6 +33,9 @@ public interface BookingService {
 
         // List<Booking> findBookingForUserView(int userId);
         List<Object[]> getBookingForUserView(@Param("userId") int userId);
+
+        Page<?> getBookingForUserView(@Param("userId") int userId, @Param("bookingStatus") int bookingStatusId,
+                        Pageable page);
 
         List<Object[]> getTimeSlotsForDoctorOnDate(@Param("profileDoctorId") int profileDoctorId,
                         @Param("date") String date);
@@ -52,5 +57,5 @@ public interface BookingService {
 
         Optional<Booking> findBookingByBookingIdAndActiveTrue(int bookingId);
 
-        Booking createBooking(Booking booking, Schedule schedule);
+        Booking createBooking(Booking booking, Schedule schedule, ProfilePatient profilePatient);
 }

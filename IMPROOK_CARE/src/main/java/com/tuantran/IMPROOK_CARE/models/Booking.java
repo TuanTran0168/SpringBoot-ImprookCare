@@ -37,8 +37,7 @@ import jakarta.persistence.TemporalType;
         @NamedQuery(name = "Booking.findByDeletedDate", query = "SELECT b FROM Booking b WHERE b.deletedDate = :deletedDate"),
         @NamedQuery(name = "Booking.findByBookingCancel", query = "SELECT b FROM Booking b WHERE b.bookingCancel = :bookingCancel"),
         @NamedQuery(name = "Booking.findByLinkVideoCall", query = "SELECT b FROM Booking b WHERE b.linkVideoCall = :linkVideoCall"),
-        @NamedQuery(name = "Booking.findByActive", query = "SELECT b FROM Booking b WHERE b.active = :active"),
-        @NamedQuery(name = "Booking.findByPreviousBookingId", query = "SELECT b FROM Booking b WHERE b.previousBookingId = :previousBookingId") })
+        @NamedQuery(name = "Booking.findByActive", query = "SELECT b FROM Booking b WHERE b.active = :active") })
 public class Booking implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -62,8 +61,6 @@ public class Booking implements Serializable {
     private String linkVideoCall;
     @Column(name = "active")
     private Boolean active;
-    @Column(name = "previous_booking_id")
-    private Integer previousBookingId;
     @JoinColumn(name = "status_id", referencedColumnName = "status_id")
     @ManyToOne
     private BookingStatus statusId;
@@ -79,6 +76,12 @@ public class Booking implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "bookingId")
     private Set<MedicalRecords> medicalRecordsSet;
+    @JsonIgnore
+    @OneToMany(mappedBy = "bookingId")
+    private Set<PaymentHistory> paymentHistorySet;
+    @JsonIgnore
+    @OneToMany(mappedBy = "bookingId")
+    private Set<TestResult> testResultSet;
 
     public Booking() {
     }
@@ -143,14 +146,6 @@ public class Booking implements Serializable {
         this.active = active;
     }
 
-    public Integer getPreviousBookingId() {
-        return previousBookingId;
-    }
-
-    public void setPreviousBookingId(Integer previousBookingId) {
-        this.previousBookingId = previousBookingId;
-    }
-
     public BookingStatus getStatusId() {
         return statusId;
     }
@@ -189,6 +184,22 @@ public class Booking implements Serializable {
 
     public void setMedicalRecordsSet(Set<MedicalRecords> medicalRecordsSet) {
         this.medicalRecordsSet = medicalRecordsSet;
+    }
+
+    public Set<PaymentHistory> getPaymentHistorySet() {
+        return paymentHistorySet;
+    }
+
+    public void setPaymentHistorySet(Set<PaymentHistory> paymentHistorySet) {
+        this.paymentHistorySet = paymentHistorySet;
+    }
+
+    public Set<TestResult> getTestResultSet() {
+        return testResultSet;
+    }
+
+    public void setTestResultSet(Set<TestResult> testResultSet) {
+        this.testResultSet = testResultSet;
     }
 
     @Override
