@@ -52,8 +52,7 @@ public class ApiTestResultController {
     /*
      * 2 API này sau này sẽ suy nghĩ tới việc lưu hình ảnh
      */
-    @PostMapping("/auth/nurse/add-test-result/")
-    @PreAuthorize("hasRole('NURSE')")
+    @PostMapping("/auth/doctor/add-test-result/")
     @CrossOrigin
     public ResponseEntity<?> addTestResult(@Valid @RequestBody AddTestResultDTO addTestResultDTO) {
         String message = "Có lỗi xảy ra!";
