@@ -298,6 +298,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public Booking createBookingReExamination(TimeSlot timeSlot, Booking booking, Schedule schedule,
             ProfilePatient profilePatient) {
 
