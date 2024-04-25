@@ -8,6 +8,7 @@ import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.PaymentHistory;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
 import com.tuantran.IMPROOK_CARE.service.BookingService;
+import com.tuantran.IMPROOK_CARE.service.BookingStatusService;
 import com.tuantran.IMPROOK_CARE.service.PaymentHistoryService;
 import com.tuantran.IMPROOK_CARE.service.ProfilePatientService;
 
@@ -48,6 +49,9 @@ public class ApiPaymentHistoryController {
 
     @Autowired
     private BookingService bookingService;
+
+    @Autowired
+    private BookingStatusService bookingStatusService;
 
     @GetMapping("/auth/profile-patient/{profilePatientId}/payment-history/")
     @CrossOrigin
@@ -142,8 +146,22 @@ public class ApiPaymentHistoryController {
             paymentHistory.setVnpTransactionno(vnp_TransactionNo);
             paymentHistory.setVnpTransactionstatus(vnp_TransactionStatus);
             paymentHistory.setVnpSecurehash(vnp_securehash);
-            paymentHistory.setBookingId(bookingOptional.get());
-            return new ResponseEntity<>(this.paymentHistoryService.addPaymentHistory(paymentHistory),
+
+            /*
+             * (Cơ chế mới)
+             * Status số 6 là chưa thanh toán - sẽ không hiện ở view bác sĩ
+             * Mặc định khi tạo sẽ là chưa thanh toán (status_id là 6)
+             * 
+             * Sau khi thanh toán sẽ chuyển status về 1 (Chờ bác sĩ xác nhận) - lúc này mới
+             * hiện ở bác sĩ.
+             * 
+             * Chuyển status về 1 khi thanh toán sẽ thực hiện ở 1 API khác
+             */
+            Booking booking = bookingOptional.get();
+            booking.setStatusId(this.bookingStatusService.findBookingStatusByStatusId(1));
+            paymentHistory.setBookingId(booking);
+
+            return new ResponseEntity<>(this.paymentHistoryService.addPaymentHistory(paymentHistory, booking),
                     HttpStatus.OK);
         } else {
             message = "Booking[" + bookingId + "] không tồn tại!";

@@ -4,7 +4,9 @@
  */
 package com.tuantran.IMPROOK_CARE.service.Impl;
 
+import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.PaymentHistory;
+import com.tuantran.IMPROOK_CARE.repository.BookingRepository;
 import com.tuantran.IMPROOK_CARE.repository.PaymentHistoryRepository;
 import com.tuantran.IMPROOK_CARE.service.PaymentHistoryService;
 
@@ -23,13 +25,17 @@ public class PaymentHistoryServiceImpl implements PaymentHistoryService {
     @Autowired
     private PaymentHistoryRepository paymentHistoryRepository;
 
+    @Autowired
+    private BookingRepository bookingRepository;
+
     @Override
     public Page<?> findPaymentHistoryByProfilePatientId(int profilePatientId, Pageable page) {
         return this.paymentHistoryRepository.findPaymentHistoryByProfilePatientId(profilePatientId, page);
     }
 
     @Override
-    public PaymentHistory addPaymentHistory(PaymentHistory paymentHistory) {
+    public PaymentHistory addPaymentHistory(PaymentHistory paymentHistory, Booking booking) {
+        this.bookingRepository.save(booking);
         return this.paymentHistoryRepository.save(paymentHistory);
     }
 
