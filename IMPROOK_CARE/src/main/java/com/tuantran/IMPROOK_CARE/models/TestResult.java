@@ -29,6 +29,7 @@ import jakarta.persistence.TemporalType;
         @NamedQuery(name = "TestResult.findByTestResultId", query = "SELECT t FROM TestResult t WHERE t.testResultId = :testResultId"),
         @NamedQuery(name = "TestResult.findByTestResultValue", query = "SELECT t FROM TestResult t WHERE t.testResultValue = :testResultValue"),
         @NamedQuery(name = "TestResult.findByTestResultDiagnosis", query = "SELECT t FROM TestResult t WHERE t.testResultDiagnosis = :testResultDiagnosis"),
+        @NamedQuery(name = "TestResult.findByTestResultImage", query = "SELECT t FROM TestResult t WHERE t.testResultImage = :testResultImage"),
         @NamedQuery(name = "TestResult.findByCreatedDate", query = "SELECT t FROM TestResult t WHERE t.createdDate = :createdDate"),
         @NamedQuery(name = "TestResult.findByUpdatedDate", query = "SELECT t FROM TestResult t WHERE t.updatedDate = :updatedDate"),
         @NamedQuery(name = "TestResult.findByDeletedDate", query = "SELECT t FROM TestResult t WHERE t.deletedDate = :deletedDate"),
@@ -44,6 +45,8 @@ public class TestResult implements Serializable {
     private String testResultValue;
     @Column(name = "test_result_diagnosis")
     private String testResultDiagnosis;
+    @Column(name = "test_result_image")
+    private String testResultImage;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -94,6 +97,14 @@ public class TestResult implements Serializable {
 
     public void setTestResultDiagnosis(String testResultDiagnosis) {
         this.testResultDiagnosis = testResultDiagnosis;
+    }
+
+    public String getTestResultImage() {
+        return testResultImage;
+    }
+
+    public void setTestResultImage(String testResultImage) {
+        this.testResultImage = testResultImage;
     }
 
     public Date getCreatedDate() {

@@ -88,22 +88,37 @@ public class ApiPaymentHistoryController {
     public ResponseEntity<?> listSearchMedicineCategories(@RequestParam Map<String, String> params) {
         String message = "Có lỗi xảy ra!";
 
-        String paymentStatus = params.get("paymentStatus");
+        // {
+        // "vnp_ResponseId": "b8fdbc7a032349e7bdaf23432fe89db7",
+        // "vnp_Command": "querydr",
+        // "vnp_ResponseCode": "00",
+        // "vnp_Message": "QueryDR Success",
+        // "vnp_TmnCode": "86LMDA46",
+        // "vnp_TxnRef": "45242740",
+        // "vnp_Amount": "1000000",
+        // "vnp_OrderInfo": "Tuan Tran test VN pay-45242740",
+        // "vnp_BankCode": "NCB",
+        // "vnp_PayDate": "20240423093740",
+        // "vnp_TransactionNo": "14388500",
+        // "vnp_TransactionType": "01",
+        // "vnp_TransactionStatus": "00",
+        // "vnp_SecureHash":
+        // "df9fdb8c74201cebaf8d0e617785afcedf1ae900821932f72f8fc725aa2516735eaccf1f33aa1c30c74fc4a2b0980c46d38aa3d07eb1f1dcdb6568797fb092a8"
+        // }
+
         String bookingId = params.get("bookingId");
-        String vnp_amount = params.get("vnp_amount");
-        String vnp_bankcode = params.get("vnp_bankcode");
+        String vnp_ResponseId = params.get("vnp_ResponseId");
         String vnp_command = params.get("vnp_command");
-        String vnp_createdate = params.get("vnp_createdate");
-        String vnp_currcode = params.get("vnp_currcode");
-        String vnp_expiredate = params.get("vnp_expiredate");
-        String vnp_ipaddr = params.get("vnp_ipaddr");
-        String vnp_locale = params.get("vnp_locale");
-        String vnp_orderinfo = params.get("vnp_orderinfo");
-        String vnp_ordertype = params.get("vnp_ordertype");
-        String vnp_returnurl = params.get("vnp_returnurl");
+        String vnp_ResponseCode = params.get("vnp_ResponseCode");
+        String vnp_Message = params.get("vnp_Message");
         String vnp_tmncode = params.get("vnp_tmncode");
         String vnp_txnref = params.get("vnp_txnref");
-        String vnp_version = params.get("vnp_version");
+        String vnp_amount = params.get("vnp_amount");
+        String vnp_orderinfo = params.get("vnp_orderinfo");
+        String vnp_bankcode = params.get("vnp_bankcode");
+        String vnp_PayDate = params.get("vnp_PayDate");
+        String vnp_TransactionNo = params.get("vnp_TransactionNo");
+        String vnp_TransactionStatus = params.get("vnp_TransactionStatus");
         String vnp_securehash = params.get("vnp_securehash");
 
         Optional<Booking> bookingOptional = this.bookingService
@@ -113,23 +128,20 @@ public class ApiPaymentHistoryController {
             PaymentHistory paymentHistory = new PaymentHistory();
             paymentHistory.setActive(Boolean.TRUE);
             paymentHistory.setCreatedDate(new Date());
-            paymentHistory.setVnpAmount(vnp_amount);
-            paymentHistory.setVnpBankcode(vnp_bankcode);
+
+            paymentHistory.setVnpResponseid(vnp_ResponseId);
             paymentHistory.setVnpCommand(vnp_command);
-            paymentHistory.setVnpCreatedate(vnp_createdate);
-            paymentHistory.setVnpCurrcode(vnp_currcode);
-            paymentHistory.setVnpExpiredate(vnp_expiredate);
-            paymentHistory.setVnpIpaddr(vnp_ipaddr);
-            paymentHistory.setVnpLocale(vnp_locale);
-            paymentHistory.setVnpOrderinfo(vnp_orderinfo);
-            paymentHistory.setVnpOrdertype(vnp_ordertype);
-            paymentHistory.setVnpReturnurl(vnp_returnurl);
+            paymentHistory.setVnpResponsecode(vnp_ResponseCode);
+            paymentHistory.setVnpMessage(vnp_Message);
             paymentHistory.setVnpTmncode(vnp_tmncode);
             paymentHistory.setVnpTxnref(vnp_txnref);
-            paymentHistory.setVnpVersion(vnp_version);
+            paymentHistory.setVnpAmount(vnp_amount);
+            paymentHistory.setVnpOrderinfo(vnp_orderinfo);
+            paymentHistory.setVnpBankcode(vnp_bankcode);
+            paymentHistory.setVnpPaydate(vnp_PayDate);
+            paymentHistory.setVnpTransactionno(vnp_TransactionNo);
+            paymentHistory.setVnpTransactionstatus(vnp_TransactionStatus);
             paymentHistory.setVnpSecurehash(vnp_securehash);
-
-            paymentHistory.setPaymentStatus(Boolean.parseBoolean(paymentStatus));
             paymentHistory.setBookingId(bookingOptional.get());
             return new ResponseEntity<>(this.paymentHistoryService.addPaymentHistory(paymentHistory),
                     HttpStatus.OK);

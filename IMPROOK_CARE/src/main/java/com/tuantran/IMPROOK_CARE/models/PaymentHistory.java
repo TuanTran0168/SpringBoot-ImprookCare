@@ -27,21 +27,19 @@ import jakarta.persistence.TemporalType;
 @NamedQueries({
         @NamedQuery(name = "PaymentHistory.findAll", query = "SELECT p FROM PaymentHistory p"),
         @NamedQuery(name = "PaymentHistory.findByPaymentHistoryId", query = "SELECT p FROM PaymentHistory p WHERE p.paymentHistoryId = :paymentHistoryId"),
-        @NamedQuery(name = "PaymentHistory.findByPaymentStatus", query = "SELECT p FROM PaymentHistory p WHERE p.paymentStatus = :paymentStatus"),
-        @NamedQuery(name = "PaymentHistory.findByVnpAmount", query = "SELECT p FROM PaymentHistory p WHERE p.vnpAmount = :vnpAmount"),
-        @NamedQuery(name = "PaymentHistory.findByVnpBankcode", query = "SELECT p FROM PaymentHistory p WHERE p.vnpBankcode = :vnpBankcode"),
+        @NamedQuery(name = "PaymentHistory.findByVnpResponseid", query = "SELECT p FROM PaymentHistory p WHERE p.vnpResponseid = :vnpResponseid"),
         @NamedQuery(name = "PaymentHistory.findByVnpCommand", query = "SELECT p FROM PaymentHistory p WHERE p.vnpCommand = :vnpCommand"),
-        @NamedQuery(name = "PaymentHistory.findByVnpCreatedate", query = "SELECT p FROM PaymentHistory p WHERE p.vnpCreatedate = :vnpCreatedate"),
-        @NamedQuery(name = "PaymentHistory.findByVnpCurrcode", query = "SELECT p FROM PaymentHistory p WHERE p.vnpCurrcode = :vnpCurrcode"),
-        @NamedQuery(name = "PaymentHistory.findByVnpExpiredate", query = "SELECT p FROM PaymentHistory p WHERE p.vnpExpiredate = :vnpExpiredate"),
-        @NamedQuery(name = "PaymentHistory.findByVnpIpaddr", query = "SELECT p FROM PaymentHistory p WHERE p.vnpIpaddr = :vnpIpaddr"),
-        @NamedQuery(name = "PaymentHistory.findByVnpLocale", query = "SELECT p FROM PaymentHistory p WHERE p.vnpLocale = :vnpLocale"),
-        @NamedQuery(name = "PaymentHistory.findByVnpOrderinfo", query = "SELECT p FROM PaymentHistory p WHERE p.vnpOrderinfo = :vnpOrderinfo"),
-        @NamedQuery(name = "PaymentHistory.findByVnpOrdertype", query = "SELECT p FROM PaymentHistory p WHERE p.vnpOrdertype = :vnpOrdertype"),
-        @NamedQuery(name = "PaymentHistory.findByVnpReturnurl", query = "SELECT p FROM PaymentHistory p WHERE p.vnpReturnurl = :vnpReturnurl"),
+        @NamedQuery(name = "PaymentHistory.findByVnpResponsecode", query = "SELECT p FROM PaymentHistory p WHERE p.vnpResponsecode = :vnpResponsecode"),
+        @NamedQuery(name = "PaymentHistory.findByVnpMessage", query = "SELECT p FROM PaymentHistory p WHERE p.vnpMessage = :vnpMessage"),
         @NamedQuery(name = "PaymentHistory.findByVnpTmncode", query = "SELECT p FROM PaymentHistory p WHERE p.vnpTmncode = :vnpTmncode"),
         @NamedQuery(name = "PaymentHistory.findByVnpTxnref", query = "SELECT p FROM PaymentHistory p WHERE p.vnpTxnref = :vnpTxnref"),
-        @NamedQuery(name = "PaymentHistory.findByVnpVersion", query = "SELECT p FROM PaymentHistory p WHERE p.vnpVersion = :vnpVersion"),
+        @NamedQuery(name = "PaymentHistory.findByVnpAmount", query = "SELECT p FROM PaymentHistory p WHERE p.vnpAmount = :vnpAmount"),
+        @NamedQuery(name = "PaymentHistory.findByVnpOrderinfo", query = "SELECT p FROM PaymentHistory p WHERE p.vnpOrderinfo = :vnpOrderinfo"),
+        @NamedQuery(name = "PaymentHistory.findByVnpBankcode", query = "SELECT p FROM PaymentHistory p WHERE p.vnpBankcode = :vnpBankcode"),
+        @NamedQuery(name = "PaymentHistory.findByVnpPaydate", query = "SELECT p FROM PaymentHistory p WHERE p.vnpPaydate = :vnpPaydate"),
+        @NamedQuery(name = "PaymentHistory.findByVnpTransactionno", query = "SELECT p FROM PaymentHistory p WHERE p.vnpTransactionno = :vnpTransactionno"),
+        @NamedQuery(name = "PaymentHistory.findByVnpTransactiontype", query = "SELECT p FROM PaymentHistory p WHERE p.vnpTransactiontype = :vnpTransactiontype"),
+        @NamedQuery(name = "PaymentHistory.findByVnpTransactionstatus", query = "SELECT p FROM PaymentHistory p WHERE p.vnpTransactionstatus = :vnpTransactionstatus"),
         @NamedQuery(name = "PaymentHistory.findByVnpSecurehash", query = "SELECT p FROM PaymentHistory p WHERE p.vnpSecurehash = :vnpSecurehash"),
         @NamedQuery(name = "PaymentHistory.findByCreatedDate", query = "SELECT p FROM PaymentHistory p WHERE p.createdDate = :createdDate"),
         @NamedQuery(name = "PaymentHistory.findByUpdatedDate", query = "SELECT p FROM PaymentHistory p WHERE p.updatedDate = :updatedDate"),
@@ -54,36 +52,32 @@ public class PaymentHistory implements Serializable {
     @Basic(optional = false)
     @Column(name = "payment_history_id")
     private Integer paymentHistoryId;
-    @Column(name = "payment_status")
-    private Boolean paymentStatus;
-    @Column(name = "vnp_amount")
-    private String vnpAmount;
-    @Column(name = "vnp_bankcode")
-    private String vnpBankcode;
+    @Column(name = "vnp_responseid")
+    private String vnpResponseid;
     @Column(name = "vnp_command")
     private String vnpCommand;
-    @Column(name = "vnp_createdate")
-    private String vnpCreatedate;
-    @Column(name = "vnp_currcode")
-    private String vnpCurrcode;
-    @Column(name = "vnp_expiredate")
-    private String vnpExpiredate;
-    @Column(name = "vnp_ipaddr")
-    private String vnpIpaddr;
-    @Column(name = "vnp_locale")
-    private String vnpLocale;
-    @Column(name = "vnp_orderinfo")
-    private String vnpOrderinfo;
-    @Column(name = "vnp_ordertype")
-    private String vnpOrdertype;
-    @Column(name = "vnp_returnurl")
-    private String vnpReturnurl;
+    @Column(name = "vnp_responsecode")
+    private String vnpResponsecode;
+    @Column(name = "vnp_message")
+    private String vnpMessage;
     @Column(name = "vnp_tmncode")
     private String vnpTmncode;
     @Column(name = "vnp_txnref")
     private String vnpTxnref;
-    @Column(name = "vnp_version")
-    private String vnpVersion;
+    @Column(name = "vnp_amount")
+    private String vnpAmount;
+    @Column(name = "vnp_orderinfo")
+    private String vnpOrderinfo;
+    @Column(name = "vnp_bankcode")
+    private String vnpBankcode;
+    @Column(name = "vnp_paydate")
+    private String vnpPaydate;
+    @Column(name = "vnp_transactionno")
+    private String vnpTransactionno;
+    @Column(name = "vnp_transactiontype")
+    private String vnpTransactiontype;
+    @Column(name = "vnp_transactionstatus")
+    private String vnpTransactionstatus;
     @Column(name = "vnp_securehash")
     private String vnpSecurehash;
     @Column(name = "created_date")
@@ -116,28 +110,12 @@ public class PaymentHistory implements Serializable {
         this.paymentHistoryId = paymentHistoryId;
     }
 
-    public Boolean getPaymentStatus() {
-        return paymentStatus;
+    public String getVnpResponseid() {
+        return vnpResponseid;
     }
 
-    public void setPaymentStatus(Boolean paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
-    public String getVnpAmount() {
-        return vnpAmount;
-    }
-
-    public void setVnpAmount(String vnpAmount) {
-        this.vnpAmount = vnpAmount;
-    }
-
-    public String getVnpBankcode() {
-        return vnpBankcode;
-    }
-
-    public void setVnpBankcode(String vnpBankcode) {
-        this.vnpBankcode = vnpBankcode;
+    public void setVnpResponseid(String vnpResponseid) {
+        this.vnpResponseid = vnpResponseid;
     }
 
     public String getVnpCommand() {
@@ -148,68 +126,20 @@ public class PaymentHistory implements Serializable {
         this.vnpCommand = vnpCommand;
     }
 
-    public String getVnpCreatedate() {
-        return vnpCreatedate;
+    public String getVnpResponsecode() {
+        return vnpResponsecode;
     }
 
-    public void setVnpCreatedate(String vnpCreatedate) {
-        this.vnpCreatedate = vnpCreatedate;
+    public void setVnpResponsecode(String vnpResponsecode) {
+        this.vnpResponsecode = vnpResponsecode;
     }
 
-    public String getVnpCurrcode() {
-        return vnpCurrcode;
+    public String getVnpMessage() {
+        return vnpMessage;
     }
 
-    public void setVnpCurrcode(String vnpCurrcode) {
-        this.vnpCurrcode = vnpCurrcode;
-    }
-
-    public String getVnpExpiredate() {
-        return vnpExpiredate;
-    }
-
-    public void setVnpExpiredate(String vnpExpiredate) {
-        this.vnpExpiredate = vnpExpiredate;
-    }
-
-    public String getVnpIpaddr() {
-        return vnpIpaddr;
-    }
-
-    public void setVnpIpaddr(String vnpIpaddr) {
-        this.vnpIpaddr = vnpIpaddr;
-    }
-
-    public String getVnpLocale() {
-        return vnpLocale;
-    }
-
-    public void setVnpLocale(String vnpLocale) {
-        this.vnpLocale = vnpLocale;
-    }
-
-    public String getVnpOrderinfo() {
-        return vnpOrderinfo;
-    }
-
-    public void setVnpOrderinfo(String vnpOrderinfo) {
-        this.vnpOrderinfo = vnpOrderinfo;
-    }
-
-    public String getVnpOrdertype() {
-        return vnpOrdertype;
-    }
-
-    public void setVnpOrdertype(String vnpOrdertype) {
-        this.vnpOrdertype = vnpOrdertype;
-    }
-
-    public String getVnpReturnurl() {
-        return vnpReturnurl;
-    }
-
-    public void setVnpReturnurl(String vnpReturnurl) {
-        this.vnpReturnurl = vnpReturnurl;
+    public void setVnpMessage(String vnpMessage) {
+        this.vnpMessage = vnpMessage;
     }
 
     public String getVnpTmncode() {
@@ -228,12 +158,60 @@ public class PaymentHistory implements Serializable {
         this.vnpTxnref = vnpTxnref;
     }
 
-    public String getVnpVersion() {
-        return vnpVersion;
+    public String getVnpAmount() {
+        return vnpAmount;
     }
 
-    public void setVnpVersion(String vnpVersion) {
-        this.vnpVersion = vnpVersion;
+    public void setVnpAmount(String vnpAmount) {
+        this.vnpAmount = vnpAmount;
+    }
+
+    public String getVnpOrderinfo() {
+        return vnpOrderinfo;
+    }
+
+    public void setVnpOrderinfo(String vnpOrderinfo) {
+        this.vnpOrderinfo = vnpOrderinfo;
+    }
+
+    public String getVnpBankcode() {
+        return vnpBankcode;
+    }
+
+    public void setVnpBankcode(String vnpBankcode) {
+        this.vnpBankcode = vnpBankcode;
+    }
+
+    public String getVnpPaydate() {
+        return vnpPaydate;
+    }
+
+    public void setVnpPaydate(String vnpPaydate) {
+        this.vnpPaydate = vnpPaydate;
+    }
+
+    public String getVnpTransactionno() {
+        return vnpTransactionno;
+    }
+
+    public void setVnpTransactionno(String vnpTransactionno) {
+        this.vnpTransactionno = vnpTransactionno;
+    }
+
+    public String getVnpTransactiontype() {
+        return vnpTransactiontype;
+    }
+
+    public void setVnpTransactiontype(String vnpTransactiontype) {
+        this.vnpTransactiontype = vnpTransactiontype;
+    }
+
+    public String getVnpTransactionstatus() {
+        return vnpTransactionstatus;
+    }
+
+    public void setVnpTransactionstatus(String vnpTransactionstatus) {
+        this.vnpTransactionstatus = vnpTransactionstatus;
     }
 
     public String getVnpSecurehash() {
