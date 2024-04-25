@@ -13,9 +13,7 @@ import com.tuantran.IMPROOK_CARE.models.Medicine;
 import com.tuantran.IMPROOK_CARE.models.MedicinePaymentStatus;
 import com.tuantran.IMPROOK_CARE.models.PrescriptionDetail;
 import com.tuantran.IMPROOK_CARE.models.Prescriptions;
-import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
-import com.tuantran.IMPROOK_CARE.models.Schedule;
 import com.tuantran.IMPROOK_CARE.models.ServicePaymentStatus;
 import com.tuantran.IMPROOK_CARE.repository.BookingRepository;
 import com.tuantran.IMPROOK_CARE.repository.MedicineRepository;
@@ -23,6 +21,8 @@ import com.tuantran.IMPROOK_CARE.repository.PrescriptionDetailRepository;
 import com.tuantran.IMPROOK_CARE.repository.PrescriptionRepository;
 import com.tuantran.IMPROOK_CARE.service.BookingStatusService;
 import com.tuantran.IMPROOK_CARE.service.PrescriptionService;
+
+import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import java.math.BigDecimal;
@@ -208,8 +208,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         Specification<Prescriptions> specificationProMax = (root, query, criteriaBuilder) -> {
             Join<Prescriptions, Booking> bookingJoin = root.join("bookingId");
             Join<Booking, ProfilePatient> profilePatientJoin = bookingJoin.join("profilePatientId");
-            Join<Booking, Schedule> scheduleJoin = bookingJoin.join("scheduleId");
-            Join<Schedule, ProfileDoctor> profileDoctorJoin = scheduleJoin.join("profileDoctorId");
+            // Join<Booking, Schedule> scheduleJoin = bookingJoin.join("scheduleId");
+            // Join<Schedule, ProfileDoctor> profileDoctorJoin =
+            // scheduleJoin.join("profileDoctorId");
             Predicate profilePatientIdPredicate = criteriaBuilder.equal(profilePatientJoin.get("profilePatientId"),
                     profilePatientId);
             return criteriaBuilder.and(profilePatientIdPredicate);
@@ -253,5 +254,10 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             ex.printStackTrace();
             return 0;
         }
+    }
+
+    @Override
+    public Optional<Prescriptions> findByBookingId(Booking bookingId) throws NonUniqueResultException {
+        return this.prescriptionRepository.findByBookingId(bookingId);
     }
 }
