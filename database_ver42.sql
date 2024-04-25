@@ -511,22 +511,20 @@ DROP TABLE IF EXISTS `payment_history`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `payment_history` (
   `payment_history_id` int NOT NULL,
-  `payment_status` tinyint(1) DEFAULT NULL,
   `booking_id` int DEFAULT NULL,
-  `vnp_amount` varchar(255) DEFAULT NULL,
-  `vnp_bankcode` varchar(255) DEFAULT NULL,
+  `vnp_responseid` varchar(255) DEFAULT NULL,
   `vnp_command` varchar(255) DEFAULT NULL,
-  `vnp_createdate` varchar(255) DEFAULT NULL,
-  `vnp_currcode` varchar(255) DEFAULT NULL,
-  `vnp_expiredate` varchar(255) DEFAULT NULL,
-  `vnp_ipaddr` varchar(255) DEFAULT NULL,
-  `vnp_locale` varchar(255) DEFAULT NULL,
-  `vnp_orderinfo` varchar(255) DEFAULT NULL,
-  `vnp_ordertype` varchar(255) DEFAULT NULL,
-  `vnp_returnurl` varchar(255) DEFAULT NULL,
+  `vnp_responsecode` varchar(255) DEFAULT NULL,
+  `vnp_message` varchar(255) DEFAULT NULL,
   `vnp_tmncode` varchar(255) DEFAULT NULL,
   `vnp_txnref` varchar(255) DEFAULT NULL,
-  `vnp_version` varchar(255) DEFAULT NULL,
+  `vnp_amount` varchar(255) DEFAULT NULL,
+  `vnp_orderinfo` varchar(255) DEFAULT NULL,
+  `vnp_bankcode` varchar(255) DEFAULT NULL,
+  `vnp_paydate` varchar(255) DEFAULT NULL,
+  `vnp_transactionno` varchar(255) DEFAULT NULL,
+  `vnp_transactiontype` varchar(255) DEFAULT NULL,
+  `vnp_transactionstatus` varchar(255) DEFAULT NULL,
   `vnp_securehash` varchar(255) DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
@@ -580,7 +578,7 @@ CREATE TABLE `prescription_detail` (
 
 LOCK TABLES `prescription_detail` WRITE;
 /*!40000 ALTER TABLE `prescription_detail` DISABLE KEYS */;
-INSERT INTO `prescription_detail` VALUES (45,41,26,'Thuốc đặt Efferalgan 300mg Bristol','Ngày 3 lần',10,10000.00,'2023-10-13 16:55:34',NULL,NULL,1),(46,43,26,'Thực phẩm hỗ trợ giảm các triệu chứng trĩ nội, trĩ ngoại Tottri','Ngày 2 lần',6,6400.00,'2023-10-13 16:55:34',NULL,NULL,1),(47,30,27,'Siro ho Eugica DHG hỗ trợ điều trị ho, long đờm (100ml)','3 lần/ngày',2,40000.00,'2023-10-16 18:28:18',NULL,NULL,1),(48,31,27,'Xịt họng thảo dược Eugica Mega We Care','2 lần/ngày',1,47000.00,'2023-10-16 18:28:18',NULL,NULL,1),(49,39,28,'Viên ngậm Strepsils Cool Reckitt Benckiser',NULL,3,1500.00,'2023-10-16 20:40:33',NULL,NULL,1),(50,40,28,'Viên sủi Efferalgan 500mg',NULL,2,3200.00,'2023-10-16 20:40:33',NULL,NULL,1),(51,28,29,'Dung dịch sát khuẩn Povidine Povidon Iod 10% (8ml)',NULL,4,6000.00,'2023-10-16 20:44:21',NULL,NULL,1),(52,31,29,'Xịt họng thảo dược Eugica Mega We Care',NULL,7,47000.00,'2023-10-16 20:44:21',NULL,NULL,1),(53,33,29,'Dung dịch Natri Clorid 0.9% (500ml)',NULL,11,15000.00,'2023-10-16 20:44:21',NULL,NULL,1),(54,28,30,'Dung dịch sát khuẩn Povidine Povidon Iod 10% (8ml)',NULL,5,6000.00,'2023-10-16 20:45:39',NULL,NULL,1),(55,32,30,'Levigatus Traphaco',NULL,6,19000.00,'2023-10-16 20:45:39',NULL,NULL,1),(56,40,31,'Viên sủi Efferalgan 500mg',NULL,16,3200.00,'2023-10-16 20:52:09',NULL,NULL,1),(57,41,31,'Thuốc đặt Efferalgan 300mg Bristol',NULL,2,10000.00,'2023-10-16 20:52:09',NULL,NULL,1),(58,43,31,'Thực phẩm hỗ trợ giảm các triệu chứng trĩ nội, trĩ ngoại Tottri',NULL,5,6400.00,'2023-10-16 20:52:09',NULL,NULL,1),(59,23,32,'Tiffy Dey',NULL,23,1300.00,'2023-10-16 20:53:11',NULL,NULL,1),(60,27,32,'Đại Tràng Nhất Nhất',NULL,4,7000.00,'2023-10-16 20:53:11',NULL,NULL,1),(61,39,33,'Viên ngậm Strepsils Cool Reckitt Benckiser',NULL,4,1500.00,'2023-10-16 20:57:22',NULL,NULL,1),(62,40,33,'Viên sủi Efferalgan 500mg',NULL,7,3200.00,'2023-10-16 20:57:22',NULL,NULL,1),(63,41,33,'Thuốc đặt Efferalgan 300mg Bristol',NULL,9,10000.00,'2023-10-16 20:57:22',NULL,NULL,1),(64,17,34,'Yumangel F',NULL,7,8000.00,'2023-10-16 20:58:40',NULL,NULL,1),(65,21,34,'Hoạt Huyết Dưỡng Não Traphaco',NULL,9,1200.00,'2023-10-16 20:58:40',NULL,NULL,1),(66,35,34,'Viên uống LiverWell Navi',NULL,12,3200.00,'2023-10-16 20:58:40',NULL,NULL,1),(67,25,35,'Calcium Corbiere Extra',NULL,18,7000.00,'2023-10-16 21:00:42',NULL,NULL,1),(68,26,35,'Canxi Calcium Corbiere',NULL,7,4000.00,'2023-10-16 21:00:42',NULL,NULL,1);
+INSERT INTO `prescription_detail` VALUES (45,41,26,'Thuốc đặt Efferalgan 300mg Bristol','Ngày 3 lần',10,10000.00,'2023-10-13 16:55:34',NULL,NULL,1),(46,43,26,'Thực phẩm hỗ trợ giảm các triệu chứng trĩ nội, trĩ ngoại Tottri','Ngày 2 lần',6,6400.00,'2023-10-13 16:55:34',NULL,NULL,1),(47,30,27,'Siro ho Eugica DHG hỗ trợ điều trị ho, long đờm (100ml)','3 lần/ngày',2,40000.00,'2023-10-16 18:28:18',NULL,NULL,1),(48,31,27,'Xịt họng thảo dược Eugica Mega We Care','2 lần/ngày',1,47000.00,'2023-10-16 18:28:18',NULL,NULL,1),(49,39,28,'Viên ngậm Strepsils Cool Reckitt Benckiser',NULL,3,1500.00,'2023-10-16 20:40:33',NULL,NULL,1),(50,40,28,'Viên sủi Efferalgan 500mg',NULL,2,3200.00,'2023-10-16 20:40:33',NULL,NULL,1),(51,28,29,'Dung dịch sát khuẩn Povidine Povidon Iod 10% (8ml)',NULL,4,6000.00,'2023-10-16 20:44:21',NULL,NULL,1),(52,31,29,'Xịt họng thảo dược Eugica Mega We Care',NULL,7,47000.00,'2023-10-16 20:44:21',NULL,NULL,1),(53,33,29,'Dung dịch Natri Clorid 0.9% (500ml)',NULL,11,15000.00,'2023-10-16 20:44:21',NULL,NULL,1),(54,28,30,'Dung dịch sát khuẩn Povidine Povidon Iod 10% (8ml)',NULL,5,6000.00,'2023-10-16 20:45:39',NULL,NULL,1),(55,32,30,'Levigatus Traphaco',NULL,6,19000.00,'2023-10-16 20:45:39',NULL,NULL,1),(56,40,31,'Viên sủi Efferalgan 500mg',NULL,16,3200.00,'2023-10-16 20:52:09',NULL,NULL,1),(57,41,31,'Thuốc đặt Efferalgan 300mg Bristol',NULL,2,10000.00,'2023-10-16 20:52:09',NULL,NULL,1),(58,43,31,'Thực phẩm hỗ trợ giảm các triệu chứng trĩ nội, trĩ ngoại Tottri',NULL,5,6400.00,'2023-10-16 20:52:09',NULL,NULL,1),(59,23,32,'Tiffy Dey',NULL,23,1300.00,'2023-10-16 20:53:11',NULL,NULL,1),(60,27,32,'Đại Tràng Nhất Nhất',NULL,4,7000.00,'2023-10-16 20:53:11',NULL,NULL,1),(61,39,33,'Viên ngậm Strepsils Cool Reckitt Benckiser',NULL,4,1500.00,'2023-10-16 20:57:22',NULL,NULL,1),(62,40,33,'Viên sủi Efferalgan 500mg',NULL,7,3200.00,'2023-10-16 20:57:22',NULL,NULL,1),(63,41,33,'Thuốc đặt Efferalgan 300mg Bristol',NULL,9,10000.00,'2023-10-16 20:57:22',NULL,NULL,1),(64,17,34,'Yumangel F',NULL,7,8000.00,'2023-10-16 20:58:40',NULL,NULL,1),(65,21,34,'Hoạt Huyết Dưỡng Não Traphaco',NULL,9,1200.00,'2023-10-16 20:58:40',NULL,NULL,1),(66,35,34,'Viên uống LiverWell Navi',NULL,12,3200.00,'2023-10-16 20:58:40',NULL,NULL,1);
 /*!40000 ALTER TABLE `prescription_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -623,7 +621,7 @@ CREATE TABLE `prescriptions` (
 
 LOCK TABLES `prescriptions` WRITE;
 /*!40000 ALTER TABLE `prescriptions` DISABLE KEYS */;
-INSERT INTO `prescriptions` VALUES (26,'2023-10-13',NULL,'Đau bụng','Đau bụng, nhức đầu','120000','2023-10-13 16:55:34',NULL,NULL,1,16,2,NULL,2,NULL),(27,'2023-10-16',NULL,'Ho','Đau họng','120000','2023-10-16 18:28:18',NULL,NULL,1,26,2,NULL,2,NULL),(28,'2023-10-16',NULL,'Ợ Chua','Đau bụng','250000','2023-10-16 20:40:33',NULL,NULL,1,28,2,NULL,1,NULL),(29,'2023-10-16',NULL,'Chóng Mặt','Buồn nôn','120000','2023-10-16 20:44:21',NULL,NULL,1,27,1,NULL,2,NULL),(30,'2023-10-16',NULL,'Tê Tay','Gãy Tay','150000','2023-10-16 20:45:39',NULL,NULL,1,29,1,NULL,1,NULL),(31,'2023-10-16',NULL,'Nóng trong người','Nhiệt miệng','270000','2023-10-16 20:52:09',NULL,NULL,1,31,1,NULL,2,NULL),(32,'2023-10-16',NULL,'Chảy Nước Mắt','Mỏi mắt','120000','2023-10-16 20:53:11',NULL,NULL,1,32,2,NULL,1,NULL),(33,'2023-10-16',NULL,'Ho Gà','Đau Họng','250000','2023-10-16 20:57:22',NULL,NULL,1,34,1,NULL,1,NULL),(34,'2023-10-16',NULL,'Mất Ngủ','Đau Thần Kinh Tọa','150000','2023-10-16 20:58:39',NULL,NULL,1,33,2,NULL,1,NULL),(35,'2023-10-16',NULL,'Mỏi Vai Gối','Đau Lưng','150000','2023-10-16 21:00:42',NULL,NULL,1,29,2,'56750177',2,'56750177');
+INSERT INTO `prescriptions` VALUES (26,'2023-10-13',NULL,'Đau bụng','Đau bụng, nhức đầu','120000','2023-10-13 16:55:34',NULL,NULL,1,16,2,NULL,2,NULL),(27,'2023-10-16',NULL,'Ho','Đau họng','120000','2023-10-16 18:28:18',NULL,NULL,1,26,2,NULL,2,NULL),(28,'2023-10-16',NULL,'Ợ Chua','Đau bụng','250000','2023-10-16 20:40:33',NULL,NULL,1,28,2,NULL,1,NULL),(29,'2023-10-16',NULL,'Chóng Mặt','Buồn nôn','120000','2023-10-16 20:44:21',NULL,NULL,1,27,1,NULL,2,NULL),(30,'2023-10-16',NULL,'Tê Tay','Gãy Tay','150000','2023-10-16 20:45:39',NULL,NULL,1,29,1,NULL,1,NULL),(31,'2023-10-16',NULL,'Nóng trong người','Nhiệt miệng','270000','2023-10-16 20:52:09',NULL,NULL,1,31,1,NULL,2,NULL),(32,'2023-10-16',NULL,'Chảy Nước Mắt','Mỏi mắt','120000','2023-10-16 20:53:11',NULL,NULL,1,32,2,NULL,1,NULL),(33,'2023-10-16',NULL,'Ho Gà','Đau Họng','250000','2023-10-16 20:57:22',NULL,NULL,1,34,1,NULL,1,NULL),(34,'2023-10-16',NULL,'Mất Ngủ','Đau Thần Kinh Tọa','150000','2023-10-16 20:58:39',NULL,NULL,1,33,2,NULL,1,NULL);
 /*!40000 ALTER TABLE `prescriptions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -884,6 +882,7 @@ CREATE TABLE `test_result` (
   `user_id` int DEFAULT NULL,
   `test_result_value` varchar(255) DEFAULT NULL,
   `test_result_diagnosis` varchar(255) DEFAULT NULL,
+  `test_result_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
@@ -1138,4 +1137,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-24 17:26:11
+-- Dump completed on 2024-04-25 11:52:38
