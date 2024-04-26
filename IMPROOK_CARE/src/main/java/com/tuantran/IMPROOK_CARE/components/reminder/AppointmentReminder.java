@@ -33,8 +33,8 @@ public class AppointmentReminder {
     @Autowired
     private Environment environment;
 
-    // @Scheduled(cron = "0 8 * * *") // Chạy mỗi ngày vào lúc 8 giờ sáng
-    @Scheduled(cron = "*/5 * * * * *") // Mỗi 5 giây
+    @Scheduled(cron = "0 0 8 * * *") // Chạy mỗi ngày vào lúc 8 giờ sáng
+    // @Scheduled(cron = "*/5 * * * * *") // Mỗi 5 giây
     public void checkAppointments() {
         // Tìm các cuộc hẹn trong 24 giờ tới
         // String jpql = "SELECT s FROM Schedule s " +
