@@ -125,7 +125,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/auth/doctor/**").hasRole("DOCTOR")
-                        .requestMatchers("/api/auth/**").hasAnyRole("ADMIN", "DOCTOR", "USER")
+                        .requestMatchers("/api/auth/**").hasAnyRole("ADMIN", "DOCTOR", "USER", "NURSE")
                         .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());
