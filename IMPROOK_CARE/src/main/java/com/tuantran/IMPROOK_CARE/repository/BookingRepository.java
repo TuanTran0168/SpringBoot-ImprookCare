@@ -46,7 +46,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
         @Query("SELECT u.userId, u.firstname, pp.name, pp.profilePatientId, pd.name, pp.name, b.createdDate, b.bookingCancel, b.bookingId "
                         + "FROM Booking b JOIN b.profilePatientId pp JOIN b.scheduleId s JOIN s.profileDoctorId pd JOIN pp.userId u "
                         + "WHERE u.userId = :userId")
-        List<Object[]> getBookingForUserView(@Param("userId") int userId);
+        List<Object[]> getBookingForUserViewList(@Param("userId") int userId);
 
         @Query("SELECT b "
                         + "FROM Booking b JOIN b.profilePatientId pp JOIN b.scheduleId s JOIN s.profileDoctorId pd JOIN pp.userId u "

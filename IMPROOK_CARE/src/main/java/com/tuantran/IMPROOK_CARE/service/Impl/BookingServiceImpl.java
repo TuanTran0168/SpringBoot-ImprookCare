@@ -202,7 +202,7 @@ public class BookingServiceImpl implements BookingService {
     // }
     @Override
     public List<Object[]> getBookingForUserView(int userId) {
-        return this.bookingRepository.getBookingForUserView(userId);
+        return this.bookingRepository.getBookingForUserViewList(userId);
     }
 
     @Override
