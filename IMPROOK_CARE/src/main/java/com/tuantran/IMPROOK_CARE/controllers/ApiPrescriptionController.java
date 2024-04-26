@@ -7,6 +7,8 @@ package com.tuantran.IMPROOK_CARE.controllers;
 import com.tuantran.IMPROOK_CARE.dto.AddPrescriptionAndDetailsDTO;
 import com.tuantran.IMPROOK_CARE.dto.AddPrescriptionDTO;
 import com.tuantran.IMPROOK_CARE.dto.AddPrescriptionDetailDTO;
+import com.tuantran.IMPROOK_CARE.dto.UpdatePrescriptionAndDetailsDTO;
+import com.tuantran.IMPROOK_CARE.dto.UpdatePrescriptionDTO;
 import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.service.BookingService;
 import com.tuantran.IMPROOK_CARE.service.PrescriptionService;
@@ -151,5 +153,26 @@ public class ApiPrescriptionController {
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    @PostMapping("/auth/doctor/update-prescription/")
+    @CrossOrigin
+    public ResponseEntity<String> updatePrescription(
+            @RequestBody UpdatePrescriptionAndDetailsDTO updatePrescriptionAndDetailsDTO) {
+        String message = "Có lỗi xảy ra!";
+
+        UpdatePrescriptionDTO updatePrescriptionDTO = updatePrescriptionAndDetailsDTO.getUpdatePrescriptionDTO();
+        Map<String, AddPrescriptionDetailDTO> prescriptionDetailDTO = updatePrescriptionAndDetailsDTO
+                .getPrescriptionDetailDTO();
+        int check = this.prescriptionService.updatePrescription(updatePrescriptionDTO, prescriptionDetailDTO);
+
+        if (check == 1) {
+            message = "Cập nhật đơn thuốc thành công!";
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else if (check == 0) {
+            message = "Cập nhật đơn thuốc thất bại!";
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 }

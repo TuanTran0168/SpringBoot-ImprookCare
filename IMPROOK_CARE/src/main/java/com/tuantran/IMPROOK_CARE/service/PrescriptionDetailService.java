@@ -6,6 +6,7 @@ package com.tuantran.IMPROOK_CARE.service;
 
 import com.tuantran.IMPROOK_CARE.models.PrescriptionDetail;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -14,4 +15,6 @@ import java.util.List;
 public interface PrescriptionDetailService {
 
     List<PrescriptionDetail> findPrescriptionDetailByPrescriptionId(int prescriptionId);
+
+    Optional<PrescriptionDetail> findPrescriptionDetailByPrescriptionDetailIdAndActiveTrue(int prescriptionDetailId);
 }

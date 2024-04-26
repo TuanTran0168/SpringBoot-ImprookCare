@@ -7,6 +7,7 @@ package com.tuantran.IMPROOK_CARE.service.Impl;
 import com.tuantran.IMPROOK_CARE.Specifications.GenericSpecifications;
 import com.tuantran.IMPROOK_CARE.dto.AddPrescriptionDTO;
 import com.tuantran.IMPROOK_CARE.dto.AddPrescriptionDetailDTO;
+import com.tuantran.IMPROOK_CARE.dto.UpdatePrescriptionDTO;
 import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.BookingStatus;
 import com.tuantran.IMPROOK_CARE.models.Medicine;
@@ -259,5 +260,70 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     @Override
     public Optional<Prescriptions> findByBookingId(Booking bookingId) throws NonUniqueResultException {
         return this.prescriptionRepository.findByBookingId(bookingId);
+    }
+
+    @Override
+    public int updatePrescription(UpdatePrescriptionDTO updatePrescriptionDTO,
+            Map<String, AddPrescriptionDetailDTO> prescriptionDetailDTO) {
+
+        Optional<Prescriptions> prescriptionOptional = this.prescriptionRepository
+                .findById(Integer.parseInt(updatePrescriptionDTO.getPrescriptionId()));
+
+        if (prescriptionOptional.isPresent()) {
+            Prescriptions prescriptions = prescriptionOptional.get();
+
+            String diagnosis = updatePrescriptionDTO.getDiagnosis();
+            String symptom = updatePrescriptionDTO.getSymptom();
+
+            if (diagnosis != null && !diagnosis.isEmpty()) {
+                prescriptions.setDiagnosis(diagnosis);
+            }
+
+            if (symptom != null && !symptom.isEmpty()) {
+                prescriptions.setSymptoms(symptom);
+            }
+
+            this.prescriptionRepository.save(prescriptions);
+
+            // Danh sách chi tiết toa thuốc hiện tại
+            List<PrescriptionDetail> prescriptionDetails_current = this.prescriptionDetailRepository
+                    .findPrescriptionDetailByPrescriptionId(prescriptions);
+
+            // Xóa hết danh sách đó
+            this.prescriptionDetailRepository.deleteAllInBatch(prescriptionDetails_current);
+
+            // Duyệt qua danh sách chi tiết toa thuốc mới gửi xuống server để thêm
+            // Y chang như thêm mới
+            for (AddPrescriptionDetailDTO updatePrescriptionDetailDTO : prescriptionDetailDTO.values()) {
+
+                PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
+
+                Optional<Medicine> medicineOptional = this.medicineRepository
+                        .findMedicineByMedicineIdAndActiveTrue(
+                                Integer.parseInt(updatePrescriptionDetailDTO.getMedicineId()));
+
+                if (medicineOptional.isPresent()) {
+                    prescriptionDetail.setMedicineId(medicineOptional.get());
+                } else {
+                    return 0;
+                }
+
+                prescriptionDetail.setPrescriptionId(prescriptions);
+                prescriptionDetail.setMedicineName(updatePrescriptionDetailDTO.getMedicineName());
+                prescriptionDetail.setUnitPrice(
+                        BigDecimal.valueOf(Double.parseDouble(updatePrescriptionDetailDTO.getUnitPrice())));
+                prescriptionDetail.setQuantity(Integer.parseInt(updatePrescriptionDetailDTO.getQuantity()));
+                prescriptionDetail.setUsageInstruction(updatePrescriptionDetailDTO.getUsageInstruction());
+
+                prescriptionDetail.setActive(Boolean.TRUE);
+                prescriptionDetail.setCreatedDate(new Date());
+                prescriptionDetail.setUpdatedDate(new Date());
+                this.prescriptionDetailRepository.save(prescriptionDetail);
+            }
+
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }
