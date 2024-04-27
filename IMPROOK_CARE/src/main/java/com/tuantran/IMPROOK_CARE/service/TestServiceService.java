@@ -19,5 +19,5 @@ import com.tuantran.IMPROOK_CARE.models.TestService;
 public interface TestServiceService {
         Optional<TestService> findByTestServiceId(Integer testServiceId);
 
-        Page<?> findAll(Specification<?> createSpecification, Pageable page);
+        Page<?> findAllTestServicePageSpec(Specification<?> createSpecification, Pageable page);
 }

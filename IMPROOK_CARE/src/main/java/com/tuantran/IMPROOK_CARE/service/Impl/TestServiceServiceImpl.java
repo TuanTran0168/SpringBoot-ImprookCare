@@ -30,7 +30,7 @@ public class TestServiceServiceImpl implements TestServiceService {
     }
 
     @Override
-    public Page<?> findAll(Specification<?> createSpecification, Pageable page) {
+    public Page<?> findAllTestServicePageSpec(Specification<?> createSpecification, Pageable page) {
         return this.testServiceRepository.findAll(createSpecification, page);
     }
 

@@ -23,5 +23,5 @@ public interface TestResultService {
 
         TestResult updateTestResult(TestResult testResult);
 
-        Page<?> findAll(Specification<?> createSpecification, Pageable page);
+        Page<?> findAllTestResultPageSpec(Specification<?> createSpecification, Pageable page);
 }
