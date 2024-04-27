@@ -876,7 +876,7 @@ DROP TABLE IF EXISTS `test_result`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `test_result` (
-  `test_result_id` int NOT NULL,
+  `test_result_id` int NOT NULL AUTO_INCREMENT,
   `test_service_id` int DEFAULT NULL,
   `booking_id` int DEFAULT NULL,
   `user_id` int DEFAULT NULL,
@@ -914,14 +914,14 @@ DROP TABLE IF EXISTS `test_service`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `test_service` (
-  `test_service_id` int NOT NULL,
+  `test_service_id` int NOT NULL AUTO_INCREMENT,
   `test_service_name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_cs_0900_ai_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`test_service_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_cs_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_cs_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1137,4 +1137,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-25 15:02:49
+-- Dump completed on 2024-04-27 14:11:24

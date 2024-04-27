@@ -40,7 +40,7 @@ public class TestResultServiceImpl implements TestResultService {
     }
 
     @Override
-    public Page<?> findAll(Specification<?> createSpecification, Pageable page) {
+    public Page<?> findAllTestResultPageSpec(Specification<?> createSpecification, Pageable page) {
         return this.testResultRepository.findAll(createSpecification, page);
     }
 
