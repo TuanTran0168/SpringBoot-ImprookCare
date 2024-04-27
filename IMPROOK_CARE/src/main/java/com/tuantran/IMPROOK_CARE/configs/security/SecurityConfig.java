@@ -74,6 +74,8 @@ public class SecurityConfig {
             "/",
             "/user",
             "/video-call",
+            "/src/main/resources/static/**",
+            "/src/main/resources/templates/**",
     };
 
     // @Bean
