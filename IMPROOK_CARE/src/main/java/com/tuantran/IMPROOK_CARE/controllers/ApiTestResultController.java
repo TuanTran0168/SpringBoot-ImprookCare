@@ -5,6 +5,7 @@
 package com.tuantran.IMPROOK_CARE.controllers;
 
 import com.tuantran.IMPROOK_CARE.Specifications.GenericSpecifications;
+import com.tuantran.IMPROOK_CARE.components.cloudinary.CloudinaryComponent;
 import com.tuantran.IMPROOK_CARE.dto.AddTestResultDTO;
 import com.tuantran.IMPROOK_CARE.dto.ReturnTestResultDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateTestResultDTO;
@@ -34,15 +35,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -65,7 +70,10 @@ public class ApiTestResultController {
     private UserService userService;
 
     @Autowired
-    Environment environment;
+    private Environment environment;
+
+    @Autowired
+    private CloudinaryComponent cloudinaryComponent;
 
     /*
      * 2 API này sau này sẽ suy nghĩ tới việc lưu hình ảnh
@@ -94,10 +102,11 @@ public class ApiTestResultController {
 
     }
 
-    @PostMapping("/auth/nurse/return-test-result/")
+    @PostMapping(path = "/auth/nurse/return-test-result/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('NURSE')")
     @CrossOrigin
-    public ResponseEntity<?> returnTestResult(@Valid @RequestBody ReturnTestResultDTO returnTestResultDTO) {
+    public ResponseEntity<?> returnTestResult(@Valid ReturnTestResultDTO returnTestResultDTO,
+            @RequestPart("image") MultipartFile image) {
         String message = "Có lỗi xảy ra!";
         Optional<TestResult> testResultOptional = this.testResultService
                 .findByTestResultIdAndActiveTrue(Integer.parseInt(returnTestResultDTO.getTestResultId()));
@@ -108,6 +117,11 @@ public class ApiTestResultController {
             testResult.setTestResultDiagnosis(returnTestResultDTO.getTestResultDiagnosis());
             testResult.setTestResultValue(returnTestResultDTO.getTestResultValue());
             testResult.setUserId(user);
+
+            if (image != null && !image.isEmpty()) {
+                String linkCloudinaryImage = cloudinaryComponent.Cloudinary(image).get("secure_url").toString();
+                testResult.setTestResultImage(linkCloudinaryImage);
+            }
 
             return new ResponseEntity<>(this.testResultService.updateTestResult(testResult), HttpStatus.OK);
         } else {
@@ -236,5 +250,14 @@ public class ApiTestResultController {
                         page),
                 HttpStatus.OK);
 
+    }
+
+    @GetMapping("/auth/test-result/{testResultId}/")
+    @CrossOrigin
+    public ResponseEntity<?> getTestResultDetail(@PathVariable(value = "testResultId") String testResultId) {
+
+        return new ResponseEntity<>(
+                this.testResultService.findByTestResultIdAndActiveTrue(Integer.parseInt(testResultId)),
+                HttpStatus.OK);
     }
 }
