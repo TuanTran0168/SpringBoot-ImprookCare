@@ -26,12 +26,26 @@ public class CloudinaryComponent {
 
     public Map Cloudinary(MultipartFile file) {
         try {
-            Map res = this.cloudinary.cloudinary().uploader().upload(file.getBytes(), ObjectUtils.asMap("resource_type", "auto"));
+            Map res = this.cloudinary.cloudinary().uploader().upload(file.getBytes(),
+                    ObjectUtils.asMap("resource_type", "auto"));
             return res;
 
         } catch (IOException ex) {
             Logger.getLogger(Cloudinary.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return  null;
+        return null;
+    }
+
+    public Map CloudinaryPDF(byte[] pdfBytes) {
+        try {
+            Map res = this.cloudinary.cloudinary().uploader().upload(pdfBytes,
+                    ObjectUtils.asMap("resource_type", "auto", "access_mode",
+                            "public"));
+            return res;
+
+        } catch (IOException ex) {
+            Logger.getLogger(Cloudinary.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }
