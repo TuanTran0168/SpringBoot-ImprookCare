@@ -353,7 +353,7 @@ public class ApiBookingController {
                     ProfilePatient profilePatient = profilePatientOptional.get();
                     profilePatient.setIsLock(Boolean.TRUE);
                     booking.setProfilePatientId(profilePatient);
-                    booking.setStatusId(this.bookingStatusService.findBookingStatusByStatusId(6));
+                    booking.setStatusId(this.bookingStatusService.findBookingStatusByStatusId(5));
                     booking.setCreatedDate(new Date());
                     booking.setBookingCancel(Boolean.FALSE);
                     booking.setActive(Boolean.TRUE);
