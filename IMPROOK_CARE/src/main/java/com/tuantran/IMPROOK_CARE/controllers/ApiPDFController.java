@@ -29,6 +29,7 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
+import com.tuantran.IMPROOK_CARE.components.PdfFont.PDFFontComponent;
 import com.tuantran.IMPROOK_CARE.components.cloudinary.CloudinaryComponent;
 
 @RestController
@@ -38,7 +39,8 @@ public class ApiPDFController {
     @Autowired
     private CloudinaryComponent cloudinaryComponent;
 
-    String fontPath = "C:\\Users\\Administrator\\Downloads\\Open_Sans\\OpenSans-Italic-VariableFont_wdth,wght.ttf";
+    @Autowired
+    private PDFFontComponent pdfFontComponent;
 
     @GetMapping("/public/generate-upload-pdf/")
     @CrossOrigin
@@ -122,7 +124,10 @@ public class ApiPDFController {
         Document document = new Document(pdfDocument);
 
         // Tạo phông chữ hỗ trợ UTF-8
-        PdfFont vietnameseFont = PdfFontFactory.createFont(fontPath, "Identity-H", pdfDocument);
+        // PdfFont vietnameseFont = PdfFontFactory.createFont(fontPath, "Identity-H",
+        // pdfDocument);
+
+        PdfFont vietnameseFont = pdfFontComponent.getVietnameseFontPDF(pdfDocument);
 
         // Thêm tiêu đề cho phiếu xét nghiệm
         document.add(new Paragraph("Phiếu Xét Nghiệm")
@@ -134,7 +139,18 @@ public class ApiPDFController {
         document.add(new Paragraph("Tên bác sĩ: " + profileDoctorName)
                 .setFontSize(13)
                 .setBold()
-                .setTextAlignment(TextAlignment.LEFT));
+                .setTextAlignment(TextAlignment.LEFT)
+                .setFont(vietnameseFont));
+        document.add(new Paragraph("Tên bệnh nhân: " + profilePatientName)
+                .setFontSize(13)
+                .setBold()
+                .setTextAlignment(TextAlignment.LEFT)
+                .setFont(vietnameseFont));
+        document.add(new Paragraph("Tên y tá: " + nurseName)
+                .setFontSize(13)
+                .setBold()
+                .setTextAlignment(TextAlignment.LEFT)
+                .setFont(vietnameseFont));
 
         // Tạo bảng dữ liệu xét nghiệm
         Table table = new Table(new float[] { 1, 2, 2, 2 });
