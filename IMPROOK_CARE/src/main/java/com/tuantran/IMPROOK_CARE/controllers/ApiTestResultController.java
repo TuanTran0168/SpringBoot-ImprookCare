@@ -24,6 +24,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.validation.Valid;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -92,6 +93,8 @@ public class ApiTestResultController {
             TestResult testResult = new TestResult();
             testResult.setBookingId(bookingOptional.get());
             testResult.setTestServiceId(testServiceOptional.get());
+            testResult.setCreatedDate(new Date());
+            testResult.setActive(Boolean.TRUE);
 
             return new ResponseEntity<>(this.testResultService.addTestResult(testResult), HttpStatus.CREATED);
         } else {
@@ -117,6 +120,7 @@ public class ApiTestResultController {
             testResult.setTestResultDiagnosis(returnTestResultDTO.getTestResultDiagnosis());
             testResult.setTestResultValue(returnTestResultDTO.getTestResultValue());
             testResult.setUserId(user);
+            testResult.setUpdatedDate(new Date());
 
             if (image != null && !image.isEmpty()) {
                 String linkCloudinaryImage = cloudinaryComponent.Cloudinary(image).get("secure_url").toString();
