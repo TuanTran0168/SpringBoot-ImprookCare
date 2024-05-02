@@ -2,6 +2,7 @@ package com.tuantran.IMPROOK_CARE.controllers;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.itextpdf.io.source.ByteArrayOutputStream;
+import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.font.PdfFont;
 
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -24,6 +26,7 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
@@ -31,6 +34,7 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.tuantran.IMPROOK_CARE.components.PdfFont.PDFFontComponent;
 import com.tuantran.IMPROOK_CARE.components.cloudinary.CloudinaryComponent;
+import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
 
 @RestController
 @RequestMapping("/api")
@@ -41,6 +45,9 @@ public class ApiPDFController {
 
     @Autowired
     private PDFFontComponent pdfFontComponent;
+
+    @Autowired
+    private DateFormatComponent dateFormatComponent;
 
     @GetMapping("/public/generate-upload-pdf/")
     @CrossOrigin
@@ -113,6 +120,14 @@ public class ApiPDFController {
         String profilePatientName = params.get("profilePatientName");
         String profileDoctorName = params.get("profileDoctorName");
         String nurseName = params.get("nurseName");
+        String birthday = params.get("birthday");
+        String address = params.get("address");
+        String specialtyName = params.get("specialtyName");
+        String testResultDiagnosis = params.get("testResultDiagnosis");
+        String gender = params.get("gender");
+        String createdDate = params.get("gender");
+        String updatedDate = params.get("gender");
+        String profilePatientId = params.get("profilePatientId");
 
         // Tạo ByteArrayOutputStream
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -129,6 +144,8 @@ public class ApiPDFController {
 
         PdfFont vietnameseFont = pdfFontComponent.getVietnameseFontPDF(pdfDocument);
 
+        Date createDate = new Date();
+
         // Thêm tiêu đề cho phiếu xét nghiệm
         document.add(new Paragraph("Phiếu Xét Nghiệm")
                 .setFontSize(18)
@@ -136,19 +153,189 @@ public class ApiPDFController {
                 .setTextAlignment(TextAlignment.CENTER)
                 .setFont(vietnameseFont));
 
-        document.add(new Paragraph("Tên bác sĩ: " + profileDoctorName)
-                .setFontSize(13)
+        document.add(new Paragraph("(" + dateFormatComponent.myDateTimeFormat().format(createDate) + ")")
+                .setFontSize(11)
+                .setItalic()
+                .setMarginTop(-10)
+                .setMarginBottom(20)
+                .setTextAlignment(TextAlignment.CENTER)
+                .setFont(vietnameseFont));
+
+        Table tableInfor = new Table(new float[] { 1, 1 });
+        tableInfor.setWidth(UnitValue.createPercentValue(100));
+        tableInfor.setBorder(Border.NO_BORDER);
+
+        tableInfor.addCell(new Cell()
+                .add(new Paragraph("Họ và tên: " + profilePatientName))
+                .setBorderTop(Border.NO_BORDER)
+                .setBorderBottom(Border.NO_BORDER)
+                .setBorderLeft(Border.NO_BORDER)
+                .setBorderRight(Border.NO_BORDER)
+                .setBackgroundColor(new DeviceRgb(255, 200, 200))
+                .setFontSize(10)
+                .setBold()
+                .setTextAlignment(TextAlignment.LEFT)
+                .setWidth(UnitValue.createPercentValue(0))
+                .setFont(vietnameseFont));
+
+        tableInfor.addCell(new Cell()
+                .add(new Paragraph("Mã hồ sơ: " + profilePatientId))
+                .setBorderTop(Border.NO_BORDER)
+                .setBorderBottom(Border.NO_BORDER)
+                .setBorderLeft(Border.NO_BORDER)
+                .setBorderRight(Border.NO_BORDER)
+                .setFontSize(10)
+                .setBold()
+                .setTextAlignment(TextAlignment.LEFT)
+                .setWidth(UnitValue.createPercentValue(50))
+                .setPaddingLeft(70)
+                .setFont(vietnameseFont));
+
+        tableInfor.addCell(new Cell()
+                .add(new Paragraph("Năm sinh: " + birthday))
+                .setBorderTop(Border.NO_BORDER)
+                .setBorderBottom(Border.NO_BORDER)
+                .setBorderLeft(Border.NO_BORDER)
+                .setBorderRight(Border.NO_BORDER)
+                .setFontSize(10)
+                .setBold()
+                .setTextAlignment(TextAlignment.LEFT)
+                .setWidth(UnitValue.createPercentValue(50))
+                .setFont(vietnameseFont));
+
+        tableInfor.addCell(new Cell()
+                .add(new Paragraph("Giới tính: " + gender))
+                .setBorderTop(Border.NO_BORDER)
+                .setBorderBottom(Border.NO_BORDER)
+                .setBorderLeft(Border.NO_BORDER)
+                .setBorderRight(Border.NO_BORDER)
+                .setFontSize(10)
+                .setBold()
+                .setTextAlignment(TextAlignment.LEFT)
+                .setWidth(UnitValue.createPercentValue(50))
+                .setPaddingLeft(70)
+                .setFont(vietnameseFont));
+
+        tableInfor.addCell(new Cell(1, 2)
+                // .add(new Paragraph("Địa chỉ: " + address))
+                // .add(new Paragraph("Địa chỉ: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
+                // address))
+                .add(new Paragraph("Địa chỉ: " + address))
+                .setBorderTop(Border.NO_BORDER)
+                .setBorderBottom(Border.NO_BORDER)
+                .setBorderLeft(Border.NO_BORDER)
+                .setBorderRight(Border.NO_BORDER)
+                .setFontSize(10)
                 .setBold()
                 .setTextAlignment(TextAlignment.LEFT)
                 .setFont(vietnameseFont));
-        document.add(new Paragraph("Tên bệnh nhân: " + profilePatientName)
-                .setFontSize(13)
+
+        tableInfor.addCell(new Cell()
+                .add(new Paragraph("Khoa/phòng: " + specialtyName))
+                .setBorderTop(Border.NO_BORDER)
+                .setBorderBottom(Border.NO_BORDER)
+                .setBorderLeft(Border.NO_BORDER)
+                .setBorderRight(Border.NO_BORDER)
+                .setFontSize(10)
                 .setBold()
                 .setTextAlignment(TextAlignment.LEFT)
+                .setWidth(UnitValue.createPercentValue(50))
                 .setFont(vietnameseFont));
-        document.add(new Paragraph("Tên y tá: " + nurseName)
+
+        tableInfor.addCell(new Cell()
+                .add(new Paragraph("Người lấy mẫu: " + nurseName))
+                .setBorderTop(Border.NO_BORDER)
+                .setBorderBottom(Border.NO_BORDER)
+                .setBorderLeft(Border.NO_BORDER)
+                .setBorderRight(Border.NO_BORDER)
+                .setFontSize(10)
+                .setBold()
+                .setTextAlignment(TextAlignment.LEFT)
+                .setWidth(UnitValue.createPercentValue(50))
+                .setPaddingLeft(70)
+                .setFont(vietnameseFont));
+
+        tableInfor.addCell(new Cell()
+                .add(new Paragraph("Chuẩn đoán: " + testResultDiagnosis))
+                .setBorderTop(Border.NO_BORDER)
+                .setBorderBottom(Border.NO_BORDER)
+                .setBorderLeft(Border.NO_BORDER)
+                .setBorderRight(Border.NO_BORDER)
+                .setFontSize(10)
+                .setBold()
+                .setTextAlignment(TextAlignment.LEFT)
+                .setWidth(UnitValue.createPercentValue(50))
+                .setFont(vietnameseFont));
+
+        tableInfor.addCell(new Cell()
+                .add(new Paragraph("T/gian lấy mẫu: " + createdDate))
+                .setBorderTop(Border.NO_BORDER)
+                .setBorderBottom(Border.NO_BORDER)
+                .setBorderLeft(Border.NO_BORDER)
+                .setBorderRight(Border.NO_BORDER)
+                .setFontSize(10)
+                .setBold()
+                .setTextAlignment(TextAlignment.LEFT)
+                .setWidth(UnitValue.createPercentValue(50))
+                .setPaddingLeft(70)
+                .setFont(vietnameseFont));
+
+        tableInfor.addCell(new Cell()
+                .add(new Paragraph("Bác sĩ chỉ định: " + profileDoctorName))
+                .setBorderTop(Border.NO_BORDER)
+                .setBorderBottom(Border.NO_BORDER)
+                .setBorderLeft(Border.NO_BORDER)
+                .setBorderRight(Border.NO_BORDER)
+                .setFontSize(10)
+                .setBold()
+                .setTextAlignment(TextAlignment.LEFT)
+                .setWidth(UnitValue.createPercentValue(50))
+                .setFont(vietnameseFont));
+
+        tableInfor.addCell(new Cell()
+                .add(new Paragraph("Người nhận mẫu: " + nurseName))
+                .setBorderTop(Border.NO_BORDER)
+                .setBorderBottom(Border.NO_BORDER)
+                .setBorderLeft(Border.NO_BORDER)
+                .setBorderRight(Border.NO_BORDER)
+                .setFontSize(10)
+                .setBold()
+                .setTextAlignment(TextAlignment.LEFT)
+                .setWidth(UnitValue.createPercentValue(50))
+                .setPaddingLeft(70)
+                .setFont(vietnameseFont));
+
+        tableInfor.addCell(new Cell()
+                .add(new Paragraph("Tình trạng mẫu: Tốt"))
+                .setBorderTop(Border.NO_BORDER)
+                .setBorderBottom(Border.NO_BORDER)
+                .setBorderLeft(Border.NO_BORDER)
+                .setBorderRight(Border.NO_BORDER)
+                .setFontSize(10)
+                .setBold()
+                .setTextAlignment(TextAlignment.LEFT)
+                .setWidth(UnitValue.createPercentValue(50))
+                .setFont(vietnameseFont));
+
+        tableInfor.addCell(new Cell()
+                .add(new Paragraph("T/gian trả kết quả: " + updatedDate))
+                .setBorderTop(Border.NO_BORDER)
+                .setBorderBottom(Border.NO_BORDER)
+                .setBorderLeft(Border.NO_BORDER)
+                .setBorderRight(Border.NO_BORDER)
+                .setFontSize(10)
+                .setBold()
+                .setTextAlignment(TextAlignment.LEFT)
+                .setWidth(UnitValue.createPercentValue(50))
+                .setPaddingLeft(70)
+                .setFont(vietnameseFont));
+
+        document.add(tableInfor);
+
+        document.add(new Paragraph("I. Kết quả xét nghiệm")
                 .setFontSize(13)
                 .setBold()
+                .setMarginTop(10)
                 .setTextAlignment(TextAlignment.LEFT)
                 .setFont(vietnameseFont));
 
@@ -156,28 +343,75 @@ public class ApiPDFController {
         Table table = new Table(new float[] { 1, 2, 2, 2 });
         table.setWidth(UnitValue.createPercentValue(100));
 
+        SolidBorder solidBorder = new SolidBorder(Border.SOLID);
+
         // Thêm hàng tiêu đề cho bảng
-        table.addCell(new Cell().add(new Paragraph("STT")).setBorder(Border.NO_BORDER));
-        table.addCell(new Cell().add(new Paragraph("Tên Xét Nghiệm")).setBorder(Border.NO_BORDER));
-        table.addCell(new Cell().add(new Paragraph("Kết Quả")).setBorder(Border.NO_BORDER));
-        table.addCell(new Cell().add(new Paragraph("Đơn Vị")).setBorder(Border.NO_BORDER));
+        table.addCell(new Cell().add(new Paragraph("STT")).setBorder(solidBorder).setBold()
+                .setTextAlignment(TextAlignment.CENTER).setFont(vietnameseFont));
+        table.addCell(new Cell().add(new Paragraph("Xét Nghiệm")).setBorder(solidBorder).setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+                .setFont(vietnameseFont));
+        table.addCell(
+                new Cell().add(new Paragraph("Kết Quả")).setBorder(solidBorder).setBold()
+                        .setTextAlignment(TextAlignment.CENTER).setFont(vietnameseFont));
+        table.addCell(new Cell().add(new Paragraph("Đơn Vị")).setBorder(solidBorder).setBold()
+                .setTextAlignment(TextAlignment.CENTER).setFont(vietnameseFont));
 
         // Thêm dữ liệu xét nghiệm
-        table.addCell(new Cell().add(new Paragraph("1")).setBorder(Border.NO_BORDER));
-        table.addCell(new Cell().add(new Paragraph("Glucose")).setBorder(Border.NO_BORDER));
-        table.addCell(new Cell().add(new Paragraph("5.4")).setBorder(Border.NO_BORDER));
-        table.addCell(new Cell().add(new Paragraph("mmol/L")).setBorder(Border.NO_BORDER));
+        table.addCell(new Cell().add(new Paragraph("1")).setBorder(solidBorder).setTextAlignment(TextAlignment.CENTER)
+                .setFont(vietnameseFont));
+        table.addCell(new Cell().add(new Paragraph("Glucose")).setBorder(solidBorder)
+                .setTextAlignment(TextAlignment.CENTER).setFont(vietnameseFont));
+        table.addCell(new Cell().add(new Paragraph("5.4")).setBorder(solidBorder).setTextAlignment(TextAlignment.CENTER)
+                .setFont(vietnameseFont));
+        table.addCell(new Cell().add(new Paragraph("mmol/L")).setBorder(solidBorder)
+                .setTextAlignment(TextAlignment.CENTER).setFont(vietnameseFont));
 
-        table.addCell(new Cell().add(new Paragraph("2")).setBorder(Border.NO_BORDER));
-        table.addCell(new Cell().add(new Paragraph("Cholesterol")).setBorder(Border.NO_BORDER));
-        table.addCell(new Cell().add(new Paragraph("4.7")).setBorder(Border.NO_BORDER));
-        table.addCell(new Cell().add(new Paragraph("mmol/L")).setBorder(Border.NO_BORDER));
+        table.addCell(new Cell().add(new Paragraph("2")).setBorder(solidBorder).setTextAlignment(TextAlignment.CENTER)
+                .setFont(vietnameseFont));
+        table.addCell(new Cell().add(new Paragraph("Cholesterol")).setBorder(solidBorder)
+                .setTextAlignment(TextAlignment.CENTER).setFont(vietnameseFont));
+        table.addCell(new Cell().add(new Paragraph("4.7")).setBorder(solidBorder).setTextAlignment(TextAlignment.CENTER)
+                .setFont(vietnameseFont));
+        table.addCell(new Cell().add(new Paragraph("mmol/L")).setBorder(solidBorder)
+                .setTextAlignment(TextAlignment.CENTER).setFont(vietnameseFont));
+
+        table.addCell(new Cell().add(new Paragraph("3")).setBorder(solidBorder).setTextAlignment(TextAlignment.CENTER)
+                .setFont(vietnameseFont));
+        table.addCell(new Cell().add(new Paragraph("Fructosamine")).setBorder(solidBorder)
+                .setTextAlignment(TextAlignment.CENTER).setFont(vietnameseFont));
+        table.addCell(new Cell().add(new Paragraph("280")).setBorder(solidBorder).setTextAlignment(TextAlignment.CENTER)
+                .setFont(vietnameseFont));
+        table.addCell(new Cell().add(new Paragraph("µmol/L")).setBorder(solidBorder)
+                .setTextAlignment(TextAlignment.CENTER).setFont(vietnameseFont));
+
+        table.addCell(new Cell().add(new Paragraph("4")).setBorder(solidBorder).setTextAlignment(TextAlignment.CENTER)
+                .setFont(vietnameseFont));
+        table.addCell(new Cell().add(new Paragraph("Hemoglobin")).setBorder(solidBorder)
+                .setTextAlignment(TextAlignment.CENTER).setFont(vietnameseFont));
+        table.addCell(
+                new Cell().add(new Paragraph("15.30")).setBorder(solidBorder).setTextAlignment(TextAlignment.CENTER)
+                        .setFont(vietnameseFont));
+        table.addCell(new Cell().add(new Paragraph("g/dL")).setBorder(solidBorder)
+                .setTextAlignment(TextAlignment.CENTER).setFont(vietnameseFont));
+
+        table.addCell(new Cell().add(new Paragraph("4")).setBorder(solidBorder).setTextAlignment(TextAlignment.CENTER)
+                .setFont(vietnameseFont));
+        table.addCell(new Cell().add(new Paragraph("Hematocrite")).setBorder(solidBorder)
+                .setTextAlignment(TextAlignment.CENTER).setFont(vietnameseFont));
+        table.addCell(
+                new Cell().add(new Paragraph("44.40")).setBorder(solidBorder).setTextAlignment(TextAlignment.CENTER)
+                        .setFont(vietnameseFont));
+        table.addCell(new Cell().add(new Paragraph("%")).setBorder(solidBorder)
+                .setTextAlignment(TextAlignment.CENTER).setFont(vietnameseFont));
 
         document.add(table);
 
         // Thêm chữ ký và ngày
-        document.add(new Paragraph("\nChữ Ký Bác Sĩ").setTextAlignment(TextAlignment.RIGHT));
-        document.add(new Paragraph("Ngày: 27/04/2024").setTextAlignment(TextAlignment.RIGHT));
+        document.add(new Paragraph("\nChữ Ký Bác Sĩ").setTextAlignment(TextAlignment.RIGHT).setFont(vietnameseFont));
+        document.add(new Paragraph(profileDoctorName).setTextAlignment(TextAlignment.RIGHT).setFont(vietnameseFont));
+        document.add(new Paragraph(dateFormatComponent.myDateFormat().format(createDate))
+                .setTextAlignment(TextAlignment.RIGHT).setFont(vietnameseFont));
 
         // Đóng tài liệu
         document.close();
