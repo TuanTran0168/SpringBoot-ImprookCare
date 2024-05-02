@@ -21,7 +21,7 @@ public class MailServiceImpl implements MailService {
     public int sendEmail(EmailDTO mail) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             mimeMessageHelper.setSubject(mail.getMailSubject());
             mimeMessageHelper.setFrom(new InternetAddress(mail.getMailFrom()));
             mimeMessageHelper.setTo(mail.getMailTo());
