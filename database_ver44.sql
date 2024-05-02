@@ -308,6 +308,69 @@ LOCK TABLES `medical_records` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `medical_reminder`
+--
+
+DROP TABLE IF EXISTS `medical_reminder`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `medical_reminder` (
+  `medical_reminder_id` int NOT NULL AUTO_INCREMENT,
+  `prescription_detail_id` int DEFAULT NULL,
+  `time_reminder_id` int DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  `deleted_date` datetime DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`medical_reminder_id`),
+  KEY `prescription_detail_id` (`prescription_detail_id`),
+  KEY `time_reminder_id` (`time_reminder_id`),
+  CONSTRAINT `medical_reminder_ibfk_1` FOREIGN KEY (`prescription_detail_id`) REFERENCES `prescription_detail` (`prescription_detail_id`),
+  CONSTRAINT `medical_reminder_ibfk_2` FOREIGN KEY (`time_reminder_id`) REFERENCES `time_reminder` (`time_reminder_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `medical_reminder`
+--
+
+LOCK TABLES `medical_reminder` WRITE;
+/*!40000 ALTER TABLE `medical_reminder` DISABLE KEYS */;
+/*!40000 ALTER TABLE `medical_reminder` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `medical_schedule`
+--
+
+DROP TABLE IF EXISTS `medical_schedule`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `medical_schedule` (
+  `medical_schedule_id` int NOT NULL AUTO_INCREMENT,
+  `medical_reminder_id` int DEFAULT NULL,
+  `custom_time` datetime DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  `deleted_date` datetime DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`medical_schedule_id`),
+  KEY `medical_reminder_id` (`medical_reminder_id`),
+  CONSTRAINT `medical_schedule_ibfk_1` FOREIGN KEY (`medical_reminder_id`) REFERENCES `medical_reminder` (`medical_reminder_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `medical_schedule`
+--
+
+LOCK TABLES `medical_schedule` WRITE;
+/*!40000 ALTER TABLE `medical_schedule` DISABLE KEYS */;
+/*!40000 ALTER TABLE `medical_schedule` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `medicine`
 --
 
@@ -963,6 +1026,35 @@ INSERT INTO `time_distance` VALUES (1,'30 phút','2023-09-10 11:30:31',NULL,'202
 UNLOCK TABLES;
 
 --
+-- Table structure for table `time_reminder`
+--
+
+DROP TABLE IF EXISTS `time_reminder`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `time_reminder` (
+  `time_reminder_id` int NOT NULL AUTO_INCREMENT,
+  `time_reminder_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `time_reminder_value` datetime DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  `deleted_date` datetime DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`time_reminder_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `time_reminder`
+--
+
+LOCK TABLES `time_reminder` WRITE;
+/*!40000 ALTER TABLE `time_reminder` DISABLE KEYS */;
+INSERT INTO `time_reminder` VALUES (1,'Sáng','2023-09-10 08:00:00',NULL,NULL,NULL,1),(2,'Trưa','2023-09-10 11:00:00',NULL,NULL,NULL,1),(3,'Chiều','2023-09-10 15:00:00',NULL,NULL,NULL,1),(4,'Tối','2023-09-10 19:00:00',NULL,NULL,NULL,1);
+/*!40000 ALTER TABLE `time_reminder` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `time_slot`
 --
 
@@ -1137,4 +1229,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-27 14:11:24
+-- Dump completed on 2024-05-02 14:22:04
