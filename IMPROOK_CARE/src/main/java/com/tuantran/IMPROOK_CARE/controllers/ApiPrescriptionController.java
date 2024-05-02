@@ -7,13 +7,23 @@ package com.tuantran.IMPROOK_CARE.controllers;
 import com.tuantran.IMPROOK_CARE.dto.AddPrescriptionAndDetailsDTO;
 import com.tuantran.IMPROOK_CARE.dto.AddPrescriptionDTO;
 import com.tuantran.IMPROOK_CARE.dto.AddPrescriptionDetailDTO;
+import com.tuantran.IMPROOK_CARE.dto.UpdatePrescriptionAndDetailsDTO;
+import com.tuantran.IMPROOK_CARE.dto.UpdatePrescriptionDTO;
+import com.tuantran.IMPROOK_CARE.models.Booking;
+import com.tuantran.IMPROOK_CARE.service.BookingService;
 import com.tuantran.IMPROOK_CARE.service.PrescriptionService;
+
+import jakarta.persistence.NonUniqueResultException;
+
 import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +40,9 @@ public class ApiPrescriptionController {
 
     @Autowired
     private PrescriptionService prescriptionService;
+
+    @Autowired
+    private BookingService bookingService;
 
     // @PostMapping("/auth/doctor/add-prescription/")
     // @CrossOrigin
@@ -114,6 +127,50 @@ public class ApiPrescriptionController {
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else if (check == 0) {
             message = "Thanh toán tiền khám thất bại!";
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/auth/booking/{bookingId}/prescription/")
+    @CrossOrigin
+    public ResponseEntity<?> findByBookingId(@PathVariable(value = "bookingId") int bookingId) {
+
+        String message = "Có lỗi xảy ra!";
+
+        Optional<Booking> bookingOptional = this.bookingService.findBookingByBookingIdAndActiveTrue(bookingId);
+        if (bookingOptional.isPresent()) {
+            try {
+                return new ResponseEntity<>(this.prescriptionService.findByBookingId(bookingOptional.get()),
+                        HttpStatus.OK);
+            } catch (NonUniqueResultException ex) {
+                ex.printStackTrace();
+                message = "Lỗi nhất quán dữ liệu Booking[" + bookingId + "] - " + ex;
+                return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            message = "Booking[" + bookingId + "] không tồn tại!";
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @PostMapping("/auth/doctor/update-prescription/")
+    @CrossOrigin
+    public ResponseEntity<String> updatePrescription(
+            @RequestBody UpdatePrescriptionAndDetailsDTO updatePrescriptionAndDetailsDTO) {
+        String message = "Có lỗi xảy ra!";
+
+        UpdatePrescriptionDTO updatePrescriptionDTO = updatePrescriptionAndDetailsDTO.getUpdatePrescriptionDTO();
+        Map<String, AddPrescriptionDetailDTO> prescriptionDetailDTO = updatePrescriptionAndDetailsDTO
+                .getPrescriptionDetailDTO();
+        int check = this.prescriptionService.updatePrescription(updatePrescriptionDTO, prescriptionDetailDTO);
+
+        if (check == 1) {
+            message = "Cập nhật đơn thuốc thành công!";
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else if (check == 0) {
+            message = "Cập nhật đơn thuốc thất bại!";
         }
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);

@@ -70,7 +70,7 @@ CREATE TABLE `booking_status` (
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`status_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -79,7 +79,7 @@ CREATE TABLE `booking_status` (
 
 LOCK TABLES `booking_status` WRITE;
 /*!40000 ALTER TABLE `booking_status` DISABLE KEYS */;
-INSERT INTO `booking_status` VALUES (1,'Chờ xác nhận',NULL,NULL,NULL,1),(2,'Đã xác nhận',NULL,NULL,NULL,1),(3,'Từ chối',NULL,NULL,NULL,1),(4,'Đã khám xong',NULL,NULL,NULL,1);
+INSERT INTO `booking_status` VALUES (1,'Chờ xác nhận',NULL,NULL,NULL,1),(2,'Đã xác nhận',NULL,NULL,NULL,1),(3,'Từ chối',NULL,NULL,NULL,1),(4,'Đã khám xong',NULL,NULL,NULL,1),(5,'Tái khám',NULL,NULL,NULL,1),(6,'Chưa thanh toán',NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `booking_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -92,7 +92,8 @@ DROP TABLE IF EXISTS `chatgpt_consult`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `chatgpt_consult` (
   `chatgpt_consult_id` int NOT NULL AUTO_INCREMENT,
-  `chatgpt_consult_answer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `patient_question` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `chatgpt_consult_answer` varchar(10000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
@@ -104,7 +105,7 @@ CREATE TABLE `chatgpt_consult` (
   KEY `chatgpt_question_id` (`chatgpt_question_id`),
   CONSTRAINT `chatgpt_consult_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
   CONSTRAINT `chatgpt_consult_ibfk_2` FOREIGN KEY (`chatgpt_question_id`) REFERENCES `chatgpt_question` (`chatgpt_question_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -113,6 +114,7 @@ CREATE TABLE `chatgpt_consult` (
 
 LOCK TABLES `chatgpt_consult` WRITE;
 /*!40000 ALTER TABLE `chatgpt_consult` DISABLE KEYS */;
+INSERT INTO `chatgpt_consult` VALUES (4,'Tôi đang đau bụng','Dự đoán bệnh: Đau bụng có thể do nhiều nguyên nhân khác nhau như tiêu chảy, táo bón, vi khuẩn, viêm loét dạ dày...\nLời khuyên: Hãy uống nhiều nước, tránh thức ăn nặng và khó tiêu, nếu đau bụng kéo dài hoặc trở nên nghiêm trọng hơn hãy nên đi khám bác sĩ để được tư vấn cụ thể và điều trị kịp thời.','2024-04-22 15:32:28',NULL,NULL,1,1,NULL),(5,'Tôi đang đau bụng và đau lưng','Dự đoán bệnh: Dựa vào các triệu chứng bạn đưa ra, có thể bạn đang gặp vấn đề về tiêu hóa hoặc cột sống. Tuy nhiên, chính xác hơn cần phải được khám bệnh để đưa ra kết luận chính xác. \n\nLời khuyên: Bạn nên đến gặp bác sĩ để được khám và tư vấn cụ thể về tình trạng sức khỏe của mình. Đừng tự chữa trị hoặc lặp lại các triệu chứng mà không có sự hướng dẫn từ chuyên gia y tế. Để đặt lịch hẹn khám bệnh, bạn có thể liên hệ trực tiếp tại phòng khám hoặc gọi đến số điện thoại của chúng tôi trong giờ làm việc hàng ngày.','2024-04-22 15:36:00',NULL,NULL,1,1,NULL),(6,'Tôi đang đau bụng và đau lưng','Dự đoán bệnh: Đau bụng và đau lưng có thể là dấu hiệu của nhiều vấn đề sức khỏe khác nhau như vi khuẩn đường tiểu hoặc viêm túi mật. Tuy nhiên, cần phải thăm khám bác sĩ để biết chính xác nguyên nhân của triệu chứng này.\n\nLời khuyên: Bạn nên thăm khám bác sĩ để được tư vấn và chẩn đoán chính xác bệnh tình của mình. Bác sĩ sẽ thực hiện các xét nghiệm cần thiết và đưa ra phác đồ điều trị phù hợp. Đừng tự điều trị hoặc trì hoãn việc thăm khám với bác sĩ để tránh các vấn đề sức khỏe nghiêm trọng.','2024-04-22 22:52:54',NULL,NULL,1,1,NULL);
 /*!40000 ALTER TABLE `chatgpt_consult` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -131,7 +133,7 @@ CREATE TABLE `chatgpt_question` (
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`chatgpt_question_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -140,6 +142,7 @@ CREATE TABLE `chatgpt_question` (
 
 LOCK TABLES `chatgpt_question` WRITE;
 /*!40000 ALTER TABLE `chatgpt_question` DISABLE KEYS */;
+INSERT INTO `chatgpt_question` VALUES (1,'Câu hỏi bệnh nhân tự hỏi',NULL,NULL,NULL,1),(2,'Câu hỏi có sẵn 1',NULL,NULL,NULL,1),(3,'Câu hỏi có sẵn 2',NULL,NULL,NULL,1),(4,'Câu hỏi có sẵn 3',NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `chatgpt_question` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -235,7 +238,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-INSERT INTO `comment` VALUES (2,14,20,'Đùa',NULL,'2023-10-16 15:26:14',NULL,NULL,5,1),(3,14,20,'Đùa nhau',NULL,'2023-10-16 15:28:06',NULL,NULL,5,1),(4,14,20,'Gì vậy',NULL,'2023-10-16 17:53:35',NULL,NULL,5,1),(5,14,20,'Ngộ',NULL,'2023-10-16 18:08:52',NULL,NULL,4,1),(6,14,20,'Gì vậy','https://res.cloudinary.com/dhwuwy0to/image/upload/v1697458002/hdkhgzxginh1clhiwohl.png','2023-10-16 19:06:44',NULL,NULL,0,1),(7,14,20,'Đây là API SỬA COMMENT 2',NULL,'2023-10-19 14:04:18','2023-10-19 14:16:14',NULL,2,1);
+INSERT INTO `comment` VALUES (2,14,20,'Khám ổn',NULL,'2023-10-16 15:26:14',NULL,NULL,5,1),(3,14,20,'Khám rất tốt',NULL,'2023-10-16 15:28:06',NULL,NULL,5,1),(4,14,20,'Khám tạm được',NULL,'2023-10-16 17:53:35',NULL,NULL,5,1),(5,14,20,'Tui chưa hết bệnh',NULL,'2023-10-16 18:08:52',NULL,NULL,4,1),(6,14,20,'Gì vậy','https://res.cloudinary.com/dhwuwy0to/image/upload/v1697458002/hdkhgzxginh1clhiwohl.png','2023-10-16 19:06:44',NULL,NULL,0,1),(7,14,20,'Khám bệnh ổn',NULL,'2023-10-19 14:04:18','2023-10-19 14:16:14',NULL,2,1);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -500,6 +503,49 @@ INSERT INTO `notification_type` VALUES (1,'message','2023-09-10 11:30:31',NULL,'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `payment_history`
+--
+
+DROP TABLE IF EXISTS `payment_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `payment_history` (
+  `payment_history_id` int NOT NULL AUTO_INCREMENT,
+  `booking_id` int DEFAULT NULL,
+  `vnp_responseid` varchar(255) DEFAULT NULL,
+  `vnp_command` varchar(255) DEFAULT NULL,
+  `vnp_responsecode` varchar(255) DEFAULT NULL,
+  `vnp_message` varchar(255) DEFAULT NULL,
+  `vnp_tmncode` varchar(255) DEFAULT NULL,
+  `vnp_txnref` varchar(255) DEFAULT NULL,
+  `vnp_amount` varchar(255) DEFAULT NULL,
+  `vnp_orderinfo` varchar(255) DEFAULT NULL,
+  `vnp_bankcode` varchar(255) DEFAULT NULL,
+  `vnp_paydate` varchar(255) DEFAULT NULL,
+  `vnp_transactionno` varchar(255) DEFAULT NULL,
+  `vnp_transactiontype` varchar(255) DEFAULT NULL,
+  `vnp_transactionstatus` varchar(255) DEFAULT NULL,
+  `vnp_securehash` varchar(255) DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  `deleted_date` datetime DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`payment_history_id`),
+  KEY `booking_id` (`booking_id`),
+  CONSTRAINT `payment_history_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`booking_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `payment_history`
+--
+
+LOCK TABLES `payment_history` WRITE;
+/*!40000 ALTER TABLE `payment_history` DISABLE KEYS */;
+/*!40000 ALTER TABLE `payment_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `prescription_detail`
 --
 
@@ -532,7 +578,7 @@ CREATE TABLE `prescription_detail` (
 
 LOCK TABLES `prescription_detail` WRITE;
 /*!40000 ALTER TABLE `prescription_detail` DISABLE KEYS */;
-INSERT INTO `prescription_detail` VALUES (45,41,26,'Thuốc đặt Efferalgan 300mg Bristol','Ngày 3 lần',10,10000.00,'2023-10-13 16:55:34',NULL,NULL,1),(46,43,26,'Thực phẩm hỗ trợ giảm các triệu chứng trĩ nội, trĩ ngoại Tottri','Ngày 2 lần',6,6400.00,'2023-10-13 16:55:34',NULL,NULL,1),(47,30,27,'Siro ho Eugica DHG hỗ trợ điều trị ho, long đờm (100ml)','3 lần/ngày',2,40000.00,'2023-10-16 18:28:18',NULL,NULL,1),(48,31,27,'Xịt họng thảo dược Eugica Mega We Care','2 lần/ngày',1,47000.00,'2023-10-16 18:28:18',NULL,NULL,1),(49,39,28,'Viên ngậm Strepsils Cool Reckitt Benckiser',NULL,3,1500.00,'2023-10-16 20:40:33',NULL,NULL,1),(50,40,28,'Viên sủi Efferalgan 500mg',NULL,2,3200.00,'2023-10-16 20:40:33',NULL,NULL,1),(51,28,29,'Dung dịch sát khuẩn Povidine Povidon Iod 10% (8ml)',NULL,4,6000.00,'2023-10-16 20:44:21',NULL,NULL,1),(52,31,29,'Xịt họng thảo dược Eugica Mega We Care',NULL,7,47000.00,'2023-10-16 20:44:21',NULL,NULL,1),(53,33,29,'Dung dịch Natri Clorid 0.9% (500ml)',NULL,11,15000.00,'2023-10-16 20:44:21',NULL,NULL,1),(54,28,30,'Dung dịch sát khuẩn Povidine Povidon Iod 10% (8ml)',NULL,5,6000.00,'2023-10-16 20:45:39',NULL,NULL,1),(55,32,30,'Levigatus Traphaco',NULL,6,19000.00,'2023-10-16 20:45:39',NULL,NULL,1),(56,40,31,'Viên sủi Efferalgan 500mg',NULL,16,3200.00,'2023-10-16 20:52:09',NULL,NULL,1),(57,41,31,'Thuốc đặt Efferalgan 300mg Bristol',NULL,2,10000.00,'2023-10-16 20:52:09',NULL,NULL,1),(58,43,31,'Thực phẩm hỗ trợ giảm các triệu chứng trĩ nội, trĩ ngoại Tottri',NULL,5,6400.00,'2023-10-16 20:52:09',NULL,NULL,1),(59,23,32,'Tiffy Dey',NULL,23,1300.00,'2023-10-16 20:53:11',NULL,NULL,1),(60,27,32,'Đại Tràng Nhất Nhất',NULL,4,7000.00,'2023-10-16 20:53:11',NULL,NULL,1),(61,39,33,'Viên ngậm Strepsils Cool Reckitt Benckiser',NULL,4,1500.00,'2023-10-16 20:57:22',NULL,NULL,1),(62,40,33,'Viên sủi Efferalgan 500mg',NULL,7,3200.00,'2023-10-16 20:57:22',NULL,NULL,1),(63,41,33,'Thuốc đặt Efferalgan 300mg Bristol',NULL,9,10000.00,'2023-10-16 20:57:22',NULL,NULL,1),(64,17,34,'Yumangel F',NULL,7,8000.00,'2023-10-16 20:58:40',NULL,NULL,1),(65,21,34,'Hoạt Huyết Dưỡng Não Traphaco',NULL,9,1200.00,'2023-10-16 20:58:40',NULL,NULL,1),(66,35,34,'Viên uống LiverWell Navi',NULL,12,3200.00,'2023-10-16 20:58:40',NULL,NULL,1),(67,25,35,'Calcium Corbiere Extra',NULL,18,7000.00,'2023-10-16 21:00:42',NULL,NULL,1),(68,26,35,'Canxi Calcium Corbiere',NULL,7,4000.00,'2023-10-16 21:00:42',NULL,NULL,1);
+INSERT INTO `prescription_detail` VALUES (45,41,26,'Thuốc đặt Efferalgan 300mg Bristol','Ngày 3 lần',10,10000.00,'2023-10-13 16:55:34',NULL,NULL,1),(46,43,26,'Thực phẩm hỗ trợ giảm các triệu chứng trĩ nội, trĩ ngoại Tottri','Ngày 2 lần',6,6400.00,'2023-10-13 16:55:34',NULL,NULL,1),(47,30,27,'Siro ho Eugica DHG hỗ trợ điều trị ho, long đờm (100ml)','3 lần/ngày',2,40000.00,'2023-10-16 18:28:18',NULL,NULL,1),(48,31,27,'Xịt họng thảo dược Eugica Mega We Care','2 lần/ngày',1,47000.00,'2023-10-16 18:28:18',NULL,NULL,1),(49,39,28,'Viên ngậm Strepsils Cool Reckitt Benckiser',NULL,3,1500.00,'2023-10-16 20:40:33',NULL,NULL,1),(50,40,28,'Viên sủi Efferalgan 500mg',NULL,2,3200.00,'2023-10-16 20:40:33',NULL,NULL,1),(51,28,29,'Dung dịch sát khuẩn Povidine Povidon Iod 10% (8ml)',NULL,4,6000.00,'2023-10-16 20:44:21',NULL,NULL,1),(52,31,29,'Xịt họng thảo dược Eugica Mega We Care',NULL,7,47000.00,'2023-10-16 20:44:21',NULL,NULL,1),(53,33,29,'Dung dịch Natri Clorid 0.9% (500ml)',NULL,11,15000.00,'2023-10-16 20:44:21',NULL,NULL,1),(54,28,30,'Dung dịch sát khuẩn Povidine Povidon Iod 10% (8ml)',NULL,5,6000.00,'2023-10-16 20:45:39',NULL,NULL,1),(55,32,30,'Levigatus Traphaco',NULL,6,19000.00,'2023-10-16 20:45:39',NULL,NULL,1),(56,40,31,'Viên sủi Efferalgan 500mg',NULL,16,3200.00,'2023-10-16 20:52:09',NULL,NULL,1),(57,41,31,'Thuốc đặt Efferalgan 300mg Bristol',NULL,2,10000.00,'2023-10-16 20:52:09',NULL,NULL,1),(58,43,31,'Thực phẩm hỗ trợ giảm các triệu chứng trĩ nội, trĩ ngoại Tottri',NULL,5,6400.00,'2023-10-16 20:52:09',NULL,NULL,1),(59,23,32,'Tiffy Dey',NULL,23,1300.00,'2023-10-16 20:53:11',NULL,NULL,1),(60,27,32,'Đại Tràng Nhất Nhất',NULL,4,7000.00,'2023-10-16 20:53:11',NULL,NULL,1),(61,39,33,'Viên ngậm Strepsils Cool Reckitt Benckiser',NULL,4,1500.00,'2023-10-16 20:57:22',NULL,NULL,1),(62,40,33,'Viên sủi Efferalgan 500mg',NULL,7,3200.00,'2023-10-16 20:57:22',NULL,NULL,1),(63,41,33,'Thuốc đặt Efferalgan 300mg Bristol',NULL,9,10000.00,'2023-10-16 20:57:22',NULL,NULL,1),(64,17,34,'Yumangel F',NULL,7,8000.00,'2023-10-16 20:58:40',NULL,NULL,1),(65,21,34,'Hoạt Huyết Dưỡng Não Traphaco',NULL,9,1200.00,'2023-10-16 20:58:40',NULL,NULL,1),(66,35,34,'Viên uống LiverWell Navi',NULL,12,3200.00,'2023-10-16 20:58:40',NULL,NULL,1);
 /*!40000 ALTER TABLE `prescription_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -546,6 +592,7 @@ DROP TABLE IF EXISTS `prescriptions`;
 CREATE TABLE `prescriptions` (
   `prescription_id` int NOT NULL AUTO_INCREMENT,
   `prescription_date` date DEFAULT NULL,
+  `re_examination_date` date DEFAULT NULL,
   `diagnosis` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `symptoms` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `service_price` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
@@ -574,7 +621,7 @@ CREATE TABLE `prescriptions` (
 
 LOCK TABLES `prescriptions` WRITE;
 /*!40000 ALTER TABLE `prescriptions` DISABLE KEYS */;
-INSERT INTO `prescriptions` VALUES (26,'2023-10-13','Đau bụng','Đau bụng, nhức đầu','120000','2023-10-13 16:55:34',NULL,NULL,1,16,2,NULL,2,NULL),(27,'2023-10-16','Ho','Đau họng','120000','2023-10-16 18:28:18',NULL,NULL,1,26,2,NULL,2,NULL),(28,'2023-10-16','Ợ Chua','Đau bụng','250000','2023-10-16 20:40:33',NULL,NULL,1,28,2,NULL,1,NULL),(29,'2023-10-16','Chóng Mặt','Buồn nôn','120000','2023-10-16 20:44:21',NULL,NULL,1,27,1,NULL,2,NULL),(30,'2023-10-16','Tê Tay','Gãy Tay','150000','2023-10-16 20:45:39',NULL,NULL,1,29,1,NULL,1,NULL),(31,'2023-10-16','Nóng trong người','Nhiệt miệng','270000','2023-10-16 20:52:09',NULL,NULL,1,31,1,NULL,2,NULL),(32,'2023-10-16','Chảy Nước Mắt','Mỏi mắt','120000','2023-10-16 20:53:11',NULL,NULL,1,32,2,NULL,1,NULL),(33,'2023-10-16','Ho Gà','Đau Họng','250000','2023-10-16 20:57:22',NULL,NULL,1,34,1,NULL,1,NULL),(34,'2023-10-16','Mất Ngủ','Đau Thần Kinh Tọa','150000','2023-10-16 20:58:39',NULL,NULL,1,33,2,NULL,1,NULL),(35,'2023-10-16','Mỏi Vai Gối','Đau Lưng','150000','2023-10-16 21:00:42',NULL,NULL,1,29,2,'56750177',2,'56750177');
+INSERT INTO `prescriptions` VALUES (26,'2023-10-13',NULL,'Đau bụng','Đau bụng, nhức đầu','120000','2023-10-13 16:55:34',NULL,NULL,1,16,2,NULL,2,NULL),(27,'2023-10-16',NULL,'Ho','Đau họng','120000','2023-10-16 18:28:18',NULL,NULL,1,26,2,NULL,2,NULL),(28,'2023-10-16',NULL,'Ợ Chua','Đau bụng','250000','2023-10-16 20:40:33',NULL,NULL,1,28,2,NULL,1,NULL),(29,'2023-10-16',NULL,'Chóng Mặt','Buồn nôn','120000','2023-10-16 20:44:21',NULL,NULL,1,27,1,NULL,2,NULL),(30,'2023-10-16',NULL,'Tê Tay','Gãy Tay','150000','2023-10-16 20:45:39',NULL,NULL,1,29,1,NULL,1,NULL),(31,'2023-10-16',NULL,'Nóng trong người','Nhiệt miệng','270000','2023-10-16 20:52:09',NULL,NULL,1,31,1,NULL,2,NULL),(32,'2023-10-16',NULL,'Chảy Nước Mắt','Mỏi mắt','120000','2023-10-16 20:53:11',NULL,NULL,1,32,2,NULL,1,NULL),(33,'2023-10-16',NULL,'Ho Gà','Đau Họng','250000','2023-10-16 20:57:22',NULL,NULL,1,34,1,NULL,1,NULL),(34,'2023-10-16',NULL,'Mất Ngủ','Đau Thần Kinh Tọa','150000','2023-10-16 20:58:39',NULL,NULL,1,33,2,NULL,1,NULL);
 /*!40000 ALTER TABLE `prescriptions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -648,11 +695,12 @@ CREATE TABLE `profile_patient` (
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
+  `is_lock` tinyint(1) DEFAULT NULL,
   `user_id` int DEFAULT NULL,
   PRIMARY KEY (`profile_patient_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `profile_patient_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -661,7 +709,7 @@ CREATE TABLE `profile_patient` (
 
 LOCK TABLES `profile_patient` WRITE;
 /*!40000 ALTER TABLE `profile_patient` DISABLE KEYS */;
-INSERT INTO `profile_patient` VALUES (15,'Bệnh nhân Tuấn 1','0345809638','2002-08-28 00:00:00',1,'Thành phố Hồ Chí Minh','Thành phố Thủ Đức','Phường Bình Chiểu','74','74 Phường Bình Chiểu Thành phố Thủ Đức Thành phố Hồ Chí Minh','2051050549tuan@ou.edu.vn','Khác','2023-10-13 14:55:20',NULL,NULL,1,20),(16,'Bệnh nhân Tuấn 2','0345809638','2023-10-13 00:00:00',1,'Thành phố Hồ Chí Minh','Thành phố Thủ Đức','Phường Bình Chiểu','76','76 Phường Bình Chiểu Thành phố Thủ Đức Thành phố Hồ Chí Minh','2051050549tuan@ou.edu.vn','Khác','2023-10-13 14:55:43',NULL,NULL,1,20),(20,'Thanh Ngar','0123698547','2023-10-13 00:00:00',0,'Tỉnh Phú Thọ','Thị xã Phú Thọ','Phường Phong Châu','17','17 Phường Phong Châu Thị xã Phú Thọ Tỉnh Phú Thọ','2051052125thai@gmail.com','Mẹ','2023-10-13 20:28:26',NULL,NULL,1,18),(21,'Lê Thị Huỳnh Như','0123456789','2023-10-16 00:00:00',0,'Hà Nội','Ba Đình','Phúc Xá','12','12 Phúc Xá Ba Đình Hà Nội','nhu@gmailcom','Mẹ','2023-10-16 20:29:14',NULL,NULL,1,21),(22,'Lưu Quỳnh Như','0123456789','2023-10-16 00:00:00',0,'Hà Nội','Ba Đình','Phúc Xá','13','13 Phúc Xá Ba Đình Hà Nội','nhule@gmail.com','Con','2023-10-16 20:29:51',NULL,NULL,1,21),(23,'Thái Nguyễn','0136547892','2023-10-16 00:00:00',1,'Hà Nội','Ba Đình','Phúc Xá','32','32 Phúc Xá Ba Đình Hà Nội','thai@gmail.com','Khác','2023-10-16 20:49:31',NULL,NULL,1,22),(24,'Thái Minh','01336982257','2023-10-16 00:00:00',1,'Hà Nội','Ba Đình','Phúc Xá','78','78 Phúc Xá Ba Đình Hà Nội','thai@gmail.com','Cha','2023-10-16 20:49:57',NULL,NULL,1,22);
+INSERT INTO `profile_patient` VALUES (15,'Bệnh nhân Tuấn 1','0345809638','2002-08-28 00:00:00',1,'Thành phố Hồ Chí Minh','Thành phố Thủ Đức','Phường Bình Chiểu','74','74 Phường Bình Chiểu Thành phố Thủ Đức Thành phố Hồ Chí Minh','2051050549tuan@ou.edu.vn','Khác','2023-10-13 14:55:20',NULL,NULL,1,1,20),(16,'Bệnh nhân Tuấn 2','0345809638','2023-10-13 00:00:00',1,'Thành phố Hồ Chí Minh','Thành phố Thủ Đức','Phường Bình Chiểu','76','76 Phường Bình Chiểu Thành phố Thủ Đức Thành phố Hồ Chí Minh','2051050549tuan@ou.edu.vn','Khác','2023-10-13 14:55:43',NULL,NULL,1,1,20),(20,'Thanh Ngar','0123698547','2023-10-13 00:00:00',0,'Tỉnh Phú Thọ','Thị xã Phú Thọ','Phường Phong Châu','17','17 Phường Phong Châu Thị xã Phú Thọ Tỉnh Phú Thọ','2051052125thai@gmail.com','Mẹ','2023-10-13 20:28:26',NULL,NULL,1,0,18),(21,'Lê Thị Huỳnh Như','0123456789','2023-10-16 00:00:00',0,'Hà Nội','Ba Đình','Phúc Xá','12','12 Phúc Xá Ba Đình Hà Nội','nhu@gmailcom','Mẹ','2023-10-16 20:29:14',NULL,NULL,1,1,21),(22,'Lưu Quỳnh Như','0123456789','2023-10-16 00:00:00',0,'Hà Nội','Ba Đình','Phúc Xá','13','13 Phúc Xá Ba Đình Hà Nội','nhule@gmail.com','Con','2023-10-16 20:29:51',NULL,NULL,1,1,21),(23,'Thái Nguyễn','0136547892','2023-10-16 00:00:00',1,'Hà Nội','Ba Đình','Phúc Xá','32','32 Phúc Xá Ba Đình Hà Nội','thai@gmail.com','Khác','2023-10-16 20:49:31',NULL,NULL,1,1,22),(24,'Thái Minh','01336982257','2023-10-16 00:00:00',1,'Hà Nội','Ba Đình','Phúc Xá','78','78 Phúc Xá Ba Đình Hà Nội','thai@gmail.com','Cha','2023-10-16 20:49:57',NULL,NULL,1,1,22),(26,'Lê Thị Huỳnh Như','0123456789','2002-08-28 00:00:00',1,'Hồ Chí Minh','Thủ Đức','Bình Chiểu','Số nhà 74','Số nhà 74 Bình Chiểu Thủ Đức Hồ Chí Minh','nhu@gmail.com','con gái','2024-04-23 20:39:36',NULL,NULL,1,0,NULL);
 /*!40000 ALTER TABLE `profile_patient` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -714,7 +762,7 @@ CREATE TABLE `role` (
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -723,7 +771,7 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (1,'ROLE_ADMIN','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(2,'ROLE_DOCTOR','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(3,'ROLE_USER','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1);
+INSERT INTO `role` VALUES (1,'ROLE_ADMIN','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(2,'ROLE_DOCTOR','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(3,'ROLE_USER','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1),(4,'ROLE_NURSE','2023-09-10 11:30:31',NULL,'2023-09-10 11:30:31',1);
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -821,6 +869,72 @@ INSERT INTO `specialty` VALUES (1,'Khoa Tiêu Hóa','Khó Tiêu','https://res.cl
 UNLOCK TABLES;
 
 --
+-- Table structure for table `test_result`
+--
+
+DROP TABLE IF EXISTS `test_result`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `test_result` (
+  `test_result_id` int NOT NULL AUTO_INCREMENT,
+  `test_service_id` int DEFAULT NULL,
+  `booking_id` int DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  `test_result_value` varchar(255) DEFAULT NULL,
+  `test_result_diagnosis` varchar(255) DEFAULT NULL,
+  `test_result_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  `deleted_date` datetime DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`test_result_id`),
+  KEY `test_service_id` (`test_service_id`),
+  KEY `booking_id` (`booking_id`),
+  KEY `user_id` (`user_id`) /*!80000 INVISIBLE */,
+  CONSTRAINT `test_result_ibfk_1` FOREIGN KEY (`test_service_id`) REFERENCES `test_service` (`test_service_id`),
+  CONSTRAINT `test_result_ibfk_2` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`booking_id`),
+  CONSTRAINT `test_result_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `test_result`
+--
+
+LOCK TABLES `test_result` WRITE;
+/*!40000 ALTER TABLE `test_result` DISABLE KEYS */;
+/*!40000 ALTER TABLE `test_result` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `test_service`
+--
+
+DROP TABLE IF EXISTS `test_service`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `test_service` (
+  `test_service_id` int NOT NULL AUTO_INCREMENT,
+  `test_service_name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_cs_0900_ai_ci DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  `deleted_date` datetime DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`test_service_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_cs_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `test_service`
+--
+
+LOCK TABLES `test_service` WRITE;
+/*!40000 ALTER TABLE `test_service` DISABLE KEYS */;
+INSERT INTO `test_service` VALUES (1,'Xét nghiệm máu',NULL,NULL,NULL,1),(2,'Siêu âm',NULL,NULL,NULL,1),(3,'Nội soi dạ dày',NULL,NULL,NULL,1);
+/*!40000 ALTER TABLE `test_service` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `time_distance`
 --
 
@@ -911,7 +1025,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `email_UNIQUE` (`email`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -920,7 +1034,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Tuấn','Trần Đăng','tuan','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-08-28 00:00:00',1,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg','Bỏ không xài field này','2023-09-10 11:30:31',NULL,NULL,1,1),(17,'Thái','Trương Nguyễn Minh','thai','$2a$10$YL9qLmDFX324vBvBRiS0zOucL8P/AHtVsbz25A53fxgbjDchDWxga','2002-09-25 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697172693/bomq43pvq0frdbsqxpgw.png',NULL,'2023-10-13 11:51:31',NULL,NULL,1,2),(18,'Hiếu','Nguyễn Minh','hieu','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365732/enqzai9whaxf8e4sqflm.png',NULL,'2023-10-13 12:01:05','2023-10-15 17:28:50',NULL,1,2),(19,'Tuấn','Trần','0168123123','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365764/spo3srne5ctbn5oplkzy.png',NULL,'2023-10-13 12:01:05','2023-10-15 17:29:23',NULL,1,2),(20,'Tuấn','Trần','user1','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697173267/iasqfelcfgkatxpjc4eg.png',NULL,'2023-10-13 12:01:05',NULL,NULL,1,3),(21,'Như','Lê','nhu','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',0,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365764/spo3srne5ctbn5oplkzy.png',NULL,'2023-10-13 12:01:05',NULL,NULL,1,3),(22,'Thái','Trương','user2','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365764/spo3srne5ctbn5oplkzy.png',NULL,'2023-10-13 12:01:05',NULL,NULL,1,3);
+INSERT INTO `user` VALUES (1,'Tuấn','Trần Đăng','tuan','$2a$12$2DOmWbQRqqULw3PqmjacPO22EbCOgTLmrbW6FmWbv1/KzASdsnpnq','2023-08-28 00:00:00',1,'http://it.ou.edu.vn/asset/ckfinder/userfiles/5/images/T%20DH%20Thanh.jpg','Bỏ không xài field này','2023-09-10 11:30:31',NULL,NULL,1,1),(17,'Thái','Trương Nguyễn Minh','thai','$2a$10$YL9qLmDFX324vBvBRiS0zOucL8P/AHtVsbz25A53fxgbjDchDWxga','2002-09-25 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697172693/bomq43pvq0frdbsqxpgw.png',NULL,'2023-10-13 11:51:31',NULL,NULL,1,2),(18,'Hiếu','Nguyễn Minh','hieu','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365732/enqzai9whaxf8e4sqflm.png',NULL,'2023-10-13 12:01:05','2023-10-15 17:28:50',NULL,1,2),(19,'Tuấn','Trần','0168123123','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365764/spo3srne5ctbn5oplkzy.png',NULL,'2023-10-13 12:01:05','2023-10-15 17:29:23',NULL,1,2),(20,'Tuấn','Trần','user1','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697173267/iasqfelcfgkatxpjc4eg.png',NULL,'2023-10-13 12:01:05',NULL,NULL,1,3),(21,'Như','Lê','nhu','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',0,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365764/spo3srne5ctbn5oplkzy.png',NULL,'2023-10-13 12:01:05',NULL,NULL,1,3),(22,'Thái','Trương','user2','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365764/spo3srne5ctbn5oplkzy.png',NULL,'2023-10-13 12:01:05',NULL,NULL,1,3),(23,'Nhung','Hồng','nhung','$2a$10$V96pY15h1.u7vAeU3yK8GufI8cZRJi955UcEzqyzpQoJYoam8ESqK','2023-10-13 00:00:00',1,'https://res.cloudinary.com/dhwuwy0to/image/upload/v1697365764/spo3srne5ctbn5oplkzy.png',NULL,'2023-10-13 12:01:05',NULL,NULL,1,4);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1023,4 +1137,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-20 13:31:17
+-- Dump completed on 2024-04-27 14:11:24

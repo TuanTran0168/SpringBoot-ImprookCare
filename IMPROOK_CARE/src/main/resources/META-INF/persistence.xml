@@ -44,6 +44,9 @@
     <class>com.tuantran.IMPROOK_CARE.models.ChatgptConsult</class>
     <class>com.tuantran.IMPROOK_CARE.models.NotificationType</class>
     <class>com.tuantran.IMPROOK_CARE.models.Notification</class>
+    <class>com.tuantran.IMPROOK_CARE.models.PaymentHistory</class>
+    <class>com.tuantran.IMPROOK_CARE.models.TestService</class>
+    <class>com.tuantran.IMPROOK_CARE.models.TestResult</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/saledb?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

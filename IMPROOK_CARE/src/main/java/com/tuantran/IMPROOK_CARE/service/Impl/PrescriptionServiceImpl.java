@@ -7,15 +7,14 @@ package com.tuantran.IMPROOK_CARE.service.Impl;
 import com.tuantran.IMPROOK_CARE.Specifications.GenericSpecifications;
 import com.tuantran.IMPROOK_CARE.dto.AddPrescriptionDTO;
 import com.tuantran.IMPROOK_CARE.dto.AddPrescriptionDetailDTO;
+import com.tuantran.IMPROOK_CARE.dto.UpdatePrescriptionDTO;
 import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.BookingStatus;
 import com.tuantran.IMPROOK_CARE.models.Medicine;
 import com.tuantran.IMPROOK_CARE.models.MedicinePaymentStatus;
 import com.tuantran.IMPROOK_CARE.models.PrescriptionDetail;
 import com.tuantran.IMPROOK_CARE.models.Prescriptions;
-import com.tuantran.IMPROOK_CARE.models.ProfileDoctor;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
-import com.tuantran.IMPROOK_CARE.models.Schedule;
 import com.tuantran.IMPROOK_CARE.models.ServicePaymentStatus;
 import com.tuantran.IMPROOK_CARE.repository.BookingRepository;
 import com.tuantran.IMPROOK_CARE.repository.MedicineRepository;
@@ -23,6 +22,8 @@ import com.tuantran.IMPROOK_CARE.repository.PrescriptionDetailRepository;
 import com.tuantran.IMPROOK_CARE.repository.PrescriptionRepository;
 import com.tuantran.IMPROOK_CARE.service.BookingStatusService;
 import com.tuantran.IMPROOK_CARE.service.PrescriptionService;
+
+import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import java.math.BigDecimal;
@@ -208,8 +209,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         Specification<Prescriptions> specificationProMax = (root, query, criteriaBuilder) -> {
             Join<Prescriptions, Booking> bookingJoin = root.join("bookingId");
             Join<Booking, ProfilePatient> profilePatientJoin = bookingJoin.join("profilePatientId");
-            Join<Booking, Schedule> scheduleJoin = bookingJoin.join("scheduleId");
-            Join<Schedule, ProfileDoctor> profileDoctorJoin = scheduleJoin.join("profileDoctorId");
+            // Join<Booking, Schedule> scheduleJoin = bookingJoin.join("scheduleId");
+            // Join<Schedule, ProfileDoctor> profileDoctorJoin =
+            // scheduleJoin.join("profileDoctorId");
             Predicate profilePatientIdPredicate = criteriaBuilder.equal(profilePatientJoin.get("profilePatientId"),
                     profilePatientId);
             return criteriaBuilder.and(profilePatientIdPredicate);
@@ -251,6 +253,76 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             return 0;
         } catch (NoSuchElementException ex) {
             ex.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    public Optional<Prescriptions> findByBookingId(Booking bookingId) throws NonUniqueResultException {
+        return this.prescriptionRepository.findByBookingId(bookingId);
+    }
+
+    @Override
+    public int updatePrescription(UpdatePrescriptionDTO updatePrescriptionDTO,
+            Map<String, AddPrescriptionDetailDTO> prescriptionDetailDTO) {
+
+        Optional<Prescriptions> prescriptionOptional = this.prescriptionRepository
+                .findById(Integer.parseInt(updatePrescriptionDTO.getPrescriptionId()));
+
+        if (prescriptionOptional.isPresent()) {
+            Prescriptions prescriptions = prescriptionOptional.get();
+
+            String diagnosis = updatePrescriptionDTO.getDiagnosis();
+            String symptom = updatePrescriptionDTO.getSymptom();
+
+            if (diagnosis != null && !diagnosis.isEmpty()) {
+                prescriptions.setDiagnosis(diagnosis);
+            }
+
+            if (symptom != null && !symptom.isEmpty()) {
+                prescriptions.setSymptoms(symptom);
+            }
+
+            this.prescriptionRepository.save(prescriptions);
+
+            // Danh sách chi tiết toa thuốc hiện tại
+            List<PrescriptionDetail> prescriptionDetails_current = this.prescriptionDetailRepository
+                    .findPrescriptionDetailByPrescriptionId(prescriptions);
+
+            // Xóa hết danh sách đó
+            this.prescriptionDetailRepository.deleteAllInBatch(prescriptionDetails_current);
+
+            // Duyệt qua danh sách chi tiết toa thuốc mới gửi xuống server để thêm
+            // Y chang như thêm mới
+            for (AddPrescriptionDetailDTO updatePrescriptionDetailDTO : prescriptionDetailDTO.values()) {
+
+                PrescriptionDetail prescriptionDetail = new PrescriptionDetail();
+
+                Optional<Medicine> medicineOptional = this.medicineRepository
+                        .findMedicineByMedicineIdAndActiveTrue(
+                                Integer.parseInt(updatePrescriptionDetailDTO.getMedicineId()));
+
+                if (medicineOptional.isPresent()) {
+                    prescriptionDetail.setMedicineId(medicineOptional.get());
+                } else {
+                    return 0;
+                }
+
+                prescriptionDetail.setPrescriptionId(prescriptions);
+                prescriptionDetail.setMedicineName(updatePrescriptionDetailDTO.getMedicineName());
+                prescriptionDetail.setUnitPrice(
+                        BigDecimal.valueOf(Double.parseDouble(updatePrescriptionDetailDTO.getUnitPrice())));
+                prescriptionDetail.setQuantity(Integer.parseInt(updatePrescriptionDetailDTO.getQuantity()));
+                prescriptionDetail.setUsageInstruction(updatePrescriptionDetailDTO.getUsageInstruction());
+
+                prescriptionDetail.setActive(Boolean.TRUE);
+                prescriptionDetail.setCreatedDate(new Date());
+                prescriptionDetail.setUpdatedDate(new Date());
+                this.prescriptionDetailRepository.save(prescriptionDetail);
+            }
+
+            return 1;
+        } else {
             return 0;
         }
     }

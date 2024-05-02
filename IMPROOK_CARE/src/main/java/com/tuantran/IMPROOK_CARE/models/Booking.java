@@ -76,6 +76,12 @@ public class Booking implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "bookingId")
     private Set<MedicalRecords> medicalRecordsSet;
+    @JsonIgnore
+    @OneToMany(mappedBy = "bookingId")
+    private Set<PaymentHistory> paymentHistorySet;
+    @JsonIgnore
+    @OneToMany(mappedBy = "bookingId")
+    private Set<TestResult> testResultSet;
 
     public Booking() {
     }
@@ -178,6 +184,22 @@ public class Booking implements Serializable {
 
     public void setMedicalRecordsSet(Set<MedicalRecords> medicalRecordsSet) {
         this.medicalRecordsSet = medicalRecordsSet;
+    }
+
+    public Set<PaymentHistory> getPaymentHistorySet() {
+        return paymentHistorySet;
+    }
+
+    public void setPaymentHistorySet(Set<PaymentHistory> paymentHistorySet) {
+        this.paymentHistorySet = paymentHistorySet;
+    }
+
+    public Set<TestResult> getTestResultSet() {
+        return testResultSet;
+    }
+
+    public void setTestResultSet(Set<TestResult> testResultSet) {
+        this.testResultSet = testResultSet;
     }
 
     @Override

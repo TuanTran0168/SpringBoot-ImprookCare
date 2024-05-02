@@ -30,23 +30,24 @@ import jakarta.persistence.TemporalType;
 @Entity
 @Table(name = "profile_patient")
 @NamedQueries({
-    @NamedQuery(name = "ProfilePatient.findAll", query = "SELECT p FROM ProfilePatient p"),
-    @NamedQuery(name = "ProfilePatient.findByProfilePatientId", query = "SELECT p FROM ProfilePatient p WHERE p.profilePatientId = :profilePatientId"),
-    @NamedQuery(name = "ProfilePatient.findByName", query = "SELECT p FROM ProfilePatient p WHERE p.name = :name"),
-    @NamedQuery(name = "ProfilePatient.findByPhonenumber", query = "SELECT p FROM ProfilePatient p WHERE p.phonenumber = :phonenumber"),
-    @NamedQuery(name = "ProfilePatient.findByBirthday", query = "SELECT p FROM ProfilePatient p WHERE p.birthday = :birthday"),
-    @NamedQuery(name = "ProfilePatient.findByGender", query = "SELECT p FROM ProfilePatient p WHERE p.gender = :gender"),
-    @NamedQuery(name = "ProfilePatient.findByProvinceName", query = "SELECT p FROM ProfilePatient p WHERE p.provinceName = :provinceName"),
-    @NamedQuery(name = "ProfilePatient.findByDistrictName", query = "SELECT p FROM ProfilePatient p WHERE p.districtName = :districtName"),
-    @NamedQuery(name = "ProfilePatient.findByWardName", query = "SELECT p FROM ProfilePatient p WHERE p.wardName = :wardName"),
-    @NamedQuery(name = "ProfilePatient.findByPersonalAddress", query = "SELECT p FROM ProfilePatient p WHERE p.personalAddress = :personalAddress"),
-    @NamedQuery(name = "ProfilePatient.findByAddress", query = "SELECT p FROM ProfilePatient p WHERE p.address = :address"),
-    @NamedQuery(name = "ProfilePatient.findByEmail", query = "SELECT p FROM ProfilePatient p WHERE p.email = :email"),
-    @NamedQuery(name = "ProfilePatient.findByRelationship", query = "SELECT p FROM ProfilePatient p WHERE p.relationship = :relationship"),
-    @NamedQuery(name = "ProfilePatient.findByCreatedDate", query = "SELECT p FROM ProfilePatient p WHERE p.createdDate = :createdDate"),
-    @NamedQuery(name = "ProfilePatient.findByUpdatedDate", query = "SELECT p FROM ProfilePatient p WHERE p.updatedDate = :updatedDate"),
-    @NamedQuery(name = "ProfilePatient.findByDeletedDate", query = "SELECT p FROM ProfilePatient p WHERE p.deletedDate = :deletedDate"),
-    @NamedQuery(name = "ProfilePatient.findByActive", query = "SELECT p FROM ProfilePatient p WHERE p.active = :active")})
+        @NamedQuery(name = "ProfilePatient.findAll", query = "SELECT p FROM ProfilePatient p"),
+        @NamedQuery(name = "ProfilePatient.findByProfilePatientId", query = "SELECT p FROM ProfilePatient p WHERE p.profilePatientId = :profilePatientId"),
+        @NamedQuery(name = "ProfilePatient.findByName", query = "SELECT p FROM ProfilePatient p WHERE p.name = :name"),
+        @NamedQuery(name = "ProfilePatient.findByPhonenumber", query = "SELECT p FROM ProfilePatient p WHERE p.phonenumber = :phonenumber"),
+        @NamedQuery(name = "ProfilePatient.findByBirthday", query = "SELECT p FROM ProfilePatient p WHERE p.birthday = :birthday"),
+        @NamedQuery(name = "ProfilePatient.findByGender", query = "SELECT p FROM ProfilePatient p WHERE p.gender = :gender"),
+        @NamedQuery(name = "ProfilePatient.findByProvinceName", query = "SELECT p FROM ProfilePatient p WHERE p.provinceName = :provinceName"),
+        @NamedQuery(name = "ProfilePatient.findByDistrictName", query = "SELECT p FROM ProfilePatient p WHERE p.districtName = :districtName"),
+        @NamedQuery(name = "ProfilePatient.findByWardName", query = "SELECT p FROM ProfilePatient p WHERE p.wardName = :wardName"),
+        @NamedQuery(name = "ProfilePatient.findByPersonalAddress", query = "SELECT p FROM ProfilePatient p WHERE p.personalAddress = :personalAddress"),
+        @NamedQuery(name = "ProfilePatient.findByAddress", query = "SELECT p FROM ProfilePatient p WHERE p.address = :address"),
+        @NamedQuery(name = "ProfilePatient.findByEmail", query = "SELECT p FROM ProfilePatient p WHERE p.email = :email"),
+        @NamedQuery(name = "ProfilePatient.findByRelationship", query = "SELECT p FROM ProfilePatient p WHERE p.relationship = :relationship"),
+        @NamedQuery(name = "ProfilePatient.findByCreatedDate", query = "SELECT p FROM ProfilePatient p WHERE p.createdDate = :createdDate"),
+        @NamedQuery(name = "ProfilePatient.findByUpdatedDate", query = "SELECT p FROM ProfilePatient p WHERE p.updatedDate = :updatedDate"),
+        @NamedQuery(name = "ProfilePatient.findByDeletedDate", query = "SELECT p FROM ProfilePatient p WHERE p.deletedDate = :deletedDate"),
+        @NamedQuery(name = "ProfilePatient.findByActive", query = "SELECT p FROM ProfilePatient p WHERE p.active = :active"),
+        @NamedQuery(name = "ProfilePatient.findByIsLock", query = "SELECT p FROM ProfilePatient p WHERE p.isLock = :isLock") })
 public class ProfilePatient implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -89,6 +90,8 @@ public class ProfilePatient implements Serializable {
     private Date deletedDate;
     @Column(name = "active")
     private Boolean active;
+    @Column(name = "is_lock")
+    private Boolean isLock;
     @JsonIgnore
     @OneToMany(mappedBy = "profilePatientId")
     private Set<Booking> bookingSet;
@@ -231,6 +234,14 @@ public class ProfilePatient implements Serializable {
         this.active = active;
     }
 
+    public Boolean getIsLock() {
+        return isLock;
+    }
+
+    public void setIsLock(Boolean isLock) {
+        this.isLock = isLock;
+    }
+
     public Set<Booking> getBookingSet() {
         return bookingSet;
     }
@@ -261,7 +272,8 @@ public class ProfilePatient implements Serializable {
             return false;
         }
         ProfilePatient other = (ProfilePatient) object;
-        if ((this.profilePatientId == null && other.profilePatientId != null) || (this.profilePatientId != null && !this.profilePatientId.equals(other.profilePatientId))) {
+        if ((this.profilePatientId == null && other.profilePatientId != null)
+                || (this.profilePatientId != null && !this.profilePatientId.equals(other.profilePatientId))) {
             return false;
         }
         return true;
@@ -271,5 +283,5 @@ public class ProfilePatient implements Serializable {
     public String toString() {
         return "com.tuantran.IMPROOK_CARE.models.ProfilePatient[ profilePatientId=" + profilePatientId + " ]";
     }
-    
+
 }
