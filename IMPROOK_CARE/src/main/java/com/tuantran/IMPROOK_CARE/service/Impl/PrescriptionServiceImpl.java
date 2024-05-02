@@ -5,21 +5,26 @@
 package com.tuantran.IMPROOK_CARE.service.Impl;
 
 import com.tuantran.IMPROOK_CARE.Specifications.GenericSpecifications;
+import com.tuantran.IMPROOK_CARE.dto.AddMedicalReminderDTO;
 import com.tuantran.IMPROOK_CARE.dto.AddPrescriptionDTO;
 import com.tuantran.IMPROOK_CARE.dto.AddPrescriptionDetailDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdatePrescriptionDTO;
 import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.BookingStatus;
+import com.tuantran.IMPROOK_CARE.models.MedicalReminder;
 import com.tuantran.IMPROOK_CARE.models.Medicine;
 import com.tuantran.IMPROOK_CARE.models.MedicinePaymentStatus;
 import com.tuantran.IMPROOK_CARE.models.PrescriptionDetail;
 import com.tuantran.IMPROOK_CARE.models.Prescriptions;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
 import com.tuantran.IMPROOK_CARE.models.ServicePaymentStatus;
+import com.tuantran.IMPROOK_CARE.models.TimeReminder;
 import com.tuantran.IMPROOK_CARE.repository.BookingRepository;
+import com.tuantran.IMPROOK_CARE.repository.MedicalReminderRepository;
 import com.tuantran.IMPROOK_CARE.repository.MedicineRepository;
 import com.tuantran.IMPROOK_CARE.repository.PrescriptionDetailRepository;
 import com.tuantran.IMPROOK_CARE.repository.PrescriptionRepository;
+import com.tuantran.IMPROOK_CARE.repository.TimeReminderRepository;
 import com.tuantran.IMPROOK_CARE.service.BookingStatusService;
 import com.tuantran.IMPROOK_CARE.service.PrescriptionService;
 
@@ -70,6 +75,12 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     @Autowired
     private Environment environment;
 
+    @Autowired
+    private TimeReminderRepository timeReminderRepository;
+
+    @Autowired
+    private MedicalReminderRepository medicalReminderRepository;
+
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public int addPrescription(AddPrescriptionDTO addPrescriptionDTO,
@@ -119,7 +130,25 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
                 prescriptionDetail.setActive(Boolean.TRUE);
                 prescriptionDetail.setCreatedDate(new Date());
-                this.prescriptionDetailRepository.save(prescriptionDetail);
+                PrescriptionDetail prescriptionDetailSaved = this.prescriptionDetailRepository.save(prescriptionDetail);
+
+                for (AddMedicalReminderDTO addMedicalReminderDTO : presDetailDTO.getMedicalReminderDTO().values()) {
+                    addMedicalReminderDTO.getTimeReminderId();
+                    // Lát làm
+
+                    Optional<TimeReminder> timeReminderOptional = timeReminderRepository
+                            .findByTimeReminderId(Integer.parseInt(addMedicalReminderDTO.getTimeReminderId()));
+
+                    if (timeReminderOptional.isPresent()) {
+                        MedicalReminder medicalReminder = new MedicalReminder();
+                        medicalReminder.setTimeReminderId(timeReminderOptional.get());
+                        medicalReminder.setPrescriptionDetailId(prescriptionDetailSaved);
+                        medicalReminder.setActive(Boolean.TRUE);
+                        medicalReminder.setCreatedDate(new Date());
+
+                        this.medicalReminderRepository.save(medicalReminder);
+                    }
+                }
             }
 
             return 1;
