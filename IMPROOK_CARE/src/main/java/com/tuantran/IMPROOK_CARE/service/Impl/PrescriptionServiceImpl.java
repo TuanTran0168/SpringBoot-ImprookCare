@@ -318,6 +318,11 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             List<PrescriptionDetail> prescriptionDetails_current = this.prescriptionDetailRepository
                     .findPrescriptionDetailByPrescriptionId(prescriptions);
 
+            for (PrescriptionDetail prescriptionDetail : prescriptionDetails_current) {
+                this.medicalReminderRepository.deleteAllInBatch(
+                        this.medicalReminderRepository.findByPrescriptionDetailId(prescriptionDetail));
+            }
+
             // Xóa hết danh sách đó
             this.prescriptionDetailRepository.deleteAllInBatch(prescriptionDetails_current);
 
@@ -348,6 +353,25 @@ public class PrescriptionServiceImpl implements PrescriptionService {
                 prescriptionDetail.setCreatedDate(new Date());
                 prescriptionDetail.setUpdatedDate(new Date());
                 this.prescriptionDetailRepository.save(prescriptionDetail);
+                PrescriptionDetail prescriptionDetailSaved = this.prescriptionDetailRepository.save(prescriptionDetail);
+
+                for (AddMedicalReminderDTO addMedicalReminderDTO : updatePrescriptionDetailDTO.getMedicalReminderDTO()
+                        .values()) {
+                    addMedicalReminderDTO.getTimeReminderId();
+
+                    Optional<TimeReminder> timeReminderOptional = timeReminderRepository
+                            .findByTimeReminderId(Integer.parseInt(addMedicalReminderDTO.getTimeReminderId()));
+
+                    if (timeReminderOptional.isPresent()) {
+                        MedicalReminder medicalReminder = new MedicalReminder();
+                        medicalReminder.setTimeReminderId(timeReminderOptional.get());
+                        medicalReminder.setPrescriptionDetailId(prescriptionDetailSaved);
+                        medicalReminder.setActive(Boolean.TRUE);
+                        medicalReminder.setCreatedDate(new Date());
+
+                        this.medicalReminderRepository.save(medicalReminder);
+                    }
+                }
             }
 
             return 1;
