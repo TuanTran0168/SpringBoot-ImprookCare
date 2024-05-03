@@ -31,6 +31,8 @@ import jakarta.persistence.TemporalType;
         @NamedQuery(name = "MedicalSchedule.findByMedicalScheduleId", query = "SELECT m FROM MedicalSchedule m WHERE m.medicalScheduleId = :medicalScheduleId"),
         @NamedQuery(name = "MedicalSchedule.findByCustomTime", query = "SELECT m FROM MedicalSchedule m WHERE m.customTime = :customTime"),
         @NamedQuery(name = "MedicalSchedule.findByStartDate", query = "SELECT m FROM MedicalSchedule m WHERE m.startDate = :startDate"),
+        @NamedQuery(name = "MedicalSchedule.findByMedicineName", query = "SELECT m FROM MedicalSchedule m WHERE m.medicineName = :medicineName"),
+        @NamedQuery(name = "MedicalSchedule.findByEmail", query = "SELECT m FROM MedicalSchedule m WHERE m.email = :email"),
         @NamedQuery(name = "MedicalSchedule.findByCreatedDate", query = "SELECT m FROM MedicalSchedule m WHERE m.createdDate = :createdDate"),
         @NamedQuery(name = "MedicalSchedule.findByUpdatedDate", query = "SELECT m FROM MedicalSchedule m WHERE m.updatedDate = :updatedDate"),
         @NamedQuery(name = "MedicalSchedule.findByDeletedDate", query = "SELECT m FROM MedicalSchedule m WHERE m.deletedDate = :deletedDate"),
@@ -49,6 +51,10 @@ public class MedicalSchedule implements Serializable {
     @Column(name = "start_date")
     @Temporal(TemporalType.DATE)
     private Date startDate;
+    @Column(name = "medicine_name")
+    private String medicineName;
+    @Column(name = "email")
+    private String email;
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -93,6 +99,22 @@ public class MedicalSchedule implements Serializable {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public String getMedicineName() {
+        return medicineName;
+    }
+
+    public void setMedicineName(String medicineName) {
+        this.medicineName = medicineName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Date getCreatedDate() {

@@ -351,6 +351,8 @@ CREATE TABLE `medical_schedule` (
   `medical_reminder_id` int DEFAULT NULL,
   `custom_time` datetime DEFAULT NULL,
   `start_date` date DEFAULT NULL,
+  `medicine_name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
@@ -1229,4 +1231,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-02 14:22:04
+-- Dump completed on 2024-05-03 14:51:34
