@@ -4,11 +4,20 @@
  */
 package com.tuantran.IMPROOK_CARE.repository;
 
+import com.tuantran.IMPROOK_CARE.models.MedicalReminder;
 import com.tuantran.IMPROOK_CARE.models.MedicalSchedule;
 
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 /**
  *
@@ -18,4 +27,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface MedicalScheduleRepository extends JpaRepository<MedicalSchedule, Integer> {
 
+    Optional<MedicalSchedule> findByMedicalScheduleIdAndActiveTrue(Integer medicalScheduleId);
+
+    List<MedicalSchedule> findByMedicalReminderIdAndActiveTrue(MedicalReminder medicalReminderId);
+
+    Page<?> findAll(Specification<?> createSpecification, Pageable page);
+
+    // Chưa test
+    @Query("SELECT ms "
+            + "FROM MedicalSchedule ms "
+            + "JOIN ms.medicalReminderId mr "
+            + "JOIN mr.prescriptionDetailId pd "
+            + "JOIN pd.prescriptionId p "
+            + "WHERE p.prescriptionId = :prescriptionId")
+    List<?> findMedicalScheduleByPrescriptionId(@Param("prescriptionId") int prescriptionId);
 }

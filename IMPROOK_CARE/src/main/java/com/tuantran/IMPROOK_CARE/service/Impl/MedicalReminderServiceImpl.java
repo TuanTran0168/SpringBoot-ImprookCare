@@ -33,4 +33,9 @@ public class MedicalReminderServiceImpl implements MedicalReminderService {
         return this.medicalReminderRepository.findByPrescriptionDetailId(prescriptionDetailId);
     }
 
+    @Override
+    public List<?> findByPresfindMedicalReminderByPrescriptionId(int prescriptionId) {
+        return this.medicalReminderRepository.findMedicalReminderByPrescriptionId(prescriptionId);
+    }
+
 }

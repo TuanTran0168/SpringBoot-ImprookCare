@@ -22,4 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface MedicalReminderService {
     List<MedicalReminder> findByPrescriptionDetailId(PrescriptionDetail prescriptionDetailId);
+
+    List<?> findByPresfindMedicalReminderByPrescriptionId(int prescriptionId);
 }
