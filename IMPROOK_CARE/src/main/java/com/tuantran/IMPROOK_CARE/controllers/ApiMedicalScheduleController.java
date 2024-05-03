@@ -6,10 +6,14 @@ package com.tuantran.IMPROOK_CARE.controllers;
 
 import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
 import com.tuantran.IMPROOK_CARE.dto.AddMedicalScheduleDTO;
+import com.tuantran.IMPROOK_CARE.dto.UpdateMedicalScheduleDTO;
 import com.tuantran.IMPROOK_CARE.models.MedicalReminder;
 import com.tuantran.IMPROOK_CARE.models.MedicalSchedule;
 import com.tuantran.IMPROOK_CARE.service.MedicalReminderService;
 import com.tuantran.IMPROOK_CARE.service.MedicalScheduleService;
+
+import jakarta.validation.Valid;
+
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Optional;
@@ -52,7 +56,7 @@ public class ApiMedicalScheduleController {
 
     @PostMapping("/auth/add-medical-schedule/")
     @CrossOrigin
-    public ResponseEntity<?> addMedicalSchedule(@RequestBody AddMedicalScheduleDTO addMedicalScheduleDTO) {
+    public ResponseEntity<?> addMedicalSchedule(@Valid @RequestBody AddMedicalScheduleDTO addMedicalScheduleDTO) {
         try {
             String message = "Có lỗi xảy ra!";
             MedicalSchedule medicalSchedule = new MedicalSchedule();
@@ -153,9 +157,56 @@ public class ApiMedicalScheduleController {
         }
     }
 
-    // @PostMapping("/auth/update-medical-schedule/")
-    // @CrossOrigin
-    // public ResponseEntity<?> updateMedicalSchedule() {
+    @PostMapping("/auth/update-medical-schedule/")
+    @CrossOrigin
+    public ResponseEntity<?> updateMedicalSchedule(
+            @Valid @RequestBody UpdateMedicalScheduleDTO updateMedicalScheduleDTO) {
+        try {
+            String message = "Có lỗi xảy ra!";
+            Optional<MedicalSchedule> medicalScheduleOptional = this.medicalScheduleService
+                    .findByMedicalScheduleIdAndActiveTrue(
+                            Integer.parseInt(updateMedicalScheduleDTO.getMedicalScheduleId()));
 
-    // }
+            if (medicalScheduleOptional.isPresent()) {
+                MedicalSchedule medicalSchedule = medicalScheduleOptional.get();
+
+                String customTime = updateMedicalScheduleDTO.getCustomTime();
+                String startDate = updateMedicalScheduleDTO.getStartDate();
+                String medicineName = updateMedicalScheduleDTO.getMedicineName();
+                String email = updateMedicalScheduleDTO.getEmail();
+
+                if (customTime != null && !customTime.isEmpty()) {
+                    Date customTimeParse = this.dateFormatComponent.myDateTimeFormat().parse(customTime);
+                    medicalSchedule.setCustomTime(customTimeParse);
+                }
+
+                if (startDate != null && !startDate.isEmpty()) {
+                    Date startDateParse = this.dateFormatComponent.myDateFormat().parse(startDate);
+                    medicalSchedule.setStartDate(startDateParse);
+                }
+
+                if (email != null && !email.isEmpty()) {
+                    medicalSchedule.setEmail(email);
+                }
+
+                if (medicineName != null && !medicineName.isEmpty()) {
+                    medicalSchedule.setMedicineName(medicineName);
+                }
+                medicalSchedule.setUpdatedDate(new Date());
+
+                return new ResponseEntity<>(this.medicalScheduleService.updateMedicalSchedule(medicalSchedule),
+                        HttpStatus.OK);
+            } else {
+                message = "MedicalSchedule[" + updateMedicalScheduleDTO.getMedicalScheduleId() + "] không tồn tại!";
+                return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+        }
+    }
 }
