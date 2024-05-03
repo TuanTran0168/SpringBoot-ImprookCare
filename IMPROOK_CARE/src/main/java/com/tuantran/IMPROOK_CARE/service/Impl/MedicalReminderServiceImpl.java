@@ -10,6 +10,7 @@ import com.tuantran.IMPROOK_CARE.repository.MedicalReminderRepository;
 import com.tuantran.IMPROOK_CARE.service.MedicalReminderService;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -34,8 +35,13 @@ public class MedicalReminderServiceImpl implements MedicalReminderService {
     }
 
     @Override
-    public List<?> findByPresfindMedicalReminderByPrescriptionId(int prescriptionId) {
+    public List<?> findMedicalReminderByPrescriptionId(int prescriptionId) {
         return this.medicalReminderRepository.findMedicalReminderByPrescriptionId(prescriptionId);
+    }
+
+    @Override
+    public Optional<MedicalReminder> findMedicalReminderByMedicalReminderId(int medicalReminderId) {
+        return this.medicalReminderRepository.findByMedicalReminderId(medicalReminderId);
     }
 
 }

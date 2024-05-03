@@ -36,6 +36,6 @@ public class ApiMedicalReminderController {
     public ResponseEntity<?> listMedicalReminder(
             @PathVariable(value = "prescriptionId") int prescriptionId) {
         return ResponseEntity.ok()
-                .body(this.medicalReminderService.findByPresfindMedicalReminderByPrescriptionId(prescriptionId));
+                .body(this.medicalReminderService.findMedicalReminderByPrescriptionId(prescriptionId));
     }
 }

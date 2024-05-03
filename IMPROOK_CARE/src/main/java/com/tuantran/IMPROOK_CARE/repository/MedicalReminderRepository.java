@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -30,4 +31,6 @@ public interface MedicalReminderRepository extends JpaRepository<MedicalReminder
             + "JOIN pd.prescriptionId p "
             + "WHERE p.prescriptionId = :prescriptionId")
     List<?> findMedicalReminderByPrescriptionId(@Param("prescriptionId") int prescriptionId);
+
+    Optional<MedicalReminder> findByMedicalReminderId(Integer medicalReminderId);
 }

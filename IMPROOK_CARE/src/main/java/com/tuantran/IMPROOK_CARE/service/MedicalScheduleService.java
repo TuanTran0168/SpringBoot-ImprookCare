@@ -27,4 +27,8 @@ public interface MedicalScheduleService {
     Page<?> findAllMedicalSchedulePageSpec(Specification<?> createSpecification, Pageable page);
 
     List<?> findMedicalScheduleByPrescriptionId(int prescriptionId);
+
+    MedicalSchedule addMedicalSchedule(MedicalSchedule medicalSchedule);
+
+    MedicalSchedule updateMedicalSchedule(MedicalSchedule medicalSchedule);
 }

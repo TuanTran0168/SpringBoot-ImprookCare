@@ -12,6 +12,8 @@ import com.tuantran.IMPROOK_CARE.models.PrescriptionDetail;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,5 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface MedicalReminderService {
     List<MedicalReminder> findByPrescriptionDetailId(PrescriptionDetail prescriptionDetailId);
 
-    List<?> findByPresfindMedicalReminderByPrescriptionId(int prescriptionId);
+    List<?> findMedicalReminderByPrescriptionId(int prescriptionId);
+
+    Optional<MedicalReminder> findMedicalReminderByMedicalReminderId(int medicalReminderId);
 }

@@ -58,4 +58,14 @@ public class MedicalScheduleServiceImpl implements MedicalScheduleService {
         return this.medicalScheduleRepository.findMedicalScheduleByPrescriptionId(prescriptionId);
     }
 
+    @Override
+    public MedicalSchedule addMedicalSchedule(MedicalSchedule medicalSchedule) {
+        return this.medicalScheduleRepository.save(medicalSchedule);
+    }
+
+    @Override
+    public MedicalSchedule updateMedicalSchedule(MedicalSchedule medicalSchedule) {
+        return this.medicalScheduleRepository.save(medicalSchedule);
+    }
+
 }
