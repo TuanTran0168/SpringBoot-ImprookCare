@@ -126,8 +126,8 @@ public class ApiPDFController {
                 String specialtyName = params.get("specialtyName");
                 String testResultDiagnosis = params.get("testResultDiagnosis");
                 String gender = params.get("gender");
-                String createdDate = params.get("gender");
-                String updatedDate = params.get("gender");
+                String createdDate = params.get("createdDate");
+                String updatedDate = params.get("updatedDate");
                 String profilePatientId = params.get("profilePatientId");
 
                 // Tạo ByteArrayOutputStream
