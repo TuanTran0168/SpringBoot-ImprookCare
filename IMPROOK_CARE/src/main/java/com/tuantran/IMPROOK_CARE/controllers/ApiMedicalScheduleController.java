@@ -60,11 +60,40 @@ public class ApiMedicalScheduleController {
             String medicalReminderId = addMedicalScheduleDTO.getMedicalReminderId();
             String customTime = addMedicalScheduleDTO.getCustomTime();
             String startDate = addMedicalScheduleDTO.getStartDate();
+            String medicineName = addMedicalScheduleDTO.getMedicineName();
+            String email = addMedicalScheduleDTO.getEmail();
 
             /*
              * Nếu cái medicalReminderId KHÔNG null (tức là nó tạo tự động từ đơn thuốc)
              * thì cái customTime đó nó lấy từ TimeReminder luôn
+             * 
+             * ========= HOW TO USE =========
+             * {
+             * "medicalReminderId": "1",
+             * "customTime": "2024-08-28 13:26:30",
+             * "startDate": "2024-08-28",
+             * "medicineName": "Thuốc an thần",
+             * "email": "2051050549tuan@ou.edu.vn"
+             * }
+             * 
+             * TH1: nó tạo tự động từ đơn thuốc
+             * - Bắt buộc có tham số medicalReminderId, startDate
+             * - Thì JSON lúc gửi không cần gửi customTime, medicineName, email (vì nó lấy
+             * tự động)
+             * 
+             * 
+             * TH2: Nó tạo tự động nhưng muốn sửa thông tin khác với timeCustom tự động từ
+             * timeReminder
+             * - Gửi JSON giống như TH1 (nhưng có thể gửi thêm các thông số mà nó muốn sửa
+             * như: medicineName, email, customTime)
+             *
+             * 
+             * TH3: Nó tự tạo riêng
+             * - Tham số bắt buộc: startDate
+             * - Vì tạo riêng nên không có medicalReminderId
+             * - Thì JSON lúc gửi bắt buộc phải có cả customTime, medicineName, email.
              */
+
             if (medicalReminderId != null && !medicalReminderId.isEmpty()) {
                 Optional<MedicalReminder> medicalReminderOptional = this.medicalReminderService
                         .findMedicalReminderByMedicalReminderId(Integer.parseInt(medicalReminderId));
@@ -76,6 +105,9 @@ public class ApiMedicalScheduleController {
                     medicalSchedule.setCustomTime(medicalReminder.getTimeReminderId().getTimeReminderValue());
                     // Nó còn phải set tên thuốc
                     // Nó còn phải set email của thằng cần nhắc nữa.
+                    medicalSchedule.setMedicineName(medicalReminder.getPrescriptionDetailId().getMedicineName());
+                    medicalSchedule.setEmail(medicalReminder.getPrescriptionDetailId().getPrescriptionId()
+                            .getBookingId().getProfilePatientId().getEmail());
                 } else {
                     message = "MedicalReminder[" + addMedicalScheduleDTO.getMedicalReminderId() + "] không tồn tại!";
                     return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
@@ -87,6 +119,8 @@ public class ApiMedicalScheduleController {
              * thì cái customTime đó nó phải tự nhập
              * Nhưng tự nhập thì thiếu thông tin để gửi mail, cũng như tên thuốc (Đề xuất
              * thêm field ở database)
+             * 
+             * Đã thêm 2 field ở database version 45
              */
             if (customTime != null && !customTime.isEmpty()) {
                 Date customTimeParse = this.dateFormatComponent.myDateTimeFormat().parse(customTime);
@@ -96,6 +130,14 @@ public class ApiMedicalScheduleController {
             if (startDate != null && !startDate.isEmpty()) {
                 Date startDateParse = this.dateFormatComponent.myDateFormat().parse(startDate);
                 medicalSchedule.setStartDate(startDateParse);
+            }
+
+            if (email != null && !email.isEmpty()) {
+                medicalSchedule.setEmail(email);
+            }
+
+            if (medicineName != null && !medicineName.isEmpty()) {
+                medicalSchedule.setMedicineName(medicineName);
             }
 
             medicalSchedule.setActive(Boolean.TRUE);
