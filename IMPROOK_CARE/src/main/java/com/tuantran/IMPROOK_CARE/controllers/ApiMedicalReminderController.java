@@ -4,14 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.controllers;
 
-import com.tuantran.IMPROOK_CARE.models.Districts;
-import com.tuantran.IMPROOK_CARE.models.Provinces;
-import com.tuantran.IMPROOK_CARE.models.Wards;
-import com.tuantran.IMPROOK_CARE.service.DistrictsService;
 import com.tuantran.IMPROOK_CARE.service.MedicalReminderService;
-import com.tuantran.IMPROOK_CARE.service.ProvincesService;
-import com.tuantran.IMPROOK_CARE.service.WardsService;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;

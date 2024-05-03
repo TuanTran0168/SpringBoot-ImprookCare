@@ -6,17 +6,13 @@ package com.tuantran.IMPROOK_CARE.service.Impl;
 
 import com.tuantran.IMPROOK_CARE.models.MedicalReminder;
 import com.tuantran.IMPROOK_CARE.models.MedicalSchedule;
-import com.tuantran.IMPROOK_CARE.models.PrescriptionDetail;
-import com.tuantran.IMPROOK_CARE.repository.MedicalReminderRepository;
 import com.tuantran.IMPROOK_CARE.repository.MedicalScheduleRepository;
-import com.tuantran.IMPROOK_CARE.service.MedicalReminderService;
 import com.tuantran.IMPROOK_CARE.service.MedicalScheduleService;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -30,13 +26,7 @@ import org.springframework.stereotype.Service;
 public class MedicalScheduleServiceImpl implements MedicalScheduleService {
 
     @Autowired
-    private MedicalReminderRepository medicalReminderRepository;
-
-    @Autowired
     private MedicalScheduleRepository medicalScheduleRepository;
-
-    @Autowired
-    private Environment environment;
 
     @Override
     public Optional<MedicalSchedule> findByMedicalScheduleIdAndActiveTrue(Integer medicalScheduleId) {

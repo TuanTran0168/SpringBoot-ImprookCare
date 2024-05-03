@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,9 +24,6 @@ public class MedicalReminderServiceImpl implements MedicalReminderService {
 
     @Autowired
     private MedicalReminderRepository medicalReminderRepository;
-
-    @Autowired
-    private Environment environment;
 
     @Override
     public List<MedicalReminder> findByPrescriptionDetailId(PrescriptionDetail prescriptionDetailId) {

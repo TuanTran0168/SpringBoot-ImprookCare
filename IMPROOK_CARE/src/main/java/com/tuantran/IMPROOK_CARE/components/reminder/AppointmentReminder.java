@@ -1,22 +1,18 @@
 package com.tuantran.IMPROOK_CARE.components.reminder;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.tuantran.IMPROOK_CARE.components.email.MailService;
 import com.tuantran.IMPROOK_CARE.dto.EmailDTO;
 import com.tuantran.IMPROOK_CARE.models.Booking;
-import com.tuantran.IMPROOK_CARE.models.Schedule;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;

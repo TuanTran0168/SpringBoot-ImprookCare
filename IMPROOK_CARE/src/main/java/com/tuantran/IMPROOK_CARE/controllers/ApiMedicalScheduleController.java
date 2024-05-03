@@ -6,20 +6,12 @@ package com.tuantran.IMPROOK_CARE.controllers;
 
 import com.tuantran.IMPROOK_CARE.components.datetime.DateFormatComponent;
 import com.tuantran.IMPROOK_CARE.dto.AddMedicalScheduleDTO;
-import com.tuantran.IMPROOK_CARE.models.Districts;
 import com.tuantran.IMPROOK_CARE.models.MedicalReminder;
 import com.tuantran.IMPROOK_CARE.models.MedicalSchedule;
-import com.tuantran.IMPROOK_CARE.models.Provinces;
-import com.tuantran.IMPROOK_CARE.models.Wards;
-import com.tuantran.IMPROOK_CARE.service.DistrictsService;
 import com.tuantran.IMPROOK_CARE.service.MedicalReminderService;
 import com.tuantran.IMPROOK_CARE.service.MedicalScheduleService;
-import com.tuantran.IMPROOK_CARE.service.ProvincesService;
-import com.tuantran.IMPROOK_CARE.service.WardsService;
-
 import java.text.ParseException;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;

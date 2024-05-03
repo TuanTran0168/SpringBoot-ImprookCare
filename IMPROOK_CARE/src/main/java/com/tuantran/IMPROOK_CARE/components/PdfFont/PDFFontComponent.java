@@ -5,7 +5,6 @@
 package com.tuantran.IMPROOK_CARE.components.PdfFont;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 
 import org.springframework.stereotype.Component;
