@@ -16,7 +16,6 @@ import com.tuantran.IMPROOK_CARE.dto.EmailDTO;
 import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.MedicalSchedule;
 import com.tuantran.IMPROOK_CARE.repository.MedicalScheduleRepository;
-import com.tuantran.IMPROOK_CARE.service.MedicalScheduleService;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
