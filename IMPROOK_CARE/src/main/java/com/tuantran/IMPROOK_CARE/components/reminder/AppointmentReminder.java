@@ -1,6 +1,7 @@
 package com.tuantran.IMPROOK_CARE.components.reminder;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,10 @@ import org.springframework.stereotype.Component;
 import com.tuantran.IMPROOK_CARE.components.email.MailService;
 import com.tuantran.IMPROOK_CARE.dto.EmailDTO;
 import com.tuantran.IMPROOK_CARE.models.Booking;
+import com.tuantran.IMPROOK_CARE.models.MedicalSchedule;
+import com.tuantran.IMPROOK_CARE.repository.MedicalScheduleRepository;
+import com.tuantran.IMPROOK_CARE.service.MedicalScheduleService;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -27,11 +32,14 @@ public class AppointmentReminder {
     private MailService mailService;
 
     @Autowired
+    private MedicalScheduleRepository medicalScheduleRepository;
+
+    @Autowired
     private Environment environment;
 
     @Scheduled(cron = "0 0 8 * * *") // Chạy mỗi ngày vào lúc 8 giờ sáng
     // @Scheduled(cron = "*/5 * * * * *") // Mỗi 5 giây
-    public void checkAppointments() {
+    private void checkAppointments() {
         // Tìm các cuộc hẹn trong 24 giờ tới
         // String jpql = "SELECT s FROM Schedule s " +
         // "WHERE s.scheduleId IN (SELECT b.scheduleId FROM Booking b) " +
@@ -67,14 +75,72 @@ public class AppointmentReminder {
             this.mailService.sendEmail(emailDTO);
         }
 
-        // System.out.println("ĐMM");
-
     }
 
-    // private void sendReminder(Appointment appointment) {
-    // // Gửi thông báo qua email, SMS, hoặc push notification
-    // System.out.println("Nhắc tái khám: Bệnh nhân " + appointment.getPatientId() +
-    // " có cuộc hẹn tái khám vào "
-    // + appointment.getAppointmentDate());
-    // }
+    // Hàm để trích xuất giờ và phút từ `Date`
+    // Sat May 04 10:16:50 ICT 2024
+    private String[] extractHourAndMinute(String date) {
+        // Cắt lấy phần giờ và phút
+        String[] timeParts = date.split(" "); // Tách theo khoảng trắng
+
+        String timeOfDay = "";
+
+        /*
+         * Vì có 2 định dạng time khác nhau nên chia vầy
+         * Loại 1: Sat May 04 10:16:50 ICT 2024
+         * Loại 2: 2024-08-28 10:48:30.0
+         */
+        if (timeParts.length > 2) {
+            timeOfDay = timeParts[3]; // Lấy phần thời gian (10:16:50)
+        } else {
+            timeOfDay = timeParts[1]; // Lấy phần thời gian (10:16:50)
+        }
+
+        // Lấy phần giờ và phút
+        String[] hourAndMinute = timeOfDay.substring(0, 5).split(":"); // Lấy giờ và phút (10:16)
+
+        return hourAndMinute;
+    }
+
+    // @Scheduled(cron = "0 0 8 * * *") // Chạy mỗi ngày vào lúc 8 giờ sáng
+    // @Scheduled(cron = "*/5 * * * * *") // Mỗi 5 giây
+    @Scheduled(cron = "0 * * * * *") // Chạy mỗi phút (giây = 0)
+    private void checkUpcomingMedicalReminders() {
+        // Lấy thời gian hiện tại
+        LocalDateTime now = LocalDateTime.now();
+
+        // Tính thời gian 30 phút sau
+        LocalDateTime in30Minutes = now.plusMinutes(30);
+
+        // Chuyển đổi thành kiểu `Date`
+        Date in30MinutesDate = Date.from(in30Minutes.atZone(ZoneId.systemDefault()).toInstant());
+
+        System.out.println(in30MinutesDate.getTime());
+        System.out.println(in30MinutesDate.toString());
+
+        // Chuỗi thời gian gốc
+        String timeString = in30MinutesDate.toString();
+
+        String[] hourAndMinute = this.extractHourAndMinute(timeString);
+
+        // In ra phần giờ và phút
+        System.out.println("Giờ và phút: " + hourAndMinute[0] + " - " + hourAndMinute[1]);
+
+        // Truy vấn dữ liệu trong khoảng 30 phút tới, tạm thời chưa đụng tới startDate
+        List<MedicalSchedule> upcomingReminders = this.medicalScheduleRepository.findByHourAndMinute(
+                Integer.parseInt(hourAndMinute[0]),
+                Integer.parseInt(hourAndMinute[1]));
+
+        // Thực hiện hành động nếu có nhắc nhở uống thuốc trong 30 phút tới
+        if (!upcomingReminders.isEmpty()) {
+            for (MedicalSchedule reminder : upcomingReminders) {
+                // Gửi email, thông báo, hoặc thực hiện hành động khác
+                // Cái CustomTime là 2024-08-28 10:48:30.0 nên lỗi hàm Extract
+                String[] time = this.extractHourAndMinute(reminder.getCustomTime().toString());
+                System.out.println(
+                        "Nhắc uống thuốc: " + reminder.getMedicineName() + " vào lúc: " +
+                                time[0] + " giờ " + time[1] + " phút");
+            }
+        }
+    }
 }
