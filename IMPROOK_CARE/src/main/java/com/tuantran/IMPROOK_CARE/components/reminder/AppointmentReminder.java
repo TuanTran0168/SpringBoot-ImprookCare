@@ -3,8 +3,11 @@ package com.tuantran.IMPROOK_CARE.components.reminder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -101,6 +104,51 @@ public class AppointmentReminder {
         return hourAndMinute;
     }
 
+    public void sendGroupedReminders(List<MedicalSchedule> upcomingReminders) {
+        // Tạo Map để nhóm các nhắc nhở theo email
+        Map<String, List<MedicalSchedule>> remindersByEmail = new HashMap<>();
+
+        // Nhóm các nhắc nhở theo email
+        for (MedicalSchedule reminder : upcomingReminders) {
+            String email = reminder.getEmail();
+            if (!remindersByEmail.containsKey(email)) {
+                remindersByEmail.put(email, new ArrayList<>());
+            }
+            remindersByEmail.get(email).add(reminder);
+        }
+
+        // Duyệt qua Map để tạo nội dung email và gửi email cho từng nhóm
+        for (Map.Entry<String, List<MedicalSchedule>> entry : remindersByEmail.entrySet()) {
+            String email = entry.getKey();
+            List<MedicalSchedule> reminders = entry.getValue();
+
+            StringBuilder contentBuilder = new StringBuilder();
+            for (MedicalSchedule reminder : reminders) {
+                String[] time = this.extractHourAndMinute(reminder.getCustomTime().toString());
+                contentBuilder.append("Nhắc uống thuốc: ")
+                        .append(reminder.getMedicineName())
+                        .append(" vào lúc: ")
+                        .append(time[0])
+                        .append(" giờ ")
+                        .append(time[1])
+                        .append(" phút\n");
+            }
+
+            String content = contentBuilder.toString();
+
+            EmailDTO emailDTO = new EmailDTO();
+            emailDTO.setMailFrom(this.environment.getProperty("spring.mail.username"));
+            emailDTO.setMailTo(email);
+            emailDTO.setMailSubject("NHẮC NHỞ UỐNG THUỐC");
+            emailDTO.setMailContent(content);
+
+            this.mailService.sendEmail(emailDTO);
+
+            System.out.println("Gửi thông báo đến email: " + email);
+            System.out.println(content);
+        }
+    }
+
     // @Scheduled(cron = "0 0 8 * * *") // Chạy mỗi ngày vào lúc 8 giờ sáng
     // @Scheduled(cron = "*/5 * * * * *") // Mỗi 5 giây
     @Scheduled(cron = "0 * * * * *") // Chạy mỗi phút (giây = 0)
@@ -130,16 +178,34 @@ public class AppointmentReminder {
                 Integer.parseInt(hourAndMinute[0]),
                 Integer.parseInt(hourAndMinute[1]));
 
+        this.sendGroupedReminders(upcomingReminders);
+
         // Thực hiện hành động nếu có nhắc nhở uống thuốc trong 30 phút tới
-        if (!upcomingReminders.isEmpty()) {
-            for (MedicalSchedule reminder : upcomingReminders) {
-                // Gửi email, thông báo, hoặc thực hiện hành động khác
-                // Cái CustomTime là 2024-08-28 10:48:30.0 nên lỗi hàm Extract
-                String[] time = this.extractHourAndMinute(reminder.getCustomTime().toString());
-                System.out.println(
-                        "Nhắc uống thuốc: " + reminder.getMedicineName() + " vào lúc: " +
-                                time[0] + " giờ " + time[1] + " phút");
-            }
-        }
+        // if (!upcomingReminders.isEmpty()) {
+        // for (MedicalSchedule reminder : upcomingReminders) {
+        // // Gửi email, thông báo, hoặc thực hiện hành động khác
+        // // Cái CustomTime là 2024-08-28 10:48:30.0 nên lỗi hàm Extract
+        // String[] time =
+        // this.extractHourAndMinute(reminder.getCustomTime().toString());
+        // String content_temp = "Nhắc uống thuốc: " + reminder.getMedicineName() + "
+        // vào lúc: " +
+        // time[0] + " giờ " + time[1] + " phút" + " - Gửi thông báo đến email: "
+        // + reminder.getEmail() + "\n";
+
+        // String content = "Nhắc uống thuốc: " + reminder.getMedicineName() + " vào
+        // lúc: " +
+        // time[0] + " giờ " + time[1] + " phút \n";
+
+        // System.out.println(content_temp);
+
+        // EmailDTO emailDTO = new EmailDTO();
+        // emailDTO.setMailFrom(this.environment.getProperty("spring.mail.username"));
+        // emailDTO.setMailTo(reminder.getEmail());
+        // emailDTO.setMailSubject("NHẮC NHỞ UỐNG THUỐC");
+        // emailDTO.setMailContent(content);
+
+        // this.mailService.sendEmail(emailDTO);
+        // }
+        // }
     }
 }
