@@ -12,7 +12,9 @@ public class CorsConfig {
 
     private static final String[] CLIENT_WHITELIST = {
             "http://localhost:3000",
-            "https://react-js-improok-care.vercel.app/"
+            "http://localhost:2024",
+            "https://react-js-improok-care.vercel.app/",
+            "https://springboot-improokcare.onrender.com/",
     };
 
     @Bean
