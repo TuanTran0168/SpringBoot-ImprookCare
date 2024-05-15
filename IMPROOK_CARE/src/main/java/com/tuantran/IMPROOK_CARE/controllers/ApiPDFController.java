@@ -172,7 +172,7 @@ public class ApiPDFController {
                                 .setBorderBottom(Border.NO_BORDER)
                                 .setBorderLeft(Border.NO_BORDER)
                                 .setBorderRight(Border.NO_BORDER)
-                                .setBackgroundColor(new DeviceRgb(255, 200, 200))
+                                // .setBackgroundColor(new DeviceRgb(255, 200, 200))
                                 .setFontSize(10)
                                 .setBold()
                                 .setTextAlignment(TextAlignment.LEFT)
