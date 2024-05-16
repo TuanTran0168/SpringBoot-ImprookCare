@@ -16,6 +16,9 @@ import jakarta.validation.Valid;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,6 +154,45 @@ public class ApiMedicalScheduleController {
         } catch (ParseException e) {
             e.printStackTrace();
             return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/auth/add-list-medical-schedule/")
+    @CrossOrigin
+    public ResponseEntity<?> addListMedicalSchedule(
+            @Valid @RequestBody List<AddMedicalScheduleDTO> addListMedicalScheduleDTO) {
+        try {
+            int countSuccess = 0;
+            int countFailure = 0;
+            for (AddMedicalScheduleDTO addMedicalScheduleDTO : addListMedicalScheduleDTO) {
+                ResponseEntity<?> responseEntity = this.addMedicalSchedule(addMedicalScheduleDTO);
+
+                if (responseEntity.getStatusCode() == HttpStatus.CREATED) {
+                    MedicalSchedule medicalSchedule = (MedicalSchedule) responseEntity.getBody();
+
+                    if (medicalSchedule != null) {
+                        countSuccess++;
+                    } else {
+                        countFailure++;
+                    }
+                    System.out.println("\nMedicalSchedule[" + addMedicalScheduleDTO.getMedicineName() + "] - "
+                            + responseEntity.getStatusCode() + "\n");
+                } else {
+                    countFailure++;
+                    System.out.println("\nMedicalSchedule[" + addMedicalScheduleDTO.getMedicineName() + "] - "
+                            + responseEntity.getStatusCode() + "\n");
+                }
+            }
+
+            Map<String, Integer> result = new HashMap<>();
+            result.put("Success", countSuccess);
+            result.put("Failure", countFailure);
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
+
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);

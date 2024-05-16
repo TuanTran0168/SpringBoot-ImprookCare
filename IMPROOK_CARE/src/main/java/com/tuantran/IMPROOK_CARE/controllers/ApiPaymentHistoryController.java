@@ -186,7 +186,7 @@ public class ApiPaymentHistoryController {
                 return new ResponseEntity<>(paymentHistoryOptional.get(), HttpStatus.OK);
             } else {
                 message = "PaymentHistory[" + paymentHistoryId + "] không tồn tại!";
-                return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
             }
 
         } catch (NumberFormatException e) {
