@@ -4,6 +4,8 @@
  */
 package com.tuantran.IMPROOK_CARE.service;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,4 +20,6 @@ public interface PaymentHistoryService {
         Page<?> findPaymentHistoryByProfilePatientId(int profilePatientId, Pageable page);
 
         PaymentHistory addPaymentHistory(PaymentHistory paymentHistory, Booking booking);
+
+        Optional<PaymentHistory> findByPaymentHistoryId(Integer paymentHistoryId);
 }

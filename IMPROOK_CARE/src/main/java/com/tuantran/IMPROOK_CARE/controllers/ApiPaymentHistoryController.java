@@ -172,4 +172,29 @@ public class ApiPaymentHistoryController {
 
     }
 
+    @GetMapping("/auth/payment-history/{paymentHistoryId}/")
+    @CrossOrigin
+    public ResponseEntity<?> paymentHistoryDetail(
+            @PathVariable(value = "paymentHistoryId") String paymentHistoryId) {
+        String message = "Có lỗi xảy ra!";
+
+        try {
+            Optional<PaymentHistory> paymentHistoryOptional = this.paymentHistoryService
+                    .findByPaymentHistoryId(Integer.parseInt(paymentHistoryId));
+
+            if (paymentHistoryOptional.isPresent()) {
+                return new ResponseEntity<>(paymentHistoryOptional.get(), HttpStatus.OK);
+            } else {
+                message = "PaymentHistory[" + paymentHistoryId + "] không tồn tại!";
+                return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+            }
+
+        } catch (NumberFormatException e) {
+            return new ResponseEntity<>(e.toString(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
 }
