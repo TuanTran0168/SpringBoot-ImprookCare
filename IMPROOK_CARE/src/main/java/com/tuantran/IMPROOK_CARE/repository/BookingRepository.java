@@ -56,8 +56,12 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
         @Query("SELECT b "
                         + "FROM Booking b JOIN b.profilePatientId pp JOIN b.scheduleId s JOIN s.profileDoctorId pd JOIN pp.userId u "
-                        + "WHERE u.userId = :userId AND b.statusId.statusId = 5 OR b.statusId.statusId = 6")
-        Page<?> getBookingForUserViewDoubleStatus(@Param("userId") int userId, Pageable page);
+                        + "WHERE u.userId = :userId AND (b.statusId.statusId = :bookingStatusId1 OR b.statusId.statusId = :bookingStatusId2)")
+        Page<Booking> getBookingForUserViewDoubleStatus(
+                        @Param("userId") int userId,
+                        @Param("bookingStatusId1") int bookingStatusId1,
+                        @Param("bookingStatusId2") int bookingStatusId2,
+                        Pageable page);
 
         @Query("SELECT ts.timeSlotId, ts.timeBegin, ts.timeEnd, s.booked "
                         + "FROM Schedule s "

@@ -163,9 +163,13 @@ public class ApiBookingController {
             }
         }
 
-        if (bookingStatusId.equals("5&6")) {
+        if (bookingStatusId.contains("&")) {
+            String[] bookingStatus = bookingStatusId.split("&");
+
             return new ResponseEntity<>(
-                    this.bookingService.getBookingForUserViewDoubleStatus(Integer.parseInt(userId), page),
+                    this.bookingService.getBookingForUserViewDoubleStatus(Integer.parseInt(userId),
+                            Integer.parseInt(bookingStatus[0]),
+                            Integer.parseInt(bookingStatus[1]), page),
                     HttpStatus.OK);
         }
 

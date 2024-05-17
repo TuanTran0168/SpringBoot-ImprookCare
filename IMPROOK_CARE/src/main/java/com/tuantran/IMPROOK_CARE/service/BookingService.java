@@ -38,7 +38,10 @@ public interface BookingService {
         Page<?> getBookingForUserView(@Param("userId") int userId, @Param("bookingStatus") int bookingStatusId,
                         Pageable page);
 
-        Page<?> getBookingForUserViewDoubleStatus(@Param("userId") int userId, Pageable page);
+        Page<?> getBookingForUserViewDoubleStatus(@Param("userId") int userId,
+                        @Param("bookingStatusId1") int bookingStatusId1,
+                        @Param("bookingStatusId2") int bookingStatusId2,
+                        Pageable page);
 
         List<Object[]> getTimeSlotsForDoctorOnDate(@Param("profileDoctorId") int profileDoctorId,
                         @Param("date") String date);
