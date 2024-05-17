@@ -162,6 +162,13 @@ public class ApiBookingController {
                         mySort);
             }
         }
+
+        if (bookingStatusId.equals("5&6")) {
+            return new ResponseEntity<>(
+                    this.bookingService.getBookingForUserViewDoubleStatus(Integer.parseInt(userId), page),
+                    HttpStatus.OK);
+        }
+
         return new ResponseEntity<>(this.bookingService.getBookingForUserView(Integer.parseInt(userId),
                 Integer.parseInt(bookingStatusId), page), HttpStatus.OK);
     }
