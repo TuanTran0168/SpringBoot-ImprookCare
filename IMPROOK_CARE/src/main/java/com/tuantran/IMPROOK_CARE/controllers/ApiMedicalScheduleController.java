@@ -14,7 +14,6 @@ import com.tuantran.IMPROOK_CARE.models.MedicalSchedule;
 import com.tuantran.IMPROOK_CARE.models.PrescriptionDetail;
 import com.tuantran.IMPROOK_CARE.models.Prescriptions;
 import com.tuantran.IMPROOK_CARE.models.ProfilePatient;
-import com.tuantran.IMPROOK_CARE.models.TestResult;
 import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.service.MedicalReminderService;
 import com.tuantran.IMPROOK_CARE.service.MedicalScheduleService;
