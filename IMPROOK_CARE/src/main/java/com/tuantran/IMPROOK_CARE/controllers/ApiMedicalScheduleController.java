@@ -9,8 +9,10 @@ import com.tuantran.IMPROOK_CARE.dto.AddMedicalScheduleDTO;
 import com.tuantran.IMPROOK_CARE.dto.UpdateMedicalScheduleDTO;
 import com.tuantran.IMPROOK_CARE.models.MedicalReminder;
 import com.tuantran.IMPROOK_CARE.models.MedicalSchedule;
+import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.service.MedicalReminderService;
 import com.tuantran.IMPROOK_CARE.service.MedicalScheduleService;
+import com.tuantran.IMPROOK_CARE.service.UserService;
 
 import jakarta.validation.Valid;
 
@@ -49,6 +51,9 @@ public class ApiMedicalScheduleController {
     @Autowired
     private DateFormatComponent dateFormatComponent;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/auth/prescriptionId/{prescriptionId}/medical-schedule/")
     @CrossOrigin
     public ResponseEntity<?> listMedicalReminder(
@@ -69,6 +74,7 @@ public class ApiMedicalScheduleController {
             String startDate = addMedicalScheduleDTO.getStartDate();
             String medicineName = addMedicalScheduleDTO.getMedicineName();
             String email = addMedicalScheduleDTO.getEmail();
+            String userId = addMedicalScheduleDTO.getUserId();
 
             /*
              * Nếu cái medicalReminderId KHÔNG null (tức là nó tạo tự động từ đơn thuốc)
@@ -81,6 +87,7 @@ public class ApiMedicalScheduleController {
              * "startDate": "2024-08-28",
              * "medicineName": "Thuốc an thần",
              * "email": "2051050549tuan@ou.edu.vn"
+             * "userId": "1"
              * }
              * 
              * TH1: nó tạo tự động từ đơn thuốc
@@ -145,6 +152,15 @@ public class ApiMedicalScheduleController {
 
             if (medicineName != null && !medicineName.isEmpty()) {
                 medicalSchedule.setMedicineName(medicineName);
+            }
+
+            User user = this.userService.findUserByUserIdAndActiveTrue(Integer.parseInt(userId));
+
+            if (user != null) {
+                medicalSchedule.setUserId(user);
+            } else {
+                message = "User[" + addMedicalScheduleDTO.getUserId() + "] không tồn tại!";
+                return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
             }
 
             medicalSchedule.setActive(Boolean.TRUE);

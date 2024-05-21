@@ -69,6 +69,9 @@ public class MedicalSchedule implements Serializable {
     @JoinColumn(name = "medical_reminder_id", referencedColumnName = "medical_reminder_id")
     @ManyToOne
     private MedicalReminder medicalReminderId;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @ManyToOne
+    private User userId;
 
     public MedicalSchedule() {
     }
@@ -155,6 +158,14 @@ public class MedicalSchedule implements Serializable {
 
     public void setMedicalReminderId(MedicalReminder medicalReminderId) {
         this.medicalReminderId = medicalReminderId;
+    }
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
     }
 
     @Override
