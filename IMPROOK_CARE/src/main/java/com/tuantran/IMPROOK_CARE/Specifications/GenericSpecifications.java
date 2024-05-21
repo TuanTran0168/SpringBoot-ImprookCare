@@ -4,6 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.Specifications;
 
+import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -27,6 +28,22 @@ public class GenericSpecifications {
 
     public static <T> Specification<T> lessThan(String fieldName, String value) {
         return (root, query, builder) -> builder.lessThan(root.get(fieldName), value);
+    }
+
+    public static <T> Specification<T> greaterThanOrEqualTo(String fieldName, String value) {
+        return (root, query, builder) -> builder.greaterThanOrEqualTo(root.get(fieldName), value);
+    }
+
+    public static <T> Specification<T> lessThanOrEqualTo(String fieldName, String value) {
+        return (root, query, builder) -> builder.lessThanOrEqualTo(root.get(fieldName), value);
+    }
+
+    public static <T> Specification<T> greaterThanOrEqualToDate(String fieldName, Date value) {
+        return (root, query, builder) -> builder.greaterThanOrEqualTo(root.get(fieldName), value);
+    }
+
+    public static <T> Specification<T> lessThanOrEqualToDate(String fieldName, Date value) {
+        return (root, query, builder) -> builder.lessThanOrEqualTo(root.get(fieldName), value);
     }
 
     public static <T> Specification<T> orderByAscending(String fieldName) {
