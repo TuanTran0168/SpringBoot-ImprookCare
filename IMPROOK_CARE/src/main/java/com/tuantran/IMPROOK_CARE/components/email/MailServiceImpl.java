@@ -25,7 +25,7 @@ public class MailServiceImpl implements MailService {
             mimeMessageHelper.setSubject(mail.getMailSubject());
             mimeMessageHelper.setFrom(new InternetAddress(mail.getMailFrom()));
             mimeMessageHelper.setTo(mail.getMailTo());
-            mimeMessageHelper.setText(mail.getMailContent());
+            mimeMessageHelper.setText(mail.getMailContent(), true);
             javaMailSender.send(mimeMessageHelper.getMimeMessage());
             return 1;
         } catch (AddressException ex) {

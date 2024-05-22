@@ -353,13 +353,16 @@ CREATE TABLE `medical_schedule` (
   `start_date` date DEFAULT NULL,
   `medicine_name` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `deleted_date` datetime DEFAULT NULL,
   `active` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`medical_schedule_id`),
   KEY `medical_reminder_id` (`medical_reminder_id`),
-  CONSTRAINT `medical_schedule_ibfk_1` FOREIGN KEY (`medical_reminder_id`) REFERENCES `medical_reminder` (`medical_reminder_id`)
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `medical_schedule_ibfk_1` FOREIGN KEY (`medical_reminder_id`) REFERENCES `medical_reminder` (`medical_reminder_id`),
+  CONSTRAINT `medical_schedule_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1231,4 +1234,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-03 14:51:34
+-- Dump completed on 2024-05-21  9:25:02
