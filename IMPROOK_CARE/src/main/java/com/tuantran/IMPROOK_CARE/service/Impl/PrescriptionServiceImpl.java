@@ -21,6 +21,7 @@ import com.tuantran.IMPROOK_CARE.models.ServicePaymentStatus;
 import com.tuantran.IMPROOK_CARE.models.TimeReminder;
 import com.tuantran.IMPROOK_CARE.repository.BookingRepository;
 import com.tuantran.IMPROOK_CARE.repository.MedicalReminderRepository;
+import com.tuantran.IMPROOK_CARE.repository.MedicalScheduleRepository;
 import com.tuantran.IMPROOK_CARE.repository.MedicineRepository;
 import com.tuantran.IMPROOK_CARE.repository.PrescriptionDetailRepository;
 import com.tuantran.IMPROOK_CARE.repository.PrescriptionRepository;
@@ -80,6 +81,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
     @Autowired
     private MedicalReminderRepository medicalReminderRepository;
+
+    @Autowired
+    private MedicalScheduleRepository medicalScheduleRepository;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -314,17 +318,50 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
             this.prescriptionRepository.save(prescriptions);
 
-            // Danh sách chi tiết toa thuốc hiện tại
+            // ================== DELETE FOREIGN KEY ==================
+
+            /*
+             * Hàm này bây giờ xử lý thay cho ON DELETE CASCADE
+             * Để tránh gây lỗi khi người dùng tạo lịch nhắc thuốc ở trên chính cái đơn
+             * thuốc này thì sẽ xử lý xóa hết các khóa ngoại liên quan ở bảng khác
+             * 
+             * Khi cập nhật sẽ xóa hết MedicalSchedule, MedicalReminder, PrescriptionDetail
+             */
+
+            // Danh sách chi tiết toa thuốc hiện tại (B5)
             List<PrescriptionDetail> prescriptionDetails_current = this.prescriptionDetailRepository
                     .findPrescriptionDetailByPrescriptionId(prescriptions);
 
+            /*
+             * B1: Tìm danh sách MedicalSchedule bằng timeReminderId
+             * B2: Xóa danh sách MedicalSchedule đó trước
+             * 
+             * B3: Tìm danh sách TimeReminder bằng prescriptionDetailId
+             * B4: Xóa danh sách TimeReminder đó tiếp theo
+             * 
+             * B5: Tìm danh sách PrescriptionDetail
+             * B6: Xóa danh sách PrescriptionDetail đó
+             */
+
             for (PrescriptionDetail prescriptionDetail : prescriptionDetails_current) {
-                this.medicalReminderRepository.deleteAllInBatch(
-                        this.medicalReminderRepository.findByPrescriptionDetailId(prescriptionDetail));
+                // Tìm danh sách TimeReminder bằng prescriptionDetailId (B3)
+                List<MedicalReminder> medicalReminders = this.medicalReminderRepository
+                        .findByPrescriptionDetailId(prescriptionDetail);
+
+                for (MedicalReminder medicalReminder : medicalReminders) {
+                    // Tìm danh sách MedicalSchedule bằng timeReminderId (B1)
+                    // Xóa danh sách MedicalSchedule đó trước (B2)
+                    this.medicalScheduleRepository.deleteAllInBatch(
+                            this.medicalScheduleRepository.findByMedicalReminderIdAndActiveTrue(medicalReminder));
+                }
+                // Xóa danh sách TimeReminder đó tiếp theo (B4)
+                this.medicalReminderRepository.deleteAllInBatch(medicalReminders);
             }
 
-            // Xóa hết danh sách đó
+            // Xóa hết danh sách đó (B6)
             this.prescriptionDetailRepository.deleteAllInBatch(prescriptionDetails_current);
+
+            // ====================================================================================
 
             // Duyệt qua danh sách chi tiết toa thuốc mới gửi xuống server để thêm
             // Y chang như thêm mới

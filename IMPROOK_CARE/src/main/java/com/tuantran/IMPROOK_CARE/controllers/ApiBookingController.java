@@ -162,6 +162,17 @@ public class ApiBookingController {
                         mySort);
             }
         }
+
+        if (bookingStatusId.contains("&")) {
+            String[] bookingStatus = bookingStatusId.split("&");
+
+            return new ResponseEntity<>(
+                    this.bookingService.getBookingForUserViewDoubleStatus(Integer.parseInt(userId),
+                            Integer.parseInt(bookingStatus[0]),
+                            Integer.parseInt(bookingStatus[1]), page),
+                    HttpStatus.OK);
+        }
+
         return new ResponseEntity<>(this.bookingService.getBookingForUserView(Integer.parseInt(userId),
                 Integer.parseInt(bookingStatusId), page), HttpStatus.OK);
     }

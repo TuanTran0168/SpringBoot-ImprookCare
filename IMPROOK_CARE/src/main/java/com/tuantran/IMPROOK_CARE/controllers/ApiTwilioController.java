@@ -71,6 +71,8 @@ public class ApiTwilioController {
             message = "Số điện thoại không hợp lệ!";
         } else if (check == 3) {
             message = "Số điện thoại " + phonenumber + " đã được đăng ký";
+        } else if (check == 0) {
+            message = "Không thể kết nối đến Twilio";
         }
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);

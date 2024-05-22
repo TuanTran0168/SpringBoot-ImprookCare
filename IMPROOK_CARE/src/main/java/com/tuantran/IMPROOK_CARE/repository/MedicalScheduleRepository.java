@@ -27,29 +27,29 @@ import java.util.List;
 @Transactional
 public interface MedicalScheduleRepository extends JpaRepository<MedicalSchedule, Integer> {
 
-    Optional<MedicalSchedule> findByMedicalScheduleIdAndActiveTrue(Integer medicalScheduleId);
+        Optional<MedicalSchedule> findByMedicalScheduleIdAndActiveTrue(Integer medicalScheduleId);
 
-    List<MedicalSchedule> findByMedicalReminderIdAndActiveTrue(MedicalReminder medicalReminderId);
+        List<MedicalSchedule> findByMedicalReminderIdAndActiveTrue(MedicalReminder medicalReminderId);
 
-    Page<?> findAll(Specification<?> createSpecification, Pageable page);
+        Page<?> findAll(Specification<?> createSpecification, Pageable page);
 
-    // Chưa test
-    @Query("SELECT ms "
-            + "FROM MedicalSchedule ms "
-            + "JOIN ms.medicalReminderId mr "
-            + "JOIN mr.prescriptionDetailId pd "
-            + "JOIN pd.prescriptionId p "
-            + "WHERE p.prescriptionId = :prescriptionId")
-    List<?> findMedicalScheduleByPrescriptionId(@Param("prescriptionId") int prescriptionId);
+        // Chưa test
+        @Query("SELECT ms "
+                        + "FROM MedicalSchedule ms "
+                        + "JOIN ms.medicalReminderId mr "
+                        + "JOIN mr.prescriptionDetailId pd "
+                        + "JOIN pd.prescriptionId p "
+                        + "WHERE p.prescriptionId = :prescriptionId")
+        List<?> findMedicalScheduleByPrescriptionId(@Param("prescriptionId") int prescriptionId);
 
-    @Query("SELECT ms FROM MedicalSchedule ms "
-            + "WHERE FUNCTION('TIME', ms.customTime) = :targetTime") // So sánh chỉ phần thời gian
-    List<MedicalSchedule> findByCustomTime(@Param("targetTime") String targetTime);
+        @Query("SELECT ms FROM MedicalSchedule ms "
+                        + "WHERE FUNCTION('TIME', ms.customTime) = :targetTime") // So sánh chỉ phần thời gian
+        List<MedicalSchedule> findByCustomTime(@Param("targetTime") String targetTime);
 
-    @Query("SELECT ms FROM MedicalSchedule ms "
-            + "WHERE FUNCTION('HOUR', ms.customTime) = :hour "
-            + "AND FUNCTION('MINUTE', ms.customTime) = :minute")
-    List<MedicalSchedule> findByHourAndMinute(
-            @Param("hour") int hour,
-            @Param("minute") int minute);
+        @Query("SELECT ms FROM MedicalSchedule ms "
+                        + "WHERE FUNCTION('HOUR', ms.customTime) = :hour "
+                        + "AND FUNCTION('MINUTE', ms.customTime) = :minute")
+        List<MedicalSchedule> findByHourAndMinute(
+                        @Param("hour") int hour,
+                        @Param("minute") int minute);
 }

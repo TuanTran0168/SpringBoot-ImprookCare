@@ -12,4 +12,5 @@ public class AddMedicalScheduleDTO {
     private String startDate;
     private String medicineName;
     private String email;
+    private String userId;
 }

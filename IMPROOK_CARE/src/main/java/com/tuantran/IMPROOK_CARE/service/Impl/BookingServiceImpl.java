@@ -333,4 +333,11 @@ public class BookingServiceImpl implements BookingService {
         return bookingSaved;
     }
 
+    @Override
+    public Page<?> getBookingForUserViewDoubleStatus(int userId, int bookingStatusId1, int bookingStatusId2,
+            Pageable page) {
+        return this.bookingRepository.getBookingForUserViewDoubleStatus(userId, bookingStatusId1, bookingStatusId2,
+                page);
+    }
+
 }

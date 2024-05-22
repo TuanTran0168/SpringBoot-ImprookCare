@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
 /**
  *
@@ -75,31 +76,39 @@ public class ApiChatGPTController {
     public ResponseEntity<?> addChatgptConsult(
             @Valid @RequestBody AddChatgptConsultDTO addChatgptConsultDTO) {
         String message = "Có lỗi xảy ra!";
-        User user = this.userService.findUserByUserIdAndActiveTrue(Integer.parseInt(addChatgptConsultDTO.getUserId()));
+        try {
+            User user = this.userService
+                    .findUserByUserIdAndActiveTrue(Integer.parseInt(addChatgptConsultDTO.getUserId()));
 
-        if (user != null) {
-            ChatgptConsult chatgptConsult = new ChatgptConsult();
-            chatgptConsult.setUserId(user);
+            if (user != null) {
+                ChatgptConsult chatgptConsult = new ChatgptConsult();
+                chatgptConsult.setUserId(user);
 
-            String query = addChatgptConsultDTO.getPatientQuestion();
-            query = MY_PROMPT + query;
-            System.out.println(query);
-            ChatGPTResponseDTO response = chatGPTConfig.getChatGPTRespone(query);
+                String query = addChatgptConsultDTO.getPatientQuestion();
+                query = MY_PROMPT + query;
+                System.out.println(query);
+                ChatGPTResponseDTO response = chatGPTConfig.getChatGPTRespone(query);
 
-            chatgptConsult.setPatientQuestion(addChatgptConsultDTO.getPatientQuestion());
-            chatgptConsult.setActive(Boolean.TRUE);
-            chatgptConsult.setCreatedDate(new Date());
+                chatgptConsult.setPatientQuestion(addChatgptConsultDTO.getPatientQuestion());
+                chatgptConsult.setActive(Boolean.TRUE);
+                chatgptConsult.setCreatedDate(new Date());
 
-            System.out.println("+++++++++++++++++++++++++++++++++++++++");
-            System.out.println(response.getChoices().get(0).getMessage().getContent());
-            System.out.println("+++++++++++++++++++++++++++++++++++++++");
-            chatgptConsult.setChatgptConsultAnswer(response.getChoices().get(0).getMessage().getContent());
+                System.out.println("+++++++++++++++++++++++++++++++++++++++");
+                System.out.println(response.getChoices().get(0).getMessage().getContent());
+                System.out.println("+++++++++++++++++++++++++++++++++++++++");
+                chatgptConsult.setChatgptConsultAnswer(response.getChoices().get(0).getMessage().getContent());
 
-            return new ResponseEntity<>(this.chatgptConsultService.addChatgptConsult(chatgptConsult),
-                    HttpStatus.CREATED);
-        } else {
-            message = "User[" + addChatgptConsultDTO.getUserId() + "] không tồn tại!";
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(this.chatgptConsultService.addChatgptConsult(chatgptConsult),
+                        HttpStatus.CREATED);
+            } else {
+                message = "User[" + addChatgptConsultDTO.getUserId() + "] không tồn tại!";
+                return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+            }
+        } catch (HttpClientErrorException e) {
+            message = "Không thể kết nối đến OpenAI";
+            return new ResponseEntity<>(message + " - " + e, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return new ResponseEntity<>(message + " - " + e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
