@@ -363,4 +363,20 @@ public class ApiMedicalScheduleController {
         }
 
     }
+
+    @GetMapping("/auth/medical-schedule/{medicalScheduleId}/")
+    @CrossOrigin
+    public ResponseEntity<?> medicalScheduleDetail(
+            @PathVariable(value = "medicalScheduleId") int medicalScheduleId) {
+        String message = "Có lỗi xảy ra!";
+        Optional<MedicalSchedule> medicalScheduleOptional = this.medicalScheduleService
+                .findByMedicalScheduleIdAndActiveTrue(medicalScheduleId);
+
+        if (medicalScheduleOptional.isPresent()) {
+            return ResponseEntity.ok().body(medicalScheduleOptional.get());
+        } else {
+            message = "MedicalSchedule[" + medicalScheduleId + "] không tồn tại!";
+            return ResponseEntity.badRequest().body(message);
+        }
+    }
 }
