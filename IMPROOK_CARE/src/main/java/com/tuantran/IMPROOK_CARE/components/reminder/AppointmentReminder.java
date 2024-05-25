@@ -39,6 +39,7 @@ public class AppointmentReminder {
     @Autowired
     private Environment environment;
 
+    @SuppressWarnings("unchecked")
     @Scheduled(cron = "0 0 8 * * *") // Chạy mỗi ngày vào lúc 8 giờ sáng
     // @Scheduled(cron = "*/5 * * * * *") // Mỗi 5 giây
     private void checkAppointments() {

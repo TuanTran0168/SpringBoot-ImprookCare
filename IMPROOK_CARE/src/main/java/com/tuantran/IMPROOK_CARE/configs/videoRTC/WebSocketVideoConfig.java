@@ -18,6 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Configuration
 @EnableWebSocket
 public class WebSocketVideoConfig implements WebSocketConfigurer {
+    @SuppressWarnings("null")
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(videoChatHandler(), "/api/public/video-chat/").setAllowedOrigins("*");
@@ -34,6 +35,7 @@ class VideoChatHandler extends TextWebSocketHandler {
     private final List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
     private final AtomicBoolean isPolitePeer = new AtomicBoolean(true);
 
+    @SuppressWarnings("null")
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         String jsonResponse = "{\"polite\": \"" + isPolitePeer.getAndSet(!isPolitePeer.get()) + "\"}";
@@ -41,6 +43,7 @@ class VideoChatHandler extends TextWebSocketHandler {
         sessions.add(session);
     }
 
+    @SuppressWarnings("null")
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         for (WebSocketSession s : sessions) {
@@ -50,6 +53,7 @@ class VideoChatHandler extends TextWebSocketHandler {
         }
     }
 
+    @SuppressWarnings("null")
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         System.out.println("INSIDE CLOSING STATE");

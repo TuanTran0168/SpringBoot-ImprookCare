@@ -399,6 +399,7 @@ public class ApiMedicalScheduleController {
 
     }
 
+    @SuppressWarnings("unchecked")
     @DeleteMapping("/auth/prescriptionId/{prescriptionId}/hard-delete/medical-schedule/")
     @CrossOrigin
     public ResponseEntity<?> hardDeleteMedicalScheduleByPrescriptionId(
