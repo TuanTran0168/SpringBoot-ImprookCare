@@ -58,4 +58,14 @@ public class MedicalScheduleServiceImpl implements MedicalScheduleService {
         return this.medicalScheduleRepository.save(medicalSchedule);
     }
 
+    @Override
+    public void deleteAllMedicalScheduleInBatch(List<MedicalSchedule> medicalSchedules) {
+        this.medicalScheduleRepository.deleteAllInBatch(medicalSchedules);
+    }
+
+    @Override
+    public void hardDeleteMedicalSchedule(MedicalSchedule medicalSchedule) {
+        this.medicalScheduleRepository.delete(medicalSchedule);
+    }
+
 }

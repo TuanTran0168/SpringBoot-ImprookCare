@@ -40,6 +40,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,7 +74,7 @@ public class ApiMedicalScheduleController {
 
     @GetMapping("/auth/prescriptionId/{prescriptionId}/medical-schedule/")
     @CrossOrigin
-    public ResponseEntity<?> listMedicalReminder(
+    public ResponseEntity<?> listMedicalSchedule(
             @PathVariable(value = "prescriptionId") int prescriptionId) {
         return ResponseEntity.ok()
                 .body(this.medicalScheduleService.findMedicalScheduleByPrescriptionId(prescriptionId));
@@ -379,4 +380,39 @@ public class ApiMedicalScheduleController {
             return ResponseEntity.badRequest().body(message);
         }
     }
+
+    @DeleteMapping("/auth/hard-delete/medical-schedule/{medicalScheduleId}/")
+    @CrossOrigin
+    public ResponseEntity<?> hardDeleteMedicalSchedule(
+            @PathVariable(value = "medicalScheduleId") int medicalScheduleId) {
+        String message = "Có lỗi xảy ra!";
+        Optional<MedicalSchedule> medicalScheduleOptional = this.medicalScheduleService
+                .findByMedicalScheduleIdAndActiveTrue(medicalScheduleId);
+
+        if (medicalScheduleOptional.isPresent()) {
+            this.medicalScheduleService.hardDeleteMedicalSchedule(medicalScheduleOptional.get());
+            return ResponseEntity.noContent().build();
+        } else {
+            message = "MedicalSchedule[" + medicalScheduleId + "] không tồn tại!";
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @DeleteMapping("/auth/prescriptionId/{prescriptionId}/hard-delete/medical-schedule/")
+    @CrossOrigin
+    public ResponseEntity<?> hardDeleteMedicalScheduleByPrescriptionId(
+            @PathVariable(value = "prescriptionId") int prescriptionId) {
+
+        List<MedicalSchedule> medicalSchedules = (List<MedicalSchedule>) (List<?>) medicalScheduleService
+                .findMedicalScheduleByPrescriptionId(prescriptionId);
+
+        if (medicalSchedules.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        this.medicalScheduleService.deleteAllMedicalScheduleInBatch(medicalSchedules);
+        return ResponseEntity.noContent().build();
+    }
+
 }
