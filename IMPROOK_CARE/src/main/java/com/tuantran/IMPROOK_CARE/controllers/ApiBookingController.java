@@ -331,6 +331,9 @@ public class ApiBookingController {
                 timeSlot.setTimeEnd(timeEndParse);
                 timeSlot.setNote(note);
                 timeSlot.setProfileDoctorId(profileDoctor);
+                timeSlot.setActive(Boolean.TRUE);
+                timeSlot.setCreatedDate(new Date());
+
                 /*
                  * Schedule này chưa set id của TimeSlot vì TimeSlot chưa lưu nên không có id
                  */
