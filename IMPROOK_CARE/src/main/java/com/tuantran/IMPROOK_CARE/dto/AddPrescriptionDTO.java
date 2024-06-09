@@ -21,10 +21,12 @@ public class AddPrescriptionDTO {
 
     @NotBlank
     private String symptom;
-    
+
     @NotBlank
     private String servicePrice;
-    
+
     @NotBlank
     private String bookingId;
+
+    private String notes;
 }

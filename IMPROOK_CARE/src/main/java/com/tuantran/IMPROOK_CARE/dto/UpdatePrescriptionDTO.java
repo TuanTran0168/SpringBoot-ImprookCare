@@ -22,4 +22,6 @@ public class UpdatePrescriptionDTO {
     private String diagnosis;
 
     private String symptom;
+
+    private String notes;
 }
