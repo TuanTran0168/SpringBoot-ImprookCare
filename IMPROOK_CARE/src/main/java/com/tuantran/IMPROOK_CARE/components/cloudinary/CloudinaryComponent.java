@@ -24,6 +24,7 @@ public class CloudinaryComponent {
     @Autowired
     private CloudinaryConfig cloudinary;
 
+    @SuppressWarnings("rawtypes")
     public Map Cloudinary(MultipartFile file) {
         try {
             Map res = this.cloudinary.cloudinary().uploader().upload(file.getBytes(),
@@ -36,6 +37,7 @@ public class CloudinaryComponent {
         return null;
     }
 
+    @SuppressWarnings("rawtypes")
     public Map CloudinaryPDF(byte[] pdfBytes) {
         try {
             Map res = this.cloudinary.cloudinary().uploader().upload(pdfBytes,

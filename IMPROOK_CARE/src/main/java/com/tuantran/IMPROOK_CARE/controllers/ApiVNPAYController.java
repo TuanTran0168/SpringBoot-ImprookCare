@@ -6,7 +6,6 @@ package com.tuantran.IMPROOK_CARE.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonObject;
@@ -17,7 +16,7 @@ import com.tuantran.IMPROOK_CARE.dto.VNPAYDTO;
 import com.tuantran.IMPROOK_CARE.dto.VnpayReturnDTO;
 
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
+// import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -59,6 +58,7 @@ public class ApiVNPAYController {
     @Autowired
     private VNPAYConfig vnpayConfig;
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @PostMapping("/public/pay/")
     @CrossOrigin
     public String getPay(@Valid @RequestBody VNPAYDTO vnpayDTO) throws UnsupportedEncodingException {
@@ -130,6 +130,7 @@ public class ApiVNPAYController {
         return paymentUrl;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @PostMapping("/public/pay-return/")
     @CrossOrigin
     public String getPay_return(@Valid @RequestBody VnpayReturnDTO vnpayReturnDTO) throws UnsupportedEncodingException {
@@ -201,6 +202,7 @@ public class ApiVNPAYController {
         return paymentUrl;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes", "static-access" })
     @GetMapping("/public/processReturnVNPAY/")
     @CrossOrigin
     public ResponseEntity<?> processReturnVNPAY(HttpServletRequest request) {
