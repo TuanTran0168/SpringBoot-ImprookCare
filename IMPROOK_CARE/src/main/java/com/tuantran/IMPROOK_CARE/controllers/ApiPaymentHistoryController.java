@@ -89,7 +89,7 @@ public class ApiPaymentHistoryController {
 
     @GetMapping("/auth/add-payment/")
     @CrossOrigin
-    public ResponseEntity<?> listSearchMedicineCategories(@RequestParam Map<String, String> params) {
+    public ResponseEntity<?> addPayment(@RequestParam Map<String, String> params) {
         String message = "Có lỗi xảy ra!";
 
         // {
@@ -186,6 +186,33 @@ public class ApiPaymentHistoryController {
                 return new ResponseEntity<>(paymentHistoryOptional.get(), HttpStatus.OK);
             } else {
                 message = "PaymentHistory[" + paymentHistoryId + "] không tồn tại!";
+                return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+            }
+
+        } catch (NumberFormatException e) {
+            return new ResponseEntity<>(e.toString(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @GetMapping("/auth/booking/{bookingId}/payment-history/")
+    @CrossOrigin
+    public ResponseEntity<?> findPaymentHistoryIdByBookingId(
+            @PathVariable(value = "bookingId") String bookingId) {
+        String message = "Có lỗi xảy ra!";
+
+        try {
+            Optional<Booking> bookingOptional = this.bookingService
+                    .findBookingByBookingIdAndActiveTrue(Integer.parseInt(bookingId));
+
+            if (bookingOptional.isPresent()) {
+
+                return new ResponseEntity<>(
+                        this.paymentHistoryService.findPaymentHistoryByBookingId(bookingOptional.get()), HttpStatus.OK);
+            } else {
+                message = "Booking[" + bookingId + "] không tồn tại!";
                 return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
             }
 
