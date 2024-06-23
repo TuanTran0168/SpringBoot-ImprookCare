@@ -26,10 +26,14 @@ spring.datasource.password=your_password
 - Navigate to the root directory of your Spring Boot project using the cd command. For example, if the root directory of your project is D:\SpringBoot-ImprookCare, you can enter:
 
 ```bash
-  cd D:\SpringBoot-ImprookCare\IMPROOK_CARE
+cd D:\SpringBoot-ImprookCare\IMPROOK_CARE
 ```
 
 - Use the Maven command to compile and run the application. Enter the following command:
 ```bash
-    .\mvnw spring-boot:run
+.\mvnw spring-boot:run
+```
+- You can access the application by opening a web browser and entering the URL:
+```bash
+localhost:2024/IMPROOK_CARE/swagger-ui/index.html
 ```
