@@ -150,7 +150,6 @@ public class ApiBookingController {
             @RequestParam("pageNumber") String pageNumber) {
         String userId = params.get("userId");
         String bookingStatusId = params.get("bookingStatusId");
-        // String pageNumber = params.get("pageNumber");
         int defaultPageNumber = 0;
         Sort mySort = Sort.by("createdDate").descending();
         Pageable page = PageRequest.of(defaultPageNumber,
@@ -163,18 +162,24 @@ public class ApiBookingController {
             }
         }
 
-        if (bookingStatusId.contains("&")) {
-            String[] bookingStatus = bookingStatusId.split("&");
+        if (!bookingStatusId.isEmpty()) {
+            if (bookingStatusId.contains("&")) {
+                String[] bookingStatus = bookingStatusId.split("&");
 
-            return new ResponseEntity<>(
-                    this.bookingService.getBookingForUserViewDoubleStatus(Integer.parseInt(userId),
-                            Integer.parseInt(bookingStatus[0]),
-                            Integer.parseInt(bookingStatus[1]), page),
+                return new ResponseEntity<>(
+                        this.bookingService.getBookingForUserViewDoubleStatus(Integer.parseInt(userId),
+                                Integer.parseInt(bookingStatus[0]),
+                                Integer.parseInt(bookingStatus[1]), page),
+                        HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>(this.bookingService.getBookingForUserView(Integer.parseInt(userId),
+                    Integer.parseInt(bookingStatusId), page), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(this.bookingService.getBookingByUserId(Integer.parseInt(userId), page),
                     HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(this.bookingService.getBookingForUserView(Integer.parseInt(userId),
-                Integer.parseInt(bookingStatusId), page), HttpStatus.OK);
     }
 
     @PostMapping("/public/time-slot-booking/")
