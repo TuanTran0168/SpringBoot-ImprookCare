@@ -18,17 +18,19 @@ public class UpdateUserForAdminDTO {
 
     @NotBlank
     private String userId;
-//    @NotBlank
-//    private String username;
+    // @NotBlank
+    // private String username;
     @NotBlank
     private String firstname;
     @NotBlank
     private String lastname;
     @NotBlank
     private String birthday;
-    
+
     private Boolean gender;
-    
+
     @NotBlank
     private String roleId;
+
+    private String email;
 }
