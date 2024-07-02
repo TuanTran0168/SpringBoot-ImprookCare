@@ -4,6 +4,7 @@
  */
 package com.tuantran.IMPROOK_CARE.repository;
 
+import com.tuantran.IMPROOK_CARE.models.Booking;
 import com.tuantran.IMPROOK_CARE.models.PaymentHistory;
 
 import java.util.Optional;
@@ -32,4 +33,5 @@ public interface PaymentHistoryRepository extends JpaRepository<PaymentHistory, 
             + "WHERE pp.profilePatientId = :profilePatientId")
     Page<?> findPaymentHistoryByProfilePatientId(@Param("profilePatientId") int profilePatientId, Pageable page);
 
+    Optional<PaymentHistory> findPaymentHistoryByBookingId(Booking bookingId);
 }

@@ -111,6 +111,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             prescriptions.setActive(Boolean.TRUE);
             prescriptions.setCreatedDate(new Date());
             prescriptions.setPrescriptionDate(new Date());
+            prescriptions.setNotes(addPrescriptionDTO.getNotes());
 
             this.prescriptionRepository.save(prescriptions);
 
@@ -307,6 +308,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
             String diagnosis = updatePrescriptionDTO.getDiagnosis();
             String symptom = updatePrescriptionDTO.getSymptom();
+            String notes = updatePrescriptionDTO.getNotes();
 
             if (diagnosis != null && !diagnosis.isEmpty()) {
                 prescriptions.setDiagnosis(diagnosis);
@@ -314,6 +316,10 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
             if (symptom != null && !symptom.isEmpty()) {
                 prescriptions.setSymptoms(symptom);
+            }
+
+            if (notes != null && !notes.isEmpty()) {
+                prescriptions.setNotes(notes);
             }
 
             this.prescriptionRepository.save(prescriptions);

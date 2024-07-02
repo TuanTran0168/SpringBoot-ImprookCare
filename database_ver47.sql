@@ -673,6 +673,7 @@ CREATE TABLE `prescriptions` (
   `medicine_payment_Txn_Ref` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `service_payment_status_id` int DEFAULT NULL,
   `service_payment_Txn_Ref` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `notes` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`prescription_id`),
   KEY `booking_id` (`booking_id`),
   KEY `medicine_payment_status_id` (`medicine_payment_status_id`),
@@ -689,7 +690,7 @@ CREATE TABLE `prescriptions` (
 
 LOCK TABLES `prescriptions` WRITE;
 /*!40000 ALTER TABLE `prescriptions` DISABLE KEYS */;
-INSERT INTO `prescriptions` VALUES (26,'2023-10-13',NULL,'Đau bụng','Đau bụng, nhức đầu','120000','2023-10-13 16:55:34',NULL,NULL,1,16,2,NULL,2,NULL),(27,'2023-10-16',NULL,'Ho','Đau họng','120000','2023-10-16 18:28:18',NULL,NULL,1,26,2,NULL,2,NULL),(28,'2023-10-16',NULL,'Ợ Chua','Đau bụng','250000','2023-10-16 20:40:33',NULL,NULL,1,28,2,NULL,1,NULL),(29,'2023-10-16',NULL,'Chóng Mặt','Buồn nôn','120000','2023-10-16 20:44:21',NULL,NULL,1,27,1,NULL,2,NULL),(30,'2023-10-16',NULL,'Tê Tay','Gãy Tay','150000','2023-10-16 20:45:39',NULL,NULL,1,29,1,NULL,1,NULL),(31,'2023-10-16',NULL,'Nóng trong người','Nhiệt miệng','270000','2023-10-16 20:52:09',NULL,NULL,1,31,1,NULL,2,NULL),(32,'2023-10-16',NULL,'Chảy Nước Mắt','Mỏi mắt','120000','2023-10-16 20:53:11',NULL,NULL,1,32,2,NULL,1,NULL),(33,'2023-10-16',NULL,'Ho Gà','Đau Họng','250000','2023-10-16 20:57:22',NULL,NULL,1,34,1,NULL,1,NULL),(34,'2023-10-16',NULL,'Mất Ngủ','Đau Thần Kinh Tọa','150000','2023-10-16 20:58:39',NULL,NULL,1,33,2,NULL,1,NULL);
+INSERT INTO `prescriptions` VALUES (26,'2023-10-13',NULL,'Đau bụng','Đau bụng, nhức đầu','120000','2023-10-13 16:55:34',NULL,NULL,1,16,2,NULL,2,NULL,NULL),(27,'2023-10-16',NULL,'Ho','Đau họng','120000','2023-10-16 18:28:18',NULL,NULL,1,26,2,NULL,2,NULL,NULL),(28,'2023-10-16',NULL,'Ợ Chua','Đau bụng','250000','2023-10-16 20:40:33',NULL,NULL,1,28,2,NULL,1,NULL,NULL),(29,'2023-10-16',NULL,'Chóng Mặt','Buồn nôn','120000','2023-10-16 20:44:21',NULL,NULL,1,27,1,NULL,2,NULL,NULL),(30,'2023-10-16',NULL,'Tê Tay','Gãy Tay','150000','2023-10-16 20:45:39',NULL,NULL,1,29,1,NULL,1,NULL,NULL),(31,'2023-10-16',NULL,'Nóng trong người','Nhiệt miệng','270000','2023-10-16 20:52:09',NULL,NULL,1,31,1,NULL,2,NULL,NULL),(32,'2023-10-16',NULL,'Chảy Nước Mắt','Mỏi mắt','120000','2023-10-16 20:53:11',NULL,NULL,1,32,2,NULL,1,NULL,NULL),(33,'2023-10-16',NULL,'Ho Gà','Đau Họng','250000','2023-10-16 20:57:22',NULL,NULL,1,34,1,NULL,1,NULL,NULL),(34,'2023-10-16',NULL,'Mất Ngủ','Đau Thần Kinh Tọa','150000','2023-10-16 20:58:39',NULL,NULL,1,33,2,NULL,1,NULL,NULL);
 /*!40000 ALTER TABLE `prescriptions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1234,4 +1235,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-21  9:25:02
+-- Dump completed on 2024-06-09 15:06:38
