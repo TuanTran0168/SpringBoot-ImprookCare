@@ -32,6 +32,5 @@ public class UpdateUserForAdminDTO {
     @NotBlank
     private String roleId;
 
-    @NotBlank
     private String email;
 }
