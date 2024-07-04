@@ -1,0 +1,40 @@
+version: "3"
+services:
+  springboot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - ./:/var/www/app
+    ports:
+      - "8082:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/improokcare
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Admin@123
+
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: Admin@123
+      MYSQL_DB: improokcare
+
+  mysql:
+    image: mysql:latest
+    restart: always
+    volumes:
+      - tuantran-java-mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: tuantran
+      MYSQL_DATABASE: improokcare
+    ports:
+      - "3307:3306"
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    volumes:
+      - tuantran-redis-data:/data
+volumes:
+  tuantran-java-mysql-data:
