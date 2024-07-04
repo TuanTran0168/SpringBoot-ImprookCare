@@ -4,6 +4,8 @@
  */
 package com.tuantran.IMPROOK_CARE.dto;
 
+import java.util.Map;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,14 +23,16 @@ public class AddPrescriptionDetailDTO {
 
     @NotBlank
     private String medicineName;
-    
+
     @NotBlank
     private String unitPrice;
-    
+
     @NotBlank
     private String usageInstruction;
 
     @NotBlank
     private String quantity;
-    
+
+    private Map<String, AddMedicalReminderDTO> medicalReminderDTO;
+
 }

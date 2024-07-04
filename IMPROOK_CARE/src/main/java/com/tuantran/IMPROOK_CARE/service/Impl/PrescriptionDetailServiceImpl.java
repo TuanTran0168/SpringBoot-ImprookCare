@@ -41,4 +41,11 @@ public class PrescriptionDetailServiceImpl implements PrescriptionDetailService 
         return new ArrayList<>();
     }
 
+    @Override
+    public Optional<PrescriptionDetail> findPrescriptionDetailByPrescriptionDetailIdAndActiveTrue(
+            int prescriptionDetailId) {
+        return this.prescriptionDetailRepository
+                .findPrescriptionDetailByPrescriptionDetailIdAndActiveTrue(prescriptionDetailId);
+    }
+
 }

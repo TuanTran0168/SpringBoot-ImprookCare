@@ -11,9 +11,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class CorsConfig {
 
     private static final String[] CLIENT_WHITELIST = {
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "https://lotte-cinema-clone.vercel.app/"
+            "http://localhost:3000",
+            "http://localhost:2024",
+            "https://react-js-improok-care.vercel.app",
+            "https://react-js-improok-care.vercel.app/",
+            "https://springboot-improokcare.onrender.com",
+            "https://springboot-improokcare.onrender.com/",
     };
 
     @Bean
@@ -22,7 +25,8 @@ public class CorsConfig {
         configuration.setAllowedOrigins(Arrays.asList(CLIENT_WHITELIST));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-        configuration.setAllowCredentials(true); // Không có dòng này mơ mà register được kênh của websocket | Enable sending credentials (e.g., cookies)
+        configuration.setAllowCredentials(true); // Không có dòng này mơ mà register được kênh của websocket | Enable
+                                                 // sending credentials (e.g., cookies)
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

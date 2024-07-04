@@ -40,7 +40,48 @@ public class ApiEmailController {
         mail.setMailFrom("trandangtuan0168@gmail.com");
         mail.setMailTo(mailTo);
         mail.setMailSubject("Chào bạn mình là Tuấn Trần");
-        mail.setMailContent("DCMM!");
+        String htmlContent = "<p><b>TEST XÍU NHA:</b></p>\n"
+                + "<p>TEST EMAIL HTML!!!! </p>\n"
+                + "<table cellpadding=\"8\" cellspacing=\"0\"  width=\"100%\">\n"
+                + "   <tr>\n"
+                + "        <td style=\"border: 1px solid #EBEDF3;\n"
+                + "                       background-color: #f2f2f2 !important;\" width=170>\n"
+                + "            username\n"
+                + "        </td>\n"
+                + "        <td style=\"border: 1px solid #EBEDF3;\">\n"
+                + mailTo
+                + "        </td>\n"
+                + "    </tr>\n"
+                + "   \n"
+                + "     <tr>\n"
+                + "        <td style=\"border: 1px solid #EBEDF3;\n"
+                + "                       background-color: #f2f2f2 !important;\">\n"
+                + "            password\n"
+                + "        </td>\n"
+                + "        <td style=\"border: 1px solid #EBEDF3;\">\n"
+                + mailTo
+                + "        </td>\n"
+                + "    </tr>\n"
+                + "    <tr>\n"
+                + "        <td style=\"border: 1px solid #EBEDF3;\n"
+                + "                       background-color: #f2f2f2 !important;\">\n"
+                + "            Để đăng nhập\n"
+                + "        </td>\n"
+                + "        <td style=\"border: 1px solid #EBEDF3; padding-top: 15px; padding-bottom: 15px;\">\n"
+                + "            <a href=\"http://localhost:3000/login\" style=\"background-color: #03cb6e; padding: 10px; color: #fff; border-radius: 0.42rem; \">\n"
+                + "                <strong>Vui lòng bấm vào đây</strong>\n"
+                + "            </a>\n"
+                + "        </td>\n"
+                + "    </tr>\n"
+                + "</table>\n"
+                + "<br>\n"
+                + "<p>\n"
+                + "    Trân trọng,<br><br>\n"
+                + "    <b>MAIL JAVA</b><br><br>\n"
+                + "    <i>Email này được gửi tự động từ hệ thống Improok Care, vui lòng không phản hồi lại.</i>\n"
+                + "</p>";
+        mail.setContentType("text/html; charset=utf-8");
+        mail.setMailContent(htmlContent);
         this.mailService.sendEmail(mail);
 
         return new ResponseEntity<>(mail, HttpStatus.OK);
@@ -48,7 +89,8 @@ public class ApiEmailController {
 
     @PostMapping("/public/send-custom-email/")
     @CrossOrigin
-    public ResponseEntity<Map<String, String>> sendCustomEmail(@Valid @RequestBody SendCustomEmailDTO sendCustomEmailDTO) {
+    public ResponseEntity<Map<String, String>> sendCustomEmail(
+            @Valid @RequestBody SendCustomEmailDTO sendCustomEmailDTO) {
         Map<String, String> map = new HashMap<>();
         String message = "Có lỗi xảy ra!";
 
@@ -58,7 +100,7 @@ public class ApiEmailController {
         emailDTO.setMailTo(sendCustomEmailDTO.getMailTo());
         emailDTO.setMailSubject(sendCustomEmailDTO.getMailSubject());
         emailDTO.setMailContent(sendCustomEmailDTO.getMailContent());
-        
+
         map.put("mailFrom", emailDTO.getMailFrom());
         map.put("mailTo", emailDTO.getMailTo());
         map.put("mailCc", emailDTO.getMailCc());
