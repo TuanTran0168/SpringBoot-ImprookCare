@@ -340,4 +340,9 @@ public class BookingServiceImpl implements BookingService {
                 page);
     }
 
+    @Override
+    public Page<?> getBookingByUserId(int userId, Pageable page) {
+        return this.bookingRepository.getBookingByUserId(userId, page);
+    }
+
 }

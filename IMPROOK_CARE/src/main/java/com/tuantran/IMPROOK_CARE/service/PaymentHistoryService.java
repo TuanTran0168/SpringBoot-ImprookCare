@@ -22,4 +22,6 @@ public interface PaymentHistoryService {
         PaymentHistory addPaymentHistory(PaymentHistory paymentHistory, Booking booking);
 
         Optional<PaymentHistory> findByPaymentHistoryId(Integer paymentHistoryId);
+
+        Optional<PaymentHistory> findPaymentHistoryByBookingId(Booking bookingId);
 }

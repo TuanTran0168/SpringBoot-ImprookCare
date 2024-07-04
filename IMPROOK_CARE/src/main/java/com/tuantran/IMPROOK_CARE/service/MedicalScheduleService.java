@@ -31,4 +31,8 @@ public interface MedicalScheduleService {
     MedicalSchedule addMedicalSchedule(MedicalSchedule medicalSchedule);
 
     MedicalSchedule updateMedicalSchedule(MedicalSchedule medicalSchedule);
+
+    void deleteAllMedicalScheduleInBatch(List<MedicalSchedule> medicalSchedules);
+
+    void hardDeleteMedicalSchedule(MedicalSchedule medicalSchedule);
 }
