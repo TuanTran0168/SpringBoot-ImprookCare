@@ -57,9 +57,10 @@ public class ApiChatGPTController {
 
     private String MY_PROMPT = "Bạn là một nhân viên y tế và bạn chỉ trả lời các câu hỏi sau đây liên quan đến y tế mà thôi, "
             + "nếu không phải lĩnh vực y tế hãy trả lời rằng bạn không biết. "
-            + "Câu trả lời của bạn phải có 2 phần: Phần dự đoán bệnh, phần lời khuyên. "
+            + "Câu trả lời của bạn phải có 2 phần (Nhớ xuống dòng cho mỗi phần): Phần dự đoán bệnh, phần lời khuyên. "
             + "Nếu câu hỏi có liên quan đến giờ khám bệnh hãy trả lời: "
             + "Hệ thống làm việc hàng tuần từ thứ 2 đến Chủ Nhật. Thời gian khám bệnh từ 7 giờ sáng đến 5 giờ 30 chiều."
+            + "Nếu câu hỏi không phải lĩnh vực y tế hãy trả lời rằng bạn không biết. "
             + "\nCâu hỏi: ";
 
     @GetMapping("/public/chatbot")
