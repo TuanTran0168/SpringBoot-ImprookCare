@@ -181,6 +181,7 @@ public class UserServiceImpl implements UserService {
                 user.setFirstname(updateUserForUserDTO.getFirstname());
                 user.setLastname(updateUserForUserDTO.getLastname());
                 user.setGender(updateUserForUserDTO.getGender());
+                user.setEmail(updateUserForUserDTO.getEmail());
                 user.setBirthday(this.dateFormatComponent.myDateFormat().parse(updateUserForUserDTO.getBirthday()));
                 user.setUpdatedDate(new Date());
 
@@ -307,6 +308,7 @@ public class UserServiceImpl implements UserService {
                 user.setFirstname(updateUserForAdminDTO.getFirstname());
                 user.setLastname(updateUserForAdminDTO.getLastname());
                 user.setGender(updateUserForAdminDTO.getGender());
+                user.setEmail(updateUserForAdminDTO.getEmail());
                 user.setBirthday(this.dateFormatComponent.myDateFormat().parse(updateUserForAdminDTO.getBirthday()));
 
                 Optional<Role> roleOptional = this.roleRepository
