@@ -4,7 +4,6 @@
  */
 package com.tuantran.IMPROOK_CARE.configs.jwt;
 
-import com.tuantran.IMPROOK_CARE.models.User;
 import com.tuantran.IMPROOK_CARE.service.UserService;
 import java.security.Key;
 import java.util.Date;
@@ -12,7 +11,6 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.*;
@@ -25,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class JwtUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
+    @SuppressWarnings("unused")
     private static final long REFRESH_TOKEN_EXPIRATION_DATE = 30 * 24 * 60 * 60 * 1000;
 
     @Value("${bezkoder.app.jwtSecret}")
@@ -40,11 +39,11 @@ public class JwtUtils {
 
         UserDetails userPrincipal = userService.loadUserByUsername(UserDetails.getUsername());
 
-//        String username = UserDetails.getUsername();
-//        User user = userService.findUserByUsername(username);
-//        Date currentDate = new Date();
-//
-//        Date expireDate = new Date(currentDate.getTime() + jwtExpirationMs);
+        // String username = UserDetails.getUsername();
+        // User user = userService.findUserByUsername(username);
+        // Date currentDate = new Date();
+        //
+        // Date expireDate = new Date(currentDate.getTime() + jwtExpirationMs);
 
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
@@ -53,18 +52,18 @@ public class JwtUtils {
                 .signWith(key(), SignatureAlgorithm.HS256)
                 .compact();
     }
-    
-//    public String generateJwtToken(Authentication authentication) {
-//
-//        UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
-//
-//        return Jwts.builder()
-//                .setSubject((userPrincipal.getUsername()))
-//                .setIssuedAt(new Date())
-//                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-//                .signWith(key(), SignatureAlgorithm.HS256)
-//                .compact();
-//    }
+
+    // public String generateJwtToken(Authentication authentication) {
+    //
+    // UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
+    //
+    // return Jwts.builder()
+    // .setSubject((userPrincipal.getUsername()))
+    // .setIssuedAt(new Date())
+    // .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+    // .signWith(key(), SignatureAlgorithm.HS256)
+    // .compact();
+    // }
 
     private Key key() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
