@@ -2,7 +2,6 @@ package com.tuantran.IMPROOK_CARE.components.twilio;
 
 import com.tuantran.IMPROOK_CARE.configs.twilio.TwilioSmsSender;
 import com.tuantran.IMPROOK_CARE.dto.SmsRequestDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 public class SmsService {
     private final SmsSender smsSender;
 
-    @Autowired
     public SmsService(@Qualifier("twilio") TwilioSmsSender smsSender) {
         this.smsSender = smsSender;
     }
