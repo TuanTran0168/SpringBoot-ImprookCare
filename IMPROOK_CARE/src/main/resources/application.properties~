@@ -6,7 +6,6 @@ spring.datasource.url=jdbc:h2:mem:improokcare;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
 spring.datasource.driver-class-name=org.h2.Driver
 spring.datasource.username=sa
 spring.datasource.password=password
-spring.jpa.properties.hibernate.hbm2ddl.import_files=import.sql
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
