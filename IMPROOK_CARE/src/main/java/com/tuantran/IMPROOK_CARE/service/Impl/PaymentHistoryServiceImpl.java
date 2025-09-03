@@ -49,4 +49,9 @@ public class PaymentHistoryServiceImpl implements PaymentHistoryService {
         return this.paymentHistoryRepository.findByPaymentHistoryId(paymentHistoryId);
     }
 
+    @Override
+    public Optional<PaymentHistory> findPaymentHistoryByBookingId(Booking bookingId) {
+        return this.paymentHistoryRepository.findPaymentHistoryByBookingId(bookingId);
+    }
+
 }

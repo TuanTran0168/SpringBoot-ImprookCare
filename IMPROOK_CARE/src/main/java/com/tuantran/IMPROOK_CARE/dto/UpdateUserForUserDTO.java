@@ -25,4 +25,6 @@ public class UpdateUserForUserDTO {
     private Boolean gender;
     @NotBlank
     private String birthday;
+    @NotBlank
+    private String email;
 }

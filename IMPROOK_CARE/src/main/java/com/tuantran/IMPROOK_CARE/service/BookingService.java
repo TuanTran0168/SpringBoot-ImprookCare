@@ -38,6 +38,8 @@ public interface BookingService {
         Page<?> getBookingForUserView(@Param("userId") int userId, @Param("bookingStatus") int bookingStatusId,
                         Pageable page);
 
+        Page<?> getBookingByUserId(@Param("userId") int userId, Pageable page);
+
         Page<?> getBookingForUserViewDoubleStatus(@Param("userId") int userId,
                         @Param("bookingStatusId1") int bookingStatusId1,
                         @Param("bookingStatusId2") int bookingStatusId2,

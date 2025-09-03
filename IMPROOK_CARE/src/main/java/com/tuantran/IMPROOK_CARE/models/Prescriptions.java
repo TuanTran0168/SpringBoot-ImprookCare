@@ -40,7 +40,8 @@ import jakarta.persistence.TemporalType;
         @NamedQuery(name = "Prescriptions.findByDeletedDate", query = "SELECT p FROM Prescriptions p WHERE p.deletedDate = :deletedDate"),
         @NamedQuery(name = "Prescriptions.findByActive", query = "SELECT p FROM Prescriptions p WHERE p.active = :active"),
         @NamedQuery(name = "Prescriptions.findByMedicinepaymentTxnRef", query = "SELECT p FROM Prescriptions p WHERE p.medicinepaymentTxnRef = :medicinepaymentTxnRef"),
-        @NamedQuery(name = "Prescriptions.findByServicepaymentTxnRef", query = "SELECT p FROM Prescriptions p WHERE p.servicepaymentTxnRef = :servicepaymentTxnRef") })
+        @NamedQuery(name = "Prescriptions.findByServicepaymentTxnRef", query = "SELECT p FROM Prescriptions p WHERE p.servicepaymentTxnRef = :servicepaymentTxnRef"),
+        @NamedQuery(name = "Prescriptions.findByNotes", query = "SELECT p FROM Prescriptions p WHERE p.notes = :notes") })
 public class Prescriptions implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -79,6 +80,8 @@ public class Prescriptions implements Serializable {
     private String medicinepaymentTxnRef;
     @Column(name = "service_payment_Txn_Ref")
     private String servicepaymentTxnRef;
+    @Column(name = "notes")
+    private String notes;
     @JoinColumn(name = "booking_id", referencedColumnName = "booking_id")
     @ManyToOne
     private Booking bookingId;
@@ -193,6 +196,14 @@ public class Prescriptions implements Serializable {
 
     public void setServicepaymentTxnRef(String servicepaymentTxnRef) {
         this.servicepaymentTxnRef = servicepaymentTxnRef;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public Booking getBookingId() {
