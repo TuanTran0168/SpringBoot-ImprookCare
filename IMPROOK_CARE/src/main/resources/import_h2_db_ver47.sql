@@ -1,4 +1,3 @@
-USE improokcare;
 DROP TABLE IF EXISTS booking;
 CREATE TABLE booking (
   booking_id int NOT NULL IDENTITY,
