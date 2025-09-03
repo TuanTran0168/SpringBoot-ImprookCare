@@ -49,7 +49,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <!-- use this if your lombok has erorr -->
-            <!-- <version>1.18.32</version> -->
+             <version>1.18.32</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -201,6 +201,12 @@
             <artifactId>itext7-core</artifactId>
             <version>7.2.4</version>
             <type>pom</type>
+        </dependency>
+        <!--	H2 for Testing Environment	-->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
